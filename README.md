@@ -2,7 +2,7 @@
 
 This project provides a reference implementation of the NRLS API and aims to:
 * show an example of integration with the NRLS API
-* show examples of how NRLS Data (Pointers) may be consued within a health care system (e.g. EPR) and how a health care systems can provide NRLS Pointers, both through a step by step interactive guide
+* show examples of how NRLS Data (Pointers) may be consumed within a health care system (e.g. EPR) and how health care systems can provide NRLS Pointers through a step by step interactive guide
 
 Please see the [NRLS API Specification](https://nhsconnect.github.io/FHIR-NRLS-API/) for further details of the NRLS API requirements.
 
