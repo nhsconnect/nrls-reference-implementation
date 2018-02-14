@@ -1,0 +1,9 @@
+cd C:\Program Files\MongoDB\Server\3.6\bin
+
+mongo
+use Demonstrator
+db.auth("riAdmin","riapass10!")
+db.ActorOrganisation.drop()
+
+
+mongoimport -c ActorOrganisation -d Demonstrator -u riAdmin -p riapass10! --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\ActorOrganisation.json

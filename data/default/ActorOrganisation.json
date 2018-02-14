@@ -1,0 +1,14 @@
+{
+    "Type": "Consumer",
+    "Name": "Ambulance Service",
+    "ImageUrl": "....",
+    "Context": "Some general context....",
+    "IsActive": "true"
+}
+{
+    "Type": "Provider",
+    "Name": "Mental Health Trust",
+    "ImageUrl": "....",
+    "Context": "Some general context....",
+    "IsActive": "true"
+}

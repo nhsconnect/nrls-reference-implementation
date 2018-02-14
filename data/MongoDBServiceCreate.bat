@@ -1,0 +1,1 @@
+sc.exe create MongoDB binPath= "\"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe\" --service --config= \"C:\users\wilkinsm\documents\sites\nrls-reference-implementation\data\mongod.conf\"" DisplayName= "MongoDB" start= "auto" 
