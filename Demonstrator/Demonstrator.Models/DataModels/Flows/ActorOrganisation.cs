@@ -1,4 +1,7 @@
-﻿using MongoDB.Bson;
+﻿using Demonstrator.Models.Core.Enums;
+using Demonstrator.Models.ViewModels.Flows;
+using Demonstrator.Utilities;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
@@ -22,5 +25,20 @@ namespace Demonstrator.Models.DataModels.Flows
         public bool IsActive { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public static ActorOrganisationViewModel ToViewModel(ActorOrganisation model)
+        {
+            var viewModel = new ActorOrganisationViewModel
+            {
+                Id = model.Id.ToString(),
+                Context = model.Context,
+                ImageUrl = model.ImageUrl,
+                Name = model.Name,
+                OrgCode = model.OrgCode,
+                Type = EnumHelpers.GetEnum<ActorType>(model.Type)
+            };
+
+            return viewModel;
+        }
     }
 }

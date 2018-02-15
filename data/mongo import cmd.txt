@@ -3,7 +3,13 @@ cd C:\Program Files\MongoDB\Server\3.6\bin
 mongo
 use Demonstrator
 db.auth("riAdmin","riapass10!")
+db.Personnel.drop()
 db.ActorOrganisation.drop()
+db.GenericSystem.drop()
 
 
 mongoimport -c ActorOrganisation -d Demonstrator -u riAdmin -p riapass10! --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\ActorOrganisation.json
+
+mongoimport -c GenericSystem -d Demonstrator -u riAdmin -p riapass10! -mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\GenericSystem.json
+
+mongoimport -c Personnel -d Demonstrator -u riAdmin -p riapass10! -mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\Personnel.json

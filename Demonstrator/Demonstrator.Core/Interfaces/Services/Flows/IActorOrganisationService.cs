@@ -3,7 +3,7 @@ using Demonstrator.Models.ViewModels.Flows;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Demonstrator.Services.Interface.Flows
+namespace Demonstrator.Core.Interfaces.Services.Flows
 {
     public interface IActorOrganisationService
     {

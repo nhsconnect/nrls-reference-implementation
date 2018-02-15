@@ -1,0 +1,7 @@
+{
+    "Name" :"Ambulance Service Call Handler",
+    "FModule": "Ambulance_Service_Call_Handler",
+    "Asid": "200000000115",
+    "IsActive": true,
+    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
+}

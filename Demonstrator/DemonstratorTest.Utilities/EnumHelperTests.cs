@@ -1,10 +1,9 @@
 using Demonstrator.Utilities;
-using System;
 using Xunit;
 
 namespace DemonstratorTest.Utilities
 {
-    public class EnumValidation
+    public class EnumHelperTests
     {
         [Fact]
         public void ValidEnum()
@@ -16,6 +15,14 @@ namespace DemonstratorTest.Utilities
         public void InvalidEnum()
         {
             Assert.False(EnumHelpers.IsValidName<TestEnums>("EnumC"));
+        }
+
+        [Fact]
+        public void ValidGetEnum()
+        {
+            var enumA = EnumHelpers.GetEnum<TestEnums>("EnumA");
+
+            Assert.Equal(TestEnums.EnumA, enumA);
         }
     }
 

@@ -1,8 +1,6 @@
-﻿using Demonstrator.Database;
-using Demonstrator.Models.Core.Enums;
+﻿using Demonstrator.Models.Core.Enums;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.DataModels.Flows;
-using Demonstrator.Services.Interface.Flows;
 using Demonstrator.Services.Extensions;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -11,6 +9,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demonstrator.Models.ViewModels.Flows;
 using MongoDB.Bson;
+using Demonstrator.Core.Interfaces.Database;
+using Demonstrator.Core.Interfaces.Services.Flows;
 
 namespace Demonstrator.Services.Service.Flows
 {
@@ -18,7 +18,7 @@ namespace Demonstrator.Services.Service.Flows
     {
         private readonly INRLSMongoDBContext _context;
 
-        public ActorOrganisationService(INRLSMongoDBContext context, IOptions<DbSetting> settings)
+        public ActorOrganisationService(INRLSMongoDBContext context)
         {
             _context = context;
         }
@@ -27,27 +27,15 @@ namespace Demonstrator.Services.Service.Flows
         {
             try
             {
-                var sort = Builders<ActorOrganisation>.Sort.Ascending(t => t.Name);
-                var filters = new BsonDocument
-                {
-                    {
-                        "Type",
-                        aoType.ToString()
-                    },
-                    {
-                        "IsActive",
-                        "true"
-                    }
-                };
+                var builder = Builders<ActorOrganisation>.Filter;
+                var filters = new List<FilterDefinition<ActorOrganisation>>();
+                filters.Add(builder.Eq(x => x.Type, aoType.ToString()));
+                filters.Add(builder.Eq(x => x.IsActive, true));
 
-                return await _context.ActorOrganisations
-                    .FindSync(filters, 
-                              new FindOptions<ActorOrganisation, ActorOrganisation>()
-                              {
-                                Sort = sort
-                              })
-                    .ToListAsync()
-                    .ToViewModelAsync();
+                var options = new FindOptions<ActorOrganisation, ActorOrganisation>();
+                options.Sort = Builders<ActorOrganisation>.Sort.Ascending(x => x.Name);
+
+                return await _context.ActorOrganisations.FindSync(builder.And(filters), options).ToViewModelListAsync();
             }
             catch (Exception ex)
             {

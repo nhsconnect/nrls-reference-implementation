@@ -3,12 +3,16 @@
     "Name": "Ambulance Service",
     "ImageUrl": "....",
     "Context": "Some general context....",
-    "IsActive": "true"
+    "IsActive": true,
+    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
+    "OrgCode": "AMSR01"
 }
 {
     "Type": "Provider",
     "Name": "Mental Health Trust",
     "ImageUrl": "....",
     "Context": "Some general context....",
-    "IsActive": "true"
+    "IsActive": true,
+    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
+    "OrgCode": "MTHT01"
 }

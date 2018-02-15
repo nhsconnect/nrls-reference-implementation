@@ -1,4 +1,5 @@
-﻿using Demonstrator.Models.Core.Models;
+﻿using Demonstrator.Core.Interfaces.Database;
+using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.DataModels.Flows;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -21,6 +22,22 @@ namespace Demonstrator.Database
             get
             {
                 return _database.GetCollection<ActorOrganisation>("ActorOrganisation");
+            }
+        }
+
+        public IMongoCollection<GenericSystem> GenericSystems
+        {
+            get
+            {
+                return _database.GetCollection<GenericSystem>("GenericSystem");
+            }
+        }
+
+        public IMongoCollection<Personnel> Personnel
+        {
+            get
+            {
+                return _database.GetCollection<Personnel>("Personnel");
             }
         }
     }
