@@ -2,7 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="npm-debug.log" />
+    <None Remove="src\core\helpers\EventMessages.ts" />
+    <None Remove="src\core\models\IActorOrganisation.ts" />
+    <None Remove="src\core\services\ActorOrganisationService.ts" />
+    <None Remove="src\core\types\List.ts" />
+    <None Remove="src\core\WebApi.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
@@ -21,6 +32,14 @@
     <ProjectReference Include="..\Demonstrator.Models\Demonstrator.Models.csproj" />
     <ProjectReference Include="..\Demonstrator.Services\Demonstrator.Services.csproj" />
     <ProjectReference Include="..\Demonstrator.Utilities\Demonstrator.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\core\helpers\EventMessages.ts" />
+    <TypeScriptCompile Include="src\core\models\IActorOrganisation.ts" />
+    <TypeScriptCompile Include="src\core\services\ActorOrganisationService.ts" />
+    <TypeScriptCompile Include="src\core\types\List.ts" />
+    <TypeScriptCompile Include="src\core\WebApi.ts" />
   </ItemGroup>
 
 </Project>

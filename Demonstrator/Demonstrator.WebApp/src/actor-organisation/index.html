@@ -1,0 +1,12 @@
+<template>
+    <section class="container">
+        <h2>${heading}</h2>
+        <p>pick an org...</p>
+        <div class="row ">
+            <div repeat.for="actorOrganisation of actorOrganisations" class="col-sm-3">
+                <h5>${actorOrganisation.name}</h5>
+                <p>${actorOrganisation.context}</p>
+            </div>
+        </div>
+    </section>
+</template>
