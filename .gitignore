@@ -8,3 +8,8 @@ Demonstrator/.vs
 Demonstrator/*/obj
 Demonstrator/*/bin
 Demonstrator/Demonstrator.WebApp/appsettings.json
+
+/**/node_modules
+/**/wwwroot/*
+/**/test/coverage
+/**/*.log
