@@ -1,5 +1,6 @@
 ﻿using Demonstrator.Models.ViewModels.Patients;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Demonstrator.WebApp.Controllers
 {
@@ -12,8 +13,26 @@ namespace Demonstrator.WebApp.Controllers
         {
 
             //Service to get Patient Numbers
+            var patientNumbers = new List<PatientNumberViewModel>
+            {
+                new PatientNumberViewModel
+                {
+                    Id = "5a8417338317338c8e0809e5",
+                    NhsNumber = 500000000
+                },
+                new PatientNumberViewModel
+                {
+                    Id = "5a8417338317338c8e0809e6",
+                    NhsNumber = 500000001
+                },
+                new PatientNumberViewModel
+                {
+                    Id = "5a8417338317338c8e0809e7",
+                    NhsNumber = 500000002
+                }
+            };
 
-            return Ok($"Get all Patient Numbers.");
+            return Ok(patientNumbers);
         }
 
         // GET api/Patients/1234
@@ -38,7 +57,7 @@ namespace Demonstrator.WebApp.Controllers
 
         // PUT api/Patients/1234/Records/4567
         [HttpPut("{patientId:int}/Records/{recordId:int}")]
-        public IActionResult Create([FromRoute] int patientId, [FromRoute] int recordId, [FromBody] MedicalRecord medicalRecord)
+        public IActionResult Update([FromRoute] int patientId, [FromRoute] int recordId, [FromBody] MedicalRecord medicalRecord)
         {
 
             //Service to update a Patient record

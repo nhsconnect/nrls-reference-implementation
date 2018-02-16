@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Demonstrator.Models.ViewModels.Flows;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Demonstrator.WebApp.Controllers
 {
@@ -15,8 +16,18 @@ namespace Demonstrator.WebApp.Controllers
             }
 
             //Service to get Personnel
+            var personnel = new PersonnelViewModel
+            {
+                Id = "5a8417338317338c8e0809e5",
+                Name = "999 Call Handler",
+                ImageUrl = "...",
+                Context = "...",
+                UsesNrls = true,
+                SystemId = "5a8417338317338c8e0809e5",
+                ActorOrganisationId = "5a82f9ffcb969daa58d33377"
+            };
 
-            return Ok($"Get all Personnel for {actorOrgName}");
+            return Ok(personnel);
         }
 
     }
