@@ -21,7 +21,7 @@ namespace DemonstratorTest.Data.Helpers
                         Context = "Some general context....",
                         UsesNrls = true,
                         OrganisationId = "5a82f9ffcb969daa58d33377",
-                        SystemId = "5a8417338317338c8e0809e5",
+                        SystemIds = new List<string> { "5a8417338317338c8e0809e5" },
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00")
                     }

@@ -1,11 +1,7 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Flows;
-using Demonstrator.Models.Core.Enums;
-using Demonstrator.Models.DataModels.Flows;
 using Demonstrator.Models.ViewModels.Flows;
-using Demonstrator.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Demonstrator.WebApp.Controllers
@@ -20,21 +16,16 @@ namespace Demonstrator.WebApp.Controllers
             _actorOrgService = actorOrgService;
         }
 
-        // GET api/ActorOrganisations/Consumer
-        [HttpGet("{actorType}")]
-        public async Task<IActionResult> Get(ActorType? actorType)
+        // GET api/ActorOrganisations
+        [HttpGet("")]
+        public async Task<IActionResult> Get()
         {
-            if (actorType == null || !EnumHelpers.IsValidName<ActorType>(actorType.ToString()))
-            {
-                return BadRequest("Url Parameter is an invalid ActorType");
-            }
-
-             var actorOrgs = await _actorOrgService.GetAll((ActorType)actorType);
+             var actorOrgs = await _actorOrgService.GetAll();
 
             return Ok(actorOrgs);
         }
 
-        // GET api/ActorOrganisations/dje8f94id0sk4uf8s73jd95k/Personnel
+        // GET api/ActorOrganisations/5a82c6cecb969daa58d32dkfl9/Personnel
         [HttpGet("{actorOrgId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}/Personnel")]
         public async Task<IActionResult> GetPersonnel(string actorOrgId)
         {
@@ -49,7 +40,7 @@ namespace Demonstrator.WebApp.Controllers
                     Name = "999 Call Handler",
                     ImageUrl = "...",
                     Context = "...",
-                    SystemId = "5a82c6cecb969daa58d32cdk9",
+                    SystemIds = new List<string>{"5a82c6cecb969daa58d32cdk9" },
                     ActorOrganisationId = "5a82c6cecb969daa58d32dkfl9",
                     UsesNrls = false
                 },
@@ -59,7 +50,7 @@ namespace Demonstrator.WebApp.Controllers
                     Name = "Paramedic",
                     ImageUrl = "...",
                     Context = "...",
-                    SystemId = "5a82c6cecb969daa58d32cdk9",
+                    SystemIds = new List<string>{"5a82c6cecb969daa58d32cdk9" },
                     ActorOrganisationId = "5a82c6cecb969daa58d32dkfl9",
                     UsesNrls = true
                 }

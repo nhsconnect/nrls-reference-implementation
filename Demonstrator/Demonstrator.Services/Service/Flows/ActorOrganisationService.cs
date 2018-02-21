@@ -23,13 +23,12 @@ namespace Demonstrator.Services.Service.Flows
             _context = context;
         }
 
-        public async Task<IEnumerable<ActorOrganisationViewModel>> GetAll(ActorType aoType)
+        public async Task<IEnumerable<ActorOrganisationViewModel>> GetAll()
         {
             try
             {
                 var builder = Builders<ActorOrganisation>.Filter;
                 var filters = new List<FilterDefinition<ActorOrganisation>>();
-                filters.Add(builder.Eq(x => x.Type, aoType.ToString()));
                 filters.Add(builder.Eq(x => x.IsActive, true));
 
                 var options = new FindOptions<ActorOrganisation, ActorOrganisation>();

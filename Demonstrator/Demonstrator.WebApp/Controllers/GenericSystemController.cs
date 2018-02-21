@@ -6,7 +6,7 @@ namespace Demonstrator.WebApp.Controllers
     [Route("api/[controller]")]
     public class GenericSystemController : Controller
     {
-        // GET api/GenericSystem/fo49dle0-f0ro-dok4-sow9-eod84jf93ks0
+        // GET api/GenericSystem/5a82c6cecb969daa58d32cdk9
         [HttpGet("{systemId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public IActionResult Get(string systemId)
         {
@@ -16,6 +16,7 @@ namespace Demonstrator.WebApp.Controllers
                 Id = "5a82c6cecb969daa58d32cdk9",
                 Name = "Ambulance Service Call Handler",
                 Asid = "200000000115",
+                Context = "some context...",
                 FModule = "Ambulance_Service_Call_Handler"
             };
 

@@ -1,12 +1,13 @@
 ﻿using Demonstrator.Models.ViewModels.Flows;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Demonstrator.WebApp.Controllers
 {
     [Route("api/[controller]")]
     public class PersonnelController : Controller
     {
-        // GET api/Personnel/AmbulanceTrust
+        // GET api/Personnel/5a8417338317338c8e0809e5
         [HttpGet("{actorOrgName:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public IActionResult Get(string actorOrgName)
         {
@@ -23,7 +24,7 @@ namespace Demonstrator.WebApp.Controllers
                 ImageUrl = "...",
                 Context = "...",
                 UsesNrls = true,
-                SystemId = "5a8417338317338c8e0809e5",
+                SystemIds = new List<string> { "5a82c6cecb969daa58d32cdk9" },
                 ActorOrganisationId = "5a82f9ffcb969daa58d33377"
             };
 

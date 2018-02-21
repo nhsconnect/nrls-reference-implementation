@@ -7,6 +7,6 @@ namespace Demonstrator.Core.Interfaces.Services.Flows
 {
     public interface IActorOrganisationService
     {
-        Task<IEnumerable<ActorOrganisationViewModel>> GetAll(ActorType aoType);
+        Task<IEnumerable<ActorOrganisationViewModel>> GetAll();
     }
 }

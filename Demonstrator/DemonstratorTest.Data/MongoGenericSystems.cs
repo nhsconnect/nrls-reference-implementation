@@ -19,6 +19,7 @@ namespace DemonstratorTest.Data.Helpers
                         Name = "Ambulance Service Call Handler",
                         FModule = "Ambulance_Service_Call_Handler",
                         Asid = "200000000115",
+                        Context = "Some context...",
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00")
                     }
