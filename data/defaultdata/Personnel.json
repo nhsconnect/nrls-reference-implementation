@@ -3,8 +3,11 @@
     "ImageUrl" : "...",
     "Context": "...",
     "UsesNrls": true,
-    "SystemId": "5a8417338317338c8e0809e5",
     "OrganisationId": "5a82f9ffcb969daa58d33377",
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
+    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "SystemIds": [
+        "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0",
+        "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0"
+    ]
 }

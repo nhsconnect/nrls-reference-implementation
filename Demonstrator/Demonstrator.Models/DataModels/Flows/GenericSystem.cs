@@ -15,6 +15,8 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public string Asid { get; set; }
 
+        public string Context { get; set; }
+
         public bool IsActive { get; set; }
 
         public DateTime CreatedOn { get; set; }

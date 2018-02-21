@@ -4,8 +4,11 @@
     "imageUrl": "...",
     "context": "Some general content....",
     "usesNrls": true,
-    "systemId": "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0",
     "organisationId": "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0",
     "isActive": true,
-    "createdOn": "2018-01-01T00:00:00.000Z"
+    "createdOn": "2018-01-01T00:00:00.000Z",
+    "genericSystems": [
+        "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0",
+        "fo49dle0-f0ro-dok4-sow9-eod84jf93ks0"
+    ]
 }

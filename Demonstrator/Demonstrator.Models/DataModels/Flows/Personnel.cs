@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace Demonstrator.Models.DataModels.Flows
 {
@@ -17,7 +18,7 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public bool UsesNrls { get; set; }
 
-        public string SystemId { get; set; }
+        public List<string> SystemIds { get; set; }
 
         public string OrganisationId { get; set; }
 

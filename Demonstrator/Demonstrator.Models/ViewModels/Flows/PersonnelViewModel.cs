@@ -1,4 +1,6 @@
-﻿namespace Demonstrator.Models.ViewModels.Flows
+﻿using System.Collections.Generic;
+
+namespace Demonstrator.Models.ViewModels.Flows
 {
     public class PersonnelViewModel
     {
@@ -12,8 +14,12 @@
 
         public bool UsesNrls { get; set; }
 
-        public string SystemId { get; set; }
+        public List<string> SystemIds { get; set; }
 
         public string ActorOrganisationId { get; set; }
+
+        public List<GenericSystemViewModel> Systems { get; set; }
+
+        public ActorOrganisationViewModel ActorOrganisation { get; set; }
     }
 }

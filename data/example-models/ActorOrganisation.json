@@ -4,6 +4,7 @@
     "name": "Ambulance Service",
     "imageUrl": "....",
     "context": "Some general context....",
+    "orgCode": "RAB1",
     "isActive": true,
     "createdOn": "2018-01-01T00:00:00.000Z"
 }

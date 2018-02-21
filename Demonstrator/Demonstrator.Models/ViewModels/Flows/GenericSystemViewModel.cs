@@ -6,6 +6,8 @@
 
         public string Name { get; set; }
 
+        public string Context { get; set; }
+
         public string FModule { get; set; }
 
         public string Asid { get; set; }
