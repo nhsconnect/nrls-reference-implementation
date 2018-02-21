@@ -1,1 +1,1 @@
-sc.exe delete MongoDB
+sc.exe delete MongoDB36

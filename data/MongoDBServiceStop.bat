@@ -1,1 +1,1 @@
-net stop MongoDB
+net stop MongoDB36

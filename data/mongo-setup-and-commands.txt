@@ -1,0 +1,50 @@
+### Create Users ###
+
+##start mongo and define data path
+mongod --dbpath PATH_TO_DATA
+
+##cmd into mongo to create admin
+mongo
+use admin
+db.createUser({user:"ADMIN_USERNAME",pwd:"ADMIN_PASSWORD", roles: [{role: "root", db: "admin"}]})
+
+##stop and restart mongo but using the config file this time
+mongod --config
+
+##cmd into mongo and authenticate yourself
+mongo
+use admin
+db.auth("ADMIN_USERNAME","ADMIN_PASSWORD")
+
+
+##now switch to your chosen database and create a user
+##this user can used to connect to the db from other applications
+use Demonstrator
+db.createUser({user:"DEMO_USERNAME",pwd:"DEMO_PASSWORD", roles: [{role: "readWrite", db: "Demonstrator"}]})
+
+
+##START MONGODB EXAMPLE
+# cd C:\Program Files\MongoDB\Server\3.6\bin & mongod --config C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\mongod.conf
+
+
+### CLEAR DOWN AND IMPORT DATA ###
+
+##from cmd
+cd C:\Program Files\MongoDB\Server\3.6\bin
+
+##cmd into mongo and authenticate against your chosen db
+mongo
+use Demonstrator
+db.auth("DEMO_USERNAME","DEMO_PASSWORD")
+
+##how to drop databases
+db.Personnel.drop()
+db.ActorOrganisation.drop()
+db.GenericSystem.drop()
+
+##how to import new items (you can also restore previous dumps)
+mongoimport -c ActorOrganisation -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\ActorOrganisation.json
+mongoimport -c GenericSystem -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\GenericSystem.json
+mongoimport -c Personnel -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\Personnel.json
+
+##later once all data is confirmed a backup will be taken and a nightly restore job will be setup

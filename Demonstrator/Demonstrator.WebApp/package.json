@@ -11,8 +11,6 @@
     "preclean:start": "npm run clean",
     "watch": "npm run watch:dev",
     "watch:dev": "npm run build:dev -- --watch",
-    "watch:test": "npm run test -- --auto-watch --no-single-run",
-    "watch:prod": "npm run build:prod -- --watch",
     "build": "npm run build:dev",
     "prebuild:dev": "npm run clean:dist",
     "build:dev": "cross-env NODE_ENV=development npm run webpack -- --progress --profile",
