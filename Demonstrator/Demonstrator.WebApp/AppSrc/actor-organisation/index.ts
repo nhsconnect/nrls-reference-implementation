@@ -6,16 +6,19 @@ import { IActorOrganisation } from '../core/models/IActorOrganisation';
 export class ActorOrganisation {
     heading: string = 'Actor Organisation';
     actorOrganisations: Array<IActorOrganisation>;
-    actorType: string;
+    orgsLoading: boolean = false;
 
     constructor(private actorOrgSvc: ActorOrganisationSvc) { }
 
-    activate(params) {
-        this.actorType = params.actorType;
+    activate() {
     }
 
     created() {
-        this.actorOrgSvc.getAll(this.actorType).then(actorOrgs => this.actorOrganisations = actorOrgs);
+        this.orgsLoading = true;
+        this.actorOrgSvc.getAll().then(actorOrgs => {
+            this.actorOrganisations = actorOrgs;
+            this.orgsLoading = false;
+        });
     }
 
 }

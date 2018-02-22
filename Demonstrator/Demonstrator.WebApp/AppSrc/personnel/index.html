@@ -1,0 +1,24 @@
+<template>
+    <require from="../core/helpers/loaders/spinner-msg.html"></require>
+
+    <section class="container">
+        <h2>${heading}</h2>
+
+        <spinner-msg message="Loading Personnel" logic.one-way="personnelLoading"></spinner-msg>
+
+        <p>${personnel.name}</p>
+
+        <p>${personnel.context}</p>
+
+        <h5>My Systems</h5>
+        <ul class="list">
+            <li repeat.for="system of personnel.systemIds">${system}</li>
+        </ul>
+
+        <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
+
+        <div if.bind="systems.length < 1 && !systemsLoading">
+            <p>No Generic Systems to preview</p>
+        </div>
+    </section>
+</template>

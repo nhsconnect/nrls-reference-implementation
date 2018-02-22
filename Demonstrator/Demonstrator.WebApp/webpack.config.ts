@@ -28,7 +28,7 @@ const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() |
 const title = 'NRLS Demonstrator';
 const baseUrl = '/';
 const rootDir = path.resolve();
-const srcDir = path.resolve('src');
+const srcDir = path.resolve('AppSrc');
 const outDir = path.resolve('wwwroot');
 
 const coreBundles = {
@@ -69,7 +69,7 @@ const coreBundles = {
 let config = generateConfig(
   {
     entry: {
-      'app': ['./src/main' /* this is filled by the aurelia-webpack-plugin */],
+      'app': ['./AppSrc/main' /* this is filled by the aurelia-webpack-plugin */],
       'aurelia-bootstrap': coreBundles.bootstrap,
       'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
     },

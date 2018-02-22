@@ -1,11 +1,17 @@
 <template>
+    <require from="../core/helpers/loaders/spinner-msg.html"></require>
+
     <section class="container">
         <h2>${heading}</h2>
+
+        <spinner-msg message="Loading Organisations" logic.one-way="orgsLoading"></spinner-msg>
+
         <p>pick an org...</p>
         <div class="row ">
             <div repeat.for="actorOrganisation of actorOrganisations" class="col-sm-3">
                 <h5>${actorOrganisation.name}</h5>
                 <p>${actorOrganisation.context}</p>
+                <a class="btn btn-default" route-href="route: actor-organisation-personnel; params.bind: {actorOrgId:actorOrganisation.id}">View Personnel</a>
             </div>
         </div>
     </section>

@@ -1,0 +1,19 @@
+<template>
+    <require from="../core/helpers/loaders/spinner-msg.html"></require>
+
+    <section class="container">
+        <h2>${heading}</h2>
+
+        <spinner-msg message="Loading Personnel" logic.one-way="personnelListLoading"></spinner-msg>
+
+        <p>pick an personnel...</p>
+        <div class="row ">
+            <div repeat.for="person of personnel" class="col-sm-3">
+                <h5>${person.name}</h5>
+                <p>${person.context}</p>
+
+                <a class="btn btn-default" route-href="route: personnel; params.bind: {personnelId:person.id}">View</a>
+            </div>
+        </div>
+    </section>
+</template>

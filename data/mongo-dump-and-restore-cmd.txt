@@ -1,0 +1,3 @@
+mongorestore --nsInclude 'Demonstrator.*' --restoreDbUsersAndRoles --drop --username user --password "pass" /location/of/dump/file
+
+mongodump --db Demonstrator --dumpDbUsersAndRoles --username user --password "pass" --out /location/to/save/file 

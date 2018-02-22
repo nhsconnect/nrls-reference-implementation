@@ -3,7 +3,7 @@
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
-import '../styles/app.scss';
+import '../appstyles/app.scss';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';

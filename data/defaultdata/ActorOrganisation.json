@@ -5,7 +5,7 @@
     "Context": "Some general context....",
     "IsActive": true,
     "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
-    "OrgCode": "AMSR01"
+    "OrgCode": "AMS01"
 }
 {
     "Type": "Provider",
@@ -14,5 +14,5 @@
     "Context": "Some general context....",
     "IsActive": true,
     "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
-    "OrgCode": "MTHT01"
+    "OrgCode": "MHT01"
 }
