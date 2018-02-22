@@ -1,5 +1,5 @@
 <template>
-    <require from="../core/helpers/loaders/spinner-msg.html"></require>
+    <require from="../../core/helpers/loaders/spinner-msg.html"></require>
 
     <section class="container">
         <h2>${heading}</h2>
@@ -11,14 +11,17 @@
         <p>${personnel.context}</p>
 
         <h5>My Systems</h5>
-        <ul class="list">
-            <li repeat.for="system of personnel.systemIds">${system}</li>
-        </ul>
 
         <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
 
         <div if.bind="systems.length < 1 && !systemsLoading">
             <p>No Generic Systems to preview</p>
+        </div>
+
+        <div class="row">
+            <div repeat.for="csystem of consumerSystems" class="col-xs-12">
+                <compose view-model="../../generic-systems/${csystem.fModule}/index" model.bind="csystem"></compose>
+            </div>
         </div>
     </section>
 </template>

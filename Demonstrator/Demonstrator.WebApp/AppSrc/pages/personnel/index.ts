@@ -1,9 +1,9 @@
-import { PersonnelSvc } from '../core/services/PersonnelService';
-import { GenericSystemSvc } from '../core/services/GenericSystemService';
+import { PersonnelSvc } from '../../core/services/PersonnelService';
+import { GenericSystemSvc } from '../../core/services/GenericSystemService';
 import { bindable, inject }     from 'aurelia-framework';
-import { IPersonnel }           from '../core/models/IPersonnel';
-import { IGenericSystem }       from '../core/models/IGenericSystem';
-import { ActorTypes } from '../core/models/enums/ActorTypes';
+import { IPersonnel }           from '../../core/models/IPersonnel';
+import { IGenericSystem }       from '../../core/models/IGenericSystem';
+import { ActorTypes } from '../../core/models/enums/ActorTypes';
 
 @inject(PersonnelSvc, GenericSystemSvc)
 export class Personnel {

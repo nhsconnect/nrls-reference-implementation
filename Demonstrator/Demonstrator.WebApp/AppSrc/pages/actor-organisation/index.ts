@@ -1,6 +1,6 @@
-import { ActorOrganisationSvc } from '../core/services/ActorOrganisationService';
+import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
 import { bindable, inject } from 'aurelia-framework';
-import { IActorOrganisation } from '../core/models/IActorOrganisation';
+import { IActorOrganisation } from '../../core/models/IActorOrganisation';
 
 @inject(ActorOrganisationSvc)
 export class ActorOrganisation {
