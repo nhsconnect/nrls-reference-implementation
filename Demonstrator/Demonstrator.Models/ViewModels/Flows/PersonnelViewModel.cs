@@ -18,8 +18,5 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         public string ActorOrganisationId { get; set; }
 
-        public List<GenericSystemViewModel> Systems { get; set; }
-
-        public ActorOrganisationViewModel ActorOrganisation { get; set; }
     }
 }

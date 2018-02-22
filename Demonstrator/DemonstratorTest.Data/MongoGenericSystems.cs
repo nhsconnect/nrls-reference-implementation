@@ -20,6 +20,7 @@ namespace DemonstratorTest.Data.Helpers
                         FModule = "Ambulance_Service_Call_Handler",
                         Asid = "200000000115",
                         Context = "Some context...",
+                        ActionTypes = new List<string> { "Consumer" },
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00")
                     }

@@ -3,6 +3,7 @@ using Demonstrator.Models.DataModels.Flows;
 using Demonstrator.Models.ViewModels.Flows;
 using DemonstratorTest.Comparer;
 using DemonstratorTest.Data.Helpers;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -28,6 +29,12 @@ namespace DemonstratorTest.ModelFactory
             };
 
             Assert.Equal(expectedViewModel, orgViewModel, Comparers.ModelComparer<ActorOrganisationViewModel>());
+        }
+
+        [Fact]
+        public void ActorOrganisation_Null_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() => ActorOrganisation.ToViewModel(null));
         }
     }
 }

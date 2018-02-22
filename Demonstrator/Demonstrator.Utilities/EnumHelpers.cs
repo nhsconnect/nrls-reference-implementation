@@ -1,7 +1,6 @@
 ﻿using Demonstrator.Utilities.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Demonstrator.Utilities
 {
@@ -16,7 +15,7 @@ namespace Demonstrator.Utilities
 
         public static TEnum GetEnum<TEnum>(string name)
         {
-            if (!IsValidName<TEnum>(name))
+            if (string.IsNullOrWhiteSpace(name) || !IsValidName<TEnum>(name))
             {
                 throw new InvalidEnumException(typeof(TEnum).Name, name);
             }

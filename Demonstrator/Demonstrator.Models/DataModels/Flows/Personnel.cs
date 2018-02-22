@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Demonstrator.Models.ViewModels.Flows;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,26 @@ namespace Demonstrator.Models.DataModels.Flows
         public bool IsActive { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public static PersonnelViewModel ToViewModel(Personnel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Cannot map null Personnel");
+            }
+
+            var viewModel = new PersonnelViewModel
+            {
+                Id = model.Id.ToString(),
+                Context = model.Context,
+                ImageUrl = model.ImageUrl,
+                Name = model.Name,
+                ActorOrganisationId = model.OrganisationId,
+                SystemIds = model.SystemIds,
+                UsesNrls = model.UsesNrls
+            };
+
+            return viewModel;
+        }
     }
 }

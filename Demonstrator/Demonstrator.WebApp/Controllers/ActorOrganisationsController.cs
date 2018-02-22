@@ -1,7 +1,5 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Flows;
-using Demonstrator.Models.ViewModels.Flows;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Demonstrator.WebApp.Controllers
@@ -18,7 +16,7 @@ namespace Demonstrator.WebApp.Controllers
 
         // GET api/ActorOrganisations
         [HttpGet("")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
              var actorOrgs = await _actorOrgService.GetAll();
 
@@ -29,32 +27,14 @@ namespace Demonstrator.WebApp.Controllers
         [HttpGet("{actorOrgId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}/Personnel")]
         public async Task<IActionResult> GetPersonnel(string actorOrgId)
         {
+            var organisation = await _actorOrgService.GetById(actorOrgId);
 
-            //var actorOrgs = await _actorOrgService.GetAll((ActorType)actorType);
-
-            var personnel = new List<PersonnelViewModel>
+            if(organisation == null)
             {
-                new PersonnelViewModel
-                {
-                    Id = "dk49skeif94kf8si4kw8sj8dki",
-                    Name = "999 Call Handler",
-                    ImageUrl = "...",
-                    Context = "...",
-                    SystemIds = new List<string>{"5a82c6cecb969daa58d32cdk9" },
-                    ActorOrganisationId = "5a82c6cecb969daa58d32dkfl9",
-                    UsesNrls = false
-                },
-                new PersonnelViewModel
-                {
-                    Id = "ob0f9fkdi37fjfos9jkwuis84jfjd",
-                    Name = "Paramedic",
-                    ImageUrl = "...",
-                    Context = "...",
-                    SystemIds = new List<string>{"5a82c6cecb969daa58d32cdk9" },
-                    ActorOrganisationId = "5a82c6cecb969daa58d32dkfl9",
-                    UsesNrls = true
-                }
-            };
+                return NotFound($"ActorOrganisation of id {actorOrgId} not found.");
+            }
+
+            var personnel = await _actorOrgService.GetPersonnel(actorOrgId);
 
             return Ok(personnel);
         }

@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
+    <None Remove="AppSrc\core\models\IGenericSystem.ts" />
+    <None Remove="AppSrc\core\models\IPersonnel.ts" />
+    <None Remove="AppSrc\core\services\GenericSystemService.ts" />
+    <None Remove="AppSrc\core\services\PersonnelService.ts" />
     <None Remove="npm-debug.log" />
-    <None Remove="src\core\helpers\EventMessages.ts" />
-    <None Remove="src\core\models\IActorOrganisation.ts" />
-    <None Remove="src\core\services\ActorOrganisationService.ts" />
-    <None Remove="src\core\types\List.ts" />
-    <None Remove="src\core\WebApi.ts" />
+    <None Remove="AppSrc\core\helpers\EventMessages.ts" />
+    <None Remove="AppSrc\core\models\IActorOrganisation.ts" />
+    <None Remove="AppSrc\core\services\ActorOrganisationService.ts" />
+    <None Remove="AppSrc\core\types\List.ts" />
+    <None Remove="AppSrc\core\WebApi.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,11 +40,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="src\core\helpers\EventMessages.ts" />
-    <TypeScriptCompile Include="src\core\models\IActorOrganisation.ts" />
-    <TypeScriptCompile Include="src\core\services\ActorOrganisationService.ts" />
-    <TypeScriptCompile Include="src\core\types\List.ts" />
-    <TypeScriptCompile Include="src\core\WebApi.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\IGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\IPersonnel.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\IActorOrganisation.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\types\List.ts" />
+    <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
   </ItemGroup>
 
 </Project>

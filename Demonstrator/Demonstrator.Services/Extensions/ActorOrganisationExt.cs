@@ -15,5 +15,12 @@ namespace Demonstrator.Services.Extensions
 
             return await Task.Run(() => viewModels);
         }
+
+        public static async Task<ActorOrganisationViewModel> ToViewModelAsync(this ActorOrganisation source)
+        {
+            var viewModel = ActorOrganisation.ToViewModel(source);
+
+            return await Task.Run(() => viewModel);
+        }
     }
 }

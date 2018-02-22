@@ -32,6 +32,8 @@ namespace Demonstrator.WebApp
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IActorOrganisationService, ActorOrganisationService>();
+            services.AddTransient<IPersonnelService, PersonnelService>();
+            services.AddTransient<IGenericSystemService, GenericSystemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

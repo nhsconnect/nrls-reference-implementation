@@ -28,6 +28,11 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public static ActorOrganisationViewModel ToViewModel(ActorOrganisation model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Cannot map null ActorOrganisation");
+            }
+
             var viewModel = new ActorOrganisationViewModel
             {
                 Id = model.Id.ToString(),
