@@ -1,48 +1,38 @@
-﻿using Demonstrator.Models.ViewModels.Patients;
+﻿using Demonstrator.Core.Interfaces.Services.Fhir;
+using Demonstrator.Models.ViewModels.Patients;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Demonstrator.WebApp.Controllers
 {
     [Route("api/[controller]")]
     public class PatientsController : Controller
     {
+        private readonly IPatientServices _patientServices;
+        public PatientsController(IPatientServices patientServices)
+        {
+            _patientServices = patientServices;
+        }
+
         // GET api/Patients/Numbers
         [HttpGet("Numbers")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
 
             //Service to get Patient Numbers
-            var patientNumbers = new List<PatientNumberViewModel>
-            {
-                new PatientNumberViewModel
-                {
-                    Id = "5a8417338317338c8e0809e5",
-                    NhsNumber = 500000000
-                },
-                new PatientNumberViewModel
-                {
-                    Id = "5a8417338317338c8e0809e6",
-                    NhsNumber = 500000001
-                },
-                new PatientNumberViewModel
-                {
-                    Id = "5a8417338317338c8e0809e7",
-                    NhsNumber = 500000002
-                }
-            };
+            var patientNumbers = await _patientServices.GetPatientNumbers();
 
             return Ok(patientNumbers);
         }
 
         // GET api/Patients/1234
-        [HttpGet("{patientId:int}")]
-        public IActionResult Get(int patientId)
+        [HttpGet("{nhsNumber:int}")]
+        public async Task<IActionResult> GetByNhsNumber(int nhsNumber)
         {
-
             //Service to get Patient by logical id
+            var patient = await _patientServices.GetPatient(nhsNumber);
 
-            return Ok($"Get patient with id {patientId}");
+            return Ok(patient);
         }
 
         // POST api/Patients/1234/Records

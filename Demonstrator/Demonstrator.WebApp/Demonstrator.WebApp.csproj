@@ -9,9 +9,13 @@
   <ItemGroup>
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
     <None Remove="AppSrc\core\models\IGenericSystem.ts" />
+    <None Remove="AppSrc\core\models\IPatient.ts" />
+    <None Remove="AppSrc\core\models\IPatientNumber.ts" />
     <None Remove="AppSrc\core\models\IPersonnel.ts" />
     <None Remove="AppSrc\core\services\GenericSystemService.ts" />
+    <None Remove="AppSrc\core\services\PatientService.ts" />
     <None Remove="AppSrc\core\services\PersonnelService.ts" />
+    <None Remove="AppSrc\generic-systems\BaseGenericSystem.ts" />
     <None Remove="npm-debug.log" />
     <None Remove="AppSrc\core\helpers\EventMessages.ts" />
     <None Remove="AppSrc\core\models\IActorOrganisation.ts" />
@@ -34,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Demonstrator.FhirServices\Demonstrator.FhirServices.csproj" />
     <ProjectReference Include="..\Demonstrator.Models\Demonstrator.Models.csproj" />
     <ProjectReference Include="..\Demonstrator.Services\Demonstrator.Services.csproj" />
     <ProjectReference Include="..\Demonstrator.Utilities\Demonstrator.Utilities.csproj" />
@@ -43,13 +48,17 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\IPatient.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\IPatientNumber.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IPersonnel.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IActorOrganisation.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\PatientService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
     <TypeScriptCompile Include="AppSrc\core\types\List.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
   </ItemGroup>
 
 </Project>

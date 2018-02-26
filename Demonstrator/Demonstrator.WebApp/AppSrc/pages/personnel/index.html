@@ -19,7 +19,7 @@
         </div>
 
         <div class="row">
-            <div repeat.for="csystem of consumerSystems" class="col-xs-12">
+            <div repeat.for="csystem of consumerSystems" class="col-xs-12 generic-system-container">
                 <compose view-model="../../generic-systems/${csystem.fModule}/index" model.bind="csystem"></compose>
             </div>
         </div>

@@ -1,10 +1,19 @@
 <template>
+    <require from="../../core/helpers/loaders/spinner-msg.html"></require>
+
     <section class="container">
         <h2>${data.name}</h2>
+
         <div class="row ">
             <div class="col-sm-12">
                 <p>${data.context}</p>
             </div>
         </div>
+
+        <spinner-msg message="Loading Patient numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
+        <ul if.bind="nhsNumbers.length > 0">
+            <li repeat.for="number of nhsNumbers" click.delegate="getPatient(number.nhsNumber)">${number.nhsNumber}</li>
+        </ul>
+
     </section>
 </template>

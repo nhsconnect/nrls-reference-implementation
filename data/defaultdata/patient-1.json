@@ -1,0 +1,72 @@
+{
+  "resourceType": "Patient",
+  "id": "1",
+  "identifier": [
+    {
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1",
+                "code": "01"
+              }
+            ]
+          }
+        }
+      ],
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "000000991"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Chalmers",
+      "given": [
+        "Peter",
+        "James"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "use": "home"
+    },
+    {
+      "system": "phone",
+      "value": "01274000000",
+      "use": "work",
+      "rank": 1
+    },
+    {
+      "system": "phone",
+      "value": "07000000000",
+      "use": "mobile",
+      "rank": 2
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1974-12-25",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "534 Erewhon Street"
+      ],
+      "city": "Bradford",
+      "district": "West Yorkshire",
+      "postalCode": "ab01 2cd",
+      "period": {
+        "start": "1974-12-25"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/1"
+  }
+}
