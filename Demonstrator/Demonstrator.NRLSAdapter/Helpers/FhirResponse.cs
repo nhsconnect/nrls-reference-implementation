@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Demonstrator.FhirServices.Helpers
+namespace Demonstrator.NRLSAdapter.Helpers
 {
     public class FhirResponse
     {
@@ -39,7 +39,8 @@ namespace Demonstrator.FhirServices.Helpers
         private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>
         {
             {typeof(Patient), ResourceType.Patient},
-            {typeof(Organization), ResourceType.Organization}
+            {typeof(Organization), ResourceType.Organization},
+            {typeof(DocumentReference), ResourceType.DocumentReference}
          };
     }
 }

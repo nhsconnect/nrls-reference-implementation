@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Demonstrator.NRLSAdapter": {
+      "commandName": "Project",
+      "commandLineArgs": "-r DocumentReference -m GET -p \"patient|500000000\"",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

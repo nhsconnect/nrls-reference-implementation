@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
-namespace Demonstrator.FhirServices.Helpers
+namespace Demonstrator.NRLSAdapter.Helpers
 {
     public class FhirConnector
     {

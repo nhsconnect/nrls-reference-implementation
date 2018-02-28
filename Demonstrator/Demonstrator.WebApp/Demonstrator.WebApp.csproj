@@ -38,8 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demonstrator.FhirServices\Demonstrator.FhirServices.csproj" />
     <ProjectReference Include="..\Demonstrator.Models\Demonstrator.Models.csproj" />
+    <ProjectReference Include="..\Demonstrator.NRLSAdapter\Demonstrator.NRLSAdapter.csproj" />
     <ProjectReference Include="..\Demonstrator.Services\Demonstrator.Services.csproj" />
     <ProjectReference Include="..\Demonstrator.Utilities\Demonstrator.Utilities.csproj" />
   </ItemGroup>

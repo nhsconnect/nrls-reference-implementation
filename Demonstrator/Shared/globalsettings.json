@@ -1,0 +1,5 @@
+﻿{
+  "NRLSAPI": {
+    "ServerUrl": "http://localhost:8282/hapi-fhir-jpaserver-example/baseDstu3"
+  }
+}

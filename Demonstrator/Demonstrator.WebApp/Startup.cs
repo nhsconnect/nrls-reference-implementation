@@ -2,9 +2,12 @@
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Core.Interfaces.Services.Flows;
 using Demonstrator.Database;
-using Demonstrator.FhirServices.Patients;
+using Demonstrator.NRLSAdapter.Organisations;
+using Demonstrator.NRLSAdapter.Patients;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Services.Service.Flows;
+using Demonstrator.NRLSAdapter.DocumentReferences;
+using Demonstrator.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,14 +15,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Services.Service.Nrls;
 
 namespace Demonstrator.WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup()
         {
-            Configuration = configuration;
+            Configuration = ConfigurationHelper.GetConfigurationRoot();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +33,7 @@ namespace Demonstrator.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddOptions();
             services.Configure<DbSetting>(options =>
             {
                 options.ConnectionString = Configuration.GetSection("NRLSMongoDb:ConnectionString").Value;
@@ -42,6 +48,9 @@ namespace Demonstrator.WebApp
             services.AddTransient<IPersonnelService, PersonnelService>();
             services.AddTransient<IGenericSystemService, GenericSystemService>();
             services.AddTransient<IPatientServices, PatientServices>();
+            services.AddTransient<IOrganisationServices, OrganisationServices>();
+            services.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
+            services.AddTransient<IPointerService, PointerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

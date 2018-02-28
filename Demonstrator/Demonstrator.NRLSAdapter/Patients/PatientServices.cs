@@ -6,12 +6,10 @@ using System.Net;
 using Hl7.Fhir.Model;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
-
 using Demonstrator.Models.ViewModels.Patients;
+using Demonstrator.NRLSAdapter.Helpers;
 
-using Demonstrator.FhirServices.Helpers;
-
-namespace Demonstrator.FhirServices.Patients
+namespace Demonstrator.NRLSAdapter.Patients
 {
     public class PatientServices : IPatientServices
     {
