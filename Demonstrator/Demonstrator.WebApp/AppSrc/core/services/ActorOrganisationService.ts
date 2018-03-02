@@ -11,13 +11,18 @@ export class ActorOrganisationSvc {
     constructor(private api: WebAPI) { }
 
     getAll() {
-        let actorOrgs = this.api.do<Array<IActorOrganisation>>(`${this.baseUrl}`, null, 'get');
-        return actorOrgs;
+        let actorOrgsPromise = this.api.do<Array<IActorOrganisation>>(`${this.baseUrl}`, null, 'get');
+        return actorOrgsPromise;
+    }
+
+    getOne(actorOrgId: string) {
+        let orgsPromise = this.api.do<IActorOrganisation>(`${this.baseUrl}/${actorOrgId}`, null, 'get');
+        return orgsPromise;
     }
 
     getPersonnel(actorOrgId: string) {
-        let personnel = this.api.do<Array<IPersonnel>>(`${this.baseUrl}/${actorOrgId}/Personnel`, null, 'get');
-        return personnel;
+        let personnelPromise = this.api.do<Array<IPersonnel>>(`${this.baseUrl}/${actorOrgId}/Personnel`, null, 'get');
+        return personnelPromise;
     }
 
 }

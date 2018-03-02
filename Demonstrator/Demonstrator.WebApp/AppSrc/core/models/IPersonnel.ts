@@ -1,6 +1,7 @@
 ﻿export interface IPersonnel {
     id: string;
     name: string;
+    personnelType: string;
     imageUrl: string;
     context: string;
     usesNrls: boolean;

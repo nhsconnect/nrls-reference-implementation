@@ -1,0 +1,57 @@
+﻿.nrls-gridtab {
+    width: 286px;
+    height: 220px;
+    overflow: hidden;
+    background-color: $nhsPaleGrey;
+    border: 1px solid $nhsPaleGrey;
+    display: inline-table;
+    border-radius: 14px;
+    margin: 0 $spacing-large $spacing-large $spacing-large;
+    padding: 0;
+
+    a {
+        &.gridtab-link {
+            display: block;
+            margin: 0;
+            padding: $spacing-normal;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+
+            .gridtab-heading {
+                display: block;
+                width: 100%;
+                height: 45px;
+                font-size: 1.2em;
+                font-weight: bold;
+                line-height: 1.2em;
+                margin-bottom: $spacing-normal;
+            }
+
+            .gridtab-img {
+                display: block;
+                width: 100%;
+                height: 145px;
+            }
+
+            &:link,
+            &:visited,
+            &:active {
+                color: $nhsDarkGrey;
+                text-decoration: none;
+                outline: none;
+            }
+
+            &:hover {
+                background-color: $nhsPaleGrey95;
+                color: $nhsDarkGrey80;
+                text-decoration: none;
+                outline: none;
+
+                img {
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+}

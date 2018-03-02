@@ -17,5 +17,6 @@ namespace Demonstrator.Models.ViewModels.Flows
         public string Context { get; set; }
 
         public string OrgCode { get; set; }
+
     }
 }

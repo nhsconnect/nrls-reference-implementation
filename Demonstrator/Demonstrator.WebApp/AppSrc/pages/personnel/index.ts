@@ -1,24 +1,27 @@
 import { PersonnelSvc } from '../../core/services/PersonnelService';
+import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
 import { GenericSystemSvc } from '../../core/services/GenericSystemService';
 import { bindable, inject }     from 'aurelia-framework';
 import { IPersonnel }           from '../../core/models/IPersonnel';
 import { IGenericSystem }       from '../../core/models/IGenericSystem';
 import { ActorTypes } from '../../core/models/enums/ActorTypes';
+import { IActorOrganisation } from '../../core/models/IActorOrganisation';
 
-@inject(PersonnelSvc, GenericSystemSvc)
+@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc)
 export class Personnel {
     heading: string = 'Personnel';
     personnel: IPersonnel;
+    organisation: IActorOrganisation;
     providerSystems: Array<IGenericSystem> = [];
     consumerSystems: Array<IGenericSystem> = [];
     personnelId: string;
     systemsLoading: boolean = false;
     personnelLoading: boolean = false;
 
-    constructor(private personnelSvc: PersonnelSvc, private genericSystemSvc: GenericSystemSvc) {    }
+    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {    }
 
     activate(params) {
-        this.personnelId = params.personnelId;
+        this.personnelId = params.routeParamId;
     }
 
     created() {
@@ -26,14 +29,24 @@ export class Personnel {
         this.personnelSvc.get(this.personnelId).then(personnel => {
 
             this.personnel = personnel;
+            this.heading = this.personnel.name;
             this.personnelLoading = false;
 
-            this.systemsLoading = true;
-            this.genericSystemSvc.getList(this.personnel.systemIds).then(systems => {
-                this.setSystems(systems);
-                this.systemsLoading = false;
-            });
+            this.getOrganisation(this.personnel.actorOrganisationId);
+            this.getSystems();
         });      
+    }
+
+    private getOrganisation(orgId: string) {
+        this.actorOrganisationSvc.getOne(orgId).then(organisation => this.organisation = organisation);
+    }
+
+    private getSystems() {
+        this.systemsLoading = true;
+        this.genericSystemSvc.getList(this.personnel.systemIds).then(systems => {
+            this.setSystems(systems);
+            this.systemsLoading = false;
+        });
     }
 
     private setSystems(systems: Array<IGenericSystem>) : void {

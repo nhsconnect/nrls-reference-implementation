@@ -1,5 +1,5 @@
 export class Developers {
-  heading: string = 'Developers Area';
+  heading: string = 'Developers';
 
 }
 

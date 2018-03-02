@@ -1,0 +1,9 @@
+﻿<template bindable="route, icon, items">
+    <div repeat.for="item of items" class="nrls-gridtab">
+        <a class="gridtab-link" route-href="route.bind: route; params.bind: { routeParamId: item.id }">
+            <span class="gridtab-heading">${item.name}<span if.bind="item.personnelType != null" class="n-text-small"><br />(${item.personnelType})</span></span>
+            <span if.bind="!icon" class="gridtab-img"><img src="/images/gridtabs/${item.imageUrl}" alt="{item.name}" /></span>
+            <span if.bind="icon" class="gridtab-img"><img src="/images/gridtabs/${icon}" alt="{item.name}" /></span>
+        </a>
+    </div>
+</template>

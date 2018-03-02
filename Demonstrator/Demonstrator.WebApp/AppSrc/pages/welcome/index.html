@@ -1,15 +1,52 @@
 <template>
+    <require from="../../core/helpers/loaders/spinner-msg.html"></require>
+    <require from="../../core/helpers/gridtabs/gridtabs.html"></require>
+
     <section class="container">
-        <h2>${heading}</h2>
-        <div class="row ">
+
+        <div class="text-center">
+            <h1 class="h1 margin-bottom-xlrg">${heading}</h1>
+            <div class="row margin-bottom-xlrg">
+                <div class="col-md-8 col-md-offset-2">
+                    <p>
+                        The National Record Locator Service (NRLS) will act as a national index to help find what records exist for patients across local and national care record solutions. As a user of the NRLS you may find yourself as either a Provider, Consumer or occasionally both.
+                    </p>
+                    <p>
+                        Providers and Consumers are generally Health &amp; Social Care Organisations. Patient information which is fed in to the system by the Provider can be read by Consumers in order to help administer a higher level of patient care through accessibility of correct and timely patient information
+                    </p>
+                    <p>
+                        This interactive guide has been set up to help visualise what the NRLS is, what the index information within the NRLS looks like and how the NRLS could feature within your day to day work routine.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h4>How will the NRLS will help you?</h4>
+                    <p>
+                        <img src="/images/nhs-service-map.png" class="img-responsive" width="708" height="461" alt="NHS Service Map" />
+                    </p>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-default btn-nrls-hint" scrolltop.trigger="hideHint($event) & debounce:250" click.trigger="scrollHint()"><i class="fa fa-chevron-down fa-2x nrls-scroll-hint"></i></button>
+        </div>
+
+        <div class="row text-center margin-bottom-xlrg">
             <div class="col-sm-12">
-                <p>Welcome to the Demonstrator</p>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a route-href="route: actor-organisation;">View Organisations</a>
-                    </li>
-                </ul>
+                <h2 id="chooseYourOrganisation" class="h1 margin-top-lrg margin-bottom-xlrg">Choosing your Organisation</h2>
+                <p>The NRLS will be used by two types of users. Consumers who will view the information that the NRLS index will point to and Providers, those who create the records for which the NRLS index points to. There may be the need for a Provider to view or edit the information they have index, and therefore be a Consumer which will also be possible. Examples of Consumers are any personnel who may want to view the information, such as those working within the Ambulance services, whilst Providers are creators of the health records (e.g. care plans), such as those working for a Mental Health Trust.</p>
+                <p><strong>Please select one of the following organisations to start this demonstration.</strong></p>
             </div>
         </div>
+
+        <spinner-msg message="Loading Organisations" logic.one-way="orgsLoading"></spinner-msg>
+
+        <div class="row text-center">
+            <div class="col-md-12">
+                <gridtabs route="actor-organisation-personnel" items.one-way="actorOrganisations"></gridtabs>
+            </div>
+        </div>
+
     </section>
 </template>
