@@ -2,9 +2,6 @@ data/db
 data/log
 data/mongo-setup-and-commands.txt.local
 
-Demonstrator/Demonstrator.DataAccessLayer
-Demonstrator/Demonstrator.DataMigrator
-
 Demonstrator/.vs
 Demonstrator/*/obj
 Demonstrator/*/bin
