@@ -41,6 +41,8 @@ const coreBundles = {
   bootstrap: [
     'aurelia-bootstrapper-webpack',
     'aurelia-polyfills',
+    'aurelia-pal',
+    'aurelia-pal-browser',
     'bluebird'
   ],
   // these will be included in the 'aurelia' bundle (except for the above bootstrap packages)
@@ -57,6 +59,8 @@ const coreBundles = {
     'aurelia-logging',
     'aurelia-logging-console',
     'aurelia-metadata',
+    'aurelia-pal',
+    'aurelia-pal-browser',
     'aurelia-path',
     'aurelia-polyfills',
     'aurelia-route-recognizer',

@@ -1,17 +1,29 @@
 import { ScrollHints } from "../../core/helpers/ScrollHints";
 import { IActorOrganisation } from "../../core/models/IActorOrganisation";
 import { ActorOrganisationSvc } from "../../core/services/ActorOrganisationService";
-import { inject } from "aurelia-framework";
+import { bindable, inject } from "aurelia-framework";
+import { PLATFORM } from 'aurelia-pal';
 
 @inject(ActorOrganisationSvc)
 export class Welcome {
     heading: string = 'Welcome to the NRLS Interactive Guide';
     actorOrganisations: Array<IActorOrganisation>;
     orgsLoading: boolean = false;
-    scrollHints: ScrollHints;
+    scrollHints: any;
+    hideHint: any;
 
     constructor(private actorOrgSvc: ActorOrganisationSvc) {
+        
+        this.hideHint = () => this._hideHint();
+    }
+
+    attached() {
         this.scrollHints = new ScrollHints();
+        PLATFORM.addEventListener('scroll', this.hideHint);
+    }
+
+    detached() {
+        PLATFORM.removeEventListener('scroll', this.hideHint);
     }
 
     created() {
@@ -22,13 +34,13 @@ export class Welcome {
         });
     }
 
-    scrollHint() {
+    showHint() {
         this.scrollHints.scroll("#chooseYourOrganisation");
     }
 
-    hideHint(e: JQueryEventObject) {
+    _hideHint() {
 
-        this.scrollHints.hide(e.currentTarget, "#chooseYourOrganisation");
+        this.scrollHints.hide("#chooseYourOrganisation");
     }
 
 }

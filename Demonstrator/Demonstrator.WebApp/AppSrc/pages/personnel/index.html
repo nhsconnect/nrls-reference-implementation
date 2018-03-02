@@ -9,7 +9,7 @@
             <div class="col-md-7">
                 <spinner-msg message="Loading Personnel" logic.one-way="personnelLoading"></spinner-msg>
 
-                <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="personnel.context"></div>
+                <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="personnel.context | sanitizeHTML"></div>
             </div>
             <div class="col-md-4 col-md-offset-1">
                 <img src="/images/personnel/${personnel.imageUrl}" alt="${personnel.name}" class="pull-right nrls-border-img img-responsive" />

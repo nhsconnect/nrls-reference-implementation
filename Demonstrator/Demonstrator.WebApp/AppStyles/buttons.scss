@@ -12,14 +12,14 @@
 .nrls-demonstrator {
     .btn {
         &.btn-default {
-            background-color: $nhsPaleGrey;
-            border-color: $nhsPaleGrey;
-            color: $black;
+            background-color: $nhsDarkGrey;
+            border-color: $nhsDarkGrey;
+            color: $nhsPaleGrey;
 
             &:hover {
-                background-color: $nhsDarkGrey;
-                border-color: $nhsDarkGrey;
-                color: $nhsPaleGrey;
+                background-color: $nhsPaleGrey;
+                border-color: $nhsPaleGrey;
+                color: $black;
             }
         }
     }

@@ -7,7 +7,7 @@
 
         <spinner-msg message="Loading Organisation" logic.one-way="organisationLoading"></spinner-msg>
 
-        <div class="nrls-generated-content margin-bottom-lrg" innerhtml.bind="organisation.context"></div>
+        <div class="nrls-generated-content margin-bottom-lrg" innerhtml.bind="organisation.context | sanitizeHTML"></div>
 
         <p class="margin-bottom-lrg"><strong>Select from the options below to see how the NRLS could affect this personnel type.</strong></p>
         <spinner-msg message="Loading Personnel" logic.one-way="personnelListLoading"></spinner-msg>
