@@ -21,8 +21,14 @@ import * as commonChunksOptimize from '@easy-webpack/config-common-chunks-simple
 import * as copyFiles from '@easy-webpack/config-copy-files';
 import * as uglify from '@easy-webpack/config-uglify';
 import * as generateCoverage from '@easy-webpack/config-test-coverage-istanbul';
+import * as copyWebpackPlugin from 'copy-webpack-plugin';
 
 const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || (process.env.NODE_ENV = 'development');
+
+/** ###################    LOOK HERE 
+ * 
+ *  https://github.com/aurelia/skeleton-navigation/issues/688
+ */
 
 // basic configuration:
 const title = 'NRLS Demonstrator';
@@ -75,7 +81,10 @@ let config = generateConfig(
     },
     output: {
       path: outDir,
-    }
+        },
+        plugins: [
+            new copyWebpackPlugin([{ from: 'images', to: 'images' }])
+        ]
     
   },
 
@@ -95,7 +104,7 @@ let config = generateConfig(
   typescript(ENV !== 'test' ? {} : { options: { doTypeCheck: false, sourceMap: false, inlineSourceMap: true, inlineSources: true } }),
   html(),
   sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false}),
-   css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
+  css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
   fontAndImages(),
   globalBluebird(),
   globalJquery(),

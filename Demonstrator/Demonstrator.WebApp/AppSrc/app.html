@@ -1,9 +1,12 @@
 <template>
-  <require from="./nav-bar.html"></require>
-  
-  <nav-bar router.bind="router"></nav-bar>
+    <require from="./core/includes/nav-bar.html"></require>
+    <require from="./core/includes/footer-bar.html"></require>
 
-  <div class="page-host">
-    <router-view></router-view>
-  </div>
+    <nav-bar router.bind="router"></nav-bar>
+
+    <div class="page-host text-left">
+        <router-view></router-view>
+    </div>
+
+    <footer-bar></footer-bar>
 </template>

@@ -8,6 +8,8 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         public string Name { get; set; }
 
+        public string PersonnelType { get; set; }
+
         public string ImageUrl { get; set; }
 
         public string Context { get; set; }

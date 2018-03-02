@@ -17,19 +17,18 @@ export class App {
 
   configureRouter(config: RouterConfiguration, router: Router) {
 
-      config.title = 'Demonstrator';
+      config.title = 'NRLS Interactive Guide';
 
       var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
 
         config.mapUnknownRoutes(notFoundRoute);
 
         config.map([
-            { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Welcome' },
+            { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
             { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
-            { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers Area' },
-            { route: 'actor-organisation', name: 'actor-organisation', moduleId: './pages/actor-organisation/index', nav: false, title: 'Actor Organisation' },
-            { route: 'actor-organisation/:actorOrgId', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/personnel', nav: false, title: 'Actor Organisation Personnel' },
-            { route: 'personnel/:personnelId', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Personnel' },
+            { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
+            { route: 'actor-organisation/:routeParamId', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Actor Organisation Personnel' },
+            { route: 'personnel/:routeParamId', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Personnel' },
 
             notFoundRoute
         ]);

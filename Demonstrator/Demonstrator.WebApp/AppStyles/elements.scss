@@ -1,0 +1,27 @@
+﻿.nrls-border-img {
+    background-color: $nhsPaleGrey;
+    padding: $spacing-normal;
+    border-radius: 14px;
+    max-width: 350px;
+}
+
+.nrls-benefits-list {
+    list-style-position: inside;
+    margin-left: $spacing-small;
+
+    li {
+        position: relative;
+        top: 0;
+        left: 0;
+        padding-left: $spacing-xlarge;
+        line-height: 1.4em;
+        margin-bottom: 20px;
+
+        i {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.7em;
+        }
+    }
+}

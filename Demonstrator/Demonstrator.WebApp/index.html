@@ -1,16 +1,17 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title><%- htmlWebpackPlugin.options.metadata.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<%- htmlWebpackPlugin.options.metadata.baseUrl %>">
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
     <!-- imported CSS are concatenated and added automatically -->
-  </head>
-  <body aurelia-app="main">
-    <div class="splash">
-      <div class="message"><%- htmlWebpackPlugin.options.metadata.title %></div>
-      <i class="fa fa-circle-o-notch fa-pulse fa-2x"></i>
+</head>
+  <body aurelia-app="main" class="nrls-demonstrator text-center">
+    <div class="center-block text-muted" style="margin-top:50px;">
+      <p><%- htmlWebpackPlugin.options.metadata.title %> Loading...</p>
+      <p><i class="fa fa-circle-o-notch fa-pulse fa-3x"></i></p>
     </div>
     <% if (htmlWebpackPlugin.options.metadata.ENV === 'development') { %>
     <!-- Webpack Dev Server reload -->

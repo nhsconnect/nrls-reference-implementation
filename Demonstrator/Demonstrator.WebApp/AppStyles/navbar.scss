@@ -1,0 +1,69 @@
+﻿
+.navbar {
+    font-size: 1em;
+}
+
+.nrls-demonstrator {
+    .nrls-navbar {
+        background-color: $white;
+        border: none;
+        margin-bottom: 0;
+        height: 95px;
+        overflow: hidden;
+
+        &:before {
+            position: fixed;
+            border-bottom: 5px solid $nhsPaleGrey;
+            top: 95px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: none;
+        }
+
+        .nrls-brand {
+            padding: 0;
+        }
+
+        .nrls-nav-text {
+            margin: 61px 0 0 0px;
+            height: 23px;
+            line-height: 23px;
+            color: $blue;
+            font-weight: bold;
+        }
+
+        .nrls-navbar-nav {
+            height: 40px;
+            margin-top: 54px;
+
+            a {
+                padding: 0 15px;
+                height: inherit;
+                line-height: 2.2em;
+                font-size: 0.9em;
+                font-weight: bold;
+
+                &:hover {
+                    color: $black;
+                    border-bottom: 3px solid $blue;
+                }
+            }
+
+            .active {
+                a {
+                    background-color: $white;
+                    color: $black;
+                }
+            }
+
+            li {
+                margin-left: $spacing-small;
+
+                a {
+                    color: $nhsMidGey;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+$nhsBlue: #005EB8;
+$nhsDarkBlue: #003087;
+$nhsBrightBlue: #0072CE;
+
+$nhsBlue80: lighten($nhsBlue, 20%);
+$nhsBlue60: lighten($nhsBlue, 40%);
+
+$nhsBlack: #231f20;
+$nhsDarkGrey: #425563;
+$nhsMidGey: #768692;
+$nhsPaleGrey: #E8EDEE;
+
+$nhsDarkGrey80: lighten($nhsDarkGrey, 20%);
+$nhsPaleGrey95: lighten($nhsPaleGrey, 5%);
+
+$nhsLightGreen: #78BE20;
+
+$black: $nhsBlack; 
+$white: #FFFFFF;
+$blue: $nhsBlue;
+$grey: $nhsMidGey;
+$green: $nhsLightGreen;

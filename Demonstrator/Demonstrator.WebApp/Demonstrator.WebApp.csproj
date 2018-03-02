@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
     <None Remove="AppSrc\core\models\IGenericSystem.ts" />
     <None Remove="AppSrc\core\models\IPatient.ts" />
@@ -46,6 +47,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IGenericSystem.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IPatient.ts" />

@@ -13,6 +13,8 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public string Name { get; set; }
 
+        public string PersonnelType { get; set; }
+
         public string ImageUrl { get; set; }
 
         public string Context { get; set; }
@@ -40,6 +42,7 @@ namespace Demonstrator.Models.DataModels.Flows
                 Context = model.Context,
                 ImageUrl = model.ImageUrl,
                 Name = model.Name,
+                PersonnelType = model.PersonnelType,
                 ActorOrganisationId = model.OrganisationId,
                 SystemIds = model.SystemIds,
                 UsesNrls = model.UsesNrls

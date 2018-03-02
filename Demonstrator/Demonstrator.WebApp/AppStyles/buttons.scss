@@ -1,0 +1,26 @@
+﻿.btn-nrls-hint {
+    position: fixed;
+    bottom: $spacing-xxlarge;
+    left: 50%;
+    width: 54px;
+    margin-left: -27px;
+    z-index: 1040;
+    display:none;
+}
+
+
+.nrls-demonstrator {
+    .btn {
+        &.btn-default {
+            background-color: $nhsPaleGrey;
+            border-color: $nhsPaleGrey;
+            color: $black;
+
+            &:hover {
+                background-color: $nhsDarkGrey;
+                border-color: $nhsDarkGrey;
+                color: $nhsPaleGrey;
+            }
+        }
+    }
+}

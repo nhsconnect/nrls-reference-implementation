@@ -1,0 +1,22 @@
+﻿$spacing-smaller: 5px;
+$spacing-small: 10px;
+$spacing-normal: 15px;
+$spacing-large: 30px;
+$spacing-xlarge: 45px;
+$spacing-xxlarge: 60px;
+
+.margin-top-lrg {
+    margin-top: $spacing-xlarge;
+}
+
+.margin-bottom-xlrg {
+    margin-bottom: $spacing-xlarge;
+}
+
+.margin-bottom-lrg {
+    margin-bottom: $spacing-large;
+}
+
+.margin-bottom-nml {
+    margin-bottom: $spacing-normal;
+}
