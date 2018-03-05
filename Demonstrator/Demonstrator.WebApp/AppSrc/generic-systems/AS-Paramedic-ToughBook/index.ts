@@ -1,6 +1,6 @@
 import { BaseGenericSystem } from "../BaseGenericSystem";
 
-export class GsASCallHandler extends BaseGenericSystem {
+export class GsASParamedicToughBook extends BaseGenericSystem {
     data: any = {};
 
     activate(model) {

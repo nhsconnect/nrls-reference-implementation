@@ -11,6 +11,10 @@ export class BaseGenericSystem {
 
     created() {
 
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+
         this.nhsNumbersLoading = true;
         this.patientSvc.getPatientNumbers().then(numbers => {
             this.nhsNumbers = numbers;

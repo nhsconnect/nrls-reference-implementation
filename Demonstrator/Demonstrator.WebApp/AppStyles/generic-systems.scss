@@ -1,3 +1,193 @@
 ﻿.generic-system-container {
-    border: 1px solid blue;
+    .gs-instructions {
+        font-weight: bold;
+    }
+
+    .tooltip {
+        .tooltip-arrow {
+            border-top-color: $nhsWarmYellow;
+        }
+
+        .tooltip-inner {
+            background-color: $nhsWarmYellow;
+            color:$black;
+            font-size:1.2em;
+            padding: $spacing-smaller $spacing-small;
+        }
+    }
+}
+
+.generic-system-wrapper {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+    border: 1px solid #768692;
+    background-color: $white;
+    padding: 0;
+    margin: $spacing-normal 0;
+
+    .gs-header {
+        display: block;
+        width: 100%;
+        height: 60px;
+        background-color: $white;
+        padding: 0 $spacing-normal;
+
+        .gs-top-menu {
+            display: inline-block;
+            width: 60%;
+            height: 60px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            vertical-align: top;
+
+            li {
+                display: inline-block;
+                margin: 0 $spacing-small;
+                padding: 0;
+                color: $nhsMidGey;
+                height: 60px;
+                line-height: 60px;
+
+                a {
+                    color: $nhsMidGey;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .gs-title {
+            display: inline-block;
+            width: 39%;
+            height: 60px;
+            line-height: 60px;
+            text-align: right;
+            color: $nhsMidGey;
+            font-size: 1.2em;
+            margin: 0;
+        }
+    }
+
+    .gs-patient-banner {
+        display: block;
+        width: 100%;
+        height: 60px;
+        background-color: $nhsMidGey;
+        color: $white;
+        line-height: 60px;
+        padding: 0 $spacing-large;
+        font-size: 0.8em;
+
+        span {
+            display: inline-block;
+            margin-right: $spacing-large;
+        }
+    }
+
+    .gs-sub-header {
+        display: block;
+        width: 100%;
+        height: 60px;
+        background-color: $nhsPaleGrey;
+        line-height: 60px;
+        padding: 0 $spacing-large;
+        font-size: 0.8em;
+
+        .gs-records-menu {
+            display: inline-block;
+            width: 100%;
+            height: 60px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            vertical-align: top;
+
+            li {
+                display: inline-block;
+                margin: 20px $spacing-small 0 0;
+                padding: $spacing-small;
+                color: $nhsDarkGrey;
+                height: 40px;
+                line-height: 60px;
+
+                a {
+                    color: $nhsMidGey;
+                    text-decoration: none;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    line-height: 25px;
+                    padding: 0 $spacing-small;
+                }
+
+                &.active,
+                &:hover {
+                    background-color: $white;
+
+                    a {
+                        color: $nhsDarkGrey;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .gs-content {
+        background-color: $white;
+        padding: $spacing-xlarge;
+    }
+
+    .gs-result-not-shown-banner {
+        background-color: $nhsPaleGrey;
+        border: 2px solid #ddd;
+        color: $black;
+        font-weight: bold;
+        padding: $spacing-normal;
+
+        .icon {
+            vertical-align: sub;
+        }
+    }
+
+    .table {
+        &.nrls-pointer-results {
+            font-size: 0.9em;
+            border-color: $nhsMidGey !important;
+
+            caption {
+                background-color: $nhsPaleGrey;
+                border: 1px solid #ddd;
+                color: $black;
+                font-weight: bold;
+                padding: $spacing-normal $spacing-small;
+                border-bottom: none;
+
+                .icon {
+                    vertical-align: sub;
+                }
+            }
+
+            th {
+                color: $black;
+            }
+
+            td {
+                vertical-align: middle;
+                font-size: 0.9em;
+
+                &.action {
+                    text-align: center;
+                }
+            }
+
+            .fc-readonly {
+                background-color: transparent;
+                width: 49%;
+                display: inline-block;
+            }
+        }
+    }
 }

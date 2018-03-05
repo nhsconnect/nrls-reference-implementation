@@ -17,7 +17,7 @@
         </div>
 
 
-        <h5>My Systems</h5>
+        <h4 class="margin-bottom-lrg">Example System for a ${personnel.name}</h4>
 
         <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
 
@@ -25,10 +25,8 @@
             <p>No Generic Systems to preview</p>
         </div>
 
-        <div class="row">
-            <div repeat.for="csystem of consumerSystems" class="col-xs-12 generic-system-container">
-                <compose view-model="../../generic-systems/${csystem.fModule}/index" model.bind="csystem"></compose>
-            </div>
+        <div repeat.for="csystem of consumerSystems" class="generic-system-container">
+            <compose view-model="../../generic-systems/${csystem.fModule}/index" model.bind="csystem"></compose>
         </div>
 
         <p if.bind="organisation" class="margin-top-lrg"><a class="pull-right btn btn-default" route-href="route: actor-organisation-personnel; params.bind: { routeParamId: organisation.id }"><i class="fa fa-chevron-left"></i> Back</a></p>

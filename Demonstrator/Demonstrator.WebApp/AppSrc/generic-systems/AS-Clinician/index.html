@@ -1,0 +1,74 @@
+<template>
+
+    <section class="gs-container">
+
+        <p class="gs-instructions">
+            Below is an example of a potential screen shot for a Clinician when using NRLS with the system having returned multiple records for a patient.<br />
+            Try clicking <a href="javascript:void(0)" class="btn btn-primary">View</a> on the example to see what how care plan information may be returned to the user through Direct and Indirect return.
+        </p>
+
+        <div class="generic-system-wrapper gs-as-call-handler">
+            <div class="gs-header">
+                <ul class="gs-top-menu">
+                    <li><a href="javascript:void(0)">Find a Patient</a></li>
+                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
+                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Exit</a></li>
+                </ul>
+                <h3 class="gs-title">EPR System</h3>
+            </div>
+
+            <div class="gs-patient-banner">
+                <span class="item"><strong>John SMITH</strong></span>
+                <span class="item"><em>DoB</em> 01 Aug 1976</span>
+                <span class="item">Male</span>
+                <span class="item"><em>NHS</em> 111 999 0000</span>
+                <span class="item"><em>GP Practice</em> AB0011</span>
+                <span class="item"><em>Address</em> 1 KINGS ROAD, LEEDS, LS11 1AB, United Kingdom</span>
+            </div>
+
+            <div class="gs-sub-header">
+                <ul class="gs-records-menu">
+                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
+                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Patient Details</a></li>
+                    <li class="active"><a href="javascript:void(0)">NRLS</a></li>
+                </ul>
+            </div>
+
+            <div class="gs-content">
+                <table class="table table-striped table-bordered nrls-pointer-results">
+                    <caption>NRLS Pointer Results</caption>
+                    <thead>
+                        <tr>
+                            <th>Type of Record</th>
+                            <th>Record Owner</th>
+                            <th>Creation Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Mental Health Care Plan</td>
+                            <td>Bolton MH Trust</td>
+                            <td>10/12/2016</td>
+                            <td class="action"><button type="button" class="btn btn-primary">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Mental Health Care Plan</td>
+                            <td>South Leeds MH Trust</td>
+                            <td>--</td>
+                            <td class="action"><button type="button" class="btn btn-primary">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>End of Life Care Plan</td>
+                            <td>South London and Maudsey NHS Trust</td>
+                            <td>21/04/2008</td>
+                            <td class="action"><button type="button" class="btn btn-primary">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</template>
