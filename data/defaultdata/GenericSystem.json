@@ -1,36 +1,65 @@
 {
-    "Name" :"Call Handler",
-    "FModule": "AS-Call-Handler",
-    "Asid": "200000000115",
-    "Context": "...",
-    "ActionTypes": ["Consumer"],
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
-}
-{
-    "Name" :"Clinician",
+    "_id": {
+        "$oid": "5a8daa86952e372cbdb317fe"
+    },
+    "Name": "Clinician",
     "FModule": "AS-Clinician",
     "Asid": "200000000116",
     "Context": "...",
-    "ActionTypes": ["Consumer"],
+    "ActionTypes": [
+        "Consumer"
+    ],
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    }
 }
 {
-    "Name" :"Paramedic ToughBook",
+    "_id": {
+        "$oid": "5a8daa86952e372cbdb317ff"
+    },
+    "Name": "Paramedic ToughBook",
     "FModule": "AS-Paramedic-ToughBook",
     "Asid": "200000000117",
     "Context": "...",
-    "ActionTypes": ["Consumer"],
+    "ActionTypes": [
+        "Consumer"
+    ],
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    }
 }
 {
-    "Name" :"Care Co-ordinator EPR",
+    "_id": {
+        "$oid": "5a8daa86952e372cbdb31800"
+    },
+    "Name": "Call Handler",
+    "FModule": "AS-Call-Handler",
+    "Asid": "200000000115",
+    "Context": "...",
+    "ActionTypes": [
+        "Consumer"
+    ],
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    }
+}
+{
+    "_id": {
+        "$oid": "5a8daa86952e372cbdb31801"
+    },
+    "Name": "Care Co-ordinator EPR",
     "FModule": "MHT-Care-Coordinator-EPR",
     "Asid": "200000000118",
     "Context": "...",
-    "ActionTypes": ["Consumer","Provider"],
+    "ActionTypes": [
+        "Consumer",
+        "Provider"
+    ],
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"}
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    }
 }

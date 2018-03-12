@@ -65,7 +65,7 @@
     "@easy-webpack/config-uglify": "^2.2.3",
     "@easy-webpack/core": "^2.0.0",
     "@types/bluebird": "^3.0.35",
-    "@types/webpack": "^2.0.0",
+    "@types/webpack": "^4.1.0",
     "@types/jquery": "^3.3.0",
     "@types/bootstrap": "^4.0.0",
     "concurrently": "^3.1.0",

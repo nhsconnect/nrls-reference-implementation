@@ -12,7 +12,7 @@ interface ApiResponse {
 @inject(EventAggregator)
 export class WebAPI {
 
-    constructor(private ea: EventAggregator) { }
+    constructor(private ea: EventAggregator) {}
 
     httpClient = new HttpClient();
     apiResponse: ApiResponse;
@@ -34,7 +34,8 @@ export class WebAPI {
         this.httpClient.configure(config => {
             config
                 .useStandardConfiguration()
-                .withBaseUrl('http://localhost:55448/api/')
+                //Running on same host:port as API so base url can be left as is
+                .withBaseUrl('/api/') 
                 .withDefaults({
                     credentials: 'same-origin',
                     headers: this.getHeaders()

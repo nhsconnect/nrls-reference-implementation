@@ -24,7 +24,7 @@ db.createUser({user:"DEMO_USERNAME",pwd:"DEMO_PASSWORD", roles: [{role: "readWri
 
 
 ##START MONGODB EXAMPLE
-# cd C:\Program Files\MongoDB\Server\3.6\bin & mongod --config C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\mongod.conf
+# cd C:\Program Files\MongoDB\Server\3.6\bin & mongod --config PATH_TO_CONF\mongod.conf
 
 
 ### CLEAR DOWN AND IMPORT DATA ###
@@ -43,8 +43,14 @@ db.ActorOrganisation.drop()
 db.GenericSystem.drop()
 
 ##how to import new items (you can also restore previous dumps)
-mongoimport -c ActorOrganisation -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\ActorOrganisation.json
-mongoimport -c GenericSystem -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\GenericSystem.json
-mongoimport -c Personnel -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file C:\Users\wilkinsm\Documents\Sites\nrls-reference-implementation\data\default\Personnel.json
+mongoimport -c ActorOrganisation -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file PATH_TO_DEFAULT_DATA\ActorOrganisation.json
+mongoimport -c GenericSystem -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file PATH_TO_DEFAULT_DATA\GenericSystem.json
+mongoimport -c Personnel -d Demonstrator -u DEMO_USERNAME -p DEMO_PASSWORD --mode insert --file PATH_TO_DEFAULT_DATA\Personnel.json
+
 
 ##later once all data is confirmed a backup will be taken and a nightly restore job will be setup
+
+mongoexport --db Demonstrator --collection ActorOrganisation -u DEMO_USERNAME -p DEMO_PASSWORD --out PATH_TO_DEFAULT_DATA\_ActorOrganisation.json
+mongoexport --db Demonstrator --collection Personnel -u DEMO_USERNAME -p DEMO_PASSWORD --out PATH_TO_DEFAULT_DATA\_Personnel.json
+mongoexport --db Demonstrator --collection GenericSystem -u DEMO_USERNAME -p DEMO_PASSWORD --out PATH_TO_DEFAULT_DATA\_GenericSystem.json
+

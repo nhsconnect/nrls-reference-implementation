@@ -6,10 +6,11 @@ Demonstrator/.vs
 Demonstrator/*/obj
 Demonstrator/*/bin
 Demonstrator/Demonstrator.WebApp/appsettings.json
-
+Demonstrator/Demonstrator.WebApp/Shared
 
 /**/node_modules
 /**/wwwroot/*
 /**/test/coverage
 /**/*.log
 /**/*.pubxml
+/**/*.user

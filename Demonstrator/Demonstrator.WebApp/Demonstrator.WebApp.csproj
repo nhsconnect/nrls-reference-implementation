@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
+    <None Remove="AppSrc\core\models\core\IAppConfig.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
     <None Remove="AppSrc\core\models\IGenericSystem.ts" />
     <None Remove="AppSrc\core\models\IPatient.ts" />
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Shared\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -48,6 +50,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\core\IAppConfig.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IGenericSystem.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\IPatient.ts" />
@@ -62,5 +65,9 @@
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(ProjectDir)..\Shared\copyconfig $(ProjectDir) /Y /I" />
+  </Target>
 
 </Project>

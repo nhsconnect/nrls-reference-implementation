@@ -1,0 +1,19 @@
+version: '2'
+services:
+  nrlsdemoapp:
+    container_name: nrlsdemoapp
+    image: nrlsdemo
+    ports:
+      - "8686:5000"
+    networks:
+      - nrlsdemo-network
+
+  nrlsmongodb:
+    container_name: nrlsmongodb
+    image: nrlsmongodb
+    networks:
+      - nrlsdemo-network
+
+networks:
+  nrlsdemo-network:
+    driver: bridge

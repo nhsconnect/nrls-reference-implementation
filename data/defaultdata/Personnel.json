@@ -1,161 +1,157 @@
 {
-    "Name" : "999 Call Handler",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As a 999 Call Handler you will be used to working under stress in a time critical environment and understand the importance of speed in your work processes. As such, NRLS will be used to help flag when you are dealing with a patient who has a care plan that has been created from them. This may later be used to help with triage activities when determining the level of urgency for the patient, though will not add any additional tasks for the call handler.</p>
-<h4>What information will I be shown?</h4>
-<p>Due to the time critical nature of your role, you will only be shown a flag to highlight that the patient you are dealing with has an NRLS care plan. Once you have identified the patient's NHS number there will be some form of indication on your system to make you aware.</p>
-<h4>Why will I be shown this information?</h4>
-<p>As a 999 call handler you will likely be dealing with many calls per hour, going through the patient triage and establishing quickly the urgency of the patient before passing them on to receive either hear and treat care from the Clinician or see and treat from the Paramedic team. Because of this time critical role, you will not be required to see full details of the patient care plan and so in order to provide useful, concise information, only a flag will be returned by the NRLS as not to add any unnecessary complexity.</p>",
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318dc"
+    },
+    "Name": "111 Call Handler",
+    "ImageUrl": "ambulance_service_111_call_handler.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs a 111 Call Handler you will be used to working under stress in a time critical environment and understand the importance of speed in your work processes. As such, NRLS will be used to help flag when you are dealing with a patient who has a care plan that has been created from them. This may later be used to help with triage activities when determining the level of urgency for the patient, though will not add any additional tasks for the call handler.\u003c/p\u003e \u003ch4\u003eWhat information will I be shown?\u003c/h4\u003e \u003cp\u003eDue to the time critical nature of your role, you will only be shown a flag to highlight that the patient you are dealing with has an NRLS care plan. Once you have identified the patient's NHS number there will be some form of indication on your system to make you aware (as shown below).\u003c/p\u003e \u003ch4\u003eWhy will I be shown this information?\u003c/h4\u003e \u003cp\u003eAs a 111 call handler you will likely be dealing with many calls per hour, going through the patient triage and establishing quickly the urgency of the patient before passing them on to receive either hear and treat care from the Clinician or see and treat from the Paramedic team. Because of this time critical role, you will not be required to see full details of the patient care plan and so in order to provide useful, concise information, only a flag will be returned by the NRLS as not to add any unnecessary complexity.\u003c/p\u003e",
     "UsesNrls": false,
     "OrganisationId": "5a8daa5c952e372cbdb317eb",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "IsActive": false,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "SystemIds": [
-        "f5a8daa86952e372cbdb31800"
+        "5a8daa86952e372cbdb31800"
     ]
 }
 {
-    "Name" : "111 Call Handler",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As a 111 Call Handler you will be used to working under stress in a time critical environment and understand the importance of speed in your work processes. As such, NRLS will be used to help flag when you are dealing with a patient who has a care plan that has been created from them. This may later be used to help with triage activities when determining the level of urgency for the patient, though will not add any additional tasks for the call handler.</p>
-<h4>What information will I be shown?</h4>
-<p>Due to the time critical nature of your role, you will only be shown a flag to highlight that the patient you are dealing with has an NRLS care plan. Once you have identified the patient's NHS number there will be some form of indication on your system to make you aware (as shown below).</p>
-<h4>Why will I be shown this information?</h4>
-<p>As a 111 call handler you will likely be dealing with many calls per hour, going through the patient triage and establishing quickly the urgency of the patient before passing them on to receive either hear and treat care from the Clinician or see and treat from the Paramedic team. Because of this time critical role, you will not be required to see full details of the patient care plan and so in order to provide useful, concise information, only a flag will be returned by the NRLS as not to add any unnecessary complexity.</p>",
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318dd"
+    },
+    "Name": "999 Call Handler",
+    "ImageUrl": "ambulance_service_999_call_handler.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs a 999 Call Handler you will be used to working under stress in a time critical environment and understand the importance of speed in your work processes. As such, NRLS will be used to help flag when you are dealing with a patient who has a care plan that has been created from them. This may later be used to help with triage activities when determining the level of urgency for the patient, though will not add any additional tasks for the call handler.\u003c/p\u003e \u003ch4\u003eWhat information will I be shown?\u003c/h4\u003e \u003cp\u003eDue to the time critical nature of your role, you will only be shown a flag to highlight that the patient you are dealing with has an NRLS care plan. Once you have identified the patient's NHS number there will be some form of indication on your system to make you aware.\u003c/p\u003e \u003ch4\u003eWhy will I be shown this information?\u003c/h4\u003e \u003cp\u003eAs a 999 call handler you will likely be dealing with many calls per hour, going through the patient triage and establishing quickly the urgency of the patient before passing them on to receive either hear and treat care from the Clinician or see and treat from the Paramedic team. Because of this time critical role, you will not be required to see full details of the patient care plan and so in order to provide useful, concise information, only a flag will be returned by the NRLS as not to add any unnecessary complexity.\u003c/p\u003e",
     "UsesNrls": false,
     "OrganisationId": "5a8daa5c952e372cbdb317eb",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "IsActive": false,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "SystemIds": [
-        "f5a8daa86952e372cbdb31800"
+        "5a8daa86952e372cbdb31800"
     ]
 }
 {
-    "Name" : "Clinician (call center)",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As a Clinician you will be used to dealing with patients and providing hear and treat care. You will be able to review the patient incident board in order to prioritise more urgent patients and be able to provide information to them which will prevent the need for an ambulance to attend.</p>
-<h4>What information will I be shown?</h4>
-<p>As you will be applying hear and treat care, having the relevant patient information to hand is important. NRLS will provide pointers to patient care plans, enabling clinicians to provide a more informed and  time-efficient level of care. The integrated NRLS display itself will bring back pointers which will either provide direct or indirect retrieval of the patient's information.</p>
-<h4>Why will I be shown this information?</h4>
-<p>As one of few personnel who will be able to provide care to a patient, it is important that you have the correct information in order to provide the best possible level of care. NRLS will help to achieve this by providing you with either Direct or Indirect links to detailed patient information such as their Care Plan. The information within these plans can then be used to hear and treat with greater knowledge about the patients needs and history.</p>
-<h4>What does Direct and Indirect return mean?</h4>
-<p>The NRLS acts as a service which points users to other pieces of information. Each time a record is created using NRLS, unique pointers are created for that record. Therefore when a consumer of the information such as a Clinician wants to access a patient care plan the NRLS will point them to where and in what format it is stored. If the level of digital capability between producer and consumer allows, the care plan can be returned to the user on screen in full, this is known as a 'Direct return'. If the digital capability isn't capable or not matched between the consumer and provider then static data such as the contact details of the relevant record creator will be provided. This is an 'Indirect return' as the use will able to access the details of the care plan indirectly.</p>",
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318de"
+    },
+    "Name": "Councillor",
+    "ImageUrl": "mental_health_service_care_plan_co-ordinator.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.\u003c/p\u003e \u003ch4\u003eWhat information will go in to the care plan?\u003c/h4\u003e \u003cp\u003eYour current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.\u003c/p\u003e \u003ch4\u003eWill NRLS mean I have any additional tasks?\u003c/h4\u003e \u003cp\u003eNo, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.\u003c/p\u003e",
+    "UsesNrls": true,
+    "OrganisationId": "5a8daa5c952e372cbdb317ea",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "SystemIds": [
+        "5a8daa86952e372cbdb31801"
+    ],
+    "PersonnelType": "Care Plan co-ordinator"
+}
+{
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318df"
+    },
+    "Name": "Clinician (call center)",
+    "ImageUrl": "ambulance_service_clinician.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs a Clinician you will be used to dealing with patients and providing hear and treat care. You will be able to review the patient incident board in order to prioritise more urgent patients and be able to provide information to them which will prevent the need for an ambulance to attend.\u003c/p\u003e \u003ch4\u003eWhat information will I be shown?\u003c/h4\u003e \u003cp\u003eAs you will be applying hear and treat care, having the relevant patient information to hand is important. NRLS will provide pointers to patient care plans, enabling clinicians to provide a more informed and  time-efficient level of care. The integrated NRLS display itself will bring back pointers which will either provide direct or indirect retrieval of the patient's information.\u003c/p\u003e \u003ch4\u003eWhy will I be shown this information?\u003c/h4\u003e \u003cp\u003eAs one of few personnel who will be able to provide care to a patient, it is important that you have the correct information in order to provide the best possible level of care. NRLS will help to achieve this by providing you with either Direct or Indirect links to detailed patient information such as their Care Plan. The information within these plans can then be used to hear and treat with greater knowledge about the patients needs and history.\u003c/p\u003e \u003ch4\u003eWhat does Direct and Indirect return mean?\u003c/h4\u003e \u003cp\u003eThe NRLS acts as a service which points users to other pieces of information. Each time a record is created using NRLS, unique pointers are created for that record. Therefore when a consumer of the information such as a Clinician wants to access a patient care plan the NRLS will point them to where and in what format it is stored. If the level of digital capability between producer and consumer allows, the care plan can be returned to the user on screen in full, this is known as a 'Direct return'. If the digital capability isn't capable or not matched between the consumer and provider then static data such as the contact details of the relevant record creator will be provided. This is an 'Indirect return' as the use will able to access the details of the care plan indirectly.\u003c/p\u003e",
     "UsesNrls": true,
     "OrganisationId": "5a8daa5c952e372cbdb317eb",
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "SystemIds": [
         "5a8daa86952e372cbdb317fe"
     ]
 }
 {
-    "Name" : "Paramedic",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As a paramedic you will be used to the highly pressurised nature of attending to patients in crisis situations. The purpose of the NRLS will be to provide you with the relevant patient information in order to help you provide the best possible patient care.</p>
-<h4>What information will I be shown?</h4>
-<p>NRLS will be integrated with your current digital systems (e.g. MDT and/or Tablet device). Pointers to the patient's care plan information will then be displayed which can provide a direct or indirect return of the patient information.</p>
-<h4>Why will I be shown this information?</h4>
-<p>As one of few personnel who will be able to provide care to a patient, it is important that you have the correct information in order to provide the best possible level of care. NRLS will help to achieve this by providing you with either Direct or Indirect links to detailed patient information such as their Care Plan. The information within these plans can then be used to see and treat with greater knowledge about the patients needs and history.</p>
-<h4>What does Direct and Indirect return mean?</h4>
-<p>The NRLS acts as a service which points users to other pieces of information. Each time a record is created using NRLS, unique pointers are created for that record. Therefore when a consumer of the information such as a Clinician wants to access a patient care plan the NRLS will point them to where and in what format it is stored. If the level of digital capability between producer and consumer allows, the care plan can be returned to the user on screen in full, this is known as a 'Direct return'. If the digital capability isn't capable or not matched between the consumer and provider then static data such as the contact details of the relevant record creator will be provided. This is an 'Indirect return' as the use will able to access the details of the care plan indirectly.</p>",
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318e0"
+    },
+    "Name": "Paramedic",
+    "ImageUrl": "ambulance_service_paramedic.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs a paramedic you will be used to the highly pressurised nature of attending to patients in crisis situations. The purpose of the NRLS will be to provide you with the relevant patient information in order to help you provide the best possible patient care.\u003c/p\u003e \u003ch4\u003eWhat information will I be shown?\u003c/h4\u003e \u003cp\u003eNRLS will be integrated with your current digital systems (e.g. MDT and/or Tablet device). Pointers to the patient's care plan information will then be displayed which can provide a direct or indirect return of the patient information.\u003c/p\u003e \u003ch4\u003eWhy will I be shown this information?\u003c/h4\u003e \u003cp\u003eAs one of few personnel who will be able to provide care to a patient, it is important that you have the correct information in order to provide the best possible level of care. NRLS will help to achieve this by providing you with either Direct or Indirect links to detailed patient information such as their Care Plan. The information within these plans can then be used to see and treat with greater knowledge about the patients needs and history.\u003c/p\u003e \u003ch4\u003eWhat does Direct and Indirect return mean?\u003c/h4\u003e \u003cp\u003eThe NRLS acts as a service which points users to other pieces of information. Each time a record is created using NRLS, unique pointers are created for that record. Therefore when a consumer of the information such as a Clinician wants to access a patient care plan the NRLS will point them to where and in what format it is stored. If the level of digital capability between producer and consumer allows, the care plan can be returned to the user on screen in full, this is known as a 'Direct return'. If the digital capability isn't capable or not matched between the consumer and provider then static data such as the contact details of the relevant record creator will be provided. This is an 'Indirect return' as the use will able to access the details of the care plan indirectly.\u003c/p\u003e",
     "UsesNrls": true,
     "OrganisationId": "5a8daa5c952e372cbdb317eb",
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "SystemIds": [
         "5a8daa86952e372cbdb317ff"
     ]
 }
 {
-    "Name" : "Dispatcher",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As a Dispatcher your role focusses on receiving patient information through the incident board and prioritising them in terms of urgency for which patients may require an ambulance. In a time pressurised role, you will be working with the ambulance teams to identify where they are located and their availability to attend to a patient.</p>
-<h4>What information will I be shown?</h4>
-<p>The role of the dispatcher, similar to the call handlers, is also time critical. You'll ensure that ambulances are prioritised correctly in a way that optimises patient response. Information returned from the NRLS in this role will therefore be minimal, as there is little requirement for further information from the patients care plan. It may be possible to flag that an NRLS care plan is present for the patient, which could help inform the paramedic team if the two roles are in contact with one another.</p>
-<h4>Why will I be shown this information?</h4>
-<p>As there is no identified need for yourself as a Dispatcher to see specific care plan details, a flag will be presented in order to indicate that a care plan is in existence. This information can then be passed on to the Paramedic team if needed, who may need to view the care plan information when administering care. </p>",
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318e1"
+    },
+    "Name": "Psychiatrist",
+    "ImageUrl": "mental_health_service_care_plan_co-ordinator.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.\u003c/p\u003e \u003ch4\u003eWhat information will go in to the care plan?\u003c/h4\u003e \u003cp\u003eYour current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.\u003c/p\u003e \u003ch4\u003eWill NRLS mean I have any additional tasks?\u003c/h4\u003e \u003cp\u003eNo, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.\u003c/p\u003e",
+    "UsesNrls": true,
+    "OrganisationId": "5a8daa5c952e372cbdb317ea",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "SystemIds": [
+        "5a8daa86952e372cbdb31801"
+    ],
+    "PersonnelType": "Care Plan co-ordinator"
+}
+{
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318e2"
+    },
+    "Name": "Psychologist",
+    "ImageUrl": "mental_health_service_care_plan_co-ordinator.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.\u003c/p\u003e \u003ch4\u003eWhat information will go in to the care plan?\u003c/h4\u003e \u003cp\u003eYour current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.\u003c/p\u003e \u003ch4\u003eWill NRLS mean I have any additional tasks?\u003c/h4\u003e \u003cp\u003eNo, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.\u003c/p\u003e",
+    "UsesNrls": true,
+    "OrganisationId": "5a8daa5c952e372cbdb317ea",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "SystemIds": [
+        "5a8daa86952e372cbdb31801"
+    ],
+    "PersonnelType": "Care Plan co-ordinator"
+}
+{
+    "_id": {
+        "$oid": "5a8dabea952e372cbdb318e3"
+    },
+    "Name": "Mental Health Nurse",
+    "ImageUrl": "mental_health_service_care_plan_co-ordinator.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.\u003c/p\u003e \u003ch4\u003eWhat information will go in to the care plan?\u003c/h4\u003e \u003cp\u003eYour current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.\u003c/p\u003e \u003ch4\u003eWill NRLS mean I have any additional tasks?\u003c/h4\u003e \u003cp\u003eNo, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.\u003c/p\u003e",
+    "UsesNrls": true,
+    "OrganisationId": "5a8daa5c952e372cbdb317ea",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "SystemIds": [
+        "5a8daa86952e372cbdb31801"
+    ],
+    "PersonnelType": "Care Plan Co-ordinator"
+}
+{
+    "_id": {
+        "$oid": "5a9879fd96592c5454267599"
+    },
+    "Name": "Dispatcher",
+    "ImageUrl": "ambulance_service_dispatcher.png",
+    "Context": "\u003ch4\u003eTypical Scenario\u003c/h4\u003e \u003cp\u003eAs a Dispatcher your role focusses on receiving patient information through the incident board and prioritising them in terms of urgency for which patients may require an ambulance. In a time pressurised role, you will be working with the ambulance teams to identify where they are located and their availability to attend to a patient.\u003c/p\u003e \u003ch4\u003eWhat information will I be shown?\u003c/h4\u003e \u003cp\u003eThe role of the dispatcher, similar to the call handlers, is also time critical. You'll ensure that ambulances are prioritised correctly in a way that optimises patient response. Information returned from the NRLS in this role will therefore be minimal, as there is little requirement for further information from the patients care plan. It may be possible to flag that an NRLS care plan is present for the patient, which could help inform the paramedic team if the two roles are in contact with one another.\u003c/p\u003e \u003ch4\u003eWhy will I be shown this information?\u003c/h4\u003e \u003cp\u003eAs there is no identified need for yourself as a Dispatcher to see specific care plan details, a flag will be presented in order to indicate that a care plan is in existence. This information can then be passed on to the Paramedic team if needed, who may need to view the care plan information when administering care. \u003c/p\u003e",
     "UsesNrls": true,
     "OrganisationId": "5a8daa5c952e372cbdb317eb",
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "SystemIds": [
-        "5a8daa86952e372cbdb317fg"
-    ]
-}
-{
-    "Name" : "Councillor",
-    "PersonnelType" : "Care plan Co-ordinator",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.</p>
-<h4>What information will go in to the care plan?</h4>
-<p>Your current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.</p>
-<h4>Will NRLS mean I have any additional tasks?</h4>
-<p>No, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.</p>",
-    "UsesNrls": true,
-    "OrganisationId": "5a8daa5c952e372cbdb317ea",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
-    "SystemIds": [
-        "5a8daa86952e372cbdb31801"
-    ]
-}
-{
-    "Name" : "Psychiatrist",
-    "PersonnelType" : "Care plan Co-ordinator",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.</p>
-<h4>What information will go in to the care plan?</h4>
-<p>Your current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.</p>
-<h4>Will NRLS mean I have any additional tasks?</h4>
-<p>No, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.</p>",
-    "UsesNrls": true,
-    "OrganisationId": "5a8daa5c952e372cbdb317ea",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
-    "SystemIds": [
-        "5a8daa86952e372cbdb31801"
-    ]
-}
-{
-    "Name" : "Psychologist",
-    "PersonnelType" : "Care plan Co-ordinator",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.</p>
-<h4>What information will go in to the care plan?</h4>
-<p>Your current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.</p>
-<h4>Will NRLS mean I have any additional tasks?</h4>
-<p>No, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.</p>",
-    "UsesNrls": true,
-    "OrganisationId": "5a8daa5c952e372cbdb317ea",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
-    "SystemIds": [
-        "5a8daa86952e372cbdb31801"
-    ]
-}
-{
-    "Name" : "Mental Health Nurse",
-    "PersonnelType" : "Care plan Co-ordinator",
-    "ImageUrl" : "...",
-    "Context": "<h4>Typical Scenario</h4>
-<p>As the Care Plan Co-ordinator you will be responsible for the creation and updating of the patient's care plan once under your care. At this stage, the patient has been deemed as requiring a Care Plan Approach (CPA) which means a care plan should be created. No extra work will be created for the care plan co-ordinator as once your system has been integrated with NRLS, each time you submit a new care plan or update, the NRLS system will create pointers to the information, which can then be used by consumers such as the Ambulance Services.</p>
-<h4>What information will go in to the care plan?</h4>
-<p>Your current care plan will remain unchanged, as will the working processes for the care plan co-ordinator. The only difference will be that once the care plan has been saved and submitted the NRLS will automatically create pointers for the information.</p>
-<h4>Will NRLS mean I have any additional tasks?</h4>
-<p>No, as the creator of the care plan, once you have edited all the necessary fields as normal you will then hit submit, just as you would save it to a localised system. Once NRLS has been integrated, this will automatically create pointers for the care plan you've just submitted. What that means is that when a consumer of the care plan, such as a call centre clinician needs the information to provide 'hear and treat care', they will be able to get hold of this information much more quickly and systems permitting will be a click of a button.</p>",
-    "UsesNrls": true,
-    "OrganisationId": "5a8daa5c952e372cbdb317ea",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z" },
-    "SystemIds": [
-        "5a8daa86952e372cbdb31801"
+        "5a8daa86952e372cbdb31800"
     ]
 }

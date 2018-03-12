@@ -3,19 +3,6 @@
   "id": "1",
   "identifier": [
     {
-      "extension": [
-        {
-          "url": "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-NHSNumberVerificationStatus-1",
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "system": "https://fhir.nhs.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1",
-                "code": "01"
-              }
-            ]
-          }
-        }
-      ],
       "system": "https://fhir.nhs.uk/Id/nhs-number",
       "value": "000000991"
     }
@@ -40,12 +27,6 @@
       "value": "01274000000",
       "use": "work",
       "rank": 1
-    },
-    {
-      "system": "phone",
-      "value": "07000000000",
-      "use": "mobile",
-      "rank": 2
     }
   ],
   "gender": "male",
@@ -60,7 +41,7 @@
       ],
       "city": "Bradford",
       "district": "West Yorkshire",
-      "postalCode": "ab01 2cd",
+      "postalCode": "ab1 2cd",
       "period": {
         "start": "1974-12-25"
       }

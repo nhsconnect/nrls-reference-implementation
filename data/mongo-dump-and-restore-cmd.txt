@@ -1,3 +1,0 @@
-mongorestore --db Demonstrator --nsInclude 'Demonstrator.*' --authenticationDatabase admin --restoreDbUsersAndRoles --drop --username user --password "pass" \Path\To\Restore\From
-
-mongodump --db Demonstrator --authenticationDatabase admin --dumpDbUsersAndRoles --username user --password "pass" --out \Path\To\Dump

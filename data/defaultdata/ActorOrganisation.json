@@ -1,18 +1,28 @@
 {
-    "Type": "Consumer",
-    "Name": "Ambulance Service",
-    "ImageUrl": "Image url...",
-    "Context": "<p>What is your role within the ambulance service? Depending on your positition, you may be affected differently by NRLS once it is integrated. For example, as an emergency Call Handler your time may be critical and therefore you may not need or want to see detailed care plan information. This information may be required however by the Clinician to help hear and treat the patient or by the Paramedic team in the event of seeing and treating the patient.</p>",
-    "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
-    "OrgCode": "AMS01"
-}
-{
+    "_id": {
+        "$oid": "5a8daa5c952e372cbdb317ea"
+    },
     "Type": "Provider",
     "Name": "Mental Health Trust",
-    "ImageUrl": "Image url...",
-    "Context": "<p>Once it has been deemed necessary for a patient to receive a Care Plan Approach (CPA), they will be assigned a Care Plan Co-ordinator who will oversee the creation and updating of this record. Although care plans may currently be created at an earlier stage without the need for a CPA (e.g. by a General Practitioner), phase 1 of the NRLS will look to focus on the creation and return of care plans by Care Plan Co-Ordinators only.</p>",
+    "ImageUrl": "mental-health-trust.png",
+    "Context": "\u003cp\u003eOnce it has been deemed necessary for a patient to receive a Care Plan Approach (CPA), they will be assigned a Care Plan Co-ordinator who will oversee the creation and updating of this record. Although care plans may currently be created at an earlier stage without the need for a CPA (e.g. by a General Practitioner), phase 1 of the NRLS will look to focus on the creation and return of care plans by Care Plan Co-Ordinators only.\u003c/p\u003e",
     "IsActive": true,
-    "CreatedOn": { "$date" : "2018-02-08T10:00:00.000Z"},
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
     "OrgCode": "MHT01"
+}
+{
+    "_id": {
+        "$oid": "5a8daa5c952e372cbdb317eb"
+    },
+    "Type": "Consumer",
+    "Name": "Ambulance Service",
+    "ImageUrl": "ambulance_service.png",
+    "Context": "\u003cp\u003eWhat is your role within the ambulance service? Depending on your positition, you may be affected differently by NRLS once it is integrated. For example, as an emergency Call Handler your time may be critical and therefore you may not need or want to see detailed care plan information. This information may be required however by the Clinician to help hear and treat the patient or by the Paramedic team in the event of seeing and treating the patient.\u003c/p\u003e",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "OrgCode": "AMS01"
 }

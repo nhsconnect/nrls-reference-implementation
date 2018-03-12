@@ -71,7 +71,7 @@ const coreBundles = {
     'aurelia-templating-router',
     'aurelia-templating-resources'
   ]
-}
+};
 
 /**
  * Main Webpack Configuration
@@ -106,7 +106,8 @@ let config = generateConfig(
 
   aurelia({root: rootDir, src: srcDir, title: title, baseUrl: baseUrl}),
   typescript(ENV !== 'test' ? {} : { options: { doTypeCheck: false, sourceMap: false, inlineSourceMap: true, inlineSources: true } }),
-  html(),
+    html(),
+   /*copyFiles({ patterns: [{ from: 'webappconfig' + (ENV === 'production' ? '.production' : '') + '.json', to: 'webappconfig.json' }] }),*/
   sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false}),
   css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
   fontAndImages(),
@@ -118,8 +119,8 @@ let config = generateConfig(
       commonChunksOptimize({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'})/*,
       copyFiles({patterns: [{ from: 'favicon.ico', to: 'favicon.ico' }]})*/
     ] : [
-    /* ENV === 'test' */
-    generateCoverage({ options: { esModules: true } })
+    /* ENV === 'test' 
+    generateCoverage({ options: { esModules: true } })*/
   ]),
 
   ENV === 'production' ?
