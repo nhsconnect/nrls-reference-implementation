@@ -50,7 +50,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
             if (includeReferences)
             {
-                parameters.Append($"{(parameters.Length == 0 ? "" : "&")}_include=DocumentReference:custodian&_include=DocumentReference:subject");
+                parameters.Append($"{(parameters.Length == 0 ? "" : "&")}_include=DocumentReference:custodian&_include=DocumentReference:subject&_include=DocumentReference.author");
             }
 
             return GetDocumentReferenceUrl(null, parameters.ToString());

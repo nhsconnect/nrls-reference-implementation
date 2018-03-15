@@ -10,6 +10,8 @@ namespace Demonstrator.Models.ViewModels.Fhir
 
         public List<string> Given { get; set; }
 
+        public string GivenString { get; set; }
+
         public PeriodViewModel Period { get; set; }
     }
 }

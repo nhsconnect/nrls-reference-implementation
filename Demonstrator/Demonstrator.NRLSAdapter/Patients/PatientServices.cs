@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using SystemTasks = System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using Hl7.Fhir.Model;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
-using Demonstrator.Models.ViewModels.Patients;
 using Demonstrator.NRLSAdapter.Helpers;
 
 namespace Demonstrator.NRLSAdapter.Patients
@@ -20,48 +18,34 @@ namespace Demonstrator.NRLSAdapter.Patients
             _patientUrlBase = $"{nrlsApiSetting.Value.ServerUrl}/Patient";
         }
 
-        public async SystemTasks.Task<IEnumerable<PatientNumberViewModel>> GetPatientNumbers()
+        public async SystemTasks.Task<Bundle> GetPatientAsBundle(int nhsNumber, bool includes)
         {
-            var patients = GetPatients().Result;
-            var patientNumbers = new List<PatientNumberViewModel>();
+            var patient = await new FhirConnector().RequestOne<Bundle>(GetPatientNhsNumberUrl(nhsNumber, includes));
 
-            patients.ForEach(p => {
-                var nhsNumber = p.Identifier.FirstOrDefault(i => i.System.Equals(FhirConstants.SystemNhsNumber));
-
-                var patientNumber = new PatientNumberViewModel {
-                    Id = p.Id,
-                    NhsNumber = !string.IsNullOrEmpty(nhsNumber?.Value) ? int.Parse(nhsNumber.Value) : (int?)null
-                };
-
-                patientNumbers.Add(patientNumber);
-            });
-
-            return await SystemTasks.Task.Run(() => patientNumbers);
+            return patient;
         }
 
-        public async SystemTasks.Task<Patient> GetPatient(int nhsNumber)
-        {
-            var patients = await new FhirConnector().RequestMany<Patient>(GetPatientNhsNumberUrl(nhsNumber));
-
-            return patients.First();
-        }
-
-        private async SystemTasks.Task<List<Patient>> GetPatients()
+        public async SystemTasks.Task<List<Patient>> GetPatients()
         {
             var patients = await new FhirConnector().RequestMany<Patient>(GetPatientUrl());
 
             return patients;
         }
 
-        private string GetPatientNhsNumberUrl(int nhsNumber)
+        private string GetPatientNhsNumberUrl(int nhsNumber, bool includes)
         {
             var parameters = $"identifier={WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}";
 
-            return GetPatientUrl(null, parameters);
+            return GetPatientUrl(null, parameters, includes);
         }
 
-        private string GetPatientUrl(string id = null, string parameters = null)
+        private string GetPatientUrl(string id = null, string parameters = null, bool includes = false)
         {
+            if (includes)
+            {
+                parameters = $"{(parameters + "&" ?? "")}_include=Patient:organization";
+            }
+
             return $"{_patientUrlBase}{("/" + id ?? "")}?_format=json{("&" + parameters ?? "")}";
         }
 

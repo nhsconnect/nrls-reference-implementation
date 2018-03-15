@@ -4,14 +4,16 @@
     { 
         public Issue()
         {
-            _severity = IssueSeverity.Information;
+            SeverityCode = IssueSeverity.Information;
         }
 
-        public string Severity => _severity.ToString();
+        public string Severity => SeverityCode.ToString();
 
-        private IssueSeverity _severity { get; set; }
+        public IssueSeverity SeverityCode { get; set; }
 
         public string Details { get; set; }
+
+        public string Diagnostics { get; set; }
     }
 
     public enum IssueSeverity

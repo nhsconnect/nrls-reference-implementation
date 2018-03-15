@@ -8,6 +8,8 @@ namespace Demonstrator.Models.ViewModels.Fhir
 
         public string Id { get; set; }
 
+        public string OrgCode { get; set; }
+
         public MetaViewModel Meta { get; set; }
 
         public List<IdentifierViewModel> Identifier { get; set; }

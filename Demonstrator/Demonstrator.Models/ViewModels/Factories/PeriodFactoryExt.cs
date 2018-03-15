@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Models.ViewModels.Fhir;
 using Demonstrator.Utilities.Extensions;
 using Hl7.Fhir.Model;
+using System;
 
 namespace Demonstrator.Models.ViewModels.Factories
 {
@@ -13,6 +14,9 @@ namespace Demonstrator.Models.ViewModels.Factories
                 Start = period.Start?.ToDateTime(),
                 End = period.End?.ToDateTime()
             };
+
+            var now = DateTime.UtcNow;
+            viewModel.IsActive = (!viewModel.Start.HasValue || viewModel.Start.Value <= now) && (!viewModel.End.HasValue || viewModel.End.Value > now);
 
             return viewModel;
         }

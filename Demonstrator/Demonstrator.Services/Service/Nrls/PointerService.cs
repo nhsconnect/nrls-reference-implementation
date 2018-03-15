@@ -2,16 +2,15 @@
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.ViewModels.Factories;
 using Demonstrator.Models.ViewModels.Nrls;
+using Demonstrator.NRLSAdapter.Helpers;
 using Hl7.Fhir.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
 namespace Demonstrator.Services.Service.Nrls
 {
-    public class PointerService : IPointerService
+    public class PointerService : BaseService, IPointerService
     {
         private readonly IDocumentReferenceServices _docRefService;
 
@@ -37,11 +36,14 @@ namespace Demonstrator.Services.Service.Nrls
 
                 //This assumes the resource is relative
                 var subject = patients.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Subject?.Id);
-                pointerViewModel.SubjectViewModel = subject?.ToViewModel();
+                pointerViewModel.SubjectViewModel = subject?.ToViewModel(null);
 
                 //This assumes the resource is relative
                 var custodian = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Custodian?.Id);
-                pointerViewModel.CustodianViewModel = custodian?.ToViewModel();
+                pointerViewModel.CustodianViewModel = custodian?.ToViewModel(FhirConstants.SystemOrgCode);
+
+                var author = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Author?.Id);
+                pointerViewModel.AuthorViewModel = author?.ToViewModel(FhirConstants.SystemOrgCode);
 
                 pointerViewModels.Add(pointerViewModel);
             }
@@ -49,12 +51,5 @@ namespace Demonstrator.Services.Service.Nrls
             return pointerViewModels;
         }
 
-        private List<T> ListEntries<T>(List<Bundle.EntryComponent> entries, ResourceType resType) where T : Resource
-        {
-            return entries
-                    .Where(entry => entry.Resource.ResourceType.Equals(resType))
-                    .Select(entry => (T)entry.Resource)
-                    .ToList();
-        }
     }
 }

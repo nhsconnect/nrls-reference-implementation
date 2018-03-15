@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using System;
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Services.Service.Nrls;
+using Demonstrator.WebApp.Core.Middlewares;
 
 namespace Demonstrator.WebApp
 {
@@ -51,15 +52,16 @@ namespace Demonstrator.WebApp
             services.AddTransient<IOrganisationServices, OrganisationServices>();
             services.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             services.AddTransient<IPointerService, PointerService>();
+            services.AddTransient<IPatientViewService, PatientViewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(new ExceptionHandlerOptions
             {
-                app.UseDeveloperExceptionPage();
-            }
+                ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

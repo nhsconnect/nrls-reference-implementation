@@ -1,4 +1,4 @@
-﻿using Demonstrator.Core.Interfaces.Services.Fhir;
+﻿using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.ViewModels.Patients;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,10 +8,11 @@ namespace Demonstrator.WebApp.Controllers
     [Route("api/[controller]")]
     public class PatientsController : Controller
     {
-        private readonly IPatientServices _patientServices;
-        public PatientsController(IPatientServices patientServices)
+        private readonly IPatientViewService _patientViewServices;
+
+        public PatientsController(IPatientViewService patientViewServices)
         {
-            _patientServices = patientServices;
+            _patientViewServices = patientViewServices;
         }
 
         // GET api/Patients/Numbers
@@ -20,7 +21,7 @@ namespace Demonstrator.WebApp.Controllers
         {
 
             //Service to get Patient Numbers
-            var patientNumbers = await _patientServices.GetPatientNumbers();
+            var patientNumbers = await _patientViewServices.GetPatientNumbers();
 
             return Ok(patientNumbers);
         }
@@ -30,7 +31,7 @@ namespace Demonstrator.WebApp.Controllers
         public async Task<IActionResult> GetByNhsNumber(int nhsNumber)
         {
             //Service to get Patient by logical id
-            var patient = await _patientServices.GetPatient(nhsNumber);
+            var patient = await _patientViewServices.GetPatient(nhsNumber);
 
             return Ok(patient);
         }

@@ -30,6 +30,8 @@ namespace Demonstrator.Models.ViewModels.Factories
                 Period = name.Period?.ToPeriodViewModel()
             };
 
+            viewModel.GivenString = string.Join(" ", viewModel.Given);
+
             return viewModel;
         }
     }

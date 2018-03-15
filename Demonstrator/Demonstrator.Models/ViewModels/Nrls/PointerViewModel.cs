@@ -24,7 +24,7 @@ namespace Demonstrator.Models.ViewModels.Nrls
 
         public DateTimeOffset? Indexed { get; set; }
 
-        public List<ReferenceViewModel> Author { get; set; }
+        public ReferenceViewModel Author { get; set; }
 
         public ReferenceViewModel Custodian { get; set; }
 
@@ -34,5 +34,7 @@ namespace Demonstrator.Models.ViewModels.Nrls
         public PatientViewModel SubjectViewModel { get; set; }
 
         public OrganizationViewModel CustodianViewModel { get; set; }
+
+        public OrganizationViewModel AuthorViewModel { get; set; }
     }
 }

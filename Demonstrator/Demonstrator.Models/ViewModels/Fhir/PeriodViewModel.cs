@@ -7,5 +7,7 @@ namespace Demonstrator.Models.ViewModels.Fhir
         public DateTime? Start { get; set; }
 
         public DateTime? End { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

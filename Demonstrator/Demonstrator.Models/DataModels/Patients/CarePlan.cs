@@ -30,5 +30,7 @@ namespace Demonstrator.Models.DataModels.Patients
         public DateTime PlanUpdated { get; set; }
 
         public bool Active { get; set; }
+
+        public string PatientNhsNumber { get; set; }
     }
 }

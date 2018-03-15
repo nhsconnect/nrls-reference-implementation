@@ -15,6 +15,8 @@ namespace Demonstrator.Models.ViewModels.Fhir
 
         public List<NameViewModel> Name { get; set; }
 
+        public NameViewModel CurrentName { get; set; }
+
         public List<TelecomViewModel> Telecom { get; set; }
 
         public string Gender { get; set; }
@@ -25,6 +27,12 @@ namespace Demonstrator.Models.ViewModels.Fhir
 
         public List<AddressViewModel> Address { get; set; }
 
+        public AddressViewModel CurrentAddress { get; set; }
+
         public ReferenceViewModel ManagingOrganization { get; set; }
+
+        public OrganizationViewModel GpPractice { get; set; }
+
+        public string NhsNumber { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Demonstrator.Models.ViewModels.Nrls;
 using Hl7.Fhir.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demonstrator.Models.ViewModels.Factories
 {
@@ -18,7 +19,8 @@ namespace Demonstrator.Models.ViewModels.Factories
                 Id = documentReference.Id,
                 Identifier = documentReference.Identifier.ToViewModelList(),
                 Subject = documentReference.Subject.ToViewModel(),
-                Type = documentReference.Type.ToViewModel()
+                Type = documentReference.Type.ToViewModel(),
+                Author = documentReference.Author.FirstOrDefault()?.ToViewModel()
             };
 
             return viewModel;
