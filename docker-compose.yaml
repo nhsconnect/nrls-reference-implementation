@@ -4,7 +4,7 @@ services:
     container_name: nrlsdemoapp
     image: nrlsdemo
     ports:
-      - "8686:5000"
+      - "80:5000"
     networks:
       - nrlsdemo-network
 
