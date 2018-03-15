@@ -1,6 +1,7 @@
 <template>
     <require from="./core/includes/nav-bar.html"></require>
     <require from="./core/includes/footer-bar.html"></require>
+    <require from="./core/helpers/modals/error-modal"></require>
 
     <nav-bar router.bind="router"></nav-bar>
 
@@ -9,4 +10,5 @@
     </div>
 
     <footer-bar></footer-bar>
+    <error-modal if.bind="errorDialog" dialog.two-way="errorDialog"></error-modal>
 </template>

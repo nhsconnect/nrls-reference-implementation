@@ -13,9 +13,5 @@
       <p><%- htmlWebpackPlugin.options.metadata.title %> Loading...</p>
       <p><i class="fa fa-circle-o-notch fa-pulse fa-3x"></i></p>
     </div>
-    <% if (htmlWebpackPlugin.options.metadata.ENV === 'development') { %>
-    <!-- Webpack Dev Server reload -->
-    <script src="/webpack-dev-server.js"></script>
-    <% } %>
   </body>
 </html>

@@ -38,7 +38,8 @@ export class WebAPI {
                 .withBaseUrl('/api/') 
                 .withDefaults({
                     credentials: 'same-origin',
-                    headers: this.getHeaders()
+                    headers: this.getHeaders(),
+                    mode: 'same-origin'
                 })
                 .withInterceptor({
                     request(request) {
@@ -67,10 +68,14 @@ export class WebAPI {
                 .then(response => {
                     let rsv = resolve(response.json());
                     return rsv;
-                })
-                .catch(error => {
-                    that.ea.publish(new DialogRequested(error));
-                    reject(new Error(error.statusText));
+                }, error => {
+                    if (!error.ok && error.status === 404) {
+                        that.ea.publish(new DialogRequested({ Details: error.statusText }));
+                    } else {
+                        error.json().then(serverError => {
+                            that.ea.publish(new DialogRequested(serverError));
+                        });
+                    }
                 });
         });
     }

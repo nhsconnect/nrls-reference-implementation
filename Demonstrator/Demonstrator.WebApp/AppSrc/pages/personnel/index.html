@@ -1,5 +1,4 @@
 <template>
-    <require from="../../core/helpers/loaders/spinner-msg.html"></require>
 
     <section class="container personnel-container">
         <h7 if.bind="organisation">${organisation.name}</h7>
@@ -12,7 +11,7 @@
                 <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="personnel.context | sanitizeHTML"></div>
             </div>
             <div class="col-md-4 col-md-offset-1">
-                <img src="/images/personnel/${personnel.imageUrl}" alt="${personnel.name}" class="pull-right nrls-border-img img-responsive" />
+                <img src.bind="'/images/personnel/' + personnel.imageUrl" alt.bind="personnel.name" class="pull-right nrls-border-img img-responsive" />
             </div>
         </div>
 

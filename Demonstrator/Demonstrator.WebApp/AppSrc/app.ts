@@ -2,24 +2,27 @@ import { Aurelia, inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './core/helpers/EventMessages';
+import { IDialog } from './core/interfaces/IDialog';
 
 @inject(EventAggregator)
 export class App {
     router: Router;
+    errorDialog: IDialog;
 
     constructor(private ea: EventAggregator) {
-        ea.subscribe(DialogRequested, msg => this.showDialog(msg));
+        ea.subscribe(DialogRequested, msg => {
+
+            if (msg && msg.Severity != 'Information') {
+                this.showErrorDialog(msg);
+            }
+        });
     }
 
-    showDialog(msg) {
-        console.log("Dialog Requested: ", msg);
-    }
+    configureRouter(config: RouterConfiguration, router: Router) {
 
-  configureRouter(config: RouterConfiguration, router: Router) {
+        config.title = 'NRLS Interactive Guide';
 
-      config.title = 'NRLS Interactive Guide';
-
-      var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
+        var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
 
         config.mapUnknownRoutes(notFoundRoute);
 
@@ -34,5 +37,12 @@ export class App {
         ]);
 
         this.router = router;
-  }
+    }
+
+    showErrorDialog(msg) {
+        this.errorDialog = <IDialog> {
+            content: msg.dialog.Details,
+            debug: msg.dialog.Diagnostics
+        };
+    }
 }

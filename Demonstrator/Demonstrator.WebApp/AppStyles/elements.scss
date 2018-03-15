@@ -25,3 +25,36 @@
         }
     }
 }
+
+.nrls-modal {
+    .modal-header {
+        border-bottom: none;
+
+        button {
+            &.close {
+                background-color: $black;
+                color: $white;
+                border-radius: 13px;
+                opacity: 1;
+                padding: 4px 7px;
+                font-size: 1em;
+                line-height: 1.1em;
+                float: left;
+            }
+        }
+    }
+
+    .modal-content {
+        border: 5px solid $nhsBlue;
+    }
+
+    .modal-body {
+        word-wrap: break-word;
+        max-height: calc(100vh - 250px);
+        overflow-y: auto;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+}

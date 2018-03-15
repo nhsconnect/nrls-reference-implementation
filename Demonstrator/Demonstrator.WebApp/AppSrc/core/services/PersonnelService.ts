@@ -1,6 +1,6 @@
 ﻿import { WebAPI } from '../WebApi';
 import { bindable, inject } from 'aurelia-framework';
-import { IPersonnel } from '../models/IPersonnel';
+import { IPersonnel } from '../interfaces/IPersonnel';
 
 @inject(WebAPI)
 export class PersonnelSvc {

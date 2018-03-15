@@ -1,7 +1,7 @@
 ﻿import { WebAPI } from '../WebApi';
 import { bindable, inject } from 'aurelia-framework';
-import { IActorOrganisation } from '../models/IActorOrganisation';
-import { IPersonnel } from '../models/IPersonnel';
+import { IActorOrganisation } from '../interfaces/IActorOrganisation';
+import { IPersonnel } from '../interfaces/IPersonnel';
 
 @inject(WebAPI)
 export class ActorOrganisationSvc {

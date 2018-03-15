@@ -7,17 +7,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppSrc\core\helpers\converters\date-format.ts" />
+    <None Remove="AppSrc\core\helpers\converters\index.ts" />
+    <None Remove="AppSrc\core\helpers\converters\nhs-number.ts" />
+    <None Remove="AppSrc\core\helpers\loaders\index.ts" />
+    <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
     <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
-    <None Remove="AppSrc\core\models\core\IAppConfig.ts" />
+    <None Remove="AppSrc\core\models\CarePlan.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IAddress.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IAssigner.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\ICityElement.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\ICodableConcept.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\ICoding.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IContactPoint.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IIdentifier.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IIdentifierExtension.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IName.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IOrganization.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IPeriod.ts" />
+    <None Remove="AppSrc\core\interfaces\fhir\IResourceReference.ts" />
+    <None Remove="AppSrc\core\models\ICarePlan.ts" />
     <None Remove="AppSrc\core\models\IGenericSystem.ts" />
+    <None Remove="AppSrc\core\models\IMeta.ts" />
     <None Remove="AppSrc\core\models\IPatient.ts" />
     <None Remove="AppSrc\core\models\IPatientNumber.ts" />
     <None Remove="AppSrc\core\models\IPersonnel.ts" />
+    <None Remove="AppSrc\core\models\IPointer.ts" />
     <None Remove="AppSrc\core\services\GenericSystemService.ts" />
     <None Remove="AppSrc\core\services\PatientService.ts" />
     <None Remove="AppSrc\core\services\PersonnelService.ts" />
+    <None Remove="AppSrc\core\services\PointerService.ts" />
     <None Remove="AppSrc\generic-systems\BaseGenericSystem.ts" />
+    <None Remove="AppSrc\generic-systems\Base\nrls-pointers-table.ts" />
+    <None Remove="AppSrc\generic-systems\Base\nrls-pointers.ts" />
+    <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
     <None Remove="npm-debug.log" />
     <None Remove="AppSrc\core\helpers\EventMessages.ts" />
     <None Remove="AppSrc\core\models\IActorOrganisation.ts" />
@@ -48,22 +72,47 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="AppSrc\core\helpers\converters\nhs-number.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\converters\date-format.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\converters\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\core\IAppConfig.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\CarePlan.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IDialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\IGenericSystem.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\IPatient.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\IPatientNumber.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\IPersonnel.ts" />
-    <TypeScriptCompile Include="AppSrc\core\models\IActorOrganisation.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IAddress.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IName.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IPeriod.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IContactPoint.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IOrganization.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IResourceReference.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\ICodableConcept.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\ICoding.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IIdentifierExtension.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\ICityElement.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IAssigner.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IIdentifier.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IMeta.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IPatient.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\ICarePlan.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IPointer.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IPatientNumber.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IPersonnel.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IActorOrganisation.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\PointerService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PatientService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
     <TypeScriptCompile Include="AppSrc\core\types\List.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers-table.ts" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -1,0 +1,23 @@
+﻿<template>
+    <spinner-msg message="Fetching NRLS Pointers" logic.one-way="pointersLoading"></spinner-msg>
+    <table show.bind="!pointersLoading" class="table table-striped table-bordered nrls-pointer-results">
+        <caption>NRLS Pointer Results</caption>
+        <thead>
+            <tr>
+                <th>Type of Record</th>
+                <th>Record Owner</th>
+                <th>Creation Date</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr repeat.for="pointer of pointers">
+                <td>${pointer.type.coding[0].display}</td>
+                <td>${pointer.authorViewModel.name}</td>
+                <td>${pointer.created | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
+                <td class="action"><button type="button" class="btn btn-primary">View</button></td>
+            </tr>
+        </tbody>
+    </table>
+</template>

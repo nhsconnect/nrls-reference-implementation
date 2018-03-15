@@ -1,11 +1,11 @@
-import { PersonnelSvc } from '../../core/services/PersonnelService';
+import { PersonnelSvc }         from '../../core/services/PersonnelService';
 import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
-import { GenericSystemSvc } from '../../core/services/GenericSystemService';
+import { GenericSystemSvc }     from '../../core/services/GenericSystemService';
 import { bindable, inject }     from 'aurelia-framework';
-import { IPersonnel }           from '../../core/models/IPersonnel';
-import { IGenericSystem }       from '../../core/models/IGenericSystem';
-import { ActorTypes } from '../../core/models/enums/ActorTypes';
-import { IActorOrganisation } from '../../core/models/IActorOrganisation';
+import { IPersonnel }           from '../../core/interfaces/IPersonnel';
+import { IGenericSystem }       from '../../core/interfaces/IGenericSystem';
+import { ActorTypes }           from '../../core/models/enums/ActorTypes';
+import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 
 @inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc)
 export class Personnel {
@@ -18,7 +18,7 @@ export class Personnel {
     systemsLoading: boolean = false;
     personnelLoading: boolean = false;
 
-    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {    }
+    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {}
 
     activate(params) {
         this.personnelId = params.routeParamId;

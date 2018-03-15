@@ -1,8 +1,8 @@
-import { ScrollHints } from "../../core/helpers/ScrollHints";
-import { IActorOrganisation } from "../../core/models/IActorOrganisation";
+import { ScrollHints }          from "../../core/helpers/ScrollHints";
+import { IActorOrganisation }   from "../../core/interfaces/IActorOrganisation";
 import { ActorOrganisationSvc } from "../../core/services/ActorOrganisationService";
-import { bindable, inject } from "aurelia-framework";
-import { PLATFORM } from 'aurelia-pal';
+import { bindable, inject }     from "aurelia-framework";
+import { PLATFORM }             from 'aurelia-pal';
 
 @inject(ActorOrganisationSvc)
 export class Welcome {

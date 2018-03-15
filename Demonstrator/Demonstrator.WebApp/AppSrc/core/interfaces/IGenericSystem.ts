@@ -1,4 +1,4 @@
-﻿import { ActorTypes } from "./enums/ActorTypes";
+﻿import { ActorTypes } from "../models/enums/ActorTypes";
 
 export interface IGenericSystem {
     id: string;

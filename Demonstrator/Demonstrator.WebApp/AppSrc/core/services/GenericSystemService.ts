@@ -1,6 +1,6 @@
 ﻿import { WebAPI } from '../WebApi';
 import { bindable, inject } from 'aurelia-framework';
-import { IGenericSystem } from '../models/IGenericSystem';
+import { IGenericSystem } from '../interfaces/IGenericSystem';
 
 @inject(WebAPI)
 export class GenericSystemSvc {
