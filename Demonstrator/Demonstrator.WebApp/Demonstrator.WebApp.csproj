@@ -117,6 +117,7 @@
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="$(ProjectDir)..\Shared\copyconfig $(ProjectDir) /Y /I" />
+    <Message Text="Starting PreBuild Events..." />
   </Target>
 
 </Project>

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /nrlsrefimp
-docker-compose up
+docker-compose up -d

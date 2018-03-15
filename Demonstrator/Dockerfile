@@ -8,7 +8,7 @@ COPY . ./
 
 # Set permissions on file used for MSBuild pre-build script
 # Error thrown without this.
-RUN chmod u+x Shared/copyconfig
+RUN chmod +x ./Shared/copyconfig
 
 # Restore Solution
 RUN dotnet restore Demonstrator.WebApp/Demonstrator.WebApp.csproj
