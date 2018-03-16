@@ -5,6 +5,9 @@ $spacing-large: 30px;
 $spacing-xlarge: 45px;
 $spacing-xxlarge: 60px;
 
+.no-margin {
+        margin:0;
+}
 .margin-top-lrg {
     margin-top: $spacing-xlarge;
 }

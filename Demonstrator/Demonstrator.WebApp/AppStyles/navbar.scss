@@ -21,6 +21,14 @@
             background: none;
         }
 
+        &.has-banner {
+            top: 37px;
+
+            &:before {
+                top: 132px;
+            }
+        }
+
         .nrls-brand {
             padding: 0;
         }

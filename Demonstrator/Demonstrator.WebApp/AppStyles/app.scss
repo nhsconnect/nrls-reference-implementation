@@ -15,10 +15,26 @@ body {
     padding:0;
 }
 
+.app-warning-banner {
+    font-size: 0.85em;
+    padding: 6px;
+    height: 37px;
+    overflow: hidden;
+
+    .btn {
+        font-size: 0.8em;
+        padding: 1px 5px;
+    }
+}
+
 .page-host {
     font-size: 1em;
     margin-top: 95px;
     padding: 40px 0 75px 0;
+
+    &.has-banner {
+        margin-top: 132px;
+    }
 }
 
 .personnel-container {

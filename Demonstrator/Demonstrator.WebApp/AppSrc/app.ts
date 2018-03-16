@@ -1,4 +1,4 @@
-import { Aurelia, inject } from 'aurelia-framework';
+import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './core/helpers/EventMessages';
