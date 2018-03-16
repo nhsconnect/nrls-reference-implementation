@@ -14,9 +14,9 @@ RUN chmod +x ./Shared/copyconfig
 RUN dotnet restore Demonstrator.WebApp/Demonstrator.WebApp.csproj
 
 #Start Front-end build
-#WORKDIR /app/Demonstrator.WebApp
-#RUN npm install
-#RUN npm run build:prod
+WORKDIR /app/Demonstrator.WebApp
+RUN npm install
+RUN npm run build:prod
 
 #Start Back-end build
 WORKDIR /app
