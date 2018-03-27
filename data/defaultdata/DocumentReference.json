@@ -1,6 +1,8 @@
 {
   "resourceType": "DocumentReference",
-  "id": "8",
+  "_id": {
+    "$oid": "5ab13f41957d0ad5d93a1339"
+  },
   "status": "current",
   "type": {
     "coding": [
@@ -12,17 +14,17 @@
     ]
   },
   "subject": {
-    "reference": "Patient/2"
+    "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/000000991"
   },
-  "created": "2005-12-24T09:35:00+11:00",
-  "indexed": "2005-12-24T09:43:41+11:00",
+  "created": "2005-12-24T09:35:00+00:00",
+  "indexed": "2005-12-24T09:43:41+00:00",
   "author": [
     {
-      "reference": "Organization/1"
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
     }
   ],
   "custodian": {
-    "reference": "Organization/1"
+    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
   },
   "content": [
     {
@@ -30,7 +32,83 @@
         "contentType": "application/pdf",
         "url": "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
         "title": "Mental health Care Plan Report",
-        "creation": "2016-03-08T15:26:00+01:00"
+        "creation": "2016-03-08T15:26:00+00:00"
+      }
+    }
+  ]
+}
+{
+  "resourceType": "DocumentReference",
+  "_id": {
+    "$oid": "5ab13f4a957d0ad5d93a133a"
+  },
+  "status": "current",
+  "type": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "718347002",
+        "display": "Cancer care plan"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/000000991"
+  },
+  "indexed": "2011-07-19T11:27:16+00:00",
+  "author": [
+    {
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
+    }
+  ],
+  "custodian": {
+    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
+  },
+  "content": [
+    {
+      "attachment": {
+        "contentType": "application/pdf",
+        "url": "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
+        "title": "Mental health Care Plan Report",
+        "creation": "2011-07-19T11:27:16+00:00"
+      }
+    }
+  ]
+}
+{
+  "resourceType": "DocumentReference",
+  "_id": {
+    "$oid": "5aba0f464f02ced4c7eb16c4"
+  },
+  "status": "current",
+  "type": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "718347001",
+        "display": "Mental health care plan"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/000000993"
+  },
+  "indexed": "2011-07-19T11:27:16+00:00",
+  "author": [
+    {
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/00003X"
+    }
+  ],
+  "custodian": {
+    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/00003X"
+  },
+  "content": [
+    {
+      "attachment": {
+        "contentType": "application/pdf",
+        "url": "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
+        "title": "Mental health Care Plan Report",
+        "creation": "2011-07-19T11:27:16+00:00"
       }
     }
   ]

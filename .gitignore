@@ -2,9 +2,9 @@ data/db
 data/log
 data/mongo-setup-and-commands.txt.local
 
-Demonstrator/.vs
-Demonstrator/*/obj
-Demonstrator/*/bin
+/**/.vs
+/**/*/obj
+/**/*/bin
 Demonstrator/Demonstrator.WebApp/appsettings.json
 Demonstrator/Demonstrator.WebApp/Shared/*
 !*.gitkeep

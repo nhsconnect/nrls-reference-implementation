@@ -4,7 +4,8 @@ WORKDIR /data
 ADD defaultdata defaultdata
 ADD cmds cmds
 
-RUN chmod +x cmds/run.sh
-RUN chmod +x cmds/set_mongodb_users_and_Data.sh
+RUN chmod +x /data/cmds/run.sh
+RUN chmod +x /data/cmds/set_mongodb_users.sh
+RUN chmod +x /data/cmds/set_mongodb_data.sh
 
 CMD ["/data/cmds/run.sh"]

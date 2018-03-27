@@ -1,0 +1,120 @@
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ab13695957d0ad5d93a1330"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "1XR"
+    }
+  ],
+  "name": "Bradford North NHS Foundation Trust",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 1274 000 001"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "3001 Bradford Street"
+      ],
+      "city": "Bradford",
+      "state": "West Yorkshire",
+      "postalCode": "BD99 1XR",
+      "country": "United Kingdom"
+    }
+  ]
+}
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ab13ab4957d0ad5d93a1331"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "2XR"
+    }
+  ],
+  "name": "Nottingham West NHS Foundation Trust",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 115 000 0002"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "3002 Nottingham Street"
+      ],
+      "city": "Nottingham",
+      "state": "Nottinghamshire",
+      "postalCode": "NG992XRXR2",
+      "country": "United Kingdom"
+    }
+  ]
+}
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ab13b6e957d0ad5d93a1332"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "00003X"
+    }
+  ],
+  "name": "Frizinghall Medical Centre",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 1274 000 003"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "3003 Frizinghall Street"
+      ],
+      "city": "Bradford",
+      "state": "West Yorkshire",
+      "postalCode": "BD99 03X",
+      "country": "United Kingdom"
+    }
+  ]
+}
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ab13c13957d0ad5d93a1333"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "00004X"
+    }
+  ],
+  "name": "Sandiacre Medical Centre",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 115 000 0004"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "3003 Sandiacre Street"
+      ],
+      "city": "Nottingham",
+      "state": "Nottinghamshire",
+      "postalCode": "NG99 04X",
+      "country": "United Kingdom"
+    }
+  ]
+}

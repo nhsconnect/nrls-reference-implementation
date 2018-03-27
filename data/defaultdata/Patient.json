@@ -1,6 +1,8 @@
 {
   "resourceType": "Patient",
-  "id": "1",
+  "_id": {
+    "$oid": "5ab13606957d0ad5d93a132f"
+  },
   "identifier": [
     {
       "system": "https://fhir.nhs.uk/Id/nhs-number",
@@ -20,12 +22,9 @@
   ],
   "telecom": [
     {
-      "use": "home"
-    },
-    {
       "system": "phone",
-      "value": "01274000000",
-      "use": "work",
+      "value": "01274100000",
+      "use": "home",
       "rank": 1
     }
   ],
@@ -41,13 +40,217 @@
       ],
       "city": "Bradford",
       "district": "West Yorkshire",
-      "postalCode": "ab1 2cd",
+      "postalCode": "AB1 2CD",
       "period": {
         "start": "1974-12-25"
       }
     }
   ],
   "managingOrganization": {
-    "reference": "Organization/1"
+    "reference": "Organization/00003X"
+  }
+}
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5ab13c9f957d0ad5d93a1334"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "000000992"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Smith",
+      "given": [
+        "David"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01274200000",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1953-09-14",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "57 North Street"
+      ],
+      "city": "Bradford",
+      "district": "West Yorkshire",
+      "postalCode": "AB2 3CD",
+      "period": {
+        "start": "1993-04-25"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/00003X"
+  }
+}
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5ab13d20957d0ad5d93a1336"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "000000993"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Jones",
+      "given": [
+        "Claire"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01274300000",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1982-06-24",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "19 River Street"
+      ],
+      "city": "Bradford",
+      "district": "West Yorkshire",
+      "postalCode": "AB3 4CD",
+      "period": {
+        "start": "1982-06-24"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/00003X"
+  }
+}
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5ab13da4957d0ad5d93a1337"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "000000994"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Arthur",
+      "given": [
+        "Jeff"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01154000000",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1979-09-03",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "19 Tower Street"
+      ],
+      "city": "Nottingham",
+      "district": "Nottinghamshire",
+      "postalCode": "AB4 5CD",
+      "period": {
+        "start": "2003-11-14"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/00004X"
+  }
+}
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5ab13e1e957d0ad5d93a1338"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "000000995"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Deacon",
+      "given": [
+        "Jennifer"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01155000000",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1987-03-26",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "both",
+      "line": [
+        "19 Cross Street"
+      ],
+      "city": "Nottingham",
+      "district": "Nottinghamshire",
+      "postalCode": "AB5 6CD",
+      "period": {
+        "start": "1987-03-26"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/00004X"
   }
 }
