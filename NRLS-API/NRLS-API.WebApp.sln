@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRLS-API.WebApp", "NRLS-API.WebApp\NRLS-API.WebApp.csproj", "{CCD491C0-4228-4E0B-833B-F75623D8524A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRLS-API.Services", "NRLS-API.Services\NRLS-API.Services.csproj", "{DF31DF78-5EA4-48F0-9F59-17B802A0A8D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRLS-API.Database", "NRLS-API.Database\NRLS-API.Database.csproj", "{3E5FE1A3-F861-4490-8BD7-9070F7017745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRLS-API.Core", "NRLS-API.Core\NRLS-API.Core.csproj", "{7EDED07D-F594-4767-B3AA-B1845F9D2387}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRLS-API.Models", "NRLS-API.Models\NRLS-API.Models.csproj", "{F2D3C652-2059-4809-AFD0-A5A0F02B1448}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCD491C0-4228-4E0B-833B-F75623D8524A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD491C0-4228-4E0B-833B-F75623D8524A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD491C0-4228-4E0B-833B-F75623D8524A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD491C0-4228-4E0B-833B-F75623D8524A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF31DF78-5EA4-48F0-9F59-17B802A0A8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF31DF78-5EA4-48F0-9F59-17B802A0A8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF31DF78-5EA4-48F0-9F59-17B802A0A8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF31DF78-5EA4-48F0-9F59-17B802A0A8D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E5FE1A3-F861-4490-8BD7-9070F7017745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E5FE1A3-F861-4490-8BD7-9070F7017745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E5FE1A3-F861-4490-8BD7-9070F7017745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E5FE1A3-F861-4490-8BD7-9070F7017745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EDED07D-F594-4767-B3AA-B1845F9D2387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EDED07D-F594-4767-B3AA-B1845F9D2387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EDED07D-F594-4767-B3AA-B1845F9D2387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EDED07D-F594-4767-B3AA-B1845F9D2387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D3C652-2059-4809-AFD0-A5A0F02B1448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D3C652-2059-4809-AFD0-A5A0F02B1448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D3C652-2059-4809-AFD0-A5A0F02B1448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D3C652-2059-4809-AFD0-A5A0F02B1448}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59F1E3D1-03E3-4FEA-B94A-6501194957BD}
+	EndGlobalSection
+EndGlobal
