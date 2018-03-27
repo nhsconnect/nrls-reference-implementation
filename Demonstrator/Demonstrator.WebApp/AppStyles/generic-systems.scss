@@ -1,23 +1,4 @@
-﻿.generic-system-container {
-    .gs-instructions {
-        font-weight: bold;
-    }
-
-    .tooltip {
-        .tooltip-arrow {
-            border-top-color: $nhsWarmYellow;
-        }
-
-        .tooltip-inner {
-            background-color: $nhsWarmYellow;
-            color:$black;
-            font-size:1.2em;
-            padding: $spacing-smaller $spacing-small;
-        }
-    }
-}
-
-.generic-system-wrapper {
+﻿.generic-system-wrapper {
     display: block;
     width: 100%;
     height: auto;
@@ -108,10 +89,10 @@
             li {
                 display: inline-block;
                 margin: 20px $spacing-small 0 0;
-                padding: $spacing-small;
+                padding: 0;
                 color: $nhsDarkGrey;
                 height: 40px;
-                line-height: 60px;
+                line-height: 40px;
 
                 a {
                     color: $nhsMidGey;
@@ -120,7 +101,7 @@
                     width: 100%;
                     height: 100%;
                     line-height: 25px;
-                    padding: 0 $spacing-small;
+                    padding: $spacing-small 20px;
                 }
 
                 &.active,

@@ -14,8 +14,8 @@ export class PointerSvc {
      * @param nhsNumber A valid patient NHS Number without dashes.
      * @returns A list of FHIR DocumentReferences in the form of IPointer.
      */
-    getPointers(id: string) {
-        let pointers = this.api.do<Array<IPointer>>(`${this.baseUrl}/${id}`, null, 'get');
+    getPointers(nhsNumber: number) {
+        let pointers = this.api.do<Array<IPointer>>(`${this.baseUrl}/${nhsNumber}`, null, 'get');
         return pointers;
     }
 

@@ -1,49 +1,82 @@
 <template>
-    <require from="../../core/helpers/gridtabs/gridtabs.html"></require>
 
     <section class="container">
 
-        <div class="text-center">
-            <h1 class="h1 margin-bottom-xlrg">${heading}</h1>
-            <div class="row margin-bottom-xlrg">
-                <div class="col-md-8 col-md-offset-2">
+        <h1 class="h1 margin-bottom-xlrg">${heading}</h1>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="padding-right-lrg">
                     <p>
-                        The National Record Locator Service (NRLS) will act as a national index to help find what records exist for patients across local and national care record solutions. As a user of the NRLS you may find yourself as either a Provider, Consumer or occasionally both.
+                        The National Record Locator Service (<b>NRLS</b>) is a service that aims to help <b>Health &amp; Social Care professionals</b> around the <b>country</b> understand what type of <b>medical records </b>exist for a Patient under their care and where those records exist. This is achieved by way of a <b>national index</b> of these records within the NRLS that Organisations can search through.
                     </p>
                     <p>
-                        Providers and Consumers are generally Health &amp; Social Care Organisations. Patient information which is fed in to the system by the Provider can be read by Consumers in order to help administer a higher level of patient care through accessibility of correct and timely patient information
+                        The NRLS also aims to help these care professionals <b>retrieve those records</b> that this index identifies. We call each index item that exists for a record a <b>Pointer</b>. These Pointers are created by the Organisations that create the medical records, e.g. a Care Co-Ordinator in a Mental Health Trust creating a Care Plan for a Patient.
                     </p>
                     <p>
-                        This interactive guide has been set up to help visualise what the NRLS is, what the index information within the NRLS looks like and how the NRLS could feature within your day to day work routine.
+                        <a route-href="route: about;" class="n-text-bold">Read more about the NRLS, Security and Sharing Agreements <i class="fa fa-chevron-right"></i></a>
                     </p>
+
+                    <h3 id="chooseYourOrganisation" class="n-text-green n-text-bold margin-top-lrg">Start the Guide</h3>
+
+                    <p>The <b>NRLS</b> is designed to be <b>used by many</b> different types of Health &amp; Social Care <b>Organisations</b>.</p>
+
+                    <p>Here are just a few <b>examples</b> of those <b>Organisations</b>, please select one to better understand what the NRLS means for them.</p>
+
+                    <spinner-msg message="Loading Organisations" logic.one-way="orgsLoading"></spinner-msg>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <h4>How will the NRLS will help you?</h4>
-                    <p>
-                        <img src="/images/nhs-service-map.png" class="img-responsive" width="708" height="461" alt="NHS Service Map" />
-                    </p>
+                <div class="row margin-bottom-xlrg">
+                    <div class="col-md-12">
+                        <gridtabs route="actor-organisation-personnel" items.one-way="actorOrganisations" show-more-hint="true" show-more-title="Your Organisation"></gridtabs>
+                    </div>
                 </div>
+
             </div>
 
-            <a href="#chooseYourOrganisation" class="btn btn-default btn-nrls-hint" data-showhints="#chooseYourOrganisation" click.delegate="showHint()"><i class="fa fa-chevron-down fa-2x nrls-scroll-hint"></i></a>
-        </div>
+            <div class="col-md-3 text-left">
+                <div class="panel panel-default panel-nrls pull-right margin-bottom-xlrg">
+                    <div class="panel-body n-text-blue">
+                        <h4 class="n-text-blue"><i class="fa fa-info fa-padding-sqr n-bg-blue n-text-white"></i> About this Guide</h4>
+                        <p>
+                            This interactive guide has been set up to help visualise:-
+                        </p>
+                        <div class="media">
+                            <div class="media-left"><i class="fa fa-check"></i></div>
+                            <div class="media-body">What the NRLS is</div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left"><i class="fa fa-check"></i></div>
+                            <div class="media-body">What the index information within the NRLS looks like</div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left"><i class="fa fa-check"></i></div>
+                            <div class="media-body">How the NRLS could feature within your work routine</div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left"><i class="fa fa-check"></i></div>
+                            <div class="media-body">The benefits of the NRLS</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="row text-center margin-bottom-xlrg">
-            <div class="col-sm-12">
-                <h2 id="chooseYourOrganisation" class="h1 margin-top-lrg margin-bottom-xlrg">Choose your Organisation</h2>
-                <p>The NRLS will be used by two types of users. Consumers who will view the information that the NRLS index will point to and Providers, those who create the records for which the NRLS index points to. There may be the need for a Provider to view or edit the information they have index, and therefore be a Consumer which will also be possible. Examples of Consumers are any personnel who may want to view the information, such as those working within the Ambulance services, whilst Providers are creators of the health records (e.g. care plans), such as those working for a Mental Health Trust.</p>
-                <p><strong>Please select one of the following organisations to start this demonstration.</strong></p>
-            </div>
-        </div>
+                <div class="panel panel-default panel-nrls pull-right">
+                    <div class="panel-body n-text-blue">
+                        <h4 class="n-text-blue"><i class="fa fa-info fa-padding-sqr n-bg-blue n-text-white"></i> Guide Steps</h4>
+                        <div class="media">
+                            <div class="media-left"><b class="badge n-bg-white n-text-blue">Step 1</b></div>
+                            <div class="media-body">Select an Organisation</div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left"><b class="badge n-bg-white n-text-blue">Step 2</b></div>
+                            <div class="media-body">Select a persona from the Organisation</div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left"><b class="badge n-bg-white n-text-blue">Step 3</b></div>
+                            <div class="media-body">Explore what the NRLS means for that persona</div>
+                        </div>
+                    </div>
+                </div>
 
-        <spinner-msg message="Loading Organisations" logic.one-way="orgsLoading"></spinner-msg>
-
-        <div class="row text-center">
-            <div class="col-md-12">
-                <gridtabs route="actor-organisation-personnel" items.one-way="actorOrganisations"></gridtabs>
             </div>
         </div>
 

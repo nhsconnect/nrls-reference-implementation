@@ -20,6 +20,8 @@ body {
     padding: 6px;
     height: 37px;
     overflow: hidden;
+    background-color: $nhsWarmYellow;
+    border-bottom: 2px solid $nhsOrange;
 
     .btn {
         font-size: 0.8em;
@@ -37,7 +39,7 @@ body {
     }
 }
 
-.personnel-container {
+.nrls-select-container {
     position: relative;
     top:0;
     left:0;

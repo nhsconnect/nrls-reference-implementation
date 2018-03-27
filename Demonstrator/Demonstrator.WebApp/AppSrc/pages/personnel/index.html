@@ -1,8 +1,8 @@
 <template>
 
-    <section class="container personnel-container">
-        <h7 if.bind="organisation">${organisation.name}</h7>
-        <h1 class="h1 margin-bottom-xlrg">${heading}<span if.bind="personnel.personnelType != null" class="heading-type"> (${personnel.personnelType})</span> <span>/ How will this affect me?</span> <a if.bind="organisation" class="pull-right btn btn-default" route-href="route: actor-organisation-personnel; params.bind: { routeParamId: organisation.id }"><i class="fa fa-chevron-left"></i> Back</a></h1>
+    <section class="container nrls-select-container">
+        <breadcrumb breadcrumb.one-way="breadcrumb"></breadcrumb>
+        <h1 class="h1 margin-bottom-xlrg">${heading}<span if.bind="personnel.personnelType != null" class="heading-type"> (${personnel.personnelType})</span> <span>/ What does the NRLS mean for me</span></h1>
 
         <div class="row">
             <div class="col-md-7">
@@ -16,7 +16,7 @@
         </div>
 
 
-        <h4 class="margin-bottom-lrg">Example System for a ${personnel.name}</h4>
+        <h4 class="margin-bottom-lrg">Example System for a ${personnel.name} *</h4>
 
         <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
 
@@ -24,9 +24,12 @@
             <p>No Generic Systems to preview</p>
         </div>
 
-        <div repeat.for="csystem of consumerSystems" class="generic-system-container">
-            <compose view-model="../../generic-systems/${csystem.fModule}/index" model.bind="csystem"></compose>
+        <div if.bind="genericSystem" class="generic-system-container">
+            <compose view-model="../../generic-systems/${genericSystem.fModule}/index" model.bind="csystem"></compose>
         </div>
+
+        <div if.bind="genericSystem" class="alert alert-warning"><p><i class="fa fa-exclamation fa-padding-sqr"></i> * Please note these systems are for Demonstration purposes only and do not connect to live systems or retrieve and display real patient data.</p></div>
+
 
         <p if.bind="organisation" class="margin-top-lrg"><a class="pull-right btn btn-default" route-href="route: actor-organisation-personnel; params.bind: { routeParamId: organisation.id }"><i class="fa fa-chevron-left"></i> Back</a></p>
 

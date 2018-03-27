@@ -1,12 +1,20 @@
-﻿.nrls-gridtab {
-    width: 286px;
-    height: 220px;
+﻿
+.grid-tabs-row {
+    width: calc(100% + #{$spacing-large});
+    display: block;
+    margin: 0 0 0 -#{$spacing-large};
+    padding: 0;
+}
+
+.nrls-gridtab {
+    width: 255px;
+    height: 240px;
     overflow: hidden;
     background-color: $nhsPaleGrey;
-    border: 1px solid $nhsPaleGrey;
+    border: 2px solid $nhsMidGrey65;
     display: inline-table;
     border-radius: 14px;
-    margin: 0 $spacing-large $spacing-large $spacing-large;
+    margin: 0 0 $spacing-large $spacing-large;
     padding: 0;
 
     a {
@@ -34,9 +42,12 @@
                 height: 145px;
             }
 
-            &:link,
-            &:visited,
-            &:active {
+            .gridtab-icon {
+                color: $black;
+                font-size: 8em;
+            }
+
+            &:link, &:visited, &:active {
                 color: $nhsDarkGrey;
                 text-decoration: none;
                 outline: none;
@@ -50,6 +61,25 @@
 
                 img {
                     opacity: 0.6;
+                }
+            }
+        }
+    }
+
+    &.nrls-gridtab-faded {
+        border: 2px dashed $nhsMidGrey65;
+
+        a {
+            &.gridtab-link {
+                .gridtab-icon {
+                    color: $nhsDarkGrey80;
+                }
+
+                &:link, &:visited, &:hover, &:active {
+                    background-color: $nhsPaleGrey95;
+                    color: $nhsDarkGrey80;
+                    text-decoration: none;
+                    outline: none;
                 }
             }
         }

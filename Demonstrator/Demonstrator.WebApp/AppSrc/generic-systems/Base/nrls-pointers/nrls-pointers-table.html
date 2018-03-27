@@ -18,6 +18,9 @@
                 <td>${pointer.created | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
                 <td class="action"><button type="button" class="btn btn-primary">View</button></td>
             </tr>
+            <tr if.bind="!pointers || pointers.length == 0">
+                <td colspan="4">No Pointers found for this Patient.</td>
+            </tr>
         </tbody>
     </table>
 </template>

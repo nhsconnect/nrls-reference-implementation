@@ -5,7 +5,7 @@
 
     span {
         color: $nhsDarkGrey;
-        font-size: 0.8em;
+        font-size: 0.75em;
 
         &.heading-type {
             color: $blue;
@@ -45,6 +45,10 @@ p {
     margin: 0 0 $spacing-normal 0;
 }
 
+.n-text-bold {
+    font-weight: bold;
+}
+
 .n-text-small {
     font-size:0.8em;
 }
@@ -55,4 +59,16 @@ p {
 
 .n-text-green {
     color: $green;
+}
+
+.n-text-blue {
+    color: $blue;
+}
+
+.n-text-white {
+    color: $white;
+}
+
+.n-text-red {
+    color: $nhsEmergencyRed;
 }

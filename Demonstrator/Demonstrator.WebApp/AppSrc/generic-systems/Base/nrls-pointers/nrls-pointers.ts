@@ -7,12 +7,12 @@ export class NrlsPointers {
 
     pointers: Array<IPointer> = [];
     pointersLoading: boolean = false;
-    patientId?: string = undefined;
+    patientNhsNumber?: number = undefined;
 
     constructor(private pointerSvc: PointerSvc) { }
 
-    activate(patientId: string) {
-        this.patientId = patientId;
+    activate(patientNhsNumber: number) {
+        this.patientNhsNumber = patientNhsNumber;
     }
 
     attached() {
@@ -20,12 +20,12 @@ export class NrlsPointers {
     }
 
     getPointers() {
-        if (!this.patientId) {
+        if (!this.patientNhsNumber) {
             return;
         }
 
         this.pointersLoading = true;
-        this.pointerSvc.getPointers(this.patientId).then(pointers => {
+        this.pointerSvc.getPointers(this.patientNhsNumber).then(pointers => {
             this.pointers = pointers;
             this.pointersLoading = false;
         });

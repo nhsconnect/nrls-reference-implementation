@@ -6,17 +6,20 @@ import { IPersonnel }           from '../../core/interfaces/IPersonnel';
 import { IGenericSystem }       from '../../core/interfaces/IGenericSystem';
 import { ActorTypes }           from '../../core/models/enums/ActorTypes';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
+import { IBreadcrumb } from '../../core/interfaces/IBreadcrumb';
 
 @inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc)
 export class Personnel {
     heading: string = 'Personnel';
     personnel: IPersonnel;
     organisation: IActorOrganisation;
-    providerSystems: Array<IGenericSystem> = [];
-    consumerSystems: Array<IGenericSystem> = [];
+    //providerSystems: Array<IGenericSystem> = [];
+    //consumerSystems: Array<IGenericSystem> = [];
+    genericSystem: IGenericSystem;
     personnelId: string;
     systemsLoading: boolean = false;
     personnelLoading: boolean = false;
+    breadcrumb: Array<IBreadcrumb> = [];
 
     constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {}
 
@@ -38,7 +41,10 @@ export class Personnel {
     }
 
     private getOrganisation(orgId: string) {
-        this.actorOrganisationSvc.getOne(orgId).then(organisation => this.organisation = organisation);
+        this.actorOrganisationSvc.getOne(orgId).then(organisation => {
+            this.organisation = organisation;
+            this.setBreadcrumb();
+        });
     }
 
     private getSystems() {
@@ -53,18 +59,26 @@ export class Personnel {
 
         if (systems && systems.length > 0) {
 
-            systems.forEach(s => {
+            this.genericSystem = systems[0];
 
-                if (s.actionTypes.indexOf(ActorTypes.Consumer) > -1) {
-                    this.consumerSystems.push(s);
-                }
+            //systems.forEach(s => {
 
-                if (s.actionTypes.indexOf(ActorTypes.Provider) > -1) {
-                    this.providerSystems.push(s);
-                }
-            });
+            //    if (s.actionTypes.indexOf(ActorTypes.Consumer) > -1) {
+            //        this.consumerSystems.push(s);
+            //    }
+
+            //    if (s.actionTypes.indexOf(ActorTypes.Provider) > -1) {
+            //        this.providerSystems.push(s);
+            //    }
+            //});
         }
         
+    }
+
+    private setBreadcrumb(): void {
+        this.breadcrumb.push(<IBreadcrumb>{ title: 'Home', route: 'welcome' });
+        this.breadcrumb.push(<IBreadcrumb>{ title: this.organisation.name, route: 'actor-organisation-personnel', param: this.organisation.id, isBack: true });
+        this.breadcrumb.push(<IBreadcrumb>{ title: 'View Persona', isActive: true });
     }
 
 }

@@ -27,10 +27,10 @@ namespace Demonstrator.WebApp.Controllers
         }
 
         // GET api/Patients/1234
-        [HttpGet("{nhsNumber:int}")]
-        public async Task<IActionResult> GetByNhsNumber(int nhsNumber)
+        [HttpGet("{nhsNumber:regex(^[[0-9]]{{9}}$)}")]
+        public async Task<IActionResult> GetByNhsNumber(string nhsNumber)
         {
-            //Service to get Patient by logical id
+            //Service to get Patient by nhs number
             var patient = await _patientViewServices.GetPatient(nhsNumber);
 
             return Ok(patient);

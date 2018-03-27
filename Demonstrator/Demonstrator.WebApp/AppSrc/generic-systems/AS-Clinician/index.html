@@ -8,7 +8,7 @@
             Try clicking <a href="javascript:void(0)" class="btn btn-primary">View</a> on the example to see what how care plan information may be returned to the user through Direct and Indirect return.
         </p>
 
-        <div class="generic-system-wrapper gs-as-call-handler">
+        <div class="generic-system-wrapper yellow-tooltips gs-as-call-handler">
             <div class="gs-header">
                 <ul class="gs-top-menu">
                     <li><a href="javascript:void(0)" click.delegate="findPatient()">Find a Patient</a></li>
@@ -36,7 +36,7 @@
             </div>
 
             <div if.bind="!showPatientSearch" class="gs-content">
-                <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="patient.id"></compose>
+                <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="patient.nhsNumber"></compose>
             </div>
 
             <div if.bind="showPatientSearch" class="gs-content">

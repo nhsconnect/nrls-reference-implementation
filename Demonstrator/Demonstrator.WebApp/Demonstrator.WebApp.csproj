@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppSrc\core\helpers\converters\bool-filter.ts" />
     <None Remove="AppSrc\core\helpers\converters\date-format.ts" />
+    <None Remove="AppSrc\core\helpers\converters\index - Copy.ts" />
     <None Remove="AppSrc\core\helpers\converters\index.ts" />
     <None Remove="AppSrc\core\helpers\converters\nhs-number.ts" />
+    <None Remove="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
     <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
+    <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <None Remove="AppSrc\core\models\CarePlan.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
     <None Remove="AppSrc\core\interfaces\fhir\IAddress.ts" />
@@ -72,13 +76,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
+    <TypeScriptCompile Include="AppSrc\core\includes.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\nhs-number.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\date-format.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\index.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\converters\bool-filter.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\CarePlan.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IDialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />

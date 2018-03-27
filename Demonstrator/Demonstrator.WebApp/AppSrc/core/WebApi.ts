@@ -1,4 +1,5 @@
 ﻿import { inject } from 'aurelia-framework';
+import { fetch } from 'whatwg-fetch';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './helpers/EventMessages';

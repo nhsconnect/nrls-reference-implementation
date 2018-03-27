@@ -1,5 +1,6 @@
 ﻿export interface IDialog {
     title: string;
-    content: string;
+    details: any;
+    message: string;
     debug: string;
 }

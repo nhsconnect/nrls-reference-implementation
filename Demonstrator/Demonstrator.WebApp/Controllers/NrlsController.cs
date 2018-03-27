@@ -22,14 +22,13 @@ namespace Demonstrator.WebApp.Controllers
         /// <param name="nhsNumber"></param>  
         /// <returns>A list of NRLS Pointers (Constrained FHIR DocumentReference) for a patient specificed by the patient nhs number.</returns>
         /// <response code="200">Returns the NRLS Pointers</response>
-        [HttpGet("{id:int}")]
+        [HttpGet("{nhsNumber:regex(^[[0-9]]{{9}}$)}")]
         [ProducesResponseType(typeof(List<DocumentReference>), 200)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string nhsNumber)
         {
             //validate nhs number
-            //temporarily use id instead of nhs number
 
-            var pointers = await _pointerService.GetPointers(id, null);
+            var pointers = await _pointerService.GetPointers(nhsNumber);
 
             return Ok(pointers);
         }

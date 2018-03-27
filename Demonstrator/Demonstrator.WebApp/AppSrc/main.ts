@@ -1,4 +1,5 @@
 ﻿import { Aurelia } from 'aurelia-framework';
+
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -15,6 +16,7 @@ export async function configure(aurelia: Aurelia) {
         .developmentLogging()
         .plugin('core/helpers/converters/index')
         .plugin('core/helpers/loaders/index')
+        .plugin('core/includes')
         .plugin('aurelia-validation');
 
   // Uncomment the line below to enable animation.

@@ -30,8 +30,8 @@ export class App {
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
             { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
             { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
-            { route: 'actor-organisation/:routeParamId', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Actor Organisation Personnel' },
-            { route: 'personnel/:routeParamId', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Personnel' },
+            { route: 'actor-organisation/:routeParamId', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona' },
+            { route: 'personnel/:routeParamId', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me' },
 
             notFoundRoute
         ]);
@@ -41,7 +41,7 @@ export class App {
 
     showErrorDialog(msg) {
         this.errorDialog = <IDialog> {
-            content: msg.dialog.Details,
+            details: msg.dialog.Details,
             debug: msg.dialog.Diagnostics
         };
     }

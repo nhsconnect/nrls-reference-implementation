@@ -1,4 +1,112 @@
-﻿.nrls-border-img {
+﻿.n-bg-blue {
+    background-color: $blue;
+}
+
+.n-bg-black {
+    background-color: $black;
+}
+
+.n-bg-white {
+    background-color: $white;
+}
+
+.fa-padding-sqr {
+    padding: 3px 9px;
+    border-radius: 2px;
+}
+
+.breadcrumb {
+    color: #768692;
+    width: 100%;
+    position: absolute;
+    top: -15px;
+    left: 0;
+    font-weight: normal;
+    font-size: 0.9em;
+    background-color: transparent;
+
+    b {
+        color: $blue;
+    }
+
+    a {
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+            color: $nhsMidGey;
+            text-decoration: none;
+        }
+    }
+
+    .active {
+        a {
+            &:link,
+            &:visited,
+            &:hover,
+            &:active {
+                color: $blue;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.panel {
+    &.panel-nrls {
+        border-width: 3px;
+        border-color: $nhsPaleGrey;
+    }
+}
+
+.alert-panel {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding-left: $spacing-xxlarge;
+
+    & > i {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+}
+
+.yellow-tooltips {
+    .gs-instructions {
+        font-weight: bold;
+    }
+
+    .tooltip {
+        .tooltip-arrow {
+            border-top-color: $nhsWarmYellow;
+        }
+
+        .tooltip-inner {
+            background-color: $nhsWarmYellow;
+            color: $black;
+            font-size: 1.2em;
+            padding: $spacing-smaller $spacing-small;
+        }
+    }
+}
+
+
+a {
+    &:link,
+    &:visited {
+        color: $blue;
+        text-decoration: underline;
+    }
+
+    &:hover,
+    &:active {
+        color: $nhsMidGey;
+        text-decoration: none;
+    }
+}
+
+.nrls-border-img {
     background-color: $nhsPaleGrey;
     padding: $spacing-normal;
     border-radius: 14px;

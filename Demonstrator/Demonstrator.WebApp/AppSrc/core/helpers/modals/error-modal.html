@@ -6,7 +6,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="dialog.content | sanitizeHTML"></div>
+                    <h4 class="n-text-red">An error has been encountered.</h4>
+                    <div if.bind="dialog.details && dialog.details.Coding">
+                        <span repeat.for="coding of dialog.details.Coding">${coding.DisplayElement.Value}</span>
+                    </div>
+                    <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="dialog.message | sanitizeHTML"></div>
                     <div if.bind="dialog.debug" class="alert alert-danger">
                         <h3>Diagnostics</h3>
                         <div class="nrls-generated-content" innerhtml.bind="dialog.debug | sanitizeHTML"></div>

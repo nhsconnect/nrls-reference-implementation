@@ -1,7 +1,8 @@
 import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
-import { bindable, inject }     from 'aurelia-framework';
+import { bindable, inject } from 'aurelia-framework';
 import { IPersonnel }           from '../../core/interfaces/IPersonnel';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
+import { IBreadcrumb } from '../../core/interfaces/IBreadcrumb';
 
 @inject(ActorOrganisationSvc)
 export class ActorOrganisationPersonnel {
@@ -11,8 +12,11 @@ export class ActorOrganisationPersonnel {
     actorOrgId: string;
     organisationLoading: boolean = false;
     personnelListLoading: boolean = false;
+    breadcrumb: Array<IBreadcrumb> = [];
 
-    constructor(private actorOrgSvc: ActorOrganisationSvc) { }
+    constructor(private actorOrgSvc: ActorOrganisationSvc) {
+        
+    }
 
     activate(params) {
         this.actorOrgId = params.routeParamId;
@@ -25,16 +29,23 @@ export class ActorOrganisationPersonnel {
             this.heading = this.organisation.name;
             this.organisationLoading = false;
 
+            this.setBreadcrumb();
+
             this.getPersonnel();
         });
     }
 
-    private getPersonnel() {
+    private getPersonnel() : void {
         this.personnelListLoading = true;
         this.actorOrgSvc.getPersonnel(this.actorOrgId).then(personnel => {
             this.personnel = personnel;
             this.personnelListLoading = false;
         });
+    }
+
+    private setBreadcrumb() : void {
+        this.breadcrumb.push(<IBreadcrumb>{ title: 'Home', route: 'welcome', isBack: true });
+        this.breadcrumb.push(<IBreadcrumb>{ title: 'Choose a Persona', isActive: true });
     }
 
 }

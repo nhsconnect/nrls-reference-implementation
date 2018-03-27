@@ -2,6 +2,6 @@
 
 export class DateFormatValueConverter {
     toView(value, inFormat, outFormat) {
-        return moment(value, inFormat).format(outFormat);
+        return moment(value, inFormat).isValid() ? moment(value, inFormat).format(outFormat) : "--";
     }
 }
