@@ -1,0 +1,11 @@
+﻿{
+  "NRLSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/nrls/fhir"
+  },
+  "PDSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/pds/fhir"
+  },
+  "ODSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/ods/fhir"
+  }
+}

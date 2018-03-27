@@ -8,6 +8,14 @@ services:
     networks:
       - nrlsdemo-network
 
+  nrlsapiapp:
+    container_name: nrlsapiapp
+    image: nrlsapi
+    ports:
+      - "81:5001"
+    networks:
+      - nrlsdemo-network
+
   nrlsmongodb:
     container_name: nrlsmongodb
     image: nrlsmongodb

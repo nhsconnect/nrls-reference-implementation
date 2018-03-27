@@ -30,7 +30,9 @@ COPY --from=build-env /app/Demonstrator.WebApp/out .
 # Re-Copy shared config. File is lost during transfer from images.
 WORKDIR /app/Shared
 COPY --from=build-env /app/Shared/globalsettings.json .
+COPY --from=build-env /app/Shared/globalsettings.Production.json .
 RUN chmod 644 ./globalsettings.json
+RUN chmod 644 ./globalsettings.Production.json
 
 WORKDIR /app
 

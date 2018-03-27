@@ -26,6 +26,7 @@ namespace Demonstrator.Core.Configuration
             if (!string.IsNullOrEmpty(environmentName))
             {
                 configurationBuilder = configurationBuilder.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
+                configurationBuilder = configurationBuilder.AddJsonFile(Path.Combine(basePath, sharedPath, $"globalsettings.{environmentName}.json"), optional: true);
             }
 
             configuration = configurationBuilder.Build();
