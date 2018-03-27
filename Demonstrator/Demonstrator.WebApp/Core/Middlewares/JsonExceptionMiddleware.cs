@@ -1,11 +1,15 @@
-﻿using Demonstrator.Models.Core.Models;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Models.Core.Models;
+using Demonstrator.Utilities;
+using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using SystemTask = System.Threading.Tasks;
 
 namespace Demonstrator.WebApp.Core.Middlewares
 {
@@ -18,36 +22,53 @@ namespace Demonstrator.WebApp.Core.Middlewares
             _env = env;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async SystemTask.Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             var ex = context.Features.Get<IExceptionHandlerFeature>()?.Error;
             if (ex == null) return;
 
-            var error = new Issue {
-                Details = "An error has occured.",
-                SeverityCode = IssueSeverity.Fatal
+            var ooException = new HttpFhirException();
+            OperationOutcome.IssueComponent fhirIssue = null;
+            var issue = new Issue
+            {
+                Message = "An unkown error has occured."
             };
+
+            if(ex.GetType() == typeof(HttpFhirException))
+            {
+                ooException = ex as HttpFhirException;
+                fhirIssue = ooException.OperationOutcome?.Issue.FirstOrDefault();
+            }
+
+            if (fhirIssue != null)
+            {
+                issue.Message = fhirIssue?.Code.ToString();
+                issue.Severity = EnumHelpers.GetEnum<IssueSeverity>(fhirIssue.Severity.ToString());
+                issue.Details = fhirIssue.Details;
+            }
 
             if (_env.IsDevelopment())
             {
-                error.Details = ex.Message;
-                error.Diagnostics = ex.StackTrace;
+                issue.Diagnostics = $"Message: {ex.Message}. StackTrace: {ex.StackTrace}.";
 
                 if (ex.InnerException != null)
                 {
-                    error.Details = $"{error.Details}";
-                    error.Diagnostics = $"{error.Diagnostics} Inner Exception Stack Trace: {ex.InnerException.StackTrace}";
+                    issue.Diagnostics = $"{issue.Diagnostics}. Inner Exception Stack Trace: {ex.InnerException.StackTrace}";
+                }
+
+                if(fhirIssue != null)
+                {
+                    issue.Diagnostics = fhirIssue?.Diagnostics;
                 }
             }
-
 
             context.Response.ContentType = "application/json";
 
             using (var writer = new StreamWriter(context.Response.Body))
             {
-                new JsonSerializer().Serialize(writer, error);
+                new JsonSerializer().Serialize(writer, issue);
                 await writer.FlushAsync().ConfigureAwait(false);
             }
         }

@@ -1,5 +1,11 @@
 ﻿{
   "NRLSAPI": {
-    "ServerUrl": "http://localhost:8282/hapi-fhir-jpaserver-example/baseDstu3"
+    "ServerUrl": "http://localhost:51913/nrls/fhir"
+  },
+  "PDSAPI": {
+    "ServerUrl": "http://localhost:51913/pds/fhir"
+  },
+  "ODSAPI": {
+    "ServerUrl": "http://localhost:51913/ods/fhir"
   }
 }

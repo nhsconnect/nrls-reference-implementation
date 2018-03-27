@@ -6,7 +6,6 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
 {
     public interface IDocumentReferenceServices
     {
-        SystemTasks.Task<IEnumerable<DocumentReference>> GetPointers(int? nhsNumber = null, string orgCode = null);
-        SystemTasks.Task<Bundle> GetPointersAsBundle(bool includeReferences, int? nhsNumber = null, string orgCode = null);
+        SystemTasks.Task<Bundle> GetPointersAsBundle(string nhsNumber = null, string orgCode = null);
     }
 }

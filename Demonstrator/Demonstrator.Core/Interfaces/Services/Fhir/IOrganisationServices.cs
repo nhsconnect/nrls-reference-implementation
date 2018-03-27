@@ -1,4 +1,5 @@
 ﻿using Hl7.Fhir.Model;
+using System.Collections.Generic;
 using SystemTasks = System.Threading.Tasks;
 
 namespace Demonstrator.Core.Interfaces.Services.Fhir
@@ -7,5 +8,7 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
     {
 
         SystemTasks.Task<Organization> GetOrganisation(string orgCode);
+
+        SystemTasks.Task<List<Organization>> GetOrganisations();
     }
 }

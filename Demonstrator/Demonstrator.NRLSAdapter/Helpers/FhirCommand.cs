@@ -199,10 +199,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("patient"));
                 var custodianParam = _parameters.FirstOrDefault(n => n.Key.Equals("custodian"));
 
-                int nhsNumber;        
-                int? validNhsNumber = int.TryParse(patientParam.Value, out nhsNumber) ? (int?)nhsNumber : null;
-
-                pointers = await _docRefService.GetPointersAsBundle(false, validNhsNumber, custodianParam.Value);
+                pointers = await _docRefService.GetPointersAsBundle(patientParam.Value, custodianParam.Value);
             }
 
             return CommandResult<Bundle>.Set(true, "Success", pointers);
@@ -256,9 +253,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddOptions();
-            serviceCollection.Configure<NrlsApiSetting>(options =>
+            serviceCollection.Configure<ExternalApiSetting>(options =>
             {
-                options.ServerUrl = new Uri(configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.NrlsServerUrl = new Uri(configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.PdsServerUrl = new Uri(configuration.GetSection("PDSAPI:ServerUrl").Value);
+                options.OdsServerUrl = new Uri(configuration.GetSection("ODSAPI:ServerUrl").Value);
             });
             serviceCollection.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             serviceProvider = serviceCollection.BuildServiceProvider();

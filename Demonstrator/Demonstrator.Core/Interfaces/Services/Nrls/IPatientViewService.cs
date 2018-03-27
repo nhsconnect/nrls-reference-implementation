@@ -9,6 +9,6 @@ namespace Demonstrator.Core.Interfaces.Services.Nrls
     {
         SystemTasks.Task<IEnumerable<PatientNumberViewModel>> GetPatientNumbers();
 
-        SystemTasks.Task<PatientViewModel> GetPatient(int nhsNumber);
+        SystemTasks.Task<PatientViewModel> GetPatient(string nhsNumber);
     }
 }

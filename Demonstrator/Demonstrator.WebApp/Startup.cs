@@ -40,9 +40,11 @@ namespace Demonstrator.WebApp
                 options.ConnectionString = Configuration.GetSection("NRLSMongoDb:ConnectionString").Value;
                 options.Database = Configuration.GetSection("NRLSMongoDb:Database").Value;
             });
-            services.Configure<NrlsApiSetting>(options =>
+            services.Configure<ExternalApiSetting>(options =>
             {
-                options.ServerUrl = new Uri(Configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.NrlsServerUrl = new Uri(Configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.PdsServerUrl = new Uri(Configuration.GetSection("PDSAPI:ServerUrl").Value);
+                options.OdsServerUrl = new Uri(Configuration.GetSection("ODSAPI:ServerUrl").Value);
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IActorOrganisationService, ActorOrganisationService>();

@@ -4,6 +4,6 @@
     {
         public string Id { get; set; }
 
-        public int? NhsNumber { get; set; }
+        public string NhsNumber { get; set; }
     }
 }

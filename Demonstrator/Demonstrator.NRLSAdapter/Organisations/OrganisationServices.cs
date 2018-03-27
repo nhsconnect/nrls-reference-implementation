@@ -6,7 +6,9 @@ using Microsoft.Extensions.Options;
 using SystemTasks = System.Threading.Tasks;
 using System.Net;
 using System.Linq;
-
+using Hl7.Fhir.Rest;
+using Demonstrator.NRLSAdapter.Models;
+using System.Collections.Generic;
 
 namespace Demonstrator.NRLSAdapter.Organisations
 {
@@ -14,28 +16,47 @@ namespace Demonstrator.NRLSAdapter.Organisations
     {
         private string _organisationUrlBase;
 
-        public OrganisationServices(IOptions<NrlsApiSetting> nrlsApiSetting)
+        public OrganisationServices(IOptions<ExternalApiSetting> externalApiSetting)
         {
-            _organisationUrlBase = $"{nrlsApiSetting.Value.ServerUrl}/Organization";
+            _organisationUrlBase = $"{externalApiSetting.Value.OdsServerUrl}";
         }
 
         public async SystemTasks.Task<Organization> GetOrganisation(string orgCode)
         {
-            var orgs = await new FhirConnector().RequestMany<Organization>(GetOrgCodeUrl(orgCode));
+            var orgs = await new FhirConnector().RequestMany<Organization>(BuildRequest(orgCode));
 
             return orgs.First();
         }
 
-        private string GetOrgCodeUrl(string orgCode)
+        public async SystemTasks.Task<List<Organization>> GetOrganisations()
         {
-            var parameters = $"identifier={WebUtility.UrlEncode(FhirConstants.SystemOrgCode)}|{orgCode}";
+            var patients = await new FhirConnector().RequestMany<Organization>(BuildRequest(null));
 
-            return GetOrganisationUrl(null, parameters);
+            return patients;
         }
 
-        private string GetOrganisationUrl(string id = null, string parameters = null)
+        private CommandRequest BuildRequest(string orgCode)
         {
-            return $"{_organisationUrlBase}{("/" + id ?? "")}?_format=json{("&" + parameters ?? "")}";
+            var command = new CommandRequest
+            {
+                BaseUrl = _organisationUrlBase,
+                ResourceType = ResourceType.Organization
+            };
+
+            if (!string.IsNullOrEmpty(orgCode))
+            {
+                command.SearchParams = GetParams(orgCode);
+            }
+
+            return command;
+        }
+
+        private SearchParams GetParams(string orgCode)
+        {
+            var searchParams = new SearchParams();
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemOrgCode)}|{orgCode}");
+
+            return searchParams;
         }
     }
 }

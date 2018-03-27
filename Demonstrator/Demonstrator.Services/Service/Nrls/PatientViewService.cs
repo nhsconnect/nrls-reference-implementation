@@ -33,7 +33,7 @@ namespace Demonstrator.Services.Service.Nrls
                 var patientNumber = new PatientNumberViewModel
                 {
                     Id = p.Id,
-                    NhsNumber = !string.IsNullOrEmpty(nhsNumber?.Value) ? int.Parse(nhsNumber.Value) : (int?)null
+                    NhsNumber = nhsNumber?.Value
                 };
 
                 patientNumbers.Add(patientNumber);
@@ -42,11 +42,11 @@ namespace Demonstrator.Services.Service.Nrls
             return await SystemTasks.Task.Run(() => patientNumbers);
         }
 
-        public async SystemTasks.Task<PatientViewModel> GetPatient(int nhsNumber)
+        public async SystemTasks.Task<PatientViewModel> GetPatient(string nhsNumber)
         {
             var patientViewModel = new PatientViewModel();
 
-            var bundle = await _patientService.GetPatientAsBundle(nhsNumber, true);
+            var bundle = await _patientService.GetPatientAsBundle(nhsNumber);
             var entries = bundle.Entry;
 
             var patient = ListEntries<Patient>(entries, ResourceType.Patient).FirstOrDefault();

@@ -1,19 +1,23 @@
-﻿namespace Demonstrator.Models.Core.Models
+﻿using Hl7.Fhir.Model;
+
+namespace Demonstrator.Models.Core.Models
 {
     public class Issue
     { 
         public Issue()
         {
-            SeverityCode = IssueSeverity.Information;
+            Severity = IssueSeverity.Information;
         }
 
-        public string Severity => SeverityCode.ToString();
+        public IssueSeverity Severity { get; set; }
 
-        public IssueSeverity SeverityCode { get; set; }
+        public string SeverityCode => Severity.ToString();
 
-        public string Details { get; set; }
+        public string Message { get; set; }
 
         public string Diagnostics { get; set; }
+
+        public CodeableConcept Details { get; set; }
     }
 
     public enum IssueSeverity

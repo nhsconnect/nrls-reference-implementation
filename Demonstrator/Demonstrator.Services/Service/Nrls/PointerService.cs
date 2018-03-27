@@ -13,36 +13,49 @@ namespace Demonstrator.Services.Service.Nrls
     public class PointerService : BaseService, IPointerService
     {
         private readonly IDocumentReferenceServices _docRefService;
+        private readonly IPatientServices _patientService;
+        private readonly IOrganisationServices _organisationServices;
 
-        public PointerService(IDocumentReferenceServices docRefService)
+        public PointerService(IDocumentReferenceServices docRefService, IPatientServices patientService, IOrganisationServices organisationServices)
         {
             _docRefService = docRefService;
+            _patientService = patientService;
+            _organisationServices = organisationServices;
         }
 
-        public async SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(int? nhsNumber, string orgCode)
+        public async SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(string nhsNumber)
         {
             var pointerViewModels = new List<PointerViewModel>();
 
-            var bundle = await _docRefService.GetPointersAsBundle(true, nhsNumber, orgCode);
-            var entries = bundle.Entry;
+            var pointerBundle = await _docRefService.GetPointersAsBundle(nhsNumber);
+            var pointerEntries = pointerBundle.Entry;
 
-            var pointers = ListEntries<DocumentReference>(entries, ResourceType.DocumentReference);
-            var patients = ListEntries<Patient>(entries, ResourceType.Patient);
-            var organisations = ListEntries<Organization>(entries, ResourceType.Organization);
+            //need a more slick solution for getting related references
+            //we are connecting to NRLS so will only get Pointers back - a complete Fhir server would allow for includes
+            var patients = await _patientService.GetPatients(); //In live this could be lots
+            var organisations = await _organisationServices.GetOrganisations(); //In live this could be lots
 
-            foreach(var pointer in pointers)
+            var pointers = ListEntries<DocumentReference>(pointerEntries, ResourceType.DocumentReference);
+            //var patients = ListEntries<Patient>(entries, ResourceType.Patient); // If we could do includes take from bundle
+            //var organisations = ListEntries<Organization>(entries, ResourceType.Organization); // If we could do includes take from bundle
+
+            foreach (var pointer in pointers)
             {
                 var pointerViewModel = pointer.ToViewModel();
+                var patientNhsNumber = pointerViewModel.Subject?.Reference?.Replace(FhirConstants.SystemPDS, "");
+                var authorOrgCode = pointerViewModel.Author?.Reference?.Replace(FhirConstants.SystemODS, "");
+                var custodianOrgCode = pointerViewModel.Custodian?.Reference?.Replace(FhirConstants.SystemODS, "");
 
                 //This assumes the resource is relative
-                var subject = patients.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Subject?.Id);
+                //In reality it does not make sense to attach a patient because a GET to NRLS should be in the patient context anyway!
+                var subject = patients.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(patientNhsNumber) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemNhsNumber) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(patientNhsNumber)) != null);
                 pointerViewModel.SubjectViewModel = subject?.ToViewModel(null);
 
                 //This assumes the resource is relative
-                var custodian = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Custodian?.Id);
+                var custodian = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(custodianOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(custodianOrgCode)) != null);
                 pointerViewModel.CustodianViewModel = custodian?.ToViewModel(FhirConstants.SystemOrgCode);
 
-                var author = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == pointerViewModel.Author?.Id);
+                var author = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(authorOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(authorOrgCode)) != null);
                 pointerViewModel.AuthorViewModel = author?.ToViewModel(FhirConstants.SystemOrgCode);
 
                 pointerViewModels.Add(pointerViewModel);

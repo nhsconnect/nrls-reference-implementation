@@ -6,6 +6,6 @@ namespace Demonstrator.Core.Interfaces.Services.Nrls
 {
     public interface IPointerService
     {
-        SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(int? nhsNumber, string orgCode);
+        SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(string nhsNumber);
     }
 }

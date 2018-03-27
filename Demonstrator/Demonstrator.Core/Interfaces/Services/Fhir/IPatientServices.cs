@@ -8,6 +8,6 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
     {
         SystemTasks.Task<List<Patient>> GetPatients();
 
-        SystemTasks.Task<Bundle> GetPatientAsBundle(int nhsNumber, bool includes);
+        SystemTasks.Task<Bundle> GetPatientAsBundle(string nhsNumber);
     }
 }

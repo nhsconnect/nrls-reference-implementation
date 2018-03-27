@@ -6,6 +6,8 @@ using Hl7.Fhir.Model;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.NRLSAdapter.Helpers;
+using Hl7.Fhir.Rest;
+using Demonstrator.NRLSAdapter.Models;
 
 namespace Demonstrator.NRLSAdapter.Patients
 {
@@ -13,41 +15,66 @@ namespace Demonstrator.NRLSAdapter.Patients
     {
         private string _patientUrlBase;
 
-        public PatientServices(IOptions<NrlsApiSetting> nrlsApiSetting)
+        public PatientServices(IOptions<ExternalApiSetting> externalApiSetting)
         {
-            _patientUrlBase = $"{nrlsApiSetting.Value.ServerUrl}/Patient";
+            _patientUrlBase = $"{externalApiSetting.Value.PdsServerUrl}";
         }
 
-        public async SystemTasks.Task<Bundle> GetPatientAsBundle(int nhsNumber, bool includes)
+        public async SystemTasks.Task<Bundle> GetPatientAsBundle(string nhsNumber)
         {
-            var patient = await new FhirConnector().RequestOne<Bundle>(GetPatientNhsNumberUrl(nhsNumber, includes));
+            var patient = await new FhirConnector().RequestOne<Bundle>(BuildRequest(nhsNumber));
 
             return patient;
         }
 
+
         public async SystemTasks.Task<List<Patient>> GetPatients()
         {
-            var patients = await new FhirConnector().RequestMany<Patient>(GetPatientUrl());
+            var patients = await new FhirConnector().RequestMany<Patient>(BuildRequest(null));
 
             return patients;
         }
 
-        private string GetPatientNhsNumberUrl(int nhsNumber, bool includes)
+        private CommandRequest BuildRequest(string nhsNumber)
         {
-            var parameters = $"identifier={WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}";
-
-            return GetPatientUrl(null, parameters, includes);
-        }
-
-        private string GetPatientUrl(string id = null, string parameters = null, bool includes = false)
-        {
-            if (includes)
+            var command = new CommandRequest
             {
-                parameters = $"{(parameters + "&" ?? "")}_include=Patient:organization";
+                BaseUrl = _patientUrlBase,
+                ResourceType = ResourceType.Patient
+            };
+
+            if (!string.IsNullOrEmpty(nhsNumber))
+            {
+                command.SearchParams = GetParams(nhsNumber);
             }
 
-            return $"{_patientUrlBase}{("/" + id ?? "")}?_format=json{("&" + parameters ?? "")}";
+            return command;
         }
+
+        private SearchParams GetParams(string nhsNumber)
+        {
+            var searchParams = new SearchParams();
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}");
+
+            return searchParams;
+        }
+
+        //private string GetPatientNhsNumberUrl(string nhsNumber, bool includes)
+        //{
+        //    var parameters = $"identifier={WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}";
+
+        //    return GetPatientUrl(null, parameters, includes);
+        //}
+
+        //private string GetPatientUrl(string id = null, string parameters = null, bool includes = false)
+        //{
+        //    if (includes)
+        //    {
+        //        parameters = $"{(parameters + "&" ?? "")}_include=Patient:organization";
+        //    }
+
+        //    return $"{_patientUrlBase}{("/" + id ?? "")}?_format=json{("&" + parameters ?? "")}";
+        //}
 
     }
 }
