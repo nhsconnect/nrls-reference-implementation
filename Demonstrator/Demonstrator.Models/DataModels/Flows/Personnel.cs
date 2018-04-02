@@ -29,6 +29,10 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public DateTime CreatedOn { get; set; }
 
+        public IList<string> Benefits { get; set; }
+
+        public string BenefitsTitle { get; set; }
+
         public static PersonnelViewModel ToViewModel(Personnel model)
         {
             if (model == null)
@@ -45,7 +49,8 @@ namespace Demonstrator.Models.DataModels.Flows
                 PersonnelType = model.PersonnelType,
                 ActorOrganisationId = model.OrganisationId,
                 SystemIds = model.SystemIds,
-                UsesNrls = model.UsesNrls
+                UsesNrls = model.UsesNrls,
+                Benefits = model.Benefits
             };
 
             return viewModel;

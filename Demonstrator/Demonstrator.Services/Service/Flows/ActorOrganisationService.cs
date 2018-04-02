@@ -44,6 +44,21 @@ namespace Demonstrator.Services.Service.Flows
         {
             try
             {
+                var actorOrganisation = GetModelById(orgId).Result;
+
+                return await actorOrganisation.ToViewModelAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+
+        public async Task<ActorOrganisation> GetModelById(string orgId)
+        {
+            try
+            {
                 var builder = Builders<ActorOrganisation>.Filter;
                 var filters = new List<FilterDefinition<ActorOrganisation>>();
                 filters.Add(builder.Eq(x => x.IsActive, true));
@@ -52,7 +67,7 @@ namespace Demonstrator.Services.Service.Flows
                 var options = new FindOptions<ActorOrganisation, ActorOrganisation>();
                 options.Sort = Builders<ActorOrganisation>.Sort.Ascending(x => x.Name);
 
-                return await _context.ActorOrganisations.FindSync(builder.And(filters), options).FirstOrDefault().ToViewModelAsync();
+                return await _context.ActorOrganisations.FindSync(builder.And(filters), options).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

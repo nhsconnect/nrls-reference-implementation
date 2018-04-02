@@ -4,6 +4,7 @@ using Demonstrator.Models.ViewModels.Flows;
 using DemonstratorTest.Comparer;
 using DemonstratorTest.Data.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -25,7 +26,8 @@ namespace DemonstratorTest.ModelFactory
                 Name = "Ambulance Service",
                 ImageUrl = "....",
                 Context = "Some general context....",
-                OrgCode = "AMSR01"
+                OrgCode = "AMSR01",
+                Benefits = new List<string> { "benefitid" }
             };
 
             Assert.Equal(expectedViewModel, orgViewModel, Comparers.ModelComparer<ActorOrganisationViewModel>());

@@ -1,6 +1,9 @@
 ﻿export function configure(config) {
     config.globalResources([
         '../helpers/gridtabs/gridtabs',
-        '../includes/breadcrumb.html'
+        '../helpers/benefitsdialog/benefitsdialog',
+        '../includes/breadcrumb.html',
+        '../includes/benefits-button.html',
+        '../helpers/modals/benefit-modal'
     ]);
 }

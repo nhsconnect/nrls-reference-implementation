@@ -13,7 +13,7 @@
         width: 100%;
         height: 60px;
         background-color: $white;
-        border-bottom: 1px solid $nhsMidGey;
+        border-bottom: 1px solid $nhsMidGrey;
         padding: 0 $spacing-normal;
 
         .gs-top-menu {
@@ -29,12 +29,12 @@
                 display: inline-block;
                 margin: 0 $spacing-small;
                 padding: 0;
-                color: $nhsMidGey;
+                color: $nhsMidGrey;
                 height: 60px;
                 line-height: 60px;
 
                 a {
-                    color: $nhsMidGey;
+                    color: $nhsMidGrey;
                     text-decoration: none;
                 }
             }
@@ -46,7 +46,7 @@
             height: 60px;
             line-height: 60px;
             text-align: right;
-            color: $nhsMidGey;
+            color: $nhsMidGrey;
             font-size: 1.2em;
             margin: 0;
         }
@@ -56,7 +56,7 @@
         display: block;
         width: 100%;
         height: 60px;
-        background-color: $nhsMidGey;
+        background-color: $nhsMidGrey;
         color: $white;
         line-height: 60px;
         padding: 0 $spacing-large;
@@ -95,7 +95,7 @@
                 line-height: 40px;
 
                 a {
-                    color: $nhsMidGey;
+                    color: $nhsMidGrey;
                     text-decoration: none;
                     display: block;
                     width: 100%;
@@ -137,7 +137,7 @@
     .table {
         &.nrls-pointer-results {
             font-size: 0.9em;
-            border-color: $nhsMidGey !important;
+            border-color: $nhsMidGrey !important;
 
             caption {
                 background-color: $nhsPaleGrey;

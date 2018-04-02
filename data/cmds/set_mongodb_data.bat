@@ -24,9 +24,9 @@ echo "=> Data: MongoDB service running."
 
 REM START Data Import
 
-echo "=> Dropping Personnel, ActorOrganisation, GenericSystem from %MONGODB_APPLICATION_DATABASE%"
+echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits from %MONGODB_APPLICATION_DATABASE%"
 
-mongo admin --eval "db=db.getSiblingDB('%MONGODB_APPLICATION_DATABASE%');db.auth('%MONGODB_APPLICATION_USER%','%MONGODB_APPLICATION_PASS%');db.Personnel.drop();db.ActorOrganisation.drop();db.GenericSystem.drop();quit()"
+mongo admin --eval "db=db.getSiblingDB('%MONGODB_APPLICATION_DATABASE%');db.auth('%MONGODB_APPLICATION_USER%','%MONGODB_APPLICATION_PASS%');db.Personnel.drop();db.ActorOrganisation.drop();db.GenericSystem.drop();db.Benefits.drop();quit()"
 
 echo "=> Dropping Patient, Organization, DocumentReference from %MONGODB_NRLS_DATABASE%"
 
@@ -43,6 +43,9 @@ echo "=> GenericSystem IMPORTED"
 
 mongoimport -c Personnel -d %MONGODB_APPLICATION_DATABASE% -u %MONGODB_APPLICATION_USER% -p %MONGODB_APPLICATION_PASS% --mode insert --file %~dp0..\defaultdata\Personnel.json
 echo "=> Personnel IMPORTED" 
+
+mongoimport -c Benefits -d %MONGODB_APPLICATION_DATABASE% -u %MONGODB_APPLICATION_USER% -p %MONGODB_APPLICATION_PASS% --mode insert --file %~dp0..\defaultdata\Benefits.json
+echo "=> Benefits IMPORTED" 
 
 mongoimport -c Patient -d %MONGODB_NRLS_DATABASE% -u %MONGODB_NRLS_USER% -p %MONGODB_NRLS_PASS% --mode insert --file %~dp0..\defaultdata\Patient.json
 echo "=> Patient IMPORTED" 

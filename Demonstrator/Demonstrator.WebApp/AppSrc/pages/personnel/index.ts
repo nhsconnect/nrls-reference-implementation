@@ -7,8 +7,9 @@ import { IGenericSystem }       from '../../core/interfaces/IGenericSystem';
 import { ActorTypes }           from '../../core/models/enums/ActorTypes';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 import { IBreadcrumb } from '../../core/interfaces/IBreadcrumb';
+import { BenefitsSvc } from '../../core/services/BenefitsService';
 
-@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc)
+@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc, BenefitsSvc)
 export class Personnel {
     heading: string = 'Personnel';
     personnel: IPersonnel;
@@ -20,8 +21,12 @@ export class Personnel {
     systemsLoading: boolean = false;
     personnelLoading: boolean = false;
     breadcrumb: Array<IBreadcrumb> = [];
+    benefitsFor: string;
+    benefitsForId: string;
+    hasBenefits: boolean = false;
 
-    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {}
+    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc,
+        private genericSystemSvc: GenericSystemSvc, private benefitsSvc: BenefitsSvc) { }
 
     activate(params) {
         this.personnelId = params.routeParamId;
@@ -44,6 +49,26 @@ export class Personnel {
         this.actorOrganisationSvc.getOne(orgId).then(organisation => {
             this.organisation = organisation;
             this.setBreadcrumb();
+
+            this.setBenefits();
+        });
+    }
+
+    private setBenefits() {
+        this.benefitsSvc.hasFor("Personnel", this.personnel.id).then(hasBenefits => {
+
+            if (hasBenefits) {
+
+                this.benefitsFor = "Personnel";
+                this.benefitsForId = this.personnel.id;
+            } else {
+
+                // The assumtion is that an organisation will always have benefits
+                this.benefitsFor = "ActorOrganisation";
+                this.benefitsForId = this.organisation.id;
+            }
+
+            this.hasBenefits = true;
         });
     }
 

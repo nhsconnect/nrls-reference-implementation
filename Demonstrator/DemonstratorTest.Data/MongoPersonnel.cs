@@ -23,7 +23,8 @@ namespace DemonstratorTest.Data.Helpers
                         OrganisationId = "5a82f9ffcb969daa58d33377",
                         SystemIds = new List<string> { "5a8417338317338c8e0809e5" },
                         IsActive = true,
-                        CreatedOn = DateTime.Parse("2018-02-08T10:00:00")
+                        CreatedOn = DateTime.Parse("2018-02-08T10:00:00"),
+                        Benefits = new List<string> { "benefitid" }
                     }
                 };
             }

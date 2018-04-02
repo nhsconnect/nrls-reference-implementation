@@ -40,5 +40,13 @@ namespace Demonstrator.Database
                 return _database.GetCollection<Personnel>("Personnel");
             }
         }
+
+        public IMongoCollection<Benefit> Benefits
+        {
+            get
+            {
+                return _database.GetCollection<Benefit>("Benefits");
+            }
+        }
     }
 }

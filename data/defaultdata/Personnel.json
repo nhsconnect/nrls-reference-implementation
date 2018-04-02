@@ -48,7 +48,9 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator"
+    "PersonnelType": "Care Co-ordinator",
+    "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
+    "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
 {
     "_id": {
@@ -82,7 +84,9 @@
     },
     "SystemIds": [
         "5a8daa86952e372cbdb317ff"
-    ]
+    ],
+    "BenefitsTitle": "As a Paramedic, NRLS will benefit me by",
+    "Benefits": ["5abcc3a284c20a48414e34b7"]
 }
 {
     "_id": {
@@ -100,7 +104,9 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator"
+    "PersonnelType": "Care Co-ordinator",
+    "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
+    "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
 {
     "_id": {
@@ -118,7 +124,9 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator"
+    "PersonnelType": "Care Co-ordinator",
+    "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
+    "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
 {
     "_id": {
@@ -136,7 +144,9 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator"
+    "PersonnelType": "Care Co-ordinator",
+    "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
+    "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
 {
     "_id": {
@@ -154,4 +164,21 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31800"
     ]
+}
+{
+    "_id": {
+        "$oid": "5ababf89fd9330c68e94aa2c"
+    },
+    "Name": "Patient",
+    "ImageUrl": "",
+    "Context": "",
+    "UsesNrls": false,
+    "OrganisationId": "5ababfb3fd9330c68e94aa2d",
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-02-08T10:00:00.000Z"
+    },
+    "SystemIds": [],
+    "BenefitsTitle": "As a patient NRLS will benefit me by",
+    "Benefits": ["5abcba643dfa81324eb14085","5abcba7c3dfa81324eb14086","5abcba873dfa81324eb14087","5abcba903dfa81324eb14088","5abcba993dfa81324eb14089","5abcba9e3dfa81324eb1408a","5abcbaa73dfa81324eb1408b"]
 }

@@ -22,7 +22,8 @@ namespace DemonstratorTest.Data.Helpers
                         Context = "Some general context....",
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00"),
-                        OrgCode = "AMSR01"
+                        OrgCode = "AMSR01",
+                        Benefits = new List<string> { "benefitid" }
                     }
                 };
             }

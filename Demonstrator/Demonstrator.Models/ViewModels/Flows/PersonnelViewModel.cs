@@ -20,5 +20,7 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         public string ActorOrganisationId { get; set; }
 
+        public IList<string> Benefits { get; set; }
+
     }
 }

@@ -22,5 +22,17 @@
                 color: $black;
             }
         }
+
+        &.btn-info {
+            background-color: $nhsBlue;
+            border-color: $nhsBlue120;
+            color: $white;
+
+            &:hover {
+                background-color: $nhsDarkBlue;
+                border-color: $nhsDarkBlue;
+                color: $white;
+            }
+        }
     }
 }

@@ -1,0 +1,260 @@
+{
+    "_id": {
+        "$oid": "5ababc7ffd9330c68e94aa28"
+    },
+    "Text": "Knowing a patient may be in crisis sooner, so that I can provide them with the appropriate care at the right time and place",
+    "Categories": ["Efficiency", "Safety"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ababca6fd9330c68e94aa29"
+    },
+    "Text": "Keeping in contact with emergency services to proactively support people who are frequent attenders at A&E",
+    "Categories": ["Health", "Safety"],
+    "Order": 2,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ababcaefd9330c68e94aa2a"
+    },
+    "Text": "Improved patient safety",
+    "Categories": ["Safety"],
+    "Order": 3,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ababcb8fd9330c68e94aa2b"
+    },
+    "Text": "Improved (MH) outcomes for this cohort",
+    "Categories": ["Efficiency"],
+    "Order": 4,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0d784c20a48414e34a9"
+    },
+    "Text": "Improving services for people with mental health needs who present to Emergency services",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0d884c20a48414e34aa"
+    },
+    "Text": "Saving money by avoiding duplicate care",
+    "Categories": ["Financial"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0d884c20a48414e34ab"
+    },
+    "Text": "Supporting safeguarding by sharing alerts/information across unscheduled care settings",
+    "Categories": ["Safety"],
+    "Order": 2,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0d984c20a48414e34ac"
+    },
+    "Text": "Supporting more accurate understanding of local populations, allowing services to be designed more effectively around individuals’ needs",
+    "Categories": ["Efficiency"],
+    "Order": 3,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0d984c20a48414e34ad"
+    },
+    "Text": "Supporting the service improvements required to meet the 2017 – 2019 CQUIN: Improving services for people with mental health needs who present to Emergency services",
+    "Categories": ["Health"],
+    "Order": 4,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0da84c20a48414e34ae"
+    },
+    "Text": "Supporting the identification of the most intensive users of local emergency physical and mental health services and improved understanding of their health and care needs and joint review / creation of personalised care plans for this cohort",
+    "Categories": ["Health", "Efficiency"],
+    "Order": 5,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0da84c20a48414e34af"
+    },
+    "Text": "Improving appropriate health care usage, reducing avoidable pressures on emergency services",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 6,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0da84c20a48414e34b0"
+    },
+    "Text": "Improving appropriate health and social outcomes for this cohort",
+    "Categories": ["Safety", "Health"],
+    "Order": 7,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0db84c20a48414e34b1"
+    },
+    "Text": "Improving experience of health and care services for this cohort, including reduced stigma through increased staff education and awareness",
+    "Categories": ["Safety", "Health"],
+    "Order": 8,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0db84c20a48414e34b2"
+    },
+    "Text": "Improving data quality and recording of mental health need in emergency services",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 9,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0db84c20a48414e34b3"
+    },
+    "Text": "Improving integrated care pathways across providers, including timely communication and collaboration between acute trusts, mental health providers, ambulance services, primary care, social care, public health (drug/alcohol services) and the voluntary sector; and",
+    "Categories": ["Safety", "Efficiency", "Financial"],
+    "Order": 10,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0dc84c20a48414e34b4"
+    },
+    "Text": "Joint governance and working between various providers will provide a better picture of local needs and demand, which can inform commissioning",
+    "Categories": ["Efficiency", "Financial"],
+    "Order": 11,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc0dc84c20a48414e34b5"
+    },
+    "Text": "Establishing an evidence base that can be easily audited to give a view of the impact of change in services to meet the needs of the frequent attenders",
+    "Categories": ["Efficiency", "Financial"],
+    "Order": 11,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba643dfa81324eb14085"
+    },
+    "Text": "Spending less time in an inappropriate setting (eg A&E, Police custody)",
+    "Categories": ["Health", "Safety", "Efficiency"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba7c3dfa81324eb14086"
+    },
+    "Text": "Receiving care in a more appropriate setting",
+    "Categories": ["Health", "Safety"],
+    "Order": 2,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba873dfa81324eb14087"
+    },
+    "Text": "Being able to be in contact with people who are familiar with my condition and crisis plan, which may reduce distress and enable me to receive care at the point of crisis and avert emergency care",
+    "Categories": ["Health", "Safety"],
+    "Order": 3,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba903dfa81324eb14088"
+    },
+    "Text": "Receiving appropriate care for my condition in a timely fashion",
+    "Categories": ["Efficiency"],
+    "Order": 4,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba993dfa81324eb14089"
+    },
+    "Text": "Improved communications about my care between partner organisations",
+    "Categories": ["Efficiency"],
+    "Order": 5,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcba9e3dfa81324eb1408a"
+    },
+    "Text": "Avoiding the need for me to provide the same information multiple times",
+    "Categories": ["Efficiency"],
+    "Order": 6,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcbaa73dfa81324eb1408b"
+    },
+    "Text": "Improving my outcomes",
+    "Categories": ["Health"],
+    "Order": 7,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc3a284c20a48414e34b7"
+    },
+    "Text": "Improving my understanding of an individual’s condition, enabling me to provide them with a personalised treatment plan",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5abcc42b84c20a48414e34b8"
+    },
+    "Text": "Improving patient safety by making patient record information more readily available",
+    "Categories": ["Safety"],
+    "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}

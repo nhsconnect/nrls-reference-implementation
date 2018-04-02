@@ -1,26 +1,39 @@
 $nhsBlue: #005EB8;
 $nhsDarkBlue: #003087;
 $nhsBrightBlue: #0072CE;
+$nhsLightBlue: #41B6E6;
 
+$nhsBlue120: darken($nhsBlue, 10%);
 $nhsBlue80: lighten($nhsBlue, 20%);
 $nhsBlue60: lighten($nhsBlue, 40%);
+$nhsLightBlue120: darken($nhsLightBlue, 20%);
+$nhsLightBlue80: lighten($nhsLightBlue, 20%);
 
 $nhsBlack: #231f20;
 $nhsDarkGrey: #425563;
-$nhsMidGey: #768692;
+$nhsMidGrey: #768692;
 $nhsPaleGrey: #E8EDEE;
 
 $nhsDarkGrey80: lighten($nhsDarkGrey, 20%);
-$nhsMidGrey65: lighten($nhsMidGey, 35%);
+$nhsMidGrey65: lighten($nhsMidGrey, 35%);
 $nhsPaleGrey95: lighten($nhsPaleGrey, 5%);
+$nhsPaleGrey90: lighten($nhsPaleGrey, 10%);
+$nhsPaleGrey75: lighten($nhsPaleGrey, 25%);
 
-$nhsLightGreen: #78BE20;
+$nhsYellow: #FAE100;
 $nhsWarmYellow: #FFB81C;
 $nhsOrange: #ED8B00;
 $nhsEmergencyRed: #DA291C;
+$nhsDarkGreen: #006747;
+$nhsGreen: #009639;
+$nhsLightGreen: #78BE20;
+$nhsPink: #AE2573;
+
+$nhsGreen105: darken($nhsGreen, 5%);
+$nhsGreen80: lighten($nhsGreen, 20%);
 
 $black: $nhsBlack; 
 $white: #FFFFFF;
 $blue: $nhsBlue;
-$grey: $nhsMidGey;
+$grey: $nhsMidGrey;
 $green: $nhsLightGreen;

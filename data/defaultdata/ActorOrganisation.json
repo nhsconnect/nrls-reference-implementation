@@ -10,7 +10,9 @@
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
     },
-    "OrgCode": "MHT01"
+    "OrgCode": "MHT01",
+    "Benefits": ["5abcc0d784c20a48414e34a9","5abcc0d884c20a48414e34aa","5abcc0d884c20a48414e34ab","5abcc0d984c20a48414e34ac","5abcc0d984c20a48414e34ad","5abcc0da84c20a48414e34ae","5abcc0da84c20a48414e34af","5abcc0da84c20a48414e34b0","5abcc0db84c20a48414e34b1","5abcc0db84c20a48414e34b2","5abcc0db84c20a48414e34b3","5abcc0dc84c20a48414e34b4","5abcc0dc84c20a48414e34b5"],
+    "BenefitsTitle": "As a Mental Health Trust, the NRLS will benefit us by"
 }
 {
     "_id": {
@@ -24,5 +26,7 @@
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
     },
-    "OrgCode": "AMS01"
+    "OrgCode": "AMS01",
+    "Benefits": ["5abcc42b84c20a48414e34b8", "5abcc0d984c20a48414e34ac"],
+    "BenefitsTitle": "As an Ambulance Trust, NRLS will benefit us by"
 }

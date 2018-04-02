@@ -54,7 +54,9 @@ namespace Demonstrator.WebApp
             services.AddTransient<IOrganisationServices, OrganisationServices>();
             services.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             services.AddTransient<IPointerService, PointerService>();
-            services.AddTransient<IPatientViewService, PatientViewService>();
+            services.AddTransient<IPatientViewService, PatientViewService>(); 
+            services.AddTransient<IBenefitsService, BenefitsService>(); 
+            services.AddTransient<IBenefitsViewService, BenefitsViewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

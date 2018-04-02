@@ -4,6 +4,7 @@ using Demonstrator.Utilities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace Demonstrator.Models.DataModels.Flows
 {
@@ -26,6 +27,10 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public DateTime CreatedOn { get; set; }
 
+        public IList<string> Benefits { get; set; }
+
+        public string BenefitsTitle { get; set; }
+
         public static ActorOrganisationViewModel ToViewModel(ActorOrganisation model)
         {
             if (model == null)
@@ -40,7 +45,8 @@ namespace Demonstrator.Models.DataModels.Flows
                 ImageUrl = model.ImageUrl,
                 Name = model.Name,
                 OrgCode = model.OrgCode,
-                Type = EnumHelpers.GetEnum<ActorType>(model.Type)
+                Type = EnumHelpers.GetEnum<ActorType>(model.Type),
+                Benefits = model.Benefits
             };
 
             return viewModel;

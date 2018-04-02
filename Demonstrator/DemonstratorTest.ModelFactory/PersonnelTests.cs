@@ -26,7 +26,8 @@ namespace DemonstratorTest.ModelFactory
                 Context = "Some general context....",
                 UsesNrls = true,
                 ActorOrganisationId = "5a82f9ffcb969daa58d33377",
-                SystemIds = new List<string> { "5a8417338317338c8e0809e5" }                
+                SystemIds = new List<string> { "5a8417338317338c8e0809e5" },
+                Benefits = new List<string> { "benefitid" }
             };
 
             Assert.Equal(expectedViewModel, viewModel, Comparers.ModelComparer<PersonnelViewModel>());

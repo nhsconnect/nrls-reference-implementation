@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Models.Core.Enums;
+using System.Collections.Generic;
 
 namespace Demonstrator.Models.ViewModels.Flows
 {
@@ -17,6 +18,8 @@ namespace Demonstrator.Models.ViewModels.Flows
         public string Context { get; set; }
 
         public string OrgCode { get; set; }
+
+        public IList<string> Benefits { get; set; }
 
     }
 }

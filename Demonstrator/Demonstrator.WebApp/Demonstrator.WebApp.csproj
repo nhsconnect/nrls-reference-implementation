@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <None Remove="AppSrc\core\helpers\converters\bool-filter.ts" />
     <None Remove="AppSrc\core\helpers\converters\date-format.ts" />
     <None Remove="AppSrc\core\helpers\converters\index - Copy.ts" />
@@ -14,8 +15,11 @@
     <None Remove="AppSrc\core\helpers\converters\nhs-number.ts" />
     <None Remove="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
+    <None Remove="AppSrc\core\helpers\modals\benefit-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
     <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
+    <None Remove="AppSrc\core\interfaces\IBenefitDialog.ts" />
+    <None Remove="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <None Remove="AppSrc\core\models\CarePlan.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
@@ -38,6 +42,7 @@
     <None Remove="AppSrc\core\models\IPatientNumber.ts" />
     <None Remove="AppSrc\core\models\IPersonnel.ts" />
     <None Remove="AppSrc\core\models\IPointer.ts" />
+    <None Remove="AppSrc\core\services\BenefitsService.ts" />
     <None Remove="AppSrc\core\services\GenericSystemService.ts" />
     <None Remove="AppSrc\core\services\PatientService.ts" />
     <None Remove="AppSrc\core\services\PersonnelService.ts" />
@@ -76,7 +81,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\modals\benefit-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\includes.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\nhs-number.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\date-format.ts" />
@@ -86,6 +93,8 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitMenu.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitDialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\CarePlan.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IDialog.ts" />
@@ -111,6 +120,7 @@
     <TypeScriptCompile Include="AppSrc\core\interfaces\IPersonnel.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IActorOrganisation.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\BenefitsService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PointerService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PatientService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />

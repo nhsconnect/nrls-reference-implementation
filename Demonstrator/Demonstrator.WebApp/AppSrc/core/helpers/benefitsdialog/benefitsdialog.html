@@ -1,0 +1,64 @@
+﻿<template>
+    <div class="benefits-app-wrapper ${withmenu === true ? 'benefits-app-wrapper-with-menu' : ''} ${ispopup === true ? 'benefits-app-wrapper-popup' : 'benefits-app-wrapper-inline'}">
+        <div show.bind="withmenu === true" class="benefits-menu">
+            <spinner-msg message="Menu Benefits" logic.one-way="menuLoading"></spinner-msg>
+            <div show.bind="benefitMenu" class="benefits-menu-wrapper">
+                <div class="b-menu-instructions">
+                    <p>Select from below to explore NRLS Benefits</p>
+                </div>
+                <div class="panel-group" role="tablist">
+                    <div repeat.for="menuItem of benefitMenu.menuItems" class="panel panel-default ${$parent.benefitforid === menuItem.id ? 'nrls-panel-active' : ''}">
+                        <div class="panel-heading b-menu-parent" role="tab" id="${menuItem.id}">
+                            <h4 class="panel-title">
+                                <a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(menuItem.type, menuItem.id)"> ${menuItem.title} <i class="fa fa-angle-right"></i></a> <a show.bind="menuItem.children && menuItem.children.length > 0" href="#${menuItem.id}_children" class="btn btn-default b-menu-parent-btn pull-right" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="${menuItem.id}_children"><i class="fa fa-angle-down b-menu-parent-icon-up"></i><i class="fa fa-angle-up b-menu-parent-icon-down"></i></a>
+                            </h4>
+                        </div>
+                        <div show.bind="menuItem.children && menuItem.children.length > 0" class="panel-collapse collapse ${$index === 0 ? 'in' : ''}" role="tabpanel" id="${menuItem.id}_children" aria-labelledby="${menuItem.id}" aria-expanded="true">
+                            <ul class="list-group">
+                                <li class="list-group-item  b-menu-child" repeat.for="child of menuItem.children"><a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(child.type, child.id)">- ${child.title} <i class="fa fa-angle-right"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div show.bind="benefitsLoading" class="benefit-loader-container">
+            <spinner-msg message="Loading Benefits" logic.one-way="benefitsLoading"></spinner-msg>
+        </div>
+        <div show.bind="benefitdialog && !benefitsLoading" class="benefits-container">
+            <div class="benefit-title">
+                <h4>
+                    <i class="fa fa-check-circle b-title-icon"></i> ${benefitdialog.benefitsTitle}
+                </h4>
+                <button if.bind="ispopup === true" type="button" class="close b-close-btn" data-dismiss="modal" aria-label="Close"><i class="fa fa-times b-close-icon"></i></button>
+            </div>
+            <div class="benefit-types">
+                <a if.bind="benefitdialog.hasEfficiency" href="javascript:void(0)" click.delegate="changeType('Efficiency')" class="b-type-link b-pink-link ${benefitTypeClass} ${activeBenefit === 'Efficiency' ? 'b-type-link-active' : ''}"><span class="b-type-title">Efficiency</span><i class="fa fa-clock-o b-type-icon"></i></a>
+                <a if.bind="benefitdialog.hasFinancial" href="javascript:void(0)" click.delegate="changeType('Financial')" class="b-type-link ${benefitTypeClass}  ${activeBenefit === 'Financial' ? 'b-type-link-active' : ''} b-gold-link"><span class="b-type-title">Financial</span><i class="fa fa-gbp b-type-icon"></i></a>
+                <a if.bind="benefitdialog.hasHealth" href="javascript:void(0)" click.delegate="changeType('Health')" class="b-type-link ${benefitTypeClass} ${activeBenefit === 'Health' ? 'b-type-link-active' : ''} b-red-link"><span class="b-type-title">Health</span><i class="fa fa-heartbeat b-type-icon"></i></a>
+                <a if.bind="benefitdialog.hasSafety" href="javascript:void(0)" click.delegate="changeType('Safety')" class="b-type-link ${benefitTypeClass} ${activeBenefit === 'Safety' ? 'b-type-link-active' : ''} b-yellow-link"><span class="b-type-title">Safety</span><i class="fa fa-shield b-type-icon"></i></a>
+            </div>
+            <div class="benefit-slide-container">
+                <a href="javascript:void(0)" click.delegate="prevBenefit()" class="b-nav-link"><i class="fa fa-angle-left b-nav-icon"></i></a>
+                <a href="javascript:void(0)" click.delegate="nxtBenefit()" class="b-nav-link b-nav-link-right"><i class="fa fa-angle-right b-nav-icon"></i></a>
+                <i class="fa fa-quote-left b-text-icon"></i>
+                <i class="fa fa-quote-right b-text-icon b-text-icon-right"></i>
+
+                <div class="benefit-pin-wrapper">
+                    <a repeat.for="benefit of benefitdialog.benefits[activeBenefit]" href="javascript:void(0)" click.delegate="showBenefit($index)" class="b-pin-link ${($index === currentBenefit) ? 'b-pin-link-active' : ''}">&nbsp;</a>
+                </div>
+
+                <div class="benefit-slide-wrapper">
+                    <div repeat.for="benefit of benefitdialog.benefits[activeBenefit]" class="benefit-slide ${($index === currentBenefit) ? 'benefit-slide-active' : ''} ${($index > currentBenefit) ? 'benefit-slide-hide' : ''}">
+                        <span class="benefit-text">${benefit.text}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="benefit-footer">
+                <a if.bind="ispopup === true" class="btn btn-default b-more-btn b-more-btn-right" data-dismiss="modal" aria-label="Close" route-href="route: about;">See More NRLS Benefits</a>
+            </div>
+        </div>
+    </div>
+
+</template>

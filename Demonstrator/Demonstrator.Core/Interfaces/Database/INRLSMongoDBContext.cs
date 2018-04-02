@@ -10,5 +10,7 @@ namespace Demonstrator.Core.Interfaces.Database
         IMongoCollection<GenericSystem> GenericSystems { get; }
 
         IMongoCollection<Personnel> Personnel { get; }
+
+        IMongoCollection<Benefit> Benefits { get; }
     }
 }
