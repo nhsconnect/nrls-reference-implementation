@@ -46,11 +46,11 @@ export class WebAPI {
                     request(request) {
                         //let authHeader = fakeAuthService.getAuthHeaderValue(request.url);
                         //request.headers.append('Authorization', authHeader);
-                        console.log(`Requesting ${request.method} ${request.url}`);
+                        //console.log(`Requesting ${request.method} ${request.url}`);
                         return request;
                     },
                     response(response) {
-                        console.log(`Received ${response.status} ${response.url}`);
+                        //console.log(`Received ${response.status} ${response.url}`);
                         return response;
                     }
                 });

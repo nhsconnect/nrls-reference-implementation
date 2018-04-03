@@ -19,6 +19,10 @@ export class NrlsPointers {
         this.getPointers();
     }
 
+    //showPopup(e: JQueryEventObject) {
+    //    $(e.currentTarget).popover('toggle');
+    //}
+
     getPointers() {
         if (!this.patientNhsNumber) {
             return;

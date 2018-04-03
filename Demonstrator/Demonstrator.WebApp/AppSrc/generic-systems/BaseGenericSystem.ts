@@ -3,18 +3,21 @@ import { bindable, inject, observable } from 'aurelia-framework';
 import { IPatientNumber } from "../core/interfaces/IPatientNumber";
 import { IPatient } from '../core/interfaces/IPatient';
 import { ValidationControllerFactory, validateTrigger } from 'aurelia-validation';
+import { EprSvc } from '../core/services/EprService';
 
-@inject(PatientSvc, ValidationControllerFactory)
+@inject(PatientSvc, EprSvc, ValidationControllerFactory)
 export class BaseGenericSystem {
 
     vdController: any;
+
+    @observable
     protected patient?: IPatient;
     patientLoading: boolean = false;
 
     @observable
     selectedPatient: string;
 
-    constructor(private patientSvc: PatientSvc, private validationControllerFactory: ValidationControllerFactory) {
+    constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory) {
         this.vdController = validationControllerFactory.createForCurrentScope();
         this.vdController.validateTrigger = validateTrigger.manual;
     }

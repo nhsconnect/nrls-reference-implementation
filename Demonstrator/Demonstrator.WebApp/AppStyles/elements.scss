@@ -10,6 +10,14 @@
     background-color: $white;
 }
 
+.n-bg-pale-grey {
+    background-color: $nhsPaleGrey;
+}
+
+.hz-dark-grey {
+    border-top-color: $nhsMidGrey;
+}
+
 .fa-padding-sqr {
     padding: 3px 9px;
     border-radius: 2px;
@@ -49,6 +57,14 @@
                 font-weight: bold;
             }
         }
+    }
+}
+
+.form-control {
+    &.no-border {
+        border: none;
+        box-shadow: none;
+        resize: none;
     }
 }
 

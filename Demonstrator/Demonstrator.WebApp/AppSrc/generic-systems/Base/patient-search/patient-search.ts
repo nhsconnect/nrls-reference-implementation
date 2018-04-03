@@ -9,6 +9,7 @@ export class PatientSearch {
     nhsNumbersLoading: boolean = false;
     patientLoading: boolean = false;
     @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient: string;
+    currentPatient: string;
 
     constructor(private patientSvc: PatientSvc) { }
 
@@ -22,6 +23,7 @@ export class PatientSearch {
 
     setPatient() {
         this.patientLoading = true;
+        this.selectedPatient = this.currentPatient;
     }
 
     detached() {

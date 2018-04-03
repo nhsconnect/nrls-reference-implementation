@@ -72,3 +72,11 @@ p {
 .n-text-red {
     color: $nhsEmergencyRed;
 }
+
+.n-text-normal {
+    font-weight: normal;
+
+    > label {
+        font-weight: normal;
+    }
+}

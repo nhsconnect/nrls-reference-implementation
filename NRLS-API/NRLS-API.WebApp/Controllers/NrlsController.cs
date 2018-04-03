@@ -43,6 +43,7 @@ namespace NRLS_API.WebApp.Controllers
         [HttpPost("{resourceType}")]
         public void Create(string resourceType, [FromBody]Resource resource)
         {
+            var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request);
         }
 
         // PUT fhir/DocumentReference/5

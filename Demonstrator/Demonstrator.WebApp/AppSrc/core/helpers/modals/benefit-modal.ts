@@ -7,8 +7,6 @@ export class BenefitModalCustomElement {
     //benefitforid: string;
 
     attached() {
-        console.log(this.benefitforid, this.benefitfor);
-
     }
 
     loadBenefitModal() {

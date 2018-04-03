@@ -24,6 +24,7 @@ export class Personnel {
     benefitsFor: string;
     benefitsForId: string;
     hasBenefits: boolean = false;
+    systemModel: any = {};
 
     constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc,
         private genericSystemSvc: GenericSystemSvc, private benefitsSvc: BenefitsSvc) { }
@@ -40,6 +41,8 @@ export class Personnel {
             this.heading = this.personnel.name;
             this.personnelLoading = false;
 
+            this.systemModel.personnel = this.personnel;
+
             this.getOrganisation(this.personnel.actorOrganisationId);
             this.getSystems();
         });      
@@ -49,6 +52,8 @@ export class Personnel {
         this.actorOrganisationSvc.getOne(orgId).then(organisation => {
             this.organisation = organisation;
             this.setBreadcrumb();
+
+            this.systemModel.organisation = this.organisation;
 
             this.setBenefits();
         });
@@ -85,6 +90,8 @@ export class Personnel {
         if (systems && systems.length > 0) {
 
             this.genericSystem = systems[0];
+
+            this.systemModel.genericSystem = this.genericSystem;
 
             //systems.forEach(s => {
 

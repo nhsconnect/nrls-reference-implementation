@@ -4,6 +4,7 @@
         '../helpers/benefitsdialog/benefitsdialog',
         '../includes/breadcrumb.html',
         '../includes/benefits-button.html',
-        '../helpers/modals/benefit-modal'
+        '../helpers/modals/benefit-modal',
+        '../helpers/popover'
     ]);
 }

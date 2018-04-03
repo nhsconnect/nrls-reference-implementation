@@ -3,6 +3,7 @@ using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.ViewModels.Factories;
 using Demonstrator.Models.ViewModels.Nrls;
 using Demonstrator.NRLSAdapter.Helpers;
+using Demonstrator.Services.Service.Base;
 using Hl7.Fhir.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using SystemTasks = System.Threading.Tasks;
 
 namespace Demonstrator.Services.Service.Nrls
 {
-    public class PointerService : BaseService, IPointerService
+    public class PointerService : BaseFhirService, IPointerService
     {
         private readonly IDocumentReferenceServices _docRefService;
         private readonly IPatientServices _patientService;

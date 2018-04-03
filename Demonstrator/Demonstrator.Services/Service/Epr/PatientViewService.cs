@@ -1,17 +1,18 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Fhir;
-using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Models.ViewModels.Factories;
 using Demonstrator.Models.ViewModels.Fhir;
 using Demonstrator.Models.ViewModels.Patients;
 using Demonstrator.NRLSAdapter.Helpers;
+using Demonstrator.Services.Service.Base;
 using Hl7.Fhir.Model;
 using System.Collections.Generic;
 using System.Linq;
 using SystemTasks = System.Threading.Tasks;
 
-namespace Demonstrator.Services.Service.Nrls
+namespace Demonstrator.Services.Service.Epr
 {
-    public class PatientViewService: BaseService, IPatientViewService
+    public class PatientViewService: BaseFhirService, IPatientViewService
     {
         private readonly IPatientServices _patientService;
 

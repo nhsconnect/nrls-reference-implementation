@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Demonstrator.Services.Service.Nrls
+namespace Demonstrator.Services.Service.Base
 {
-    public class BaseService
+    public class BaseFhirService
     {
         protected List<T> ListEntries<T>(List<Bundle.EntryComponent> entries, ResourceType resType) where T : Resource
         {

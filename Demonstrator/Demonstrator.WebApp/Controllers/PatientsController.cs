@@ -1,4 +1,4 @@
-﻿using Demonstrator.Core.Interfaces.Services.Nrls;
+﻿using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Models.ViewModels.Patients;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -34,26 +34,6 @@ namespace Demonstrator.WebApp.Controllers
             var patient = await _patientViewServices.GetPatient(nhsNumber);
 
             return Ok(patient);
-        }
-
-        // POST api/Patients/1234/Records
-        [HttpPost("{patientId:int}/Records")]
-        public IActionResult Create([FromRoute] int patientId, [FromBody] MedicalRecord medicalRecord)
-        {
-
-            //Service to create new Patient record
-
-            return Ok($"Create patient record for patient id {patientId}");
-        }
-
-        // PUT api/Patients/1234/Records/4567
-        [HttpPut("{patientId:int}/Records/{recordId:int}")]
-        public IActionResult Update([FromRoute] int patientId, [FromRoute] int recordId, [FromBody] MedicalRecord medicalRecord)
-        {
-
-            //Service to update a Patient record
-
-            return Ok($"Update patient record of id {recordId} for patient id {patientId}");
         }
 
     }

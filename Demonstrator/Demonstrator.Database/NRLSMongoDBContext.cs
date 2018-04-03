@@ -1,8 +1,10 @@
 ﻿using Demonstrator.Core.Interfaces.Database;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.DataModels.Flows;
+using Demonstrator.Models.DataModels.Epr;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Demonstrator.Database
 {
@@ -38,6 +40,22 @@ namespace Demonstrator.Database
             get
             {
                 return _database.GetCollection<Personnel>("Personnel");
+            }
+        }
+
+        public IMongoCollection<NrlsPointerMapper> NrlsPointers
+        {
+            get
+            {
+                return _database.GetCollection<NrlsPointerMapper>("NrlsPointers");
+            }
+        }
+
+        public IMongoCollection<CrisisPlan> CrisisPlans
+        {
+            get
+            {
+                return _database.GetCollection<CrisisPlan>("MedicalRecords");
             }
         }
 

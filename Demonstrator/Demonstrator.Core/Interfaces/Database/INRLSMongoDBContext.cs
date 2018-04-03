@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Models.DataModels.Flows;
+using Demonstrator.Models.DataModels.Epr;
 using MongoDB.Driver;
 
 namespace Demonstrator.Core.Interfaces.Database
@@ -10,6 +11,10 @@ namespace Demonstrator.Core.Interfaces.Database
         IMongoCollection<GenericSystem> GenericSystems { get; }
 
         IMongoCollection<Personnel> Personnel { get; }
+
+        IMongoCollection<NrlsPointerMapper> NrlsPointers { get; }
+
+        IMongoCollection<CrisisPlan> CrisisPlans { get; }
 
         IMongoCollection<Benefit> Benefits { get; }
     }

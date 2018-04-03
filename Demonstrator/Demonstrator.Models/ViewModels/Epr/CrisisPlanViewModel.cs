@@ -1,13 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
 
-namespace Demonstrator.Models.DataModels.Patients
+namespace Demonstrator.Models.ViewModels.Epr
 {
-    public class CarePlan
+    public class CrisisPlanViewModel : MedicalRecordViewModel
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         public bool InvolveFamilyOrCarer { get; set; }
 
@@ -17,6 +13,8 @@ namespace Demonstrator.Models.DataModels.Patients
 
         public string WhatHelpsInCrisis { get; set; }
 
+        public string ActionForDependants { get; set; }
+
         public string EmergencyLocation { get; set; }
 
         public string EmergencyNumber { get; set; }
@@ -25,12 +23,13 @@ namespace Demonstrator.Models.DataModels.Patients
 
         public bool PatientAcceptsPlan { get; set; }
 
-        public DateTime PlanCreated { get; set; }
+        public string PlanCreatedBy { get; set; }
 
-        public DateTime PlanUpdated { get; set; }
+        public string PlanCreatedByJobTitle { get; set; }
 
-        public bool Active { get; set; }
+        public DateTime? PlanCreated { get; set; }
 
-        public string PatientNhsNumber { get; set; }
+        public DateTime? PlanUpdated { get; set; }
+
     }
 }

@@ -18,6 +18,8 @@ using System;
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Services.Service.Nrls;
 using Demonstrator.WebApp.Core.Middlewares;
+using Demonstrator.Services.Service.Epr;
+using Demonstrator.Core.Interfaces.Services.Epr;
 
 namespace Demonstrator.WebApp
 {
@@ -54,7 +56,8 @@ namespace Demonstrator.WebApp
             services.AddTransient<IOrganisationServices, OrganisationServices>();
             services.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             services.AddTransient<IPointerService, PointerService>();
-            services.AddTransient<IPatientViewService, PatientViewService>(); 
+            services.AddTransient<IPatientViewService, PatientViewService>();
+            services.AddTransient<ICrisisPlanService, CrisisPlanService>();
             services.AddTransient<IBenefitsService, BenefitsService>(); 
             services.AddTransient<IBenefitsViewService, BenefitsViewService>();
         }

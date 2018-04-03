@@ -7,5 +7,7 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
     public interface IDocumentReferenceServices
     {
         SystemTasks.Task<Bundle> GetPointersAsBundle(string nhsNumber = null, string orgCode = null);
+
+        SystemTasks.Task<DocumentReference> CreatePointer(DocumentReference pointer);
     }
 }

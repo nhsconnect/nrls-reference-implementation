@@ -16,7 +16,7 @@
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Exit</a></li>
                 </ul>
-                <h3 class="gs-title">EPR System</h3>
+                <h3 class="gs-title">${data.genericSystem.name}</h3>
             </div>
 
             <div show.bind="!showPatientSearch" class="gs-patient-banner">
@@ -35,7 +35,7 @@
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Social</a></li>
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Financial</a></li>
                     <li class="${ showCrisisPlan ? 'active' : '' }"><a href="javascript:void(0)" click.delegate="showCrisisPanel()">Crisis Plan</a></li>
-                    <li class="${ showNrlsPointers ? 'active' : '' }"><a href="javascript:void(0)" click.delegate="showPointersPanel()">NRLS</a></li>
+                    <li class="${ showNrlsPointers ? 'active' : '' } aurelia-hide"><a href="javascript:void(0)" click.delegate="showPointersPanel()">NRLS</a></li>
                 </ul>
             </div>
 
@@ -45,8 +45,15 @@
 
             <div if.bind="!showPatientSearch" class="gs-content">
                 <div show.bind="showCrisisPlan" class="tab-crisis-plan">
-                    <form>
-                        <table class="table table-striped table-bordered nrls-pointer-results">
+                    <div show.bind="!hasCrisisPlan && !allowCrisisPlan">
+                        <p>This Patient does not have a Crisis Plan.</p>
+                        <p>Would you like to create one? <button class="btn btn-primary" type="button" click.delegate="allowCrisisPlan = true">Yes</button></p>
+                    </div>
+                    <form show.bind="allowCrisisPlan || hasCrisisPlan">
+
+                        <spinner-msg message="Updating Plan" logic.one-way="updatingPlan"></spinner-msg>
+
+                        <table show.bind="!updatingPlan" class="table table-striped table-bordered nrls-pointer-results">
                             <caption>Crisis and Saftey Plan <i class="fa fa-info-circle"></i></caption>
                             <tbody>
                                 <tr>
@@ -54,10 +61,10 @@
                                     <td>
                                         <div validation-errors.bind="involveFamilyOrCarerErrors" class.bind="involveFamilyOrCarerErrors.length ? 'has-error' : ''">
                                             <label class="radio-inline">
-                                                <input type="radio" name="involveFamilyOrCarer" id="involveFamilyOrCarer1" checked.bind="carePlan.involveFamilyOrCarer & validate" value="true"> Yes
+                                                <input type="radio" name="involveFamilyOrCarer" model.bind="true" id="involveFamilyOrCarer1" checked.bind="crisisPlan.involveFamilyOrCarer & validate" value="true"> Yes
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="involveFamilyOrCarer" id="involveFamilyOrCarer2" checked.bind="carePlan.involveFamilyOrCarer & validate" value="false"> No
+                                                <input type="radio" name="involveFamilyOrCarer" model.bind="false" id="involveFamilyOrCarer2" checked.bind="crisisPlan.involveFamilyOrCarer & validate" value="false"> No
                                             </label>
                                             <br if.bind="involveFamilyOrCarerErrors.length" />
                                             <span class="help-block" repeat.for="errorInfo of involveFamilyOrCarerErrors">
@@ -70,7 +77,7 @@
                                     <td>What are the signs that I'm feeling well?*</td>
                                     <td>
                                         <div class="form-group" validation-errors.bind="signsFeelingUnwellErrors" class.bind="signsFeelingUnwellErrors.length ? 'has-error' : ''">
-                                            <textarea class="form-control" value.bind="carePlan.signsFeelingUnwell & validate" rows="1"></textarea>
+                                            <textarea class="form-control" value.bind="crisisPlan.signsFeelingUnwell & validate" rows="1"></textarea>
                                             <span class="help-block" repeat.for="errorInfo of signsFeelingUnwellErrors">
                                                 ${errorInfo.error.message}
                                             </span>
@@ -81,7 +88,7 @@
                                     <td>What are the potential triggers?*</td>
                                     <td>
                                         <div class="form-group" validation-errors.bind="potentialTriggersErrors" class.bind="potentialTriggersErrors.length ? 'has-error' : ''">
-                                            <textarea class="form-control" value.bind="carePlan.potentialTriggers & validate" rows="1"></textarea>
+                                            <textarea class="form-control" value.bind="crisisPlan.potentialTriggers & validate" rows="1"></textarea>
                                             <span class="help-block" repeat.for="errorInfo of potentialTriggersErrors">
                                                 ${errorInfo.error.message}
                                             </span>
@@ -92,8 +99,19 @@
                                     <td>What do I find helpful when things are starting to go wrong or in a crisis?*</td>
                                     <td>
                                         <div class="form-group" validation-errors.bind="whatHelpsInCrisisErrors" class.bind="whatHelpsInCrisisErrors.length ? 'has-error' : ''">
-                                            <textarea class="form-control" value.bind="carePlan.whatHelpsInCrisis & validate" rows="3"></textarea>
+                                            <textarea class="form-control" value.bind="crisisPlan.whatHelpsInCrisis & validate" rows="3"></textarea>
                                             <span class="help-block" repeat.for="errorInfo of whatHelpsInCrisisErrors">
+                                                ${errorInfo.error.message}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Action to be taken for care of dependant children?</td>
+                                    <td>
+                                        <div class="form-group" validation-errors.bind="actionForDependantsErrors" class.bind="actionForDependantsErrors.length ? 'has-error' : ''">
+                                            <textarea class="form-control" value.bind="crisisPlan.actionForDependants & validate" rows="3"></textarea>
+                                            <span class="help-block" repeat.for="errorInfo of actionForDependantsErrors">
                                                 ${errorInfo.error.message}
                                             </span>
                                         </div>
@@ -102,23 +120,23 @@
                                 <tr>
                                     <td>A&E</td>
                                     <td>
-                                        <textarea class="form-control fc-readonly" value.bind="carePlan.emergencyNumber" readonly="readonly" rows="1">01132 258 088</textarea>
-                                        <textarea class="form-control fc-readonly" value.bind="carePlan.emergencyLocation" readonly="readonly" rows="1">Leeds General Infirmary</textarea>
+                                        <textarea class="form-control no-border fc-readonly" value.bind="crisisPlan.emergencyNumber" readonly="readonly" rows="1"></textarea>
+                                        <textarea class="form-control no-border fc-readonly" value.bind="crisisPlan.emergencyLocation" readonly="readonly" rows="1"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>South Leeds MH Crisis Line</td>
-                                    <td><textarea class="form-control fc-readonly" value.bind="carePlan.crisisNumber" readonly="readonly" rows="1">0800 258 088</textarea></td>
+                                    <td><textarea class="form-control no-border fc-readonly" value.bind="crisisPlan.crisisNumber" readonly="readonly" rows="1"></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>Does the patient agree with and has been provided a copy of their crisis plan?*</td>
                                     <td>
                                         <div validation-errors.bind="patientAcceptsPlanErrors" class.bind="patientAcceptsPlanErrors.length ? 'has-error' : ''">
                                             <label class="radio-inline">
-                                                <input type="radio" name="patientAcceptsPlan" id="patientAcceptsPlan1" checked.bind="carePlan.patientAcceptsPlan & validate" value="true"> Yes
+                                                <input type="radio" name="patientAcceptsPlan" model.bind="true" id="patientAcceptsPlan1" checked.bind="crisisPlan.patientAcceptsPlan & validate" value="true"> Yes
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="patientAcceptsPlan" id="patientAcceptsPlan2" checked.bind="carePlan.patientAcceptsPlan & validate" value="false"> No
+                                                <input type="radio" name="patientAcceptsPlan" model.bind="false" id="patientAcceptsPlan2" checked.bind="crisisPlan.patientAcceptsPlan & validate" value="false"> No
                                             </label>
                                             <br if.bind="patientAcceptsPlanErrors.length" />
                                             <span class="help-block" repeat.for="errorInfo of patientAcceptsPlanErrors">
@@ -130,7 +148,7 @@
                             </tbody>
                         </table>
 
-                        <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary" click.delegate="savePlan()">Submit</a></p>
+                        <p show.bind="!updatingPlan" class="text-center"><button class="btn btn-primary" click.delegate="savePlan()">Submit</button> <button show.bind="hasCrisisPlan" class="btn btn-danger" click.delegate="deletePlan()">Delete</button></p>
                     </form>
                 </div>
 

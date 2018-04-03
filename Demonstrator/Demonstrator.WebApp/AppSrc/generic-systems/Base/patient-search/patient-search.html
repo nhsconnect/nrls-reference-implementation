@@ -1,16 +1,108 @@
 ﻿<template>
     <form>
-        <table class="table table-striped table-bordered nrls-pointer-results">
+        <table class="table table-bordered n-bg-pale-grey n-text-small nrls-pointer-results">
             <tbody>
                 <tr>
-                    <td width="25%">Select a Patient</td>
                     <td>
-                        <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="selectedPatient" change.delegate="setPatient()" class="form-control">
-                            <option value="">--select--</option>
-                            <option repeat.for="item of nhsNumbers" model.bind="item.nhsNumber">${item.nhsNumber}</option>
-                        </select>
+                        <div class="form-horizontal margin-top-nml">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Select a Patient</label>
+                                <div class="col-sm-10">
+                                    <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control">
+                                        <option value="">--select--</option>
+                                        <option repeat.for="item of nhsNumbers" model.bind="item.nhsNumber">${item.nhsNumber}</option>
+                                    </select>
 
-                        <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
+                                    <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-9">
+                                    <button type="button" class="btn btn-primary" click.delegate="setPatient()">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-warning"><p><i class="fa fa-exclamation fa-padding-sqr"></i> Please note Patient Search has been disabled for this demonstration. Please select from the list of Patients above.</p></div>
+
+
+        <table class="table table-bordered n-text-small n-bg-pale-grey">
+            <tbody>
+                <tr>
+                    <td>
+
+                        <div class="form-horizontal margin-top-nml">
+                            <div class="form-group form-group-header">
+                                <label class="col-sm-2 control-label">Enter patient details</label>
+                                <div class="col-sm-9">
+                                    <span class="pull-right"><span class="n-text-red">*</span> denotes a required field</span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr class="margin-hz hz-dark-grey" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span class="n-text-red">*</span> Gender</label>
+                                <div class="col-sm-9">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="gender1" name="gender" value="female" disabled="disabled"> Female
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="gender2" name="gender" value="male" disabled="disabled"> Male
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group n-text-normal">
+                                <label for="patient_forename" class="col-sm-2 control-label">First name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="patient_forename" class="form-control" value="" disabled="disabled" placeholder="[name of patient or name the patient is know by]" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="patient_surname" class="col-sm-2 control-label"><span class="n-text-red">*</span> Surname</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="patient_surname" class="form-control" value="" disabled="disabled" placeholder="" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="patient_dob" class="col-sm-2 control-label"><span class="n-text-red">*</span> Date of birth</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="patient_dob" class="form-control" value="" disabled="disabled" placeholder="[dd/mm/yyyy]" />
+                                </div>
+                            </div>
+
+                            <div class="form-group n-text-normal">
+                                <label for="patient_postcode" class="col-sm-2 control-label">Full postcode</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="patient_postcode" class="form-control" value="" disabled="disabled" placeholder="" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This link is disabled in the Demo.">Address &amp; Postcode Lookup</a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-9">
+                                    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Find</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </td>
                 </tr>
             </tbody>
