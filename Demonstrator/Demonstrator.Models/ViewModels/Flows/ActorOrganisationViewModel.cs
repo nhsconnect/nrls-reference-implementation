@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Models.Core.Enums;
+using Demonstrator.Models.Core.Models;
 using System.Collections.Generic;
 
 namespace Demonstrator.Models.ViewModels.Flows
@@ -15,7 +16,7 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         public string ImageUrl { get; set; }
 
-        public string Context { get; set; }
+        public IList<ContentView> Context { get; set; }
 
         public string OrgCode { get; set; }
 

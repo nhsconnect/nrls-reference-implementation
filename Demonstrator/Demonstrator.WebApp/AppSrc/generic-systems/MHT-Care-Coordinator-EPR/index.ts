@@ -1,6 +1,7 @@
 import { BaseGenericSystem } from "../BaseGenericSystem";
 import { CrisisPlan } from "../../core/models/CrisisPlan";
 import { ICarePlan } from "../../core/interfaces/ICarePlan";
+import { IRequest } from "../../core/interfaces/IRequest";
 
 export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
     data: any = {};
@@ -54,9 +55,6 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
                     this.crisisPlan.planCreated = new Date();
                     this.crisisPlan.planUpdated = new Date();
 
-                    this.crisisPlan.orgCode = this.data.organisation.orgCode;
-                    this.crisisPlan.asid = this.data.genericSystem.asid;
-
                     this.crisisPlan.planCreatedBy = `${this.data.personnel.name.substr(0,1)} Jones`;
                     this.crisisPlan.planCreatedByJobTitle = this.data.personnel.name;
 
@@ -74,12 +72,13 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
         window.setTimeout(() => {
 
-            this.eprSvc.delete(`${this.crisisPlan.id}`).then(planDelete => {
+            this.eprSvc.delete(this.createRequest(null, this.crisisPlan.id)).then(planDelete => {
                 this.updatingPlan = false;
 
                 if (planDelete) {
                     this.crisisPlan = new CrisisPlan();
                     this.allowCrisisPlan = false;
+                    this.hasCrisisPlan = false;
                 }
             });
 
@@ -92,9 +91,10 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
         window.setTimeout(() => {
 
-            this.eprSvc.create(this.crisisPlan).then(newPlan => {
+            this.eprSvc.create(this.createRequest(this.crisisPlan, this.crisisPlan.id)).then(newPlan => {
                 this.setCrisisPlan(newPlan);
                 this.updatingPlan = false;
+                this.hasCrisisPlan = true;
             });
 
         }, 250); //Looks better with delay :)
@@ -105,7 +105,7 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
         window.setTimeout(() => {
 
-            this.eprSvc.update(this.crisisPlan).then(newPlan => {
+            this.eprSvc.update(this.createRequest(this.crisisPlan, this.crisisPlan.id)).then(newPlan => {
                 this.setCrisisPlan(newPlan);
                 this.updatingPlan = false;
             });
@@ -113,10 +113,23 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
         }, 250); //Looks better with delay :)
     }
 
+    private createRequest(resource?: any, id?: string): IRequest {
+
+        let request = <IRequest> {
+            headers: {
+                "Asid": this.data.genericSystem.asid,
+                "OrgCode": this.data.organisation.orgCode
+            },
+            resource: resource,
+            id: id
+        };
+
+        return request;
+    }
+
     private setCrisisPlan(crisisPlan: ICarePlan) {
         this.crisisPlan = new CrisisPlan(crisisPlan.id,
-            this.data.organisation.orgCode,
-            this.data.genericSystem.asid,
+            crisisPlan.version,
             crisisPlan.involveFamilyOrCarer,
             crisisPlan.signsFeelingUnwell,
             crisisPlan.potentialTriggers,

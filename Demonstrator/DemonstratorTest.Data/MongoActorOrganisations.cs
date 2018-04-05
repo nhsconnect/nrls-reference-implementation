@@ -1,4 +1,5 @@
-﻿using Demonstrator.Models.DataModels.Flows;
+﻿using Demonstrator.Models.Core.Models;
+using Demonstrator.Models.DataModels.Flows;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,16 @@ namespace DemonstratorTest.Data.Helpers
                         Type = "Consumer",
                         Name = "Ambulance Service",
                         ImageUrl = "....",
-                        Context = "Some general context....",
+                        Context = new List<ContentView>()
+                        {
+                            new ContentView
+                            {
+                                Title = "Title Text",
+                                Content = new List<string>{"Content Text" },
+                                CssClass = "CssClass Text",
+                                Order = 1
+                            }
+                        },
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00"),
                         OrgCode = "AMSR01",

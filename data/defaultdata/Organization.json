@@ -118,3 +118,33 @@
     }
   ]
 }
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ac5467ea35c66326e022230"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "MHT01"
+    }
+  ],
+  "name": "Northcliffe Mental Health Trust",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 1274 000 0005"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "123 Green View"
+      ],
+      "city": "Bradford",
+      "state": "West Yorkshire",
+      "postalCode": "BD17 1HT",
+      "country": "United Kingdom"
+    }
+  ]
+}

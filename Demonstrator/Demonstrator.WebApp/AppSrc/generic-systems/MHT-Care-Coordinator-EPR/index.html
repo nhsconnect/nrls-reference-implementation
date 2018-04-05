@@ -35,7 +35,6 @@
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Social</a></li>
                     <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Financial</a></li>
                     <li class="${ showCrisisPlan ? 'active' : '' }"><a href="javascript:void(0)" click.delegate="showCrisisPanel()">Crisis Plan</a></li>
-                    <li class="${ showNrlsPointers ? 'active' : '' } aurelia-hide"><a href="javascript:void(0)" click.delegate="showPointersPanel()">NRLS</a></li>
                 </ul>
             </div>
 
@@ -145,16 +144,40 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Created</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <input class="form-control no-border" value.bind="crisisPlan.planCreated | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'HH:mma, Do MMM YYYY'" readonly="readonly" />
+                                            </div>
+                                            <div class="col-sm-2 inline-lineheight">Version</div>
+                                            <div class="col-sm-5">
+                                                <input class="form-control no-border" value.bind="crisisPlan.version" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Created By</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <input class="form-control no-border" value.bind="crisisPlan.planCreatedBy" readonly="readonly" />
+
+                                            </div>
+                                            <div class="col-sm-2 inline-lineheight">Job Title</div>
+                                            <div class="col-sm-5">
+                                                <input class="form-control no-border" value.bind="crisisPlan.planCreatedByJobTitle" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <p show.bind="!updatingPlan" class="text-center"><button class="btn btn-primary" click.delegate="savePlan()">Submit</button> <button show.bind="hasCrisisPlan" class="btn btn-danger" click.delegate="deletePlan()">Delete</button></p>
                     </form>
-                </div>
-
-
-                <div show.bind="showNrlsPointers" class="tab-nrls-pointers">
-                    <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="patient.nhsNumber"></compose>
                 </div>
 
             </div>

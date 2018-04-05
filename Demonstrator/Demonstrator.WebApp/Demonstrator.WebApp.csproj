@@ -22,6 +22,7 @@
     <None Remove="AppSrc\core\interfaces\IBenefitDialog.ts" />
     <None Remove="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
+    <None Remove="AppSrc\core\interfaces\IContentView.ts" />
     <None Remove="AppSrc\core\interfaces\IRecord.ts" />
     <None Remove="AppSrc\core\models\CrisisPlan.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
@@ -98,6 +99,7 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IContentView.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitDialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBreadcrumb.ts" />

@@ -36,7 +36,7 @@
             </div>
 
             <div if.bind="!showPatientSearch" class="gs-content">
-                <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="patient.nhsNumber"></compose>
+                <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="request"></compose>
             </div>
 
             <div if.bind="showPatientSearch" class="gs-content">

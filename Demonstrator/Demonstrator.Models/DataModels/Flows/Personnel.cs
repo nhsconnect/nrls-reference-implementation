@@ -1,13 +1,21 @@
-﻿using Demonstrator.Models.ViewModels.Flows;
+﻿using Demonstrator.Models.Core.Models;
+using Demonstrator.Models.ViewModels.Flows;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demonstrator.Models.DataModels.Flows
 {
     public class Personnel
     {
+        public Personnel()
+        {
+            Context = new List<ContentView>();
+            Benefits = new List<string>();
+        }
+
         [BsonId]
         public ObjectId Id { get; set; }
 
@@ -17,9 +25,11 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public string ImageUrl { get; set; }
 
-        public string Context { get; set; }
+        public IList<ContentView> Context { get; set; }
 
         public bool UsesNrls { get; set; }
+
+        public string CModule { get; set; }
 
         public List<string> SystemIds { get; set; }
 
@@ -43,11 +53,12 @@ namespace Demonstrator.Models.DataModels.Flows
             var viewModel = new PersonnelViewModel
             {
                 Id = model.Id.ToString(),
-                Context = model.Context,
+                Context = model.Context.OrderBy(x => x.Order).ToList(),
                 ImageUrl = model.ImageUrl,
                 Name = model.Name,
                 PersonnelType = model.PersonnelType,
                 ActorOrganisationId = model.OrganisationId,
+                CModule = model.CModule,
                 SystemIds = model.SystemIds,
                 UsesNrls = model.UsesNrls,
                 Benefits = model.Benefits

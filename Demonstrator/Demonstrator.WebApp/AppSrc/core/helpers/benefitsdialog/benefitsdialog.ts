@@ -105,6 +105,7 @@ export class benefitsdialog {
             this.benefitdialog.categories.sort();
             this.activeBenefit = this.benefitdialog.categories.length > 0 ? this.benefitdialog.categories[0] : "";
             this.benefitTypeClass = `b-type-link-${this.benefitdialog.totalCategories}`;
+            this.currentBenefit = 0;
         }
     }
 

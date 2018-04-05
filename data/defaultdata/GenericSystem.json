@@ -34,8 +34,8 @@
     "_id": {
         "$oid": "5a8daa86952e372cbdb31800"
     },
-    "Name": "Call Handler",
-    "FModule": "AS-Call-Handler",
+    "Name": "Dispatcher",
+    "FModule": "AS-Dispatcher",
     "Asid": "200000000115",
     "Context": "...",
     "ActionTypes": [

@@ -15,7 +15,7 @@
                         </div>
                         <div show.bind="menuItem.children && menuItem.children.length > 0" class="panel-collapse collapse ${$index === 0 ? 'in' : ''}" role="tabpanel" id="${menuItem.id}_children" aria-labelledby="${menuItem.id}" aria-expanded="true">
                             <ul class="list-group">
-                                <li class="list-group-item  b-menu-child" repeat.for="child of menuItem.children"><a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(child.type, child.id)">- ${child.title} <i class="fa fa-angle-right"></i></a></li>
+                                <li class="list-group-item  b-menu-child ${$parent.$parent.benefitforid === child.id ? 'b-menu-child-active' : ''}" repeat.for="child of menuItem.children"><a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(child.type, child.id)">- ${child.title} <i class="fa fa-angle-right"></i></a></li>
                             </ul>
                         </div>
                     </div>

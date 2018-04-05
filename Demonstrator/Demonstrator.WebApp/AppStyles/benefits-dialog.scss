@@ -114,6 +114,14 @@ $benefits-footer-height: 60px;
             border-bottom: 1px solid $nhsPaleGrey;
             padding-left: $spacing-large;
 
+            &.b-menu-child-active {
+                background-color: $nhsPaleGrey;
+
+                a.grey-link {
+                    color: $nhsBlack;
+                }
+            }
+
             &:last-of-type {
                 border-bottom: none;
             }

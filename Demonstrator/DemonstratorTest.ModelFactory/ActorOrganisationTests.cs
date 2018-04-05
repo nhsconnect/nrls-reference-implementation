@@ -1,4 +1,5 @@
 using Demonstrator.Models.Core.Enums;
+using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.DataModels.Flows;
 using Demonstrator.Models.ViewModels.Flows;
 using DemonstratorTest.Comparer;
@@ -25,7 +26,16 @@ namespace DemonstratorTest.ModelFactory
                 Type = ActorType.Consumer,
                 Name = "Ambulance Service",
                 ImageUrl = "....",
-                Context = "Some general context....",
+                Context = new List<ContentView>()
+                {
+                    new ContentView
+                    {
+                        Title = "Title Text",
+                        Content = new List<string>{"Content Text" },
+                        CssClass = "CssClass Text",
+                        Order = 1
+                    }
+                },
                 OrgCode = "AMSR01",
                 Benefits = new List<string> { "benefitid" }
             };

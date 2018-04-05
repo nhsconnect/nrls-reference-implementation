@@ -6,7 +6,12 @@
 
         <spinner-msg message="Loading Organisation" logic.one-way="organisationLoading"></spinner-msg>
 
-        <div class="nrls-generated-content margin-bottom-lrg" innerhtml.bind="organisation.context | sanitizeHTML"></div>
+        <div class="nrls-generated-content margin-bottom-lrg">
+            <div repeat.for="context of organisation.context" class="ngc-item ${context.cssClass}">
+                <h4 if.bind="context.title">${context.title | sanitizeHTML}</h4>
+                <p repeat.for="p of context.content">${p | sanitizeHTML}</p>
+            </div>
+        </div>
 
         <!-- The assumtion is that an organisation will always have benefits -->
 

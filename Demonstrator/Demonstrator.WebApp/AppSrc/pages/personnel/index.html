@@ -8,7 +8,12 @@
             <div class="col-md-7">
                 <spinner-msg message="Loading Personnel" logic.one-way="personnelLoading"></spinner-msg>
 
-                <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="personnel.context | sanitizeHTML"></div>
+                <div class="nrls-generated-content margin-bottom-xlrg">
+                    <div repeat.for="context of personnel.context" class="ngc-item margin-bottom-xlrg ${context.cssClass}">
+                        <h4 if.bind="context.title">${context.title | sanitizeHTML}</h4>
+                        <p repeat.for="p of context.content">${p | sanitizeHTML}</p>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4 col-md-offset-1">
                 <img src.bind="'/images/personnel/' + personnel.imageUrl" alt.bind="personnel.name" class="pull-right nrls-border-img img-responsive" />
@@ -17,6 +22,7 @@
 
         <benefit-modal if.bind="hasBenefits" benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId"></benefit-modal>
 
+        <p if.bind="personnel.cModule"><img src="/images/scenario-context/${personnel.cModule}.png" alt.bind="personnel.heading" /></p>
 
         <h4 class="margin-bottom-lrg">Example System for a ${personnel.name} *</h4>
 

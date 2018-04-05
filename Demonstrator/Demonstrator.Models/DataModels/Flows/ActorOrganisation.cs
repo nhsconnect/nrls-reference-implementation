@@ -1,15 +1,23 @@
 ﻿using Demonstrator.Models.Core.Enums;
+using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.ViewModels.Flows;
 using Demonstrator.Utilities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demonstrator.Models.DataModels.Flows
 {
     public class ActorOrganisation
     {
+        public ActorOrganisation()
+        {
+            Context = new List<ContentView>();
+            Benefits = new List<string>();
+        }
+
         [BsonId]
         public ObjectId Id { get; set; }
 
@@ -19,7 +27,7 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public string ImageUrl { get; set; }
 
-        public string Context { get; set; }
+        public IList<ContentView> Context { get; set; }
 
         public string OrgCode { get; set; }
 
@@ -41,7 +49,7 @@ namespace Demonstrator.Models.DataModels.Flows
             var viewModel = new ActorOrganisationViewModel
             {
                 Id = model.Id.ToString(),
-                Context = model.Context,
+                Context = model.Context.OrderBy(x => x.Order).ToList(),
                 ImageUrl = model.ImageUrl,
                 Name = model.Name,
                 OrgCode = model.OrgCode,

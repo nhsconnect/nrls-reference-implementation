@@ -1,18 +1,19 @@
 ﻿import { bindable, inject } from 'aurelia-framework';
 import { PointerSvc } from '../../../core/services/PointerService';
 import { IPointer } from '../../../core/interfaces/IPointer';
+import { IRequest } from '../../../core/interfaces/IRequest';
 
 @inject(PointerSvc)
 export class NrlsPointers {
 
     pointers: Array<IPointer> = [];
     pointersLoading: boolean = false;
-    patientNhsNumber?: number = undefined;
+    request?: IRequest;
 
     constructor(private pointerSvc: PointerSvc) { }
 
-    activate(patientNhsNumber: number) {
-        this.patientNhsNumber = patientNhsNumber;
+    activate(request: IRequest) {
+        this.request = request;
     }
 
     attached() {
@@ -24,12 +25,12 @@ export class NrlsPointers {
     //}
 
     getPointers() {
-        if (!this.patientNhsNumber) {
+        if (!this.request || !this.request.id) {
             return;
         }
 
         this.pointersLoading = true;
-        this.pointerSvc.getPointers(this.patientNhsNumber).then(pointers => {
+        this.pointerSvc.getPointers(this.request).then(pointers => {
             this.pointers = pointers;
             this.pointersLoading = false;
         });

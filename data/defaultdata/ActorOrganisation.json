@@ -5,7 +5,11 @@
     "Type": "Provider",
     "Name": "Mental Health Trust",
     "ImageUrl": "mental-health-trust.png",
-    "Context": "\u003cp\u003eOnce it has been deemed necessary for a patient to receive a CPA (Care Program Approach), they will be assigned a Care Co-ordinator who will oversee the creation and updating of this record. Although care plans may currently be created at an earlier stage without the need for a CPA (e.g. by a General Practitioner), phase 1 of the NRLS will look to focus on the creation and return of care plans by Care Co-Ordinators only.\u003c/p\u003e",
+    "Context": [
+        {
+            "Content":["As a mental health professional, you may at some point be responsible for the creation of a care plan for a patient. The potential with NRLS is to enable such care plans to be used and viewed by ambulance service staff, such as the 111/999 clinicians and paramedic teams, in order to help them provide more specific and timely care to their patients, when in crisis, using the information you provide in a patient's plan."]
+        }
+    ],
     "IsActive": true,
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
@@ -21,12 +25,16 @@
     "Type": "Consumer",
     "Name": "Ambulance Service",
     "ImageUrl": "ambulance_service.png",
-    "Context": "\u003cp\u003eWhat is your role within the Ambulance Service? Depending on your positition, you may benefit differently from the NRLS once it is integrated into your system. For example a \u003cb\u003eClinician\u003c/b\u003e would immediatley \u003cb\u003ebenefit\u003c/b\u003e during \u003cb\u003ehear and treat\u003c/b\u003e the patient. Or by the Paramedic team in the event of \u003cb\u003eseeing and treating\u003c/b\u003e the patient simply because their systems are integrated into the NRLS and then can \u003cb\u003equickly see\u003c/b\u003e tht an important \u003cb\u003eCare Plan\u003c/b\u003e exists for their Patient.\u003c/p\u003e",
+    "Context": [
+        {
+            "Content":["What is your role within the ambulance service? Depending on your positition, you may be affected differently by NRLS once it is integrated. For example, as an emergency Call Handler your time may be critical and therefore you may not need or want to see detailed care plan information. This information may be required however by the Clinician to help hear and treat the patient or by the Paramedic team in the event of seeing and treating the patient."]
+        }
+    ],
     "IsActive": true,
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
     },
     "OrgCode": "AMS01",
-    "Benefits": ["5abcc42b84c20a48414e34b8", "5abcc0d984c20a48414e34ac"],
+    "Benefits": ["5abcc42b84c20a48414e34b8", "5abcc0d984c20a48414e34ac", "5abcc0d984c20a48414e34ad", "5abcc0db84c20a48414e34b1", "5ac54b9ee2ca3709a4662711", "5ac54b9fe2ca3709a4662712", "5ac54b9fe2ca3709a4662713", "5ac54ba0e2ca3709a4662714", "5ac54ba1e2ca3709a4662715", "5ac54ba1e2ca3709a4662716", "5ac54ba2e2ca3709a4662717", "5ac54ba2e2ca3709a4662718", "5ac54ba3e2ca3709a4662719", "5ac54ba3e2ca3709a466271a", "5ac54ba4e2ca3709a466271b"],
     "BenefitsTitle": "As an Ambulance Trust, NRLS will benefit us by"
 }

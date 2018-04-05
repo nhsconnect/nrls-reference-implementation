@@ -250,11 +250,171 @@
 }
 {
     "_id": {
+        "$oid": "5ac54818a35c66326e022231"
+    },
+    "Text": "Knowing a patient may be in crisis sooner so that I can provide them with appropriate care at the right time and place",
+    "Categories": ["Health", "Efficiency"],
+    "Order": 2,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54819a35c66326e022232"
+    },
+    "Text": "Improving patient and staff safety",
+    "Categories": ["Safety"],
+    "Order": 3,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac5481aa35c66326e022233"
+    },
+    "Text": "Improving (MH) outcomes for patients",
+    "Categories": ["Health"],
+    "Order": 4,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac5481ba35c66326e022234"
+    },
+    "Text": "Improve my compliance with referral pathway guidance / standards",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 5,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac5481ca35c66326e022235"
+    },
+    "Text": "Helping to know when specific support is required and who to contact in the event of a crisis.",
+    "Categories": ["Efficiency"],
+    "Order": 6,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
         "$oid": "5abcc42b84c20a48414e34b8"
     },
     "Text": "Improving patient safety by making patient record information more readily available",
     "Categories": ["Safety"],
     "Order": 1,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54b9ee2ca3709a4662711"
+    },
+    "Text": "Helping to meet our quality indicator targets (eg https://www.england.nhs.uk/statistics/statistical-work-areas/ambulance-quality-indicators/ambulance-quality-indicators-data-2017-18/)",
+    "Categories": ["Safety"],
+    "Order": 2,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54b9fe2ca3709a4662712"
+    },
+    "Text": "Preventing unnecessary conveyances to A&E by giving our Paramedics more information about the individual when making my clinical decisions",
+    "Categories": ["Health", "Efficiency"],
+    "Order": 3,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54b9fe2ca3709a4662713"
+    },
+    "Text": "Saving time by reducing the need to manually request information about the patient by either ambulance crews or dispatch",
+    "Categories": ["Efficiency"],
+    "Order": 4,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba0e2ca3709a4662714"
+    },
+    "Text": "Supporting safeguarding by sharing alerts across multiple care settings",
+    "Categories": ["Health", "Efficiency"],
+    "Order": 5,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba1e2ca3709a4662715"
+    },
+    "Text": "Ensuring when there are significant risks identified in a crisis plan that the appropriate emergency services respond",
+    "Categories": ["Health"],
+    "Order": 6,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba1e2ca3709a4662716"
+    },
+    "Text": "Supporting the identification of the most intensive users of local emergency services for mental health needs and improved understanding of their health and care needs to feed into joint review / creation of personalised care plans for this cohort",
+    "Categories": ["Health"],
+    "Order": 7,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba2e2ca3709a4662717"
+    },
+    "Text": "Reducing Ambulance dispatches if NRLS enables more ‘hear and treat’ by call centre clinicians, reducing avoidable pressures on emergency services",
+    "Categories": ["Safety", "Efficiency", "Financial"],
+    "Order": 8,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba2e2ca3709a4662718"
+    },
+    "Text": "Improving health and social outcomes for this cohort",
+    "Categories": ["Health"],
+    "Order": 9,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba3e2ca3709a4662719"
+    },
+    "Text": "Improving data quality and recording of mental health need in emergency departments",
+    "Categories": ["Safety"],
+    "Order": 10,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba3e2ca3709a466271a"
+    },
+    "Text": "Improving integrated care pathways across providers, including timely communication and collaboration between acute trusts, mental health providers, ambulance services, primary care, social care, public health (drug/alcohol services) and the voluntary sector",
+    "Categories": ["Safety", "Efficiency"],
+    "Order": 11,
+    "Type": "Benefit",
+    "IsActive": true
+}
+{
+    "_id": {
+        "$oid": "5ac54ba4e2ca3709a466271b"
+    },
+    "Text": "Informed commissioning plans and decisions through joint governance and working between various providers will provide a better picture of local needs and demand.",
+    "Categories": ["Financial", "Efficiency"],
+    "Order": 12,
     "Type": "Benefit",
     "IsActive": true
 }
