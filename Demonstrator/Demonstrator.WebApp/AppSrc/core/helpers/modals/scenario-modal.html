@@ -1,0 +1,16 @@
+﻿<template>
+    <p>
+        <button class="btn btn-info" click.delegate="loadScenarioModal()">Explore the Scenario</button>
+    </p>
+
+    <div class="modal fade nrls-modal nrls-scenario-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close b-close-btn" data-dismiss="modal" aria-label="Close"><i class="fa fa-times b-close-icon"></i></button>
+                    <img if.bind="cmodule" src="/images/scenario-context/${cmodule}.png" alt.bind="title" class="img-responsive" />
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

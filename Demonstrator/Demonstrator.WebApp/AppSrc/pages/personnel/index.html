@@ -4,11 +4,11 @@
         <breadcrumb breadcrumb.one-way="breadcrumb"></breadcrumb>
         <h1 class="h1 margin-bottom-xlrg"><span>What does the NRLS mean for me /</span> ${heading}<span if.bind="personnel.personnelType != null" class="heading-type"> (${personnel.personnelType})</span></h1>
 
-        <div class="row" style="display: none !important;">
+        <div class="row">
             <div class="col-md-7">
                 <spinner-msg message="Loading Personnel" logic.one-way="personnelLoading"></spinner-msg>
 
-                <div class="nrls-generated-content margin-bottom-xlrg">
+                <div class="nrls-generated-content margin-bottom-nml">
                     <div repeat.for="context of personnel.context" class="ngc-item margin-bottom-xlrg ${context.cssClass}">
                         <h4 if.bind="context.title">${context.title | sanitizeHTML}</h4>
                         <p repeat.for="p of context.content">${p | sanitizeHTML}</p>
@@ -16,15 +16,24 @@
                 </div>
             </div>
             <div class="col-md-4 col-md-offset-1">
-                <img src.bind="'/images/personnel/' + personnel.imageUrl" alt.bind="personnel.name" class="pull-right nrls-border-img img-responsive" />
+                <img if.bind="personnel" src="/images/personnel/${personnel.imageUrl}" alt.bind="personnel.name" class="pull-right nrls-border-img img-responsive" />
             </div>
         </div>
 
-        <benefit-modal if.bind="hasBenefits" benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId"></benefit-modal>
+        <div show.bind="personnel.cModule" class="margin-bottom-xlrg">
+            <scenario-modal cmodule.one-way="personnel.cModule" title.one-way="personnel.title"></scenario-modal>
+        </div>
 
-        <p  style="display: none !important;" if.bind="personnel.cModule"><img src="/images/scenario-context/${personnel.cModule}.png" alt.bind="personnel.heading" /></p>
+        <h4>What Benefits can the NRLS bring?</h4>
+        <p>The NRLS can bring many benefits for you and the care you provide to your patients, and also for the services your organisation delivers.</p>
+        <p if.bind="hasBenefits">Below you can take a look at some of the many benefits this service aims to bring.</p>
+        <p if.bind="!hasBenefits">You can read more about NRLS Benefits on the <a route-href="route: about;">About Page</a>.</p>
+        
+        <div if.bind="hasBenefits" class="margin-bottom-lrg">
+            <benefit-modal benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId"></benefit-modal>
+        </div>
 
-        <h4 class="margin-bottom-lrg">Example System for a ${personnel.name} *</h4>
+        <h4 class="margin-bottom-lrg">What does the NRLS look like?</h4>
 
         <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
 

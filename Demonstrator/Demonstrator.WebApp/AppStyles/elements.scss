@@ -141,21 +141,6 @@ a {
 }
 
 
-.nrls-benefit-modal {
-    .modal-dialog {
-        width: 704px;
-
-        .modal-content {
-            border: none;
-
-            .modal-body {
-                padding: 0;
-            }
-        }
-    }
-}
-
-
 .benefits-button {
     .btn {
         border-width: 1px;
@@ -250,6 +235,50 @@ a {
 
     .modal-footer {
         border-top: none;
+    }
+
+    &.nrls-benefit-modal {
+        .modal-dialog {
+            width: 704px;
+
+            .modal-content {
+                border: none;
+
+                .modal-body {
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    &.nrls-scenario-modal {
+        .modal-dialog {
+            width: 992px;
+
+            .modal-content {
+
+                .modal-body {
+                    padding: 0;
+                    max-height: calc(100vh - 70px);
+
+                    button {
+                        &.close {
+                            background-color: $red;
+                            color: $white;
+                            border-radius: 4px;
+                            opacity: 1;
+                            padding: 6px 10px;
+                            font-size: 1em;
+                            line-height: 1.1em;
+                            position: fixed;
+                            top: 15px;
+                            right: 35px;
+                            box-shadow: 0 0 8px rgba(0,0,0,0.7);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

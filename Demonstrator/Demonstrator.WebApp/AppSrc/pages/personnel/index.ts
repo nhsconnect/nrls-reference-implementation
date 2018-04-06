@@ -14,8 +14,6 @@ export class Personnel {
     heading: string = 'Personnel';
     personnel: IPersonnel;
     organisation: IActorOrganisation;
-    //providerSystems: Array<IGenericSystem> = [];
-    //consumerSystems: Array<IGenericSystem> = [];
     genericSystem: IGenericSystem;
     personnelId: string;
     systemsLoading: boolean = false;
@@ -96,17 +94,6 @@ export class Personnel {
 
             this.systemModelCount += 1;
             this.systemModel.genericSystem = this.genericSystem;
-
-            //systems.forEach(s => {
-
-            //    if (s.actionTypes.indexOf(ActorTypes.Consumer) > -1) {
-            //        this.consumerSystems.push(s);
-            //    }
-
-            //    if (s.actionTypes.indexOf(ActorTypes.Provider) > -1) {
-            //        this.providerSystems.push(s);
-            //    }
-            //});
         }
         
     }
