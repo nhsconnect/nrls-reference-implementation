@@ -17,7 +17,7 @@ namespace Demonstrator.Models.ViewModels.Fhir
 
         public NameViewModel CurrentName { get; set; }
 
-        public List<TelecomViewModel> Telecom { get; set; }
+        public ContactPointViewModel Telecom { get; set; }
 
         public string Gender { get; set; }
 

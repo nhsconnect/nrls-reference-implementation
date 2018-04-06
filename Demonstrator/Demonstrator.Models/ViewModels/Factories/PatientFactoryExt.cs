@@ -19,7 +19,8 @@ namespace Demonstrator.Models.ViewModels.Factories
                 BirthDate = patient.BirthDate?.ToDateTime(),
                 Address = patient.Address.ToViewModelList(),
                 Identifier = patient.Identifier.ToViewModelList(),
-                ManagingOrganization = patient.ManagingOrganization?.ToViewModel()
+                ManagingOrganization = patient.ManagingOrganization?.ToViewModel(),
+                Telecom = patient.Telecom?.OrderBy(x => x.Rank).FirstOrDefault()?.ToViewModel()
             };
 
             viewModel.NhsNumber = viewModel.Identifier.FirstOrDefault(x => !string.IsNullOrEmpty(nhsNumberIdentifier) && !string.IsNullOrEmpty(x.System) && x.System.Equals(nhsNumberIdentifier))?.Value;

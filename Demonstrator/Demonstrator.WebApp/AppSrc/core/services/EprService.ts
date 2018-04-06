@@ -3,6 +3,7 @@ import { bindable, inject } from 'aurelia-framework';
 import { IPatientNumber } from '../interfaces/IPatientNumber';
 import { IPatient } from '../interfaces/IPatient';
 import { ICarePlan } from '../interfaces/ICarePlan';
+import { IRequest } from '../interfaces/IRequest';
 
 @inject(WebAPI)
 export class EprSvc {
@@ -24,8 +25,8 @@ export class EprSvc {
     * Create new Crisis Plan to the backend service.
     * @returns A Crisis Plan in the form of ICarePlan or null.
     */
-    create(crisisPlan: ICarePlan) {
-        let crisiPlan = this.api.do<ICarePlan>(`${this.baseUrl}/CrisisPlan`, crisisPlan, 'post');
+    create(request: IRequest) {
+        let crisiPlan = this.api.do<ICarePlan>(`${this.baseUrl}/CrisisPlan`, request.resource, 'post', request.headers);
         return crisiPlan;
     }
 
@@ -33,8 +34,8 @@ export class EprSvc {
     * Update Crisis Plan to the backend service.
     * @returns A Crisis Plan in the form of ICarePlan or null.
     */
-    update(crisisPlan: ICarePlan) {
-        let crisiPlan = this.api.do<ICarePlan>(`${this.baseUrl}/CrisisPlan/${crisisPlan.id}`, crisisPlan, 'put');
+    update(request: IRequest) {
+        let crisiPlan = this.api.do<ICarePlan>(`${this.baseUrl}/CrisisPlan/${request.id}`, request.resource, 'put', request.headers);
         return crisiPlan;
     }
 
@@ -42,8 +43,8 @@ export class EprSvc {
     * Delete Crisis Plan in the backend service.
     * @returns A Crisis Plan in the form of ICarePlan or null.
     */
-    delete(planId: string) {
-        let crisiPlan = this.api.do<boolean>(`${this.baseUrl}/CrisisPlan/${planId}`, null, 'delete');
+    delete(request: IRequest) {
+        let crisiPlan = this.api.do<boolean>(`${this.baseUrl}/CrisisPlan/${request.id}`, null, 'delete', request.headers);
         return crisiPlan;
     }
 

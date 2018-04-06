@@ -4,8 +4,7 @@ import { MedicalRecord } from "./MedicalRecord";
 
 export class CrisisPlan extends MedicalRecord implements ICarePlan {
     constructor(public id?: string,
-                public orgCode?: string,
-                public asid?: string,
+                public version?: string,
                 public involveFamilyOrCarer?: boolean,
                 public signsFeelingUnwell?: string,
                 public potentialTriggers?: string,
@@ -22,7 +21,7 @@ export class CrisisPlan extends MedicalRecord implements ICarePlan {
                 public active?: boolean,
                 public patientNhsNumber?: string) {
 
-        super(id, 'MentalHealthCrisisPlan', orgCode, asid);
+        super(id, 'MentalHealthCrisisPlan', version);
     }
 
     public crisisPlanRules() {

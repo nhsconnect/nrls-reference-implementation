@@ -1,10 +1,9 @@
-﻿using Demonstrator.Models.Core.Enums;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Demonstrator.Models.DataModels.Epr
 {
-    public class NrlsPointerMapper
+    public class NrlsPointerMap
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -13,7 +12,7 @@ namespace Demonstrator.Models.DataModels.Epr
 
         public string RecordId { get; set; }
 
-        public RecordType RecordType { get; set; }
+        public string RecordType { get; set; }
 
         public bool IsActive { get; set; }
     }

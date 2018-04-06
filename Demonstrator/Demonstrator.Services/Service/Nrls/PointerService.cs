@@ -1,5 +1,7 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Models.Nrls;
+using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.Models.ViewModels.Factories;
 using Demonstrator.Models.ViewModels.Nrls;
 using Demonstrator.NRLSAdapter.Helpers;
@@ -24,11 +26,13 @@ namespace Demonstrator.Services.Service.Nrls
             _organisationServices = organisationServices;
         }
 
-        public async SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(string nhsNumber)
+        public async SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(RequestViewModel request)
         {
             var pointerViewModels = new List<PointerViewModel>();
 
-            var pointerBundle = await _docRefService.GetPointersAsBundle(nhsNumber);
+            var pointerRequest = NrlsPointerRequest.Search(null, request.Id, request.Asid, FhirConstants.SearchInteractionId);
+
+            var pointerBundle = await _docRefService.GetPointersAsBundle(pointerRequest);
             var pointerEntries = pointerBundle.Entry;
 
             //need a more slick solution for getting related references

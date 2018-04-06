@@ -12,7 +12,7 @@ namespace Demonstrator.Core.Interfaces.Database
 
         IMongoCollection<Personnel> Personnel { get; }
 
-        IMongoCollection<NrlsPointerMapper> NrlsPointers { get; }
+        IMongoCollection<NrlsPointerMap> NrlsPointerMaps { get; }
 
         IMongoCollection<CrisisPlan> CrisisPlans { get; }
 

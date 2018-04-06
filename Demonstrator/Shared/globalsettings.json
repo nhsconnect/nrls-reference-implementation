@@ -7,5 +7,8 @@
   },
   "ODSAPI": {
     "ServerUrl": "http://localhost:51913/ods/fhir"
+  },
+  "Spine": {
+    "Asid": "999999999999" 
   }
 }

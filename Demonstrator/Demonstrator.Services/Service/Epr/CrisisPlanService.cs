@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using SystemTasks = System.Threading.Tasks;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using Demonstrator.Core.Interfaces.Database;
 using Demonstrator.Models.DataModels.Epr;
@@ -9,24 +9,30 @@ using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Models.ViewModels.Epr;
 using Demonstrator.Models.Core.Enums;
 using Demonstrator.Core.Interfaces.Services.Fhir;
-using Hl7.Fhir.Model;
+using Demonstrator.Models.Nrls;
 using Demonstrator.NRLSAdapter.Helpers;
+using Demonstrator.Models.ViewModels.Base;
 
 namespace Demonstrator.Services.Service.Flows
 {
     public class CrisisPlanService : ICrisisPlanService
     {
         private readonly INRLSMongoDBContext _context;
-
         private readonly IDocumentReferenceServices _documentReferenceServices;
+        private readonly IPointerMapService _pointerMapService;
 
-        public CrisisPlanService(INRLSMongoDBContext context, IDocumentReferenceServices documentReferenceServices)
+        private const string MentalHealthCrisisPlanTypeCode = "718347000";
+
+        private const string MentalHealthCrisisPlanTypeDisplay = "Mental Health Crisis Plan";
+
+        public CrisisPlanService(INRLSMongoDBContext context, IDocumentReferenceServices documentReferenceServices, IPointerMapService pointerMapService)
         {
             _context = context;
             _documentReferenceServices = documentReferenceServices;
+            _pointerMapService = pointerMapService;
         }
 
-        public async SystemTasks.Task<CrisisPlanViewModel> GetForPatient(string nhsNumber, bool ifActive)
+        public async Task<CrisisPlanViewModel> GetForPatient(string nhsNumber, bool ifActive)
         {
             try
             {
@@ -60,7 +66,7 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async SystemTasks.Task<CrisisPlanViewModel> GetById(string planId)
+        public async Task<CrisisPlanViewModel> GetById(string planId)
         {
             try
             {
@@ -86,69 +92,38 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async SystemTasks.Task<CrisisPlanViewModel> Save(CrisisPlanViewModel crisisPlan)
+        public async Task<CrisisPlanViewModel> SavePlan(CrisisPlanViewModel crisisPlan)
         {
             try
             {
                 var currentPlan = await this.GetForPatient(crisisPlan.PatientNhsNumber, false);
-                var version = 1;
+                int version = 1;
 
                 if (currentPlan != null)
                 {
                     version = currentPlan.Version + 1;
-                    var update = new UpdateDefinitionBuilder<CrisisPlan>().Set(n => n.Active, false);
-                    var previous =_context.CrisisPlans.UpdateMany(item => item.RecordType == RecordType.MentalHealthCrisisPlan.ToString(), update);
+                    currentPlan.Asid = crisisPlan.Asid;
+                    var deleted = await DeletePlan(currentPlan);
                 }
 
                 crisisPlan.Version = version;
                 crisisPlan.Active = true;
 
+                //Create new plan
                 var newCrisisPlan = CrisisPlan.ToModel(crisisPlan);
 
                 _context.CrisisPlans.InsertOne(newCrisisPlan);
 
-                var pointer = new DocumentReference
-                {
-                    VersionId = $"{version}",
-                    Status = DocumentReferenceStatus.Current,
-                    Author = new List<ResourceReference>()
-                    {
-                        new ResourceReference
-                        {
-                            Reference = $"{FhirConstants.SystemODS}{crisisPlan.OrgCode}"
-                        }
-                    },
-                    Custodian = new ResourceReference
-                    {
-                        Reference = $"{FhirConstants.SystemODS}{crisisPlan.OrgCode}"
-                    },
-                    Subject = new ResourceReference
-                    {
-                        Reference = $"{FhirConstants.SystemPDS}{crisisPlan.PatientNhsNumber}"
-                    },
-                    Created = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssz"),
-                    Indexed = DateTime.UtcNow,
-                    Type = new CodeableConcept(FhirConstants.CodingSystemPointerType, "718347000", "Mental health care plan"),
-                    Content = new List<DocumentReference.ContentComponent>()
-                    {
-                        new DocumentReference.ContentComponent
-                        {
-                            Attachment = new Attachment
-                            {
-                                ContentType = "application/pdf",
-                                Url = $"https://spine-proxy.national.ncrs.nhs.uk/{newCrisisPlan.Id}/mental-health-care-plan.pdf",
-                                Title = "Mental Health Care Plan",
-                                Creation = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssz")
-                            }
-                        }
-                    }
+                //Hardcoded values - this is a demo with urls to ficticious documents
+                var pointerRequest = NrlsPointerRequest.Create(crisisPlan.OrgCode, crisisPlan.PatientNhsNumber, $"https://spine-proxy.national.ncrs.nhs.uk/{newCrisisPlan.Id}/mental-health-care-plan.pdf", "application/pdf", MentalHealthCrisisPlanTypeCode, MentalHealthCrisisPlanTypeDisplay, crisisPlan.Asid, FhirConstants.CreateInteractionId);
 
-                };
+                //Create new NRLS pointer
+                var newPointer = await _documentReferenceServices.GenerateAndCreatePointer(pointerRequest);
 
-                var newPointer = _documentReferenceServices.CreatePointer(pointer);
+                //Create map between NRLS Pointer and Medical Record
+                _pointerMapService.CreatePointerMap(newPointer.Id, newCrisisPlan.Id, RecordType.MentalHealthCrisisPlan);
 
-
-                return await SystemTasks.Task.Run(() => CrisisPlan.ToViewModel(newCrisisPlan));
+                return await Task.Run(() => CrisisPlan.ToViewModel(newCrisisPlan));
 
             }
             catch (Exception ex)
@@ -158,17 +133,27 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async SystemTasks.Task<bool> Delete(string id)
+        public async Task<bool> DeletePlan(RequestViewModel request)
         {
             try
             {
-
-                //delete pointer
-
+                //Find and delete Medical Record
                 var update = new UpdateDefinitionBuilder<CrisisPlan>().Set(n => n.Active, false);
-                var previous = _context.CrisisPlans.UpdateOne(item => item.Id == new ObjectId(id) && item.RecordType == RecordType.MentalHealthCrisisPlan.ToString(), update);
+                var previous = _context.CrisisPlans.UpdateOne(item => item.Id == new ObjectId(request.Id) && item.RecordType == RecordType.MentalHealthCrisisPlan.ToString(), update);
 
-                return await SystemTasks.Task.Run(() => previous.IsAcknowledged && previous.ModifiedCount > 0);
+                //Find pointer id from local map
+                var pointerMap = await _pointerMapService.FindPointerMap(request.Id, RecordType.MentalHealthCrisisPlan);
+
+                //Delete pointer from NRLS
+                var deletedPointer = true;
+                if(pointerMap != null)
+                {
+                    var pointerRequest = NrlsPointerRequest.Delete(pointerMap.NrlsPointerId, request.Asid, FhirConstants.DeleteInteractionId);
+                    deletedPointer = await _documentReferenceServices.DeletePointer(pointerRequest) == null;
+                }
+                
+
+                return await Task.Run(() => previous.IsAcknowledged && previous.ModifiedCount > 0 && deletedPointer);
 
             }
             catch (Exception ex)

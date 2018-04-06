@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Core.Configuration;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
+using Demonstrator.Models.Nrls;
 using Demonstrator.NRLSAdapter.DocumentReferences;
 using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
@@ -199,7 +200,9 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("patient"));
                 var custodianParam = _parameters.FirstOrDefault(n => n.Key.Equals("custodian"));
 
-                pointers = await _docRefService.GetPointersAsBundle(patientParam.Value, custodianParam.Value);
+                var pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, null, null);
+
+                pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
             }
 
             return CommandResult<Bundle>.Set(true, "Success", pointers);
@@ -258,6 +261,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 options.NrlsServerUrl = new Uri(configuration.GetSection("NRLSAPI:ServerUrl").Value);
                 options.PdsServerUrl = new Uri(configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.OdsServerUrl = new Uri(configuration.GetSection("ODSAPI:ServerUrl").Value);
+                options.SpineAsid = configuration.GetSection("Spine:Asid").Value;
             });
             serviceCollection.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             serviceProvider = serviceCollection.BuildServiceProvider();

@@ -22,16 +22,26 @@ export class WebAPI {
         return this.httpClient.isRequesting;
     }
 
-    getHeaders() {
-        var headers = {
+    getHeaders(headers?: { [key: string]: string }) {
+        var requestHeaders = {
             'Accept': 'application/json',
             'X-Requested-With': 'Fetch'
         };
 
-        return headers;
+        if (headers) {
+            for (var key in headers) {
+                // skip loop if the property is from prototype
+                if (!headers.hasOwnProperty(key)) continue;
+
+                let val = headers[key];
+                requestHeaders[key] = val;
+            }
+        }
+
+        return requestHeaders;
     }
 
-    do<T>(url, body, type) {
+    do<T>(url, body, type, headers?) {
         this.httpClient.configure(config => {
             config
                 .useStandardConfiguration()
@@ -39,7 +49,7 @@ export class WebAPI {
                 .withBaseUrl('/api/') 
                 .withDefaults({
                     credentials: 'same-origin',
-                    headers: this.getHeaders(),
+                    headers: this.getHeaders(headers),
                     mode: 'same-origin'
                 })
                 .withInterceptor({

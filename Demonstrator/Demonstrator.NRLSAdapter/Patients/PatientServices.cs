@@ -8,6 +8,7 @@ using Demonstrator.Models.Core.Models;
 using Demonstrator.NRLSAdapter.Helpers;
 using Hl7.Fhir.Rest;
 using Demonstrator.NRLSAdapter.Models;
+using System.Net.Http;
 
 namespace Demonstrator.NRLSAdapter.Patients
 {
@@ -40,7 +41,8 @@ namespace Demonstrator.NRLSAdapter.Patients
             var command = new CommandRequest
             {
                 BaseUrl = _patientUrlBase,
-                ResourceType = ResourceType.Patient
+                ResourceType = ResourceType.Patient,
+                Method = HttpMethod.Get
             };
 
             if (!string.IsNullOrEmpty(nhsNumber))

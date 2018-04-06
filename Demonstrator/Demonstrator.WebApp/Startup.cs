@@ -47,6 +47,7 @@ namespace Demonstrator.WebApp
                 options.NrlsServerUrl = new Uri(Configuration.GetSection("NRLSAPI:ServerUrl").Value);
                 options.PdsServerUrl = new Uri(Configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.OdsServerUrl = new Uri(Configuration.GetSection("ODSAPI:ServerUrl").Value);
+                options.SpineAsid = Configuration.GetSection("Spine:Asid").Value;
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IActorOrganisationService, ActorOrganisationService>();
@@ -60,6 +61,7 @@ namespace Demonstrator.WebApp
             services.AddTransient<ICrisisPlanService, CrisisPlanService>();
             services.AddTransient<IBenefitsService, BenefitsService>(); 
             services.AddTransient<IBenefitsViewService, BenefitsViewService>();
+            services.AddTransient<IPointerMapService, PointerMapService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

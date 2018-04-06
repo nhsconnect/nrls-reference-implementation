@@ -1,18 +1,33 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace Demonstrator.NRLSAdapter.Models
 {
     public class CommandRequest
     {
+        public CommandRequest()
+        {
+            Headers = new Dictionary<string, string>();
+        }
+
         public Resource Resource { get; set; }
 
         public ResourceType ResourceType { get; set; }
 
+        public HttpMethod Method { get; set; }
+
+        public HttpContent Content { get; set; }
+
         public string BaseUrl { get; set; }
+
+        public string ResourceId { get; set; }
+
+        public IDictionary<string, string> Headers { get; set; }
 
         public SearchParams SearchParams { get; set; }
 
@@ -22,7 +37,7 @@ namespace Demonstrator.NRLSAdapter.Models
 
         private Uri BuildFullUrl()
         {
-            var url = new Uri($"{BaseUrl}/{ResourceType}{QueryString}");
+            var url = new Uri($"{BaseUrl}/{ResourceType}{("/" + ResourceId ?? "")}{QueryString}");
 
             return url;
         }
@@ -30,7 +45,7 @@ namespace Demonstrator.NRLSAdapter.Models
         private string BuildQueryString()
         {
             var queryString = new StringBuilder();
-            if(SearchParams != null && SearchParams.Parameters != null)
+            if(SearchParams != null && SearchParams.Parameters != null && SearchParams.Parameters.Count > 0)
             {
                 queryString.Append("?");
 

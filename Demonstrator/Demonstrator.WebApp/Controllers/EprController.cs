@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Epr;
+using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.Models.ViewModels.Epr;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 namespace Demonstrator.WebApp.Controllers
 {
     [Route("api/[controller]")]
-    public class EprController : Controller
+    public class EprController : FhirBaseController
     {
         private readonly ICrisisPlanService _crisisPlanService;
 
@@ -47,7 +48,9 @@ namespace Demonstrator.WebApp.Controllers
         [HttpPost("CrisisPlan")]
         public async Task<IActionResult> Create([FromBody] CrisisPlanViewModel crisisPlan)
         {
-           var newCrisisPlan = await _crisisPlanService.Save(crisisPlan);
+            SetHeaders(crisisPlan);
+
+           var newCrisisPlan = await _crisisPlanService.SavePlan(crisisPlan);
 
             return Created($"api/Epr/CrisisPlan/{newCrisisPlan.Id}", newCrisisPlan);
         }
@@ -56,8 +59,10 @@ namespace Demonstrator.WebApp.Controllers
         [HttpPut("CrisisPlan/{planId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public async Task<IActionResult> Update([FromBody] CrisisPlanViewModel crisisPlan)
         {
+            SetHeaders(crisisPlan);
+
             //Update just creates a new one (versioning)
-            var newCrisisPlan = await _crisisPlanService.Save(crisisPlan);
+            var newCrisisPlan = await _crisisPlanService.SavePlan(crisisPlan);
 
             return Created($"api/Epr/CrisisPlan/{newCrisisPlan.Id}", newCrisisPlan);
         }
@@ -66,8 +71,12 @@ namespace Demonstrator.WebApp.Controllers
         [HttpDelete("CrisisPlan/{planId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public async Task<IActionResult> Delete(string planId)
         {
+            var request = RequestViewModel.Create(planId);
+
+            SetHeaders(request);
+
             //This is a soft delete
-            var isDeleted = await _crisisPlanService.Delete(planId);
+            var isDeleted = await _crisisPlanService.DeletePlan(request);
 
             return Ok(isDeleted);
         }

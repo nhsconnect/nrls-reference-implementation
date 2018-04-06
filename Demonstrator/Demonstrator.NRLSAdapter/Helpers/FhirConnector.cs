@@ -31,27 +31,6 @@ namespace Demonstrator.NRLSAdapter.Helpers
             return fhirResponse.GetResources<T>();
         }
 
-        private async SystemTasks.Task<FhirResponse> Search(CommandRequest request)
-        {
-            var fhirResponse = new FhirResponse();
-
-            try
-            {
-                var fhirClient = new FhirClient(request.BaseUrl);
-                fhirClient.PreferredFormat = ResourceFormat.Json;
-
-                var results = await fhirClient.SearchAsync(request.SearchParams, request.ResourceType.ToString());
-
-                fhirResponse.Resource = results;
-            }
-            catch(FhirOperationException ex)
-            {
-                throw new HttpFhirException(ex.Message, ex.Outcome, ex.InnerException);
-            }
-
-            return fhirResponse;
-        }
-
         private async SystemTasks.Task<FhirResponse> Request(CommandRequest request)
         {
             var fhirResponse = new FhirResponse();
@@ -63,7 +42,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 var httpRequest = new HttpRequestMessage()
                 {
                     RequestUri = new Uri(request.FullUrl.AbsoluteUri),
-                    Method = HttpMethod.Get,
+                    Method = request.Method,
                     Headers =
                     {
                         { HttpRequestHeader.Accept.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}"},
@@ -71,9 +50,21 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         { HttpRequestHeader.AcceptLanguage.ToString(), "en-GB,en" },
                         { HttpRequestHeader.CacheControl.ToString(), "no-cache" },
                         { HttpRequestHeader.Connection.ToString(), "Keep-Alive" },
-                        { HttpRequestHeader.Host.ToString(), $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" }
+                        { HttpRequestHeader.Host.ToString(), $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
+                        { HttpRequestHeader.Authorization.ToString(), "authtoken" }
                     }
                 };
+
+                //Add additional Spine Headers
+                foreach(var header in request.Headers)
+                {
+                    httpRequest.Headers.Add(header.Key, header.Value);
+                }
+
+                if (request.Content != null)
+                {
+                    httpRequest.Content = request.Content;
+                }
 
                 using (HttpResponseMessage res = await client.SendAsync(httpRequest))
                 using (HttpContent content = res.Content)
@@ -82,7 +73,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     var data = content.ReadAsStreamAsync().Result;
 
-                    if (data == null)
+                    if (request.Method != HttpMethod.Delete && data == null)
                     {
                         throw new HttpRequestException($"Request resulted in nothing for: {request.FullUrl}.");
                     }
@@ -92,9 +83,12 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         try
                         {
                             var body = reader.ReadToEnd();
-                            var jsonParser = new FhirJsonParser();
-                            fhirResponse.Resource = jsonParser.Parse<Resource>(body);
 
+                            if(!string.IsNullOrEmpty(body))
+                            {
+                                var jsonParser = new FhirJsonParser();
+                                fhirResponse.Resource = jsonParser.Parse<Resource>(body);
+                            }
 
                             if (!res.IsSuccessStatusCode)
                             {

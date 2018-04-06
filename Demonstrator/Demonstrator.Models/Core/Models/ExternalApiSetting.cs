@@ -9,5 +9,7 @@ namespace Demonstrator.Models.Core.Models
         public Uri PdsServerUrl { get; set; }
 
         public Uri OdsServerUrl { get; set; }
+
+        public string SpineAsid { get; set; }
     }
 }

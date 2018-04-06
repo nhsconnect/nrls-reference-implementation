@@ -43,11 +43,11 @@ namespace Demonstrator.Database
             }
         }
 
-        public IMongoCollection<NrlsPointerMapper> NrlsPointers
+        public IMongoCollection<NrlsPointerMap> NrlsPointerMaps
         {
             get
             {
-                return _database.GetCollection<NrlsPointerMapper>("NrlsPointers");
+                return _database.GetCollection<NrlsPointerMap>("NrlsPointerMaps");
             }
         }
 

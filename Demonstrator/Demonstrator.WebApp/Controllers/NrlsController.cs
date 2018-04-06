@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Models.ViewModels.Base;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace Demonstrator.WebApp.Controllers
 {
     [Route("api/[controller]")]
-    public class NrlsController : Controller
+    public class NrlsController : FhirBaseController
     {
         private readonly IPointerService _pointerService;
 
@@ -28,7 +29,11 @@ namespace Demonstrator.WebApp.Controllers
         {
             //validate nhs number
 
-            var pointers = await _pointerService.GetPointers(nhsNumber);
+            var request = RequestViewModel.Create(nhsNumber);
+
+            SetHeaders(request);
+
+            var pointers = await _pointerService.GetPointers(request);
 
             return Ok(pointers);
         }

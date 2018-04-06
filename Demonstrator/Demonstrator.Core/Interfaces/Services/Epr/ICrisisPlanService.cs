@@ -1,4 +1,5 @@
-﻿using Demonstrator.Models.ViewModels.Epr;
+﻿using Demonstrator.Models.ViewModels.Base;
+using Demonstrator.Models.ViewModels.Epr;
 using System.Threading.Tasks;
 
 namespace Demonstrator.Core.Interfaces.Services.Epr
@@ -9,8 +10,8 @@ namespace Demonstrator.Core.Interfaces.Services.Epr
 
         Task<CrisisPlanViewModel> GetById(string planId);
 
-        Task<CrisisPlanViewModel> Save(CrisisPlanViewModel crisisPlan);
+        Task<CrisisPlanViewModel> SavePlan(CrisisPlanViewModel crisisPlan);
 
-        Task<bool> Delete(string id);
+        Task<bool> DeletePlan(RequestViewModel request);
     }
 }

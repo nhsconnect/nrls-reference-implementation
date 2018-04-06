@@ -1,6 +1,7 @@
 ﻿import { WebAPI } from '../WebApi';
 import { bindable, inject } from 'aurelia-framework';
 import { IPointer } from '../interfaces/IPointer';
+import { IRequest } from '../interfaces/IRequest';
 
 @inject(WebAPI)
 export class PointerSvc {
@@ -14,8 +15,8 @@ export class PointerSvc {
      * @param nhsNumber A valid patient NHS Number without dashes.
      * @returns A list of FHIR DocumentReferences in the form of IPointer.
      */
-    getPointers(nhsNumber: number) {
-        let pointers = this.api.do<Array<IPointer>>(`${this.baseUrl}/${nhsNumber}`, null, 'get');
+    getPointers(request: IRequest) {
+        let pointers = this.api.do<Array<IPointer>>(`${this.baseUrl}/${request.id}`, null, 'get', request.headers);
         return pointers;
     }
 

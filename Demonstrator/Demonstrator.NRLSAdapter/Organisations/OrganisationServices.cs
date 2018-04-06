@@ -9,6 +9,7 @@ using System.Linq;
 using Hl7.Fhir.Rest;
 using Demonstrator.NRLSAdapter.Models;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Demonstrator.NRLSAdapter.Organisations
 {
@@ -40,7 +41,8 @@ namespace Demonstrator.NRLSAdapter.Organisations
             var command = new CommandRequest
             {
                 BaseUrl = _organisationUrlBase,
-                ResourceType = ResourceType.Organization
+                ResourceType = ResourceType.Organization,
+                Method = HttpMethod.Get
             };
 
             if (!string.IsNullOrEmpty(orgCode))
