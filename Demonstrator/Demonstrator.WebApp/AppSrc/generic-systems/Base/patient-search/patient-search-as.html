@@ -23,7 +23,7 @@
                                     <div class="input-group">
                                         <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control input-sm">
                                             <option value="">--select--</option>
-                                            <option repeat.for="item of nhsNumbers" model.bind="item.nhsNumber">${item.nhsNumber}</option>
+                                            <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
                                         </select>
                                         <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
                                         <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm" disabled.bind="patientLoading" click.delegate="setPatient()"><i class="fa fa-chevron-right"></i></button></span>

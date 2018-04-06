@@ -15,7 +15,7 @@ export class BaseGenericSystem {
     patientLoading: boolean = false;
 
     @observable
-    selectedPatient?: string;
+    selectedPatient?: IPatientNumber;
 
     constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory) {
         this.vdController = validationControllerFactory.createForCurrentScope();
@@ -31,12 +31,12 @@ export class BaseGenericSystem {
 
     getPatient() {
 
-        if (!this.selectedPatient || this.selectedPatient.length === 0) {
+        if (!this.selectedPatient || !this.selectedPatient.nhsNumber || this.selectedPatient.id.length === 0) {
             return;
         }
 
         this.patientLoading = true;
-        this.patientSvc.getPatient(this.selectedPatient).then(patient => {
+        this.patientSvc.getPatient(`${this.selectedPatient.nhsNumber}`).then(patient => {
             this.patient = patient;
             this.patientLoading = false;
         });

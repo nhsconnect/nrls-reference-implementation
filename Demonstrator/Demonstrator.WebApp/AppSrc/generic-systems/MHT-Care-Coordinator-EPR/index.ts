@@ -18,15 +18,15 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
     private patientChanged(newValue: string, oldValue: string): void {
 
-        if (newValue === oldValue || !newValue) {
+        if (newValue === oldValue || !newValue || !this.selectedPatient) {
             return;
         }
 
-        this.getCrisisPlan();
+        this.getCrisisPlan(`${this.selectedPatient.nhsNumber}`);
     }
 
-    getCrisisPlan() {
-        this.eprSvc.getPatientCrisisPlan(`${this.selectedPatient}`).then(crisisPlan => {
+    getCrisisPlan(nhsNumber: string) {
+        this.eprSvc.getPatientCrisisPlan(nhsNumber).then(crisisPlan => {
             if (typeof crisisPlan !== "string") {
                 this.setCrisisPlan(crisisPlan);
                 this.hasCrisisPlan = true;

@@ -10,7 +10,7 @@
                                 <div class="col-sm-10">
                                     <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control">
                                         <option value="">--select--</option>
-                                        <option repeat.for="item of nhsNumbers" model.bind="item.nhsNumber">${item.nhsNumber}</option>
+                                        <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
                                     </select>
 
                                     <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>

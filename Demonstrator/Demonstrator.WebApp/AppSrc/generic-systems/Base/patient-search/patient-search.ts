@@ -9,9 +9,10 @@ export class PatientSearch {
     nhsNumbers: Array<IPatientNumber> = [];
     nhsNumbersLoading: boolean = false;
     @bindable({ defaultBindingMode: bindingMode.oneWay }) patientLoading: boolean;
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient?: string;
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient?: IPatientNumber;
     @bindable({ defaultBindingMode: bindingMode.oneWay }) patientDetails: IPatient;
-    currentPatient?: string;
+    @bindable({ defaultBindingMode: bindingMode.oneWay }) setCurrent: boolean;
+    currentPatient?: IPatientNumber;
 
     constructor(private patientSvc: PatientSvc) { }
 
@@ -20,7 +21,16 @@ export class PatientSearch {
         this.patientSvc.getPatientNumbers().then(numbers => {
             this.nhsNumbers = numbers;
             this.nhsNumbersLoading = false;
+
+            if (this.setCurrent && this.nhsNumbers && this.nhsNumbers.length > 0) {
+                this.currentPatient = this.nhsNumbers[0];
+            }
         });
+    }
+
+    updateSelected(selected: IPatientNumber) {
+        this.currentPatient = selected;
+        this.setPatient();
     }
 
     setPatient() {
