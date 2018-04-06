@@ -5,7 +5,8 @@
 @import "elements.scss";
 @import "navbar.scss";
 @import "tabgrid.scss";
-@import "generic-systems.scss";
+@import "GenericSystems/generic-systems.scss";
+@import "GenericSystems/gs-as-clinician.scss";
 @import "benefits-dialog.scss";
 
 body {

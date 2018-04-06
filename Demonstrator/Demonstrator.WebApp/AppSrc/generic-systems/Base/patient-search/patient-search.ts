@@ -23,7 +23,7 @@ export class PatientSearch {
             this.nhsNumbersLoading = false;
 
             if (this.setCurrent && this.nhsNumbers && this.nhsNumbers.length > 0) {
-                this.currentPatient = this.nhsNumbers[0];
+                this.updateSelected(this.nhsNumbers[0]);
             }
         });
     }

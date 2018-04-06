@@ -1,0 +1,251 @@
+﻿.generic-system-wrapper {
+    &.gs-as-clinician {
+        border: 3px solid $nhsDarkBlue;
+        background-color: $nhsPaleGrey95;
+
+        .gs-header-banner {
+            background-color: $nhsDarkBlue;
+            color: $white;
+            width: 100%;
+            display: block;
+            text-align: right;
+            font-size: 0.8em;
+            padding: $spacing-smaller $spacing-normal;
+        }
+
+        .gs-header {
+            background-color: $nhsBrightBlue60;
+            border-bottom-width: 2px;
+        }
+
+        .gs-top-menu {
+            width: 100%;
+
+            li {
+                text-align: center;
+                line-height: 1em;
+
+                a {
+                    float: left;
+                    height: 100%;
+                    color: $nhsDarkGrey;
+
+                    &.priority-action {
+                        color: $red;
+                    }
+
+                    &:hover {
+                        background-color: $nhsBrightBlue;
+                        color: $white;
+                    }
+                }
+
+                span {
+                    display: inline-block;
+                    width: 100%;
+                    padding: 3px 0 0 0;
+                    line-height: 1.5em;
+                }
+
+                .fa {
+                    font-size: 1.8em;
+                }
+            }
+        }
+
+        a {
+            &.priority-action {
+                color: $red;
+            }
+        }
+
+        .active-call-container {
+            display: block;
+            width: calc(100% - (#{$spacing-large} * 2));
+            height: calc(100% - (#{$spacing-large} * 2));
+            margin: $spacing-large;
+            border: 1px solid $nhsDarkGrey;
+
+            .gs-active-call-header {
+                background-color: $nhsDarkGrey;
+                color: $white;
+                width: 100%;
+                display: block;
+                text-align: center;
+                font-size: 0.8em;
+                padding: $spacing-smaller $spacing-normal;
+
+                .call-status {
+                    padding: 3px 5px;
+                    background-color: $red;
+                }
+            }
+
+            .gs-content {
+                background-color: $white;
+                padding: $spacing-normal;
+                border: none;
+                box-shadow: -1px 1px 5px rgba(0,0,0,0.3);
+
+                .label-priority {
+                    color: $red !important;
+                }
+            }
+        }
+
+        .pds-search-container {
+            position: absolute;
+            top: 100px;
+            right: 5%;
+            width: 60%;
+            height: auto;
+            background-color: $white;
+            padding: 40px $spacing-small $spacing-small $spacing-small;
+            border: 1px solid $nhsDarkGrey;
+            z-index: 3;
+            box-shadow: -1px 3px 5px rgba(0,0,0,0.3);
+
+            .pds-header {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: $nhsDarkGrey;
+                color: $white;
+                width: 100%;
+                display: block;
+                text-align: center;
+                font-size: 0.8em;
+                padding: $spacing-smaller $spacing-normal;
+            }
+        }
+
+
+        .gs-event-details {
+            label {
+                font-size: 0.9em;
+                font-weight: normal;
+                white-space: nowrap;
+            }
+        }
+
+        .gs-patient-banner {
+            border: 1px solid $nhsMidGrey;
+            padding: $spacing-small;
+            background-color: $nhsPaleGrey;
+            height: auto;
+            color: $black;
+            line-height: 1.6em;
+            font-size: 1em;
+        }
+
+        .gs-detail-panel {
+            height: 360px;
+            margin-bottom: 0;
+        }
+
+        .gs-action-menu {
+            padding: $spacing-small;
+            background-color: $nhsBrightBlue60;
+            border: 1px solid $nhsMidGrey;
+        }
+
+        .gs-search-btn {
+            &:hover {
+                background-color: $nhsMidGrey;
+            }
+        }
+
+        .gs-tab-panels {
+
+            .nav-tabs {
+                border-color: $nhsMidGrey;
+
+                > li {
+                    > a {
+                        background-color: $nhsPaleGrey;
+                        color: $nhsDarkGrey;
+                        text-decoration: none;
+                        border-color: $nhsMidGrey;
+                        padding: $spacing-smaller $spacing-small;
+                        font-size: 0.9em;
+
+                        &:hover {
+                            background-color: $nhsPaleGrey;
+                            color: $nhsDarkGrey;
+                        }
+                    }
+
+                    &.active {
+                        > a {
+                            background-color: $nhsPink;
+                            color: $white;
+                            border-bottom-color: $white;
+
+                            &:hover {
+                                background-color: $nhsPink;
+                                color: $white;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .tab-pane {
+                padding: $spacing-small;
+                border: 1px solid $nhsMidGrey;
+                border-top: none;
+                min-height: 60px;
+            }
+
+            .tab-content {
+                height: 150px;
+                overflow: auto;
+            }
+        }
+
+        .gs-context-panel {
+            button {
+                margin: 5px;
+                border-radius: 0;
+
+
+                i {
+                    margin-left: $spacing-small;
+                    color: $red;
+                }
+
+                &.btn-info {
+                    background-color: $nhsDarkBlue;
+                    border-color: $nhsDarkBlue;
+
+                    &:hover {
+                        background-color: $nhsBlue;
+                    }
+                }
+            }
+        }
+
+        .table {
+            &.nrls-pointer-results {
+                caption {
+                    background-color: $white;
+                    padding: $spacing-smaller;
+                }
+
+                th {
+                    font-weight: normal;
+                    font-size: 0.9em;
+                }
+
+                td {
+                    padding: 4px 8px;
+
+                    .btn {
+                        font-size: 0.9em;
+                        padding: 4px 8px;
+                    }
+                }
+            }
+        }
+    }
+}

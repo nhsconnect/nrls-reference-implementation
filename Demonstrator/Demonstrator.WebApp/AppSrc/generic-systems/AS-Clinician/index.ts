@@ -5,12 +5,10 @@ import * as moment from 'moment';
 export class GsASClinician extends BaseGenericSystem {
     data: any = {};
 
-    pdsActive: boolean = false;
-    activeCall: boolean = false;
     callStart?: Date;
     callArrive?: Date;
-    callType?: string;
-    callDesc?: string;
+    callType: string = "EMERG";
+    callDesc: string = "EMERG";
 
     request?: IRequest;
 
@@ -19,29 +17,8 @@ export class GsASClinician extends BaseGenericSystem {
     }
 
     startNewCall() {
-        this.activeCall = true;
         this.callStart = new Date();
         this.callArrive = moment().add(7, "minutes").toDate();
-        this.callType = "EMERG";
-        this.callDesc = "EMERG";
-        this.patient = undefined;
-
-        this.findPatient();
-    }
-
-    endCall() {
-        this.activeCall = false;
-        this.callStart = 
-        this.callArrive = 
-        this.callType = 
-        this.callDesc = 
-        this.patient = 
-        this.selectedPatient =
-        this.request = undefined;
-    }
-
-    setPdsStatus() {
-        return this.pdsActive = !this.pdsActive;
     }
 
     private patientChanged(newValue: string, oldValue: string): void {
@@ -51,6 +28,7 @@ export class GsASClinician extends BaseGenericSystem {
         }
 
         this.createRequest();
+        this.startNewCall();
     }
 
     private createRequest(): void {
