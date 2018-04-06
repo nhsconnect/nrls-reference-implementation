@@ -1,0 +1,170 @@
+﻿.generic-system-wrapper {
+    &.gs-as-paramedic {
+        border-width: 15px;
+        border-radius: 15px;
+        border-color: $black;
+        width: 86%;
+        margin-left: 0;
+        height: 700px;
+
+        .gs-header {
+            border-bottom: none;
+        }
+
+        .gs-patient-banner {
+            .item {
+                max-width: 270px;
+                overflow: hidden;
+                height: 60px;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .gs-top-menu {
+            width: 100%;
+
+            li {
+                display: inline;
+                float: left;
+                margin: 0;
+                text-align: center;
+
+                &.set {
+                    a {
+                        color: $black;
+                        font-weight: bold;
+                        border-color: $nhsMidGrey;
+
+                        &:hover {
+                            background-color: $nhsMidGrey;
+                        }
+                    }
+                }
+
+                &.icon-tab {
+                    float: right;
+
+                    a {
+                        width: 40px;
+                        font-size: 1.9em;
+                        background: transparent;
+                        margin: 0 0 0 $spacing-small;
+                        border-color: $white;
+                    }
+                }
+
+                a {
+                    background: $nhsPaleGrey;
+                    border: 1px solid $nhsPaleGrey;
+                    color: $nhsMidGrey;
+                    display: block;
+                    padding: 0 $spacing-small;
+                    width: 100px;
+                    font-size: 0.7em;
+                    line-height: 1.3em;
+                    height: 80%;
+                    position: relative;
+                    top: 10%;
+                    left: 0;
+                    margin: 0 $spacing-small 0 0;
+                    text-transform: uppercase;
+
+                    span, i {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+        }
+
+        .gs-page-title {
+            padding: $spacing-smaller $spacing-small $spacing-smaller $spacing-small;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: $spacing-smaller 0 0 0;
+            border-top: 3px solid $nhsMidGrey;
+            color: $black;
+            background-color: $nhsPaleGrey;
+        }
+
+        .gs-content {
+            height: 393px;
+            overflow: hidden;
+
+            button {
+                width: 200px;
+                margin: 10px;
+                background-color: $nhsPaleGrey;
+                border-color: $nhsPaleGrey;
+                color: $nhsMidGrey;
+                padding: $spacing-smaller 40px;
+                white-space: normal;
+                line-height: 1.3em;
+                height: 50px;
+
+                &.btn-nrls {
+                    background-color: $nhsBlue;
+                    color: $white;
+                    border: 1px solid $nhsDarkBlue;
+
+                    &:hover {
+                        background-color: $nhsDarkBlue;
+                    }
+                }
+
+                &:hover {
+                    background-color: $nhsPaleGrey;
+                }
+            }
+
+            .nrls-pointer-results {
+                button {
+                    width: auto;
+                    height: auto;
+                    padding: 7px 20px;
+                    margin: 0;
+                }
+            }
+        }
+
+        .gs-action-menu {
+            display: block;
+            width: 100%;
+            height: 55px;
+            padding: $spacing-small $spacing-small;
+            margin: 0 0;
+            border-bottom: 3px solid $nhsMidGrey;
+
+            button {
+                width: 110px;
+                background-color: $nhsPaleGrey;
+                border-color: $nhsPaleGrey;
+                color: $nhsMidGrey;
+
+                &:hover {
+                    background-color: $nhsPaleGrey;
+                }
+            }
+        }
+
+        .gs-context-panel {
+            display: block;
+            width: 100%;
+            height: 60px;
+            padding: $spacing-small $spacing-small;
+            background-color: $nhsPaleGrey;
+
+            button {
+                width: 110px;
+                margin-right: $spacing-small;
+            }
+
+            .gs-system-status {
+                font-size: 0.7em;
+                line-height: 1.7em;
+            }
+        }
+    }
+}

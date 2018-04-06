@@ -57,6 +57,7 @@
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers-table.ts" />
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers.ts" />
     <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search-as.ts" />
+    <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search-asp.ts" />
     <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search-scr.ts" />
     <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
     <None Remove="npm-debug.log" />
@@ -142,6 +143,7 @@
     <TypeScriptCompile Include="AppSrc\core\types\List.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search-asp.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search-as.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search-scr.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />

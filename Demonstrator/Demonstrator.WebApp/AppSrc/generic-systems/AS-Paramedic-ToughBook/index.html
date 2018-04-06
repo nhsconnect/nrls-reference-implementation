@@ -1,39 +1,86 @@
 <template>
+    <require from="../Base/patient-search/patient-search-asp"></require>
 
     <section class="gs-container">
 
         <p class="gs-instructions">The below image is an example of how the NRLS display may look like for a Call Handler.</p>
 
-        <div class="generic-system-wrapper yellow-tooltips gs-as-call-handler">
+        <div class="generic-system-wrapper yellow-tooltips gs-as-paramedic">
             <div class="gs-header">
                 <ul class="gs-top-menu">
-                    <li><a href="javascript:void(0)">Find a Patient</a></li>
-                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
-                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Exit</a></li>
+                    <li class="set"><a href="javascript:void(0)" click.delegate="tabSwitch()"><span>Home</span></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Clinical Guidelines</span></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Timings</span></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Treatment</span></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Secondary Survey</span></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Alert</span></a></li>
+
+                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-power-off"></i></a></li>
+                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-cog"></i></a></li>
+                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-battery-half fa-rotate-270"></i></a></li>
+                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-wifi"></i></a></li>
+                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-heartbeat"></i></a></li>
                 </ul>
-                <h3 class="gs-title">EPR System</h3>
+            </div>
+
+            <div class="gs-page-title">
+                ${pageTitle}
             </div>
 
             <div class="gs-patient-banner">
-                <span class="item"><strong>John SMITH</strong></span>
-                <span class="item"><em>DoB</em> 01 Aug 1976</span>
-                <span class="item">Male</span>
-                <span class="item"><em>NHS</em> 111 999 0000</span>
-                <span class="item"><em>GP Practice</em> AB0011</span>
-                <span class="item"><em>Address</em> 1 KINGS ROAD, LEEDS, LS11 1AB, United Kingdom</span>
-            </div>
-
-            <div class="gs-sub-header">
-                <ul class="gs-records-menu">
-                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
-                    <li><a href="javascript:void(0)"  data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Patient Details</a></li>
-                    <li class="active"><a href="javascript:void(0)">NRLS</a></li>
-                </ul>
+                <span class="item"><strong>${patient.currentName.givenString} ${patient.currentName.family}</strong></span>
+                <span class="item"><em>DoB</em> <u>${patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'Do MMM YYYY' }</u></span>
+                <span class="item">${patient.gender}</span>
+                <span class="item"><em>NHS</em> <u>${patient.nhsNumber | nhsNumber}</u></span>
+                <span class="item" title.bind="patient.gpPractice.name"><em>GP Practice</em> <u>${patient.gpPractice.orgCode}</u></span>
+                <span class="item"><em>Address</em> <u>${patient.currentAddress.line[0]}, ${patient.currentAddress.city}, ${patient.currentAddress.postalCode}</u></span>
             </div>
 
             <div class="gs-content">
-                <div class="gs-result-not-shown-banner">
-                    <i class="fa fa-info-circle fa-2x icon"></i> There are pointers available for this patient.
+                <div show.bind="!nrlsTabActive" class="gs-home-panel text-center">
+                    <div class="patient-nav-container">
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Event Details</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Patient Details</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">History</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Primary Survey</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Secondary Survey</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Acute Medical Assessment</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Medical Assessment</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Trauma Assessment</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatment</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Safeguarding</button>
+                        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Notes</button>
+                        <button class="btn btn-default btn-nrls" click.delegate="tabSwitch()">NRLS</button>
+                    </div>
+                </div>
+
+                <div show.bind="nrlsTabActive" class="gs-nrls-panel">
+                    <compose if.bind="request.active" view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="request"></compose>
+                </div>
+            </div>
+
+            <div class="gs-action-menu">
+                <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Summary</button>
+                <button class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Done</button>
+            </div>
+
+            <div class="gs-context-panel">
+                <div class="row">
+                    <div class="col-sm-8 gs-system-patients">
+                        <patient-search-asp selected-patient.two-way="selectedPatient" set-current.one-way="true" patient-loading.one-way="patientLoading"></patient-search-asp>
+                    </div>
+                    <div class="col-sm-4 gs-system-status">
+                        <div class="row">
+                            <div class="col-sm-4">C: ${selectedPatient.uniqueId}</div>
+                            <div class="col-sm-4">Version v0.0.1</div>
+                            <div class="col-sm-4">Vehicle: 00x1</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">Message(s):</div>
+                            <div class="col-sm-4">3 Not Sent</div>
+                            <div class="col-sm-4">2 Not Read</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
