@@ -18,16 +18,13 @@ using static Hl7.Fhir.Model.ModelInfo;
 
 namespace NRLS_API.Services
 {
-    public class FhirSearch : IFhirSearch
+    public class FhirSearch : FhirBase, IFhirSearch
     {
-
         private readonly INRLSMongoDBContext _context;
-        private readonly IList<string> _supportedResources;
 
-        public FhirSearch(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context)
+        public FhirSearch(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting)
         {
             _context = context;
-            _supportedResources = nrlsApiSetting.Value.SupportedResources;
         }
 
         public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
@@ -36,6 +33,7 @@ namespace NRLS_API.Services
 
             try
             {
+                // IMPORTANT - this query currently does not filter for active/un-deleted pointers
                 var builder = Builders<BsonDocument>.Filter;
                 var filters = new List<FilterDefinition<BsonDocument>>();
                 filters.Add(builder.Eq("_id", request.Id));
@@ -60,6 +58,7 @@ namespace NRLS_API.Services
 
             try
             {
+                // IMPORTANT - this query currently does not filter for active/un-deleted pointers
                 var query = BuildQuery(request);
 
                 var resources = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(query).ToFhirListAsync<T>();
@@ -179,12 +178,6 @@ namespace NRLS_API.Services
             return bundle;
         }
 
-        private void ValidateResource(string resourceType)
-        {
-            if (_supportedResources.Any() && !_supportedResources.Contains(resourceType))
-            {
-                throw new HttpFhirException("Bad Request", OperationOutcomeFactory.CreateInvalidResource(resourceType), HttpStatusCode.BadRequest);
-            }
-        }
+
     }
 }

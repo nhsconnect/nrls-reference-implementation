@@ -1,7 +1,9 @@
 ﻿using Hl7.Fhir.Rest;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using NRLS_API.Models.Core;
 using NRLS_API.Models.Helpers;
 using System.Net.Http.Headers;
 using System.Text;
@@ -13,17 +15,19 @@ namespace NRLS_API.WebApp.Core.Middlewares
     public class FhirInputMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly NrlsApiSetting _nrlsApiSettings;
 
-        public FhirInputMiddleware(RequestDelegate next)
+        public FhirInputMiddleware(RequestDelegate next, IOptions<NrlsApiSetting> nrlsApiSettings)
         {
             _next = next;
+            _nrlsApiSettings = nrlsApiSettings.Value;
         }
 
         public async SystemTasks.Task Invoke(HttpContext context)
         {
             string formatParam = context.Request.QueryString.Value.GetParameters()?.GetParameter("_format");
 
-            if (!string.IsNullOrEmpty(formatParam))
+            if (!string.IsNullOrEmpty(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam))
             {
                 var accepted = ContentType.GetResourceFormatFromFormatParam(formatParam);
                 if (accepted != ResourceFormat.Unknown)

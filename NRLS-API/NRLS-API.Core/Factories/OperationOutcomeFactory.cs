@@ -68,5 +68,24 @@ namespace NRLS_API.Core.Factories
 
             return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, $"The requested resource {resourceType} is invalid.", details);
         }
+
+        public static OperationOutcome CreateInvalidHeader(string resourceType, string header)
+        {
+
+            var details = new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding
+                    {
+                        System = FhirConstants.SystemOpOutcome,
+                        Code = "MISSING_OR_INVALID_HEADER",
+                        Display = "There is a required header missing or invalid"
+                    }
+                }
+            };
+
+            return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, $"{header} HTTP Header is missing or invalid.", details);
+        }
     }
 }

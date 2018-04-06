@@ -1,0 +1,20 @@
+﻿{
+  "ClientAsids": {
+    "200000000115": {
+      "Thumbprint": "",
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ]
+    },
+    "200000000116": {
+      "Thumbprint": "",
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ]
+    },
+    "200000000117": {
+      "Thumbprint": "",
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ]
+    },
+    "200000000118": {
+      "Thumbprint": "",
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference" ]
+    }
+  }
+}

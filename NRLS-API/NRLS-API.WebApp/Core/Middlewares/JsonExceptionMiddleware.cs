@@ -50,7 +50,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var outcome = ooException != null ? ooException.OperationOutcome : OperationOutcomeFactory.CreateInternalError(diagnostics);
 
             var outcomeJson = new FhirJsonSerializer().SerializeToString(outcome);
-            //context.Response.ContentType = "application/json";
+            context.Response.ContentType = "application/fhir+json";
 
             await context.Response.WriteAsync(outcomeJson, Encoding.UTF8);
         }

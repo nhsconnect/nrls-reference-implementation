@@ -33,6 +33,7 @@ namespace NRLS_API.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddMemoryCache();
             services.AddMvc(config =>
             {
                
@@ -59,9 +60,16 @@ namespace NRLS_API.WebApp
             services.Configure<NrlsApiSetting>(options =>
             {
                 options.SupportedResources = Configuration.GetSection("NRLSAPI:SupportedResources").Value.Split(",").ToList();
+                options.SupportedContentTypes = Configuration.GetSection("NRLSAPI:SupportedContentTypes").Value.Split(",").ToList();
+            });
+            services.Configure<SpineSetting>(options =>
+            {
+                options.Asid = Configuration.GetSection("Spine:Asid").Value;
+                options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAsidMapFile").Value;
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IFhirSearch, FhirSearch>();
+            services.AddTransient<IFhirMaintain, FhirMaintain>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +82,8 @@ namespace NRLS_API.WebApp
             });
 
             app.UseCors(builder => builder.WithOrigins(new[] { "*" }).WithMethods(new[]{ "GET", "POST", "PUT", "DELETE" }).AllowAnyHeader());
+
+            app.UseClientInteractionCacheMiddleware();
 
             //handle compression as per spec
             app.UseFhirInputMiddleware();
