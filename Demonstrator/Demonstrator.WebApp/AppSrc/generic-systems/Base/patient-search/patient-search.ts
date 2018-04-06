@@ -34,13 +34,7 @@ export class PatientSearch {
     }
 
     setPatient() {
-        //this.patientLoading = true;
         this.selectedPatient = this.currentPatient;
-        this.currentPatient = undefined;
-    }
-
-    detached() {
-        //this.patientLoading = false;
     }
 
 }

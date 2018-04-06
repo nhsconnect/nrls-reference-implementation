@@ -6,8 +6,6 @@ import { IRequest } from "../../core/interfaces/IRequest";
 export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
     data: any = {};
     crisisPlan: ICarePlan = new CrisisPlan();
-    showCrisisPlan: boolean = true;
-    showNrlsPointers: boolean = false;
     hasCrisisPlan: boolean = false;
     updatingPlan: boolean = false;
     allowCrisisPlan: boolean = false;
@@ -34,15 +32,6 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
         });
     }
 
-    showPointersPanel() {
-        this.showCrisisPlan = false;
-        this.showNrlsPointers = true;
-    }
-
-    showCrisisPanel() {
-        this.showCrisisPlan = true;
-        this.showNrlsPointers = false;
-    }
 
     savePlan() {
 

@@ -1,0 +1,70 @@
+﻿.generic-system-wrapper {
+    &.gs-mht-care-coordinator {
+        border: 3px solid $nhsDarkBlue;
+        background-color: $nhsPaleGrey95;
+
+        .gs-header-banner {
+            background-color: $nhsDarkBlue;
+            color: $white;
+            width: 100%;
+            display: block;
+            text-align: right;
+            font-size: 0.8em;
+            padding: $spacing-smaller $spacing-normal;
+        }
+
+        .gs-header {
+            height: 30px;
+            line-height: 30px;
+            background-color: $nhsPaleGrey;
+            font-size: 0.9em;
+            padding: 0 $spacing-smaller;
+
+            .gs-top-menu {
+                height: inherit;
+                width: 100%;
+
+                li {
+                    height: inherit;
+                    line-height: inherit;
+                }
+            }
+        }
+
+        .gs-content {
+            min-height: 690px;
+            padding: $spacing-large;
+
+            .nav-tabs {
+                border-bottom-color: $nhsMidGrey;
+
+                li {
+                    a {
+                        background-color: $nhsPaleGrey;
+                        text-decoration: none;
+                        color: $nhsDarkGrey;
+                        border-color: $nhsMidGrey;
+                        padding: 5px 10px;
+                        font-size: 0.9em;
+                    }
+
+                    &.active {
+                        a {
+                            background-color: $white;
+                            text-decoration: none;
+                            color: $black;
+                            border-bottom-color: $white;
+                        }
+                    }
+                }
+            }
+
+            .tab-content {
+                padding: $spacing-large;
+                border: 1px solid $nhsMidGrey;
+                border-top: none;
+                min-height: 580px
+            }
+        }
+    }
+}
