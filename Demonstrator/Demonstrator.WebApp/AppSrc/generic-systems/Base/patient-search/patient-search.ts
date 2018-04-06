@@ -1,15 +1,17 @@
 ﻿import { bindable, inject, bindingMode }    from 'aurelia-framework';
 import { PatientSvc }                       from '../../../core/services/PatientService';
 import { IPatientNumber }                   from '../../../core/interfaces/IPatientNumber';
+import { IPatient }                         from '../../../core/interfaces/IPatient';
 
 @inject(PatientSvc)
 export class PatientSearch {
 
     nhsNumbers: Array<IPatientNumber> = [];
     nhsNumbersLoading: boolean = false;
-    patientLoading: boolean = false;
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient: string;
-    currentPatient: string;
+    @bindable({ defaultBindingMode: bindingMode.oneWay }) patientLoading: boolean;
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient?: string;
+    @bindable({ defaultBindingMode: bindingMode.oneWay }) patientDetails: IPatient;
+    currentPatient?: string;
 
     constructor(private patientSvc: PatientSvc) { }
 
@@ -22,12 +24,13 @@ export class PatientSearch {
     }
 
     setPatient() {
-        this.patientLoading = true;
+        //this.patientLoading = true;
         this.selectedPatient = this.currentPatient;
+        this.currentPatient = undefined;
     }
 
     detached() {
-        this.patientLoading = false;
+        //this.patientLoading = false;
     }
 
 }

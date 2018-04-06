@@ -26,7 +26,7 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
     }
 
     getCrisisPlan() {
-        this.eprSvc.getPatientCrisisPlan(this.selectedPatient).then(crisisPlan => {
+        this.eprSvc.getPatientCrisisPlan(`${this.selectedPatient}`).then(crisisPlan => {
             if (typeof crisisPlan !== "string") {
                 this.setCrisisPlan(crisisPlan);
                 this.hasCrisisPlan = true;

@@ -1,5 +1,5 @@
 <template>
-    <require from="../Base/patient-search/patient-search"></require>
+    <require from="../Base/patient-search/patient-search-as"></require>
 
     <section class="gs-container">
 
@@ -9,38 +9,236 @@
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-as-clinician">
+            <div class="gs-header-banner">${data.genericSystem.name} Demo System <a href="javascript:void(0);" class="system-close"  data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a></div>
             <div class="gs-header">
-                <ul class="gs-top-menu">
-                    <li><a href="javascript:void(0)" click.delegate="findPatient()">Find a Patient</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Exit</a></li>
-                </ul>
-                <h3 class="gs-title">Demo EPR System</h3>
-            </div>
-
-            <div show.bind="!showPatientSearch" class="gs-patient-banner">
-                <span class="item"><strong>${patient.currentName.givenString} ${patient.currentName.family}</strong></span>
-                <span class="item"><em>DoB</em> ${patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'Do MMM YYYY' }</span>
-                <span class="item">${patient.gender}</span>
-                <span class="item"><em>NHS</em> ${patient.nhsNumber | nhsNumber}</span>
-                <span class="item" title.bind="patient.gpPractice.name"><em>GP Practice</em> ${patient.gpPractice.orgCode}</span>
-                <span class="item"><em>Address</em> ${patient.currentAddress.line[0]}, ${patient.currentAddress.city}, ${patient.currentAddress.postalCode}</span>
-            </div>
-
-            <div show.bind="!showPatientSearch" class="gs-sub-header">
-                <ul class="gs-records-menu">
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Patient Details</a></li>
-                    <li class="active"><a href="javascript:void(0)">NRLS</a></li>
+                <ul class="gs-top-menu text-right">
+                    <li class="pull-left"><a href="javascript:void(0)" click.delegate="startNewCall()" class="priority-action"><span>New Event</span> <i class="fa fa-phone-square"></i></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Call Tools</span> <i class="fa fa-cogs"></i></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Resources</span> <i class="fa fa-info-circle"></i></a></li>
+                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Mail</span> <i class="fa fa-envelope"></i></a></li>
                 </ul>
             </div>
 
-            <div if.bind="!showPatientSearch" class="gs-content">
-                <compose view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="request"></compose>
+            <div show.bind="!activeCall" class="no-active-call-container row margin-top-lrg">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <p class="alert alert-info alert-panel">
+                        <i class="fa fa-info fa-padding-sqr n-bg-blue n-text-white"></i> No Active Calls. Click <b>New Event</b> above to start.
+                    </p>
+                </div>
             </div>
 
-            <div if.bind="showPatientSearch" class="gs-content">
-                <patient-search selected-patient.two-way="selectedPatient"></patient-search>
+            <div show.bind="activeCall" class="active-call-container">
+                <div class="gs-active-call-header">
+                    <span class="pull-left">Event Display</span> <span class="call-status">Active Call</span> | <span show.bind="callStart"> Started: <span class="call-time" innerHtml.bind="callStart | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'HH:mma, Do MMMM YYYY'"></span></span>
+                </div>
+
+                <div class="gs-content">
+
+                    <div class="row margin-bottom-lrg gs-event-details">
+                        <div class="col-sm-10">
+                            <form>
+
+                                <div class="row margin-bottom-sml">
+                                    <div class="col-sm-1">
+                                        <label for="event_timeStart">Start</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="event_timeStart" disabled="disabled" value.bind="callStart | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'DD-MMM-YY HH:mm:ss'" />
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label for="event_timeArrive">Arrival</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="event_timeArrive" disabled="disabled" value.bind="callArrive | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'DD-MMM-YY HH:mm:ss'" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-success btn-block btn-sm" click.delegate="setPdsStatus()">PDS Search</button>                                    
+                                    </div>
+                                </div>
+
+                                <div class="row margin-bottom-sml">
+                                    <div class="col-sm-1">
+                                        <label for="event_type">Type</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="event_type" disabled="disabled" value.bind="callType" />
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label for="event_desc">Description</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="event_desc" disabled="disabled" value.bind="callDesc" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-default btn-block btn-sm"  data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Caller Details</button>
+                                    </div>
+                                </div>
+
+                                <div class="row margin-bottom-lrg">
+                                    <div class="col-sm-1">
+                                        <label for="patient_details_location">Location</label>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control input-sm" id="patient_details_location" disabled="disabled" value="${patient.currentAddress.line[0]}, ${patient.currentAddress.city}, ${patient.currentAddress.postalCode}" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-default btn-block btn-sm" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">View Known Allergies</button>
+                                    </div>
+                                </div>
+
+                                <div class="gs-patient-banner">
+                                    <div class="row margin-bottom-sml">
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_forename">Forename</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_forename" disabled="disabled" value.bind="patient.currentName.givenString" />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_surname">Surname</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_surname" disabled="disabled" value.bind="patient.currentName.family" />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_nhsNumber">NHS No.</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_nhsNumber" disabled="disabled" value.bind="patient.nhsNumber" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_gender">Gender</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_gender" disabled="disabled" value.bind="patient.gender" />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_dob">D.o.B</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_dob" disabled="disabled" value.bind="patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'Do MMM YYYY'" />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label for="patient_details_telephone">Telephone</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="patient_details_telephone" disabled="disabled" value.bind="patient.telecom.value" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="gs-action-menu">
+                                <ul class="list-unstyled n-text-large text-right">
+                                    <li><a href="javascript:void(0);" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Save <i class="fa fa-save"></i></a></li>
+                                    <li><a href="javascript:void(0);" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Print <i class="fa fa-print"></i></a></li>
+                                    <li><a href="javascript:void(0);" class="grey-link priority-action" click.delegate="endCall()">Close <i class="fa fa-close"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div show.bind="pdsActive" class="pds-search-container">
+                        <div class="pds-header">PDS Search <a href="javascript:void(0);" class="system-close pull-right" click.delegate="setPdsStatus()"><i class="fa fa-window-close"></i></a></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <patient-search-as selected-patient.two-way="selectedPatient" patient-details.one-way="patient" patient-loading.one-way="patientLoading"></patient-search-as>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <form>
+                                    <table class="table table-bordered n-text-small n-bg-pale-grey gs-detail-panel">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+
+                                                    <div class="form-horizontal margin-top-nml">
+                                                        <div class="form-group form-group-header">
+                                                            <label class="col-sm-10 col-sm-offset-1">Home Address</label>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <hr class="margin-hz hz-dark-grey" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group n-text-normal">
+                                                            <label for="patient_line1" class="col-sm-3 control-label">Line 1</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="patient_line1" class="form-control input-sm" value="${patient.currentAddress.line[0]}" disabled="disabled" placeholder="" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group n-text-normal">
+                                                            <label for="patient_line2" class="col-sm-3 control-label">Line 2</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="patient_line2" class="form-control input-sm" value.bind="patient.currentAddress.line[1]" disabled="disabled" placeholder="" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group n-text-normal">
+                                                            <label for="patient_city" class="col-sm-3 control-label">City</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="patient_city" class="form-control input-sm" value.bind="patient.currentAddress.city" disabled="disabled" placeholder="" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group n-text-normal">
+                                                            <label for="patient_county" class="col-sm-3 control-label">County</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="patient_county" class="form-control input-sm" value.bind="patient.currentAddress.district" disabled="disabled" placeholder="" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group n-text-normal">
+                                                            <label for="patient_postcode" class="col-sm-3 control-label">Postcode</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="patient_postcode" class="form-control input-sm" value.bind="patient.currentAddress.postalCode" disabled="disabled" placeholder="" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>                        
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 gs-tab-panels">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Call Notes</a></li>
+                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-exclamation"></i> Notifications</a></li>
+                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Chronology</a></li>
+                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">EMD Data</a></li>
+                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Crew Notes</a></li>
+                                <li role="presentation" class="active"><a href="jacascript:void(0);">NRLS</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="nrlstab">
+                                    <compose if.bind="request.active" view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="request"></compose>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

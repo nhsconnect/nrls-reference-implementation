@@ -16,4 +16,5 @@ export interface IPatient {
     deceasedBoolean: boolean;
     address: IAddress[];
     managingOrganization: IResourceReference;
+    nhsNumber: string;
 }

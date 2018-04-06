@@ -1,4 +1,4 @@
-﻿import { bindable, inject } from 'aurelia-framework';
+﻿import { bindable, inject, observable } from 'aurelia-framework';
 import { PointerSvc } from '../../../core/services/PointerService';
 import { IPointer } from '../../../core/interfaces/IPointer';
 import { IRequest } from '../../../core/interfaces/IRequest';
@@ -8,6 +8,8 @@ export class NrlsPointers {
 
     pointers: Array<IPointer> = [];
     pointersLoading: boolean = false;
+
+    @observable
     request?: IRequest;
 
     constructor(private pointerSvc: PointerSvc) { }
@@ -17,7 +19,15 @@ export class NrlsPointers {
     }
 
     attached() {
-        this.getPointers();
+        //this.getPointers();
+    }
+
+    private requestChanged(newValue: IRequest, oldValue: IRequest): void {
+
+        if (newValue && newValue.active) {
+            this.getPointers();
+        }
+      
     }
 
     //showPopup(e: JQueryEventObject) {
@@ -26,6 +36,7 @@ export class NrlsPointers {
 
     getPointers() {
         if (!this.request || !this.request.id) {
+            this.pointers = [];
             return;
         }
 

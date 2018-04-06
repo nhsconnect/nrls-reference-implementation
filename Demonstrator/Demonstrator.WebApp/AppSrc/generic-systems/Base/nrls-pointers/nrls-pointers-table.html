@@ -15,8 +15,8 @@
             <tr repeat.for="pointer of pointers">
                 <td>${pointer.type.coding[0].display}</td>
                 <td>${pointer.authorViewModel.name}</td>
-                <td>${pointer.created | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
-                <td class="action"><button type="button" class="btn btn-primary nrls-record-retrieval-btn" popover="placement:auto top;title:Record Retrieval;content:In a live system, when clicking a button like this it may be possible to see the record. For the Beta Phase of the NRLS this may NOT be possible.;">View</button></td>
+                <td>${pointer.content[0].attachment.creation | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
+                <td class="action"><button type="button" class="btn btn-default nrls-record-retrieval-btn" popover="placement:auto top;title:Record Retrieval;content:In a live system, when clicking a button like this it may be possible to see the record. For the Beta Phase of the NRLS this button may reveal contact details to obtain information about the record.;">View</button></td>
             </tr>
             <tr if.bind="!pointers || pointers.length == 0">
                 <td colspan="4">No Pointers found for this Patient.</td>

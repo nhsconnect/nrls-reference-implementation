@@ -4,7 +4,7 @@
         <breadcrumb breadcrumb.one-way="breadcrumb"></breadcrumb>
         <h1 class="h1 margin-bottom-xlrg"><span>What does the NRLS mean for me /</span> ${heading}<span if.bind="personnel.personnelType != null" class="heading-type"> (${personnel.personnelType})</span></h1>
 
-        <div class="row">
+        <div class="row" style="display: none !important;">
             <div class="col-md-7">
                 <spinner-msg message="Loading Personnel" logic.one-way="personnelLoading"></spinner-msg>
 
@@ -22,7 +22,7 @@
 
         <benefit-modal if.bind="hasBenefits" benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId"></benefit-modal>
 
-        <p if.bind="personnel.cModule"><img src="/images/scenario-context/${personnel.cModule}.png" alt.bind="personnel.heading" /></p>
+        <p  style="display: none !important;" if.bind="personnel.cModule"><img src="/images/scenario-context/${personnel.cModule}.png" alt.bind="personnel.heading" /></p>
 
         <h4 class="margin-bottom-lrg">Example System for a ${personnel.name} *</h4>
 
@@ -32,7 +32,7 @@
             <p>No Generic Systems to preview</p>
         </div>
 
-        <div if.bind="genericSystem" class="generic-system-container">
+        <div if.bind="systemModelCount >= 3" class="generic-system-container">
             <compose view-model="../../generic-systems/${genericSystem.fModule}/index" model.bind="systemModel"></compose>
         </div>
 

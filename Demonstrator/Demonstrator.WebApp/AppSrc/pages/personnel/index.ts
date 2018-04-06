@@ -25,6 +25,7 @@ export class Personnel {
     benefitsForId: string;
     hasBenefits: boolean = false;
     systemModel: any = {};
+    systemModelCount: number = 0; // should be 3
 
     constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc,
         private genericSystemSvc: GenericSystemSvc, private benefitsSvc: BenefitsSvc) { }
@@ -41,6 +42,7 @@ export class Personnel {
             this.heading = this.personnel.name;
             this.personnelLoading = false;
 
+            this.systemModelCount += 1;
             this.systemModel.personnel = this.personnel;
 
             this.getOrganisation(this.personnel.actorOrganisationId);
@@ -53,6 +55,7 @@ export class Personnel {
             this.organisation = organisation;
             this.setBreadcrumb();
 
+            this.systemModelCount += 1;
             this.systemModel.organisation = this.organisation;
 
             this.setBenefits();
@@ -91,6 +94,7 @@ export class Personnel {
 
             this.genericSystem = systems[0];
 
+            this.systemModelCount += 1;
             this.systemModel.genericSystem = this.genericSystem;
 
             //systems.forEach(s => {

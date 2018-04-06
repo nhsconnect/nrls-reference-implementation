@@ -6,6 +6,7 @@ $nhsLightBlue: #41B6E6;
 $nhsBlue120: darken($nhsBlue, 10%);
 $nhsBlue80: lighten($nhsBlue, 20%);
 $nhsBlue60: lighten($nhsBlue, 40%);
+$nhsBrightBlue60: lighten($nhsBrightBlue, 40%);
 $nhsLightBlue120: darken($nhsLightBlue, 20%);
 $nhsLightBlue80: lighten($nhsLightBlue, 20%);
 
@@ -37,3 +38,4 @@ $white: #FFFFFF;
 $blue: $nhsBlue;
 $grey: $nhsMidGrey;
 $green: $nhsLightGreen;
+$red: $nhsEmergencyRed;

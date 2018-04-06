@@ -34,5 +34,17 @@
                 color: $white;
             }
         }
+
+        &.btn-success {
+            background-color: $nhsGreen;
+            border-color: $nhsDarkGreen;
+            color: $white;
+
+            &:hover {
+                background-color: $nhsDarkGreen;
+                border-color: $nhsDarkGreen;
+                color: $white;
+            }
+        }
     }
 }

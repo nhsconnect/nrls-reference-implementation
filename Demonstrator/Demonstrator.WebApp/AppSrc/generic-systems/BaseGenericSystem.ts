@@ -15,7 +15,7 @@ export class BaseGenericSystem {
     patientLoading: boolean = false;
 
     @observable
-    selectedPatient: string;
+    selectedPatient?: string;
 
     constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory) {
         this.vdController = validationControllerFactory.createForCurrentScope();
