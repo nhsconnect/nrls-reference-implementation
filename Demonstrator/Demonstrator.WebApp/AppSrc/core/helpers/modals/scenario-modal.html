@@ -1,7 +1,14 @@
 ﻿<template>
-    <p>
-        <button class="btn btn-info" click.delegate="loadScenarioModal()">Explore the Scenario</button>
-    </p>
+    <div class="scenario-wrapper">
+        <p>
+            Here you have a scenario of a patient in crisis. This scenario aims to describe what might happens in this situation at present but then also what might happen with the NRLS integrated into your organisations systems.
+            <span class="scenario-img-wrapper">
+                <a href="javascript:void(0);" click.delegate="loadScenarioModal()"><img if.bind="cmodule" src="/images/scenario-context/${cmodule}_thumb.png" alt.bind="title" class="img-responsive" /></a>
+                <button class="btn btn-info btn-block" click.delegate="loadScenarioModal()">Explore the Scenario</button>
+            </span>
+        </p>
+    </div>
+
 
     <div class="modal fade nrls-modal nrls-scenario-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

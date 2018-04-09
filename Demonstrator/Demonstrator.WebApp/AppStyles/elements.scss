@@ -287,3 +287,19 @@ a {
         line-height: 2.5em;
     }
 }
+
+
+.scenario-wrapper {
+    .scenario-img-wrapper {
+        display: block;
+        width: 250px;
+        margin-top: $spacing-small;
+        border: 2px solid $nhsBlue;
+        border-radius: 4px;
+        
+        .btn-block {
+            border-radius: 0;
+            border-color: $nhsBlue;
+        }
+    }
+}
