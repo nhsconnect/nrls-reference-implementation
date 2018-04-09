@@ -24,7 +24,7 @@ while [[ RET -ne 0 ]]; do
 done
 
 # START Data Import
-echo "=> Dropping Personnel, ActorOrganisation, GenericSystem"
+echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits"
 
 mongo << EOF
 use $MONGODB_APPLICATION_DATABASE
@@ -32,6 +32,7 @@ db.auth('$MONGODB_APPLICATION_USER','$MONGODB_APPLICATION_PASS')
 db.Personnel.drop()
 db.ActorOrganisation.drop()
 db.GenericSystem.drop()
+db.Benefits.drop()
 EOF
 
 echo "=> Dropping Patient, Organization, DocumentReference"
@@ -50,6 +51,8 @@ mongoimport -c GenericSystem -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLIC
 echo "=> GenericSystem IMPORTED"
 mongoimport -c Personnel -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Personnel.json
 echo "=> Personnel IMPORTED" 
+mongoimport -c Benefits -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Benefits.json
+echo "=> Benefits IMPORTED" 
 
 mongoimport -c Organization -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGODB_NRLS_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Organization.json
 echo "=> Organization IMPORTED"
