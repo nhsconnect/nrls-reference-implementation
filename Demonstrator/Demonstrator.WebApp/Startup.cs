@@ -42,6 +42,11 @@ namespace Demonstrator.WebApp
                 options.ConnectionString = Configuration.GetSection("NRLSMongoDb:ConnectionString").Value;
                 options.Database = Configuration.GetSection("NRLSMongoDb:Database").Value;
             });
+            services.Configure<ApiSetting>(options =>
+            {
+                options.BaseUrl = Configuration.GetSection("DemonstratorApi:BaseUrl").Value;
+                options.Secure = bool.Parse(Configuration.GetSection("DemonstratorApi:Secure").Value);
+            });
             services.Configure<ExternalApiSetting>(options =>
             {
                 options.NrlsServerUrl = new Uri(Configuration.GetSection("NRLSAPI:ServerUrl").Value);

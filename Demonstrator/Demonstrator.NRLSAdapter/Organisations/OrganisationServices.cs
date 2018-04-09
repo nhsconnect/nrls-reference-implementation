@@ -56,7 +56,7 @@ namespace Demonstrator.NRLSAdapter.Organisations
         private SearchParams GetParams(string orgCode)
         {
             var searchParams = new SearchParams();
-            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemOrgCode)}|{orgCode}");
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.IdsOrgCode)}|{orgCode}");
 
             return searchParams;
         }

@@ -56,7 +56,7 @@ namespace Demonstrator.NRLSAdapter.Patients
         private SearchParams GetParams(string nhsNumber)
         {
             var searchParams = new SearchParams();
-            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}");
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.IdsNhsNumber)}|{nhsNumber}");
 
             return searchParams;
         }

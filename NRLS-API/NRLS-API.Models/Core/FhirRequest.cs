@@ -1,7 +1,6 @@
 ﻿using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Http;
 using NRLS_API.Models.Extensions;
-using NRLS_API.Models.Helpers;
 using System;
 using System.Collections.Generic;
 

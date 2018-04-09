@@ -1,5 +1,4 @@
-﻿using Demonstrator.Core.Exceptions;
-using Demonstrator.NRLSAdapter.Models;
+﻿using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
@@ -51,7 +49,6 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         { HttpRequestHeader.CacheControl.ToString(), "no-cache" },
                         { HttpRequestHeader.Connection.ToString(), "Keep-Alive" },
                         { HttpRequestHeader.Host.ToString(), $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
-                        { HttpRequestHeader.Authorization.ToString(), "authtoken" }
                     }
                 };
 

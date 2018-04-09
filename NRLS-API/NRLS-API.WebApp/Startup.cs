@@ -37,6 +37,7 @@ namespace NRLS_API.WebApp
             services.AddMvc(config =>
             {
                
+                //Default to fhir+json
                 config.InputFormatters.Insert(0, new FhirJsonInputFormatter());
                 config.OutputFormatters.Insert(0, new FhirJsonOutputFormatter());
                 config.InputFormatters.Insert(1, new FhirXmlInputFormatter());

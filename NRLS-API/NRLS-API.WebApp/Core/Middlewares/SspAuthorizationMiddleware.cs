@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
+using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using System;
@@ -31,44 +32,50 @@ namespace NRLS_API.WebApp.Core.Middlewares
         public async SystemTasks.Task Invoke(HttpContext context)
         {
             //Order of validation is Important
+            var request = context.Request;
+            var headers = request.Headers;
+            var method = request.Method;
 
-            var accept = GetHeaderValue(context, "Accept");
-            if (accept == null || !ValidAccept(accept))
+
+            //Accept is optional but must be valid if supplied
+            var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
+            if (accept != null && !ValidAccept(accept))
             {
-                SetError("Accept");
+                SetError(HttpRequestHeader.Accept.ToString());
             }
 
-            var authorization = GetHeaderValue(context, "Authorization");
-            if (authorization == null) //check jwt
-            {
-                SetError("Authorization");
-            }
+            //TODO turn back on
+            //var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
+            //if (authorization == null || !ValidJwt(method, authorization))
+            //{
+            //    SetError(HttpRequestHeader.Authorization.ToString());
+            //}
 
-            var fromASID = GetHeaderValue(context, "fromASID");
+            var fromASID = GetHeaderValue(headers, FhirConstants.HeaderFromAsid);
             if (fromASID == null || GetFromAsidMap(fromASID) == null)
             {
-                SetError("fromASID");
+                SetError(FhirConstants.HeaderFromAsid);
             }
 
-            var toASID = GetHeaderValue(context, "toASID");
+            var toASID = GetHeaderValue(headers, FhirConstants.HeaderToAsid);
             if (toASID == null || toASID != _spineSettings.Asid)
             {
-                SetError("toASID");
+                SetError(FhirConstants.HeaderToAsid);
             }
 
-            var sspInteractionID = GetHeaderValue(context, "Ssp-InteractionID");
-            if (sspInteractionID == null || !ValidInteraction(context, sspInteractionID, fromASID))
+            var sspInteractionID = GetHeaderValue(headers, FhirConstants.HeaderSspInterationId);
+            if (sspInteractionID == null || !ValidInteraction(method, sspInteractionID, fromASID))
             {
-                SetError("Ssp-InteractionID");
+                SetError(FhirConstants.HeaderSspInterationId);
             }
 
-            //var sspTraceId = GetHeaderValue(context, "Ssp-TraceID");
+            //var sspTraceId = GetHeaderValue(headers, "Ssp-TraceID");
             //if (sspTraceId == null)
             //{
             //    SetError("Ssp-TraceID");
             //}
 
-            //var sspVersion = GetHeaderValue(context, "Ssp-Version");
+            //var sspVersion = GetHeaderValue(headers, "Ssp-Version");
             //if (sspVersion == null)
             //{
             //    SetError("Ssp-Version");
@@ -78,6 +85,13 @@ namespace NRLS_API.WebApp.Core.Middlewares
             await _next.Invoke(context);
             return;
 
+        }
+
+        private bool ValidJwt(string method, string jwt)
+        {
+            var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
+
+            return JwtHelper.IsValid(jwt, scope);
         }
 
         private bool ValidAccept(string accept)
@@ -93,27 +107,27 @@ namespace NRLS_API.WebApp.Core.Middlewares
             return false;
         }
 
-        private bool ValidInteraction(HttpContext context, string interactionId, string fromASID)
+        private bool ValidInteraction(string method, string interactionId, string fromASID)
         {
 
             var clientAsid = GetFromAsidMap(fromASID);
 
-            if (context.Request.Method.Equals(HttpMethods.Get) && clientAsid.Interactions.Contains(interactionId) && (FhirConstants.ReadInteractionId.Equals(interactionId) || FhirConstants.SearchInteractionId.Equals(interactionId)))
+            if (method.Equals(HttpMethods.Get) && clientAsid.Interactions.Contains(interactionId) && (FhirConstants.ReadInteractionId.Equals(interactionId) || FhirConstants.SearchInteractionId.Equals(interactionId)))
             {
                 return true;
             }
 
-            if (context.Request.Method.Equals(HttpMethods.Post) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.CreateInteractionId.Equals(interactionId))
+            if (method.Equals(HttpMethods.Post) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.CreateInteractionId.Equals(interactionId))
             {
                 return true;
             }
 
-            if (context.Request.Method.Equals(HttpMethods.Put) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.UpdateInteractionId.Equals(interactionId))
+            if (method.Equals(HttpMethods.Put) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.UpdateInteractionId.Equals(interactionId))
             {
                 return true;
             }
 
-            if (context.Request.Method.Equals(HttpMethods.Delete) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.DeleteInteractionId.Equals(interactionId))
+            if (method.Equals(HttpMethods.Delete) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.DeleteInteractionId.Equals(interactionId))
             {
                 return true;
             }
@@ -122,13 +136,13 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
         }
 
-        private string GetHeaderValue(HttpContext context, string header)
+        private string GetHeaderValue(IHeaderDictionary headers, string header)
         {
             string headerValue = null;
 
-            if(context.Request.Headers.ContainsKey(header))
+            if(headers.ContainsKey(header))
             {
-                var check = context.Request.Headers[header];
+                var check = headers[header];
 
                 if (!string.IsNullOrWhiteSpace(check))
                 {
@@ -143,7 +157,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
         {
             ClientAsidMap clientAsidMap;
 
-            if (!_cache.TryGetValue<ClientAsidMap>("ClientAsidMap", out clientAsidMap))
+            if (!_cache.TryGetValue<ClientAsidMap>(ClientAsidMap.Key, out clientAsidMap))
             {
                 return null;
             }

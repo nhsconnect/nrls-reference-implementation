@@ -9,7 +9,6 @@ using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -21,11 +20,13 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
     {
         private string _documentReferenceUrlBase;
         private string _spineAsid;
+        private string _systemUrlBase;
 
-        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting)
+        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting)
         {
             _documentReferenceUrlBase = $"{externalApiSetting.Value.NrlsServerUrl}";
             _spineAsid = externalApiSetting.Value.SpineAsid;
+            _systemUrlBase = $"{(apiSetting.Value.Secure ? "https" : "http")}{apiSetting.Value.BaseUrl}";
         }
 
         public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
@@ -49,14 +50,14 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
             var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
 
-            var newPointer = await new FhirConnector().RequestOne<DocumentReference>(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, content));
+            var newPointer = await new FhirConnector().RequestOne<DocumentReference>(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, content));
 
             return newPointer;
         }
 
         public async SystemTasks.Task<DocumentReference> DeletePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = await new FhirConnector().RequestOne<DocumentReference>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.PointerId));
+            var pointer = await new FhirConnector().RequestOne<DocumentReference>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, pointerRequest.PointerId));
 
             return pointer;
         }
@@ -66,15 +67,15 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             return BuildRequest(asid, interaction, null, nhsNumber, orgCode, HttpMethod.Get, null);
         }
 
-        private CommandRequest BuildPostRequest(string asid, string interaction, HttpContent content)
+        private CommandRequest BuildPostRequest(string asid, string interaction, string orgCode, HttpContent content)
         {
             
-            return BuildRequest(asid, interaction, null, null, null, HttpMethod.Post, content);
+            return BuildRequest(asid, interaction, null, null, orgCode, HttpMethod.Post, content);
         }
 
-        private CommandRequest BuildDeleteRequest(string asid, string interaction, string pointerId)
+        private CommandRequest BuildDeleteRequest(string asid, string interaction, string orgCode, string pointerId)
         {
-            return BuildRequest(asid, interaction, pointerId, null, null, HttpMethod.Delete, null);
+            return BuildRequest(asid, interaction, pointerId, null, orgCode, HttpMethod.Delete, null);
         }
 
         private CommandRequest BuildRequest(string asid, string interaction, string resourceId, string nhsNumber, string orgCode, HttpMethod method, HttpContent content)
@@ -89,11 +90,14 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
                 Content = content
             };
 
-            command.Headers.Add("fromASID", asid);
-            command.Headers.Add("toASID", _spineAsid);
-            command.Headers.Add("Ssp-InteractionID", interaction);
-            command.Headers.Add("Ssp-Version", "1");
-            command.Headers.Add("Ssp-TraceID", Guid.NewGuid().ToString());
+            var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, orgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, _systemUrlBase);
+
+            command.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"Bearer {jwt}");
+            command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
+            command.Headers.Add(FhirConstants.HeaderToAsid, _spineAsid);
+            command.Headers.Add(FhirConstants.HeaderSspInterationId, interaction);
+            command.Headers.Add(FhirConstants.HeaderFSspVersion, "1");
+            command.Headers.Add(FhirConstants.HeaderSspTradeId, Guid.NewGuid().ToString());
 
             return command;
         }

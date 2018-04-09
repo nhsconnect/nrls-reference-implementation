@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using NRLS_API.Models.Core;
-using NRLS_API.Models.Helpers;
+using NRLS_API.Models.Extensions;
 using System.Net.Http.Headers;
 using System.Text;
 using SystemTasks = System.Threading.Tasks;

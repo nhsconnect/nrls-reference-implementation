@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
@@ -27,6 +28,10 @@ namespace NRLS_API.Services
         public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
+
+            //TODO change to validation service
+            //var profileHelper = new ProfileHelper(); 
+            //profileHelper.ValidProfile(request.Resource, "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1");
 
             try
             {
@@ -73,6 +78,7 @@ namespace NRLS_API.Services
                 throw ex;
             }
         }
+
 
     }
 }

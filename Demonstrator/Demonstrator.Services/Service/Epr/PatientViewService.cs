@@ -29,7 +29,7 @@ namespace Demonstrator.Services.Service.Epr
             var patientNumbers = new List<PatientNumberViewModel>();
 
             patients.ForEach(p => {
-                var nhsNumber = p.Identifier.FirstOrDefault(i => i.System.Equals(FhirConstants.SystemNhsNumber));
+                var nhsNumber = p.Identifier.FirstOrDefault(i => i.System.Equals(FhirConstants.IdsNhsNumber));
 
                 var patientNumber = new PatientNumberViewModel
                 {
@@ -55,10 +55,10 @@ namespace Demonstrator.Services.Service.Epr
 
             if(patient != null)
             {
-                patientViewModel = patient.ToViewModel(FhirConstants.SystemNhsNumber);
+                patientViewModel = patient.ToViewModel(FhirConstants.IdsNhsNumber);
 
                 var gpPractice = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == patientViewModel.ManagingOrganization?.Id);
-                patientViewModel.GpPractice = gpPractice?.ToViewModel(FhirConstants.SystemOrgCode);
+                patientViewModel.GpPractice = gpPractice?.ToViewModel(FhirConstants.IdsOrgCode);
             }
 
             return patientViewModel;
