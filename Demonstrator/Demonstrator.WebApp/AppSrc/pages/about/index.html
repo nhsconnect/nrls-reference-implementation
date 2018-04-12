@@ -34,12 +34,15 @@
         <p class="alert alert-info alert-panel">
             <i class="fa fa-info fa-padding-sqr n-bg-blue n-text-white"></i> It is important to note that there are <b>levels of security</b> required to use the NRLS and <b>levels of agreement</b> required between Organisations on <b>sharing data</b> before Consumers can view NRLS Pointers and retrieve records.
         </p>
-        <p>
-            Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
-        </p>
-        <p class="alert alert-warning alert-panel">
-            <i class="fa fa-info fa-padding-sqr"></i> The DPIA will be revised in April 2018 following further discussions with Trusts that are implementing NRLS.
-        </p>
+
+        <div if.bind="dpiaLink">
+            <p>
+                Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
+            </p>
+            <p class="alert alert-warning alert-panel">
+                <i class="fa fa-info fa-padding-sqr"></i> The DPIA will be revised in April 2018 following further discussions with Trusts that are implementing NRLS.
+            </p>
+        </div>
 
         <h3 id="whyTheNrls" class="n-text-green n-text-bold margin-top-lrg">Why the NRLS?</h3>
 

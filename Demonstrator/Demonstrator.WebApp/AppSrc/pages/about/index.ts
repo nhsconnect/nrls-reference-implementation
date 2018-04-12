@@ -8,14 +8,16 @@ export class About {
     breadcrumb: Array<IBreadcrumb> = [];
     benefitfor: string = "ActorOrganisation";
     benefitforid: string = "5a8daa5c952e372cbdb317ea";
-    dpiaLink: string = "";
+    dpiaLink: string;
 
     constructor(private configSvc: ConfigSvc) { }
 
     created() {
         this.setBreadcrumb();
 
-        this.dpiaLink = this.configSvc.config.DPIALink;
+        if (this.configSvc.config.DPIALink) {
+            this.dpiaLink = this.configSvc.config.DPIALink;
+        }
     }
 
     private setBreadcrumb(): void {

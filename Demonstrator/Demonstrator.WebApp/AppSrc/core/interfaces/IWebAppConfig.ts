@@ -1,3 +1,3 @@
 ﻿export interface IWebAppConfig {
-    DPIALink: string;
+    DPIALink?: string;
 }
