@@ -1,5 +1,5 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
-import { Router, RouterConfiguration } from 'aurelia-router';
+import { Router, RouterConfiguration, NavigationInstruction, Next } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
@@ -26,6 +26,8 @@ export class App {
 
         config.mapUnknownRoutes(notFoundRoute);
 
+        config.addPipelineStep('postcomplete', PostCompleteStep);
+
         config.map([
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
             { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
@@ -44,5 +46,17 @@ export class App {
             details: msg.dialog.Details,
             debug: msg.dialog.Diagnostics
         };
+    }
+}
+
+class PostCompleteStep {
+
+    run(instruction: NavigationInstruction, next: Next) {
+
+        if (!instruction.router.isNavigatingBack && !instruction.router.isNavigatingForward && !instruction.router.isNavigatingRefresh) {
+            window.scrollTo(0, 0);
+        }
+
+        return next();
     }
 }

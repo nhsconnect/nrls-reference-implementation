@@ -256,10 +256,55 @@ a {
             width: 992px;
 
             .modal-content {
+                border-top-width: 40px;
 
                 .modal-body {
                     padding: 0;
-                    max-height: calc(100vh - 70px);
+                    max-height: calc(100vh - 110px);
+
+                    .switch-button {
+                        position: fixed;
+                        top: 10px;
+                        left: 30px;
+                        font-size: 1.1em;
+                        font-weight: bold;
+                        cursor: pointer;
+
+                        .switch {
+                            display: inline-block;
+                            width: 17px;
+                        }
+
+                        &.active {
+                            .off {
+                                display: none;
+                            }
+
+                            .on {
+                                display: inline-block;
+                            }
+                        }
+
+                        &.inactive {
+                            .off {
+                                display: inline-block;
+                            }
+
+                            .on {
+                                display: none;
+                            }
+
+                            &:hover {
+                                .off {
+                                    display: none;
+                                }
+
+                                .on {
+                                    display: inline-block;
+                                }
+                            }
+                        }
+                    }
 
                     button {
                         &.close {
@@ -271,9 +316,33 @@ a {
                             font-size: 1em;
                             line-height: 1.1em;
                             position: fixed;
-                            top: 15px;
-                            right: 35px;
+                            top: 5px;
+                            right: 5px;
                             box-shadow: 0 0 8px rgba(0,0,0,0.7);
+                        }
+                    }
+
+                    .context-switch-wrap {
+                        .context {
+                            position: relative;
+                            top: 0;
+                            left: 0;
+                            z-index: 1;
+
+                            &.on {
+                                position: absolute;
+                                z-index: 2;
+                                opacity: 0;
+                                transition: opacity 0.35s linear 0s;
+                            }
+                        }
+
+                        &.active {
+                            .context {
+                                &.on {
+                                    opacity: 1;
+                                }
+                            }
                         }
                     }
                 }

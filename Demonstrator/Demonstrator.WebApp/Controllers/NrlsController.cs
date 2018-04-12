@@ -23,7 +23,7 @@ namespace Demonstrator.WebApp.Controllers
         /// <param name="nhsNumber"></param>  
         /// <returns>A list of NRLS Pointers (Constrained FHIR DocumentReference) for a patient specificed by the patient nhs number.</returns>
         /// <response code="200">Returns the NRLS Pointers</response>
-        [HttpGet("{nhsNumber:regex(^[[0-9]]{{9}}$)}")]
+        [HttpGet("{nhsNumber:regex(^[[0-9]]{{10}}$)}")]
         [ProducesResponseType(typeof(List<DocumentReference>), 200)]
         public async Task<IActionResult> Get(string nhsNumber)
         {

@@ -17,7 +17,7 @@ namespace Demonstrator.WebApp.Controllers
         }
 
         // GET api/Epr/CrisisPlan/Patient/000000000
-        [HttpGet("CrisisPlan/Patient/{nhsNumber:regex(^[[0-9]]{{9}}$)}")]
+        [HttpGet("CrisisPlan/Patient/{nhsNumber:regex(^[[0-9]]{{10}}$)}")]
         public async Task<IActionResult> GetForPatient(string nhsNumber)
         {
             var crisisPlan = await _crisisPlanService.GetForPatient(nhsNumber);

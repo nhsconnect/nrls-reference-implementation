@@ -27,7 +27,7 @@ namespace Demonstrator.WebApp.Controllers
         }
 
         // GET api/Patients/1234
-        [HttpGet("{nhsNumber:regex(^[[0-9]]{{9}}$)}")]
+        [HttpGet("{nhsNumber:regex(^[[0-9]]{{10}}$)}")]
         public async Task<IActionResult> GetByNhsNumber(string nhsNumber)
         {
             //Service to get Patient by nhs number
