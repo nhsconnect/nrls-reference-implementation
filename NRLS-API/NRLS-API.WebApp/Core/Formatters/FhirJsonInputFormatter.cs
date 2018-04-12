@@ -3,8 +3,11 @@ using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Factories;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using SystemTask = System.Threading.Tasks;
 
@@ -41,11 +44,18 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 try
                 {
+                    //TODO: create a dumb model to allow passthrough to validation
                     var resource = new FhirJsonParser().Parse(jsonReader, type);
                     return InputFormatterResult.SuccessAsync(resource);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    //TODO: Remove Fhir Hack
+                    if (ex != null)
+                    {
+                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidResource("Unknown", ex.Message));
+                    }
+
                     return InputFormatterResult.FailureAsync();
                 }
             }

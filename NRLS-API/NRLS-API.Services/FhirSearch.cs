@@ -31,19 +31,31 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
+            //validate request
+
             try
             {
                 // IMPORTANT - this query currently does not filter for active/un-deleted pointers
                 var builder = Builders<BsonDocument>.Filter;
                 var filters = new List<FilterDefinition<BsonDocument>>();
-                filters.Add(builder.Eq("_id", request.Id));
+                filters.Add(builder.Eq("_id", new ObjectId(request.Id)));
 
                 //var options = new FindOptions<BsonDocument, BsonDocument>();
                 //options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
 
-                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(builder.And(filters)).FirstOrDefault().ToFhirAsync<T>();
+                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(builder.And(filters)).FirstOrDefault()?.ToFhirAsync<T>();
 
-                return resource;
+                var documents = new List<DocumentReference>();
+
+                if(resource != null)
+                {
+                    documents.Add(resource as DocumentReference);
+                }
+
+                //Get now returns bundle as per updated spec
+                var bundle = ToBundle(request, documents);
+
+                return bundle;
             }
             catch (Exception ex)
             {
@@ -55,6 +67,8 @@ namespace NRLS_API.Services
         public async Task<Resource> Find<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
+
+            //validate request
 
             try
             {

@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Factories;
 using NRLS_API.Models.Core;
 using NRLS_API.Models.Extensions;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using SystemTasks = System.Threading.Tasks;
@@ -25,31 +28,62 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
         public async SystemTasks.Task Invoke(HttpContext context)
         {
-            string formatParam = context.Request.QueryString.Value.GetParameters()?.GetParameter("_format");
+            var formatKey = "_format";
+            var acceptKey = HttpRequestHeader.Accept.ToString();
+            
+            string formatParam = context.Request.QueryString.Value.GetParameters()?.GetParameter(formatKey);
 
-            if (!string.IsNullOrEmpty(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam))
+            string acceptHeader = null;
+            if (context.Request.Headers.ContainsKey(acceptKey))
+            {
+                acceptHeader = context.Request.Headers[acceptKey];
+            }
+
+            var validFormatParam = !string.IsNullOrEmpty(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam);
+            var validAcceptHeader = !string.IsNullOrEmpty(acceptHeader) && ValidAccept(acceptHeader);
+
+
+            if(!validFormatParam && !validAcceptHeader)
+            {
+                throw new HttpFhirException("Unsupported Media Type", OperationOutcomeFactory.CreateInvalidMediaType(), HttpStatusCode.UnsupportedMediaType);
+            }
+
+            if (validFormatParam)
             {
                 var accepted = ContentType.GetResourceFormatFromFormatParam(formatParam);
                 if (accepted != ResourceFormat.Unknown)
                 {
-                    context.Request.Headers.Remove("Accept");
+                    context.Request.Headers.Remove(acceptKey);
 
-                    var acceptHeader = ContentType.XML_CONTENT_HEADER;
+                    var newAcceptHeader = ContentType.XML_CONTENT_HEADER;
 
                     if (accepted == ResourceFormat.Json)
                     {
-                        acceptHeader = ContentType.JSON_CONTENT_HEADER;
+                        newAcceptHeader = ContentType.JSON_CONTENT_HEADER;
                     }
 
-                    var header = new MediaTypeHeaderValue(acceptHeader);
+                    var header = new MediaTypeHeaderValue(newAcceptHeader);
                     header.CharSet = Encoding.UTF8.WebName;
 
-                    context.Request.Headers.Remove("Accept");
-                    context.Request.Headers.Add("Accept", new StringValues(header.ToString()));
+                    context.Request.Headers.Remove(acceptKey);
+                    context.Request.Headers.Add(acceptKey, new StringValues(header.ToString()));
                 }
             }
 
             await this._next(context);
+        }
+
+        private bool ValidAccept(string accept)
+        {
+            foreach (var type in _nrlsApiSettings.SupportedContentTypes)
+            {
+                if (accept.Contains(type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

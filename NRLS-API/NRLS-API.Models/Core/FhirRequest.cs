@@ -22,7 +22,9 @@ namespace NRLS_API.Models.Core
 
         public string[] AllowedParameters { get; set; }
 
-        public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request)
+        public string RequestingAsid { get; set; }
+
+        public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)
         {
             return new FhirRequest
             {
@@ -31,7 +33,8 @@ namespace NRLS_API.Models.Core
                 Resource = resource,
                 RequestUrl = CreateUrl(request.Scheme, request.Host.Value, request.Path, request.QueryString.Value),
                 QueryParameters = request.QueryString.Value.GetParameters(),
-                AllowedParameters = resourceType.GetAllowed()
+                AllowedParameters = resourceType.GetAllowed(),
+                RequestingAsid = requestingAsid
             };
         }
 

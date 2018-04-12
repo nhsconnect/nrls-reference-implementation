@@ -37,6 +37,8 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var method = request.Method;
 
 
+            //TODO: Check _format param as if valid no need to error
+            //TODO: Ensure header when both invalid
             //Accept is optional but must be valid if supplied
             var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
             if (accept != null && !ValidAccept(accept))
@@ -172,7 +174,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
         private void SetError(string header)
         {
-            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(ResourceType.DocumentReference.ToString(), header), HttpStatusCode.BadRequest);
+            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header), HttpStatusCode.BadRequest);
         }
 
     }

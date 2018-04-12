@@ -2,16 +2,23 @@
 {
     public class FhirConstants
     {
-        public const string SDSpineOpOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1";
+        public const string SDSpineOpOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0";
 
         public const string SystemNhsNumber = "https://fhir.nhs.uk/Id/nhs-number";
 
         public const string SystemOrgCode = "https://fhir.nhs.uk/Id/ods-organization-code";
 
+        public const string SystemODS = "https://directory.spineservices.nhs.uk/STU3/Organization/";
+
         public const string SystemPDS = "https://demographics.spineservices.nhs.uk/STU3/Patient/";
 
-        public const string SystemOpOutcome = "https://fhir.nhs.uk/STU3/ValueSet/Spine-ErrorOrWarningCode-1";
+        public const string SystemOpOutcome = "https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0";
 
+        public const string SystemOpOutcome1 = "https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-1-0";
+
+        //public const string SystemPointerType = "https://fhir.nhs.uk/STU3/ValueSet/CarePlanType-1";
+        public const string SystemPointerType = "http://snomed.info/sct";
+        
 
         //Headers
         public const string HeaderFromAsid = "fromASID";

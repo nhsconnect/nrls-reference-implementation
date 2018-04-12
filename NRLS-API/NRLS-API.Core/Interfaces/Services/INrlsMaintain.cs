@@ -4,7 +4,7 @@ using SystemTasks = System.Threading.Tasks;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
-    public interface IFhirMaintain
+    public interface INrlsMaintain
     {
         SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource;
 

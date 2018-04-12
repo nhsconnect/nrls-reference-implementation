@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Database;
@@ -62,6 +63,7 @@ namespace NRLS_API.WebApp
             {
                 options.SupportedResources = Configuration.GetSection("NRLSAPI:SupportedResources").Value.Split(",").ToList();
                 options.SupportedContentTypes = Configuration.GetSection("NRLSAPI:SupportedContentTypes").Value.Split(",").ToList();
+                options.ProfileUrl = Configuration.GetSection("NRLSAPI:ProfileUrl").Value;
             });
             services.Configure<SpineSetting>(options =>
             {
@@ -71,6 +73,10 @@ namespace NRLS_API.WebApp
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IFhirSearch, FhirSearch>();
             services.AddTransient<IFhirMaintain, FhirMaintain>();
+            services.AddTransient<IValidationHelper, ValidationHelper>();
+            services.AddTransient<IFhirValidation, FhirValidation>();
+            services.AddTransient<INrlsSearch, NrlsSearch>();
+            services.AddTransient<INrlsMaintain, NrlsMaintain>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

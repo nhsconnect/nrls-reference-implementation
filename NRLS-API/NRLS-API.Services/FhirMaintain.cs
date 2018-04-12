@@ -4,12 +4,14 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using NRLS_API.Core.Helpers;
+using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using SystemTasks = System.Threading.Tasks;
 
 
@@ -20,22 +22,31 @@ namespace NRLS_API.Services
 
         private readonly INRLSMongoDBContext _context;
 
-        public FhirMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting)
+        private readonly IFhirValidation _fhirValidation;
+
+        private string _profileUrl;
+        
+        public FhirMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context, IFhirValidation fhirValidation) : base(nrlsApiSetting)
         {
             _context = context;
+            _fhirValidation = fhirValidation;
+            _profileUrl = nrlsApiSetting.Value.ProfileUrl;
         }
 
         public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
-            //TODO change to validation service
-            //var profileHelper = new ProfileHelper(); 
-            //profileHelper.ValidProfile(request.Resource, "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1");
+            var validProfile = _fhirValidation.ValidPointer((DocumentReference)request.Resource);
+
+            if (!validProfile.Success)
+            {
+                throw new HttpFhirException("Invalid NRLS Pointer", validProfile, HttpStatusCode.BadRequest);
+            }
 
             try
             {
-                //validate pointer
+                //At present NRLS spec states updates are performed by delete and create so version will always be 1
                 request.Resource.VersionId = "1";
 
                 var pointerJson = new FhirJsonSerializer().SerializeToString(request.Resource);
@@ -56,7 +67,7 @@ namespace NRLS_API.Services
             }
         }
 
-        public async SystemTasks.Task<bool> Delete<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
@@ -69,7 +80,17 @@ namespace NRLS_API.Services
 
                 var deleted = await _context.Resource(request.StrResourceType).DeleteOneAsync(builder.And(filters));
 
-                return await SystemTasks.Task.Run(() => deleted.IsAcknowledged && deleted.DeletedCount > 0);
+                OperationOutcome outcome;
+                if(deleted.IsAcknowledged && deleted.DeletedCount > 0)
+                {
+                    outcome = OperationOutcomeFactory.CreateDelete(request.RequestUrl.AbsoluteUri);
+                }
+                else
+                {
+                    outcome = OperationOutcomeFactory.CreateNotFound(request.Id);
+                }
+
+                return await SystemTasks.Task.Run(() => outcome);
 
             }
             catch (Exception ex)

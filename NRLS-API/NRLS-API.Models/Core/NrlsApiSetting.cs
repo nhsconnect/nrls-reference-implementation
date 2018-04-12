@@ -7,5 +7,7 @@ namespace NRLS_API.Models.Core
         public List<string> SupportedResources { get; set; }
 
         public List<string> SupportedContentTypes { get; set; }
+
+        public string ProfileUrl { get; set; }
     }
 }

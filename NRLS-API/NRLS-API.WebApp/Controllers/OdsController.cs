@@ -25,7 +25,7 @@ namespace NRLS_API.WebApp.Controllers
         [HttpGet]
         public async Task<Resource> Search()
         {
-            var request = FhirRequest.Create(null, ResourceType.Organization, null, Request);
+            var request = FhirRequest.Create(null, ResourceType.Organization, null, Request, null);
 
             var result = await _fhirSearch.Find<Organization>(request);
 
@@ -40,7 +40,7 @@ namespace NRLS_API.WebApp.Controllers
         [HttpGet("{id}")]
         public async Task<Resource> Read(string id)
         {
-            var request = FhirRequest.Create(id, ResourceType.Organization, null, Request);
+            var request = FhirRequest.Create(id, ResourceType.Organization, null, Request, null);
 
             var result = await _fhirSearch.Find<Organization>(request);
 

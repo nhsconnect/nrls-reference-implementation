@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
+using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
+using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using NRLS_API.WebApp.Core.Configuration;
 
@@ -11,17 +16,19 @@ namespace NRLS_API.WebApp.Controllers
     [Route("nrls/fhir/DocumentReference")]
     public class NrlsController : Controller
     {
-        private readonly IFhirSearch _fhirSearch;
-        private readonly IFhirMaintain _fhirMaintain;
+        private readonly INrlsSearch _nrlsSearch;
+        private readonly INrlsMaintain _nrlsMaintain;
 
-        public NrlsController(IFhirSearch fhirSearch, IFhirMaintain fhirMaintain)
+        public NrlsController(INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
         {
-            _fhirSearch = fhirSearch;
-            _fhirMaintain = fhirMaintain;
+            _nrlsSearch = nrlsSearch;
+            _nrlsMaintain = nrlsMaintain;
         }
 
         /// <summary>
         /// Searches for the requested resource type.
+        /// OR
+        /// Gets a resource by the supplied _id search parameter.
         /// </summary>
         /// <returns>A FHIR Bundle Resource</returns>
         /// <response code="200">Returns the FHIR Resource</response>
@@ -29,9 +36,14 @@ namespace NRLS_API.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Search()
         {
-            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request);
+            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, null);
 
-            var result = await _fhirSearch.Find<DocumentReference>(request);
+            var result = await _nrlsSearch.Find<DocumentReference>(request);
+
+            if (result.ResourceType == ResourceType.OperationOutcome)
+            {
+                return NotFound(result);
+            }
 
             return Ok(result);
         }
@@ -41,21 +53,22 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>A FHIR Resource</returns>
         /// <response code="200">Returns the FHIR Resource</response>
-        [ProducesResponseType(typeof(Resource), 200)]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Read(string id)
-        {
-            var request = FhirRequest.Create(id, ResourceType.DocumentReference, null, Request);
+        //[ProducesResponseType(typeof(Resource), 200)]
+        //[HttpGet]
+        //public async Task<IActionResult> Read()
+        //{
+        //    //TODO: Update to reflect new ID parameter
+        //    var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, null);
 
-            var result = await _fhirSearch.Get<DocumentReference>(request);
+        //    var result = await _nrlsSearch.Get<DocumentReference>(request);
 
-            if(result == null)
-            {
-                //return error
-            }
+        //    if (result.ResourceType == ResourceType.OperationOutcome)
+        //    {
+        //        return NotFound(result);
+        //    }
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         /// <summary>
         /// Creates and Persists a new record the requested resource type into a datastore.
@@ -66,16 +79,29 @@ namespace NRLS_API.WebApp.Controllers
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody]Resource resource)
         {
-            var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request);
-
-            var result = await _fhirMaintain.Create<DocumentReference>(request);
-
-            if(result == null)
+            //TODO: Remove temp code
+            if(resource.ResourceType.Equals(ResourceType.OperationOutcome))
             {
-                //return error
+                throw new HttpFhirException("Invalid Fhir Request", (OperationOutcome) resource, HttpStatusCode.BadRequest);
             }
 
-            return Created($"{request.RequestUrl.AbsoluteUri}/{result.Id}", result);
+            var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request, RequestingAsid());
+
+            var result = await _nrlsMaintain.Create<DocumentReference>(request);
+
+            if (result == null)
+            {
+                return BadRequest(OperationOutcomeFactory.CreateInvalidResource("Unknown"));
+            }
+
+            if (result.ResourceType == ResourceType.OperationOutcome)
+            {
+                return BadRequest(result);
+            }
+
+            var response = OperationOutcomeFactory.CreateSuccess();
+
+            return Created($"{request.RequestUrl.AbsoluteUri}?_id={result.Id}", response);
         }
 
         // PUT fhir/DocumentReference/5
@@ -90,21 +116,33 @@ namespace NRLS_API.WebApp.Controllers
         /// <summary>
         /// Deletes a record that was previously persisted into a datastore.
         /// </summary>
-        /// <returns>The Empty Result</returns>
-        /// <response code="204">Returns No Content</response>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        /// <returns>The OperationOutcome</returns>
+        /// <response code="200">Returns OperationOutcome</response>
+        [HttpDelete()]
+        public async Task<IActionResult> Delete()
         {
-            var request = FhirRequest.Create(id, ResourceType.DocumentReference, null, Request);
+            //TODO: Update to reflect new ID parameter
+            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
-            var result = await _fhirMaintain.Delete<DocumentReference>(request);
+            var result = await _nrlsMaintain.Delete<DocumentReference>(request);
 
-            if (!result)
+            if (result != null && result.Success)
             {
-                //return error
+                //Assume success
+                return Ok(result);
             }
 
-            return NoContent();
+            return NotFound(result);
+        }
+
+        private string RequestingAsid()
+        {
+            if (Request.Headers.ContainsKey(FhirConstants.HeaderFromAsid))
+            {
+                return Request.Headers[FhirConstants.HeaderFromAsid];
+            }
+
+            return null;
         }
     }
 }
