@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using SystemTasks = System.Threading.Tasks;
 using MongoDB.Bson;
 using Demonstrator.Core.Interfaces.Database;
 using Demonstrator.Models.DataModels.Epr;
@@ -12,6 +12,8 @@ using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Nrls;
 using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.Models.ViewModels.Base;
+using System.Linq;
+using Hl7.Fhir.Model;
 
 namespace Demonstrator.Services.Service.Flows
 {
@@ -32,7 +34,7 @@ namespace Demonstrator.Services.Service.Flows
             _pointerMapService = pointerMapService;
         }
 
-        public async Task<CrisisPlanViewModel> GetForPatient(string nhsNumber, bool ifActive)
+        public async SystemTasks.Task<CrisisPlanViewModel> GetForPatient(string nhsNumber, bool ifActive)
         {
             try
             {
@@ -66,7 +68,7 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async Task<CrisisPlanViewModel> GetById(string planId)
+        public async SystemTasks.Task<CrisisPlanViewModel> GetById(string planId)
         {
             try
             {
@@ -92,7 +94,7 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async Task<CrisisPlanViewModel> SavePlan(CrisisPlanViewModel crisisPlan)
+        public async SystemTasks.Task<CrisisPlanViewModel> SavePlan(CrisisPlanViewModel crisisPlan)
         {
             try
             {
@@ -121,9 +123,9 @@ namespace Demonstrator.Services.Service.Flows
                 var newPointer = await _documentReferenceServices.GenerateAndCreatePointer(pointerRequest);
 
                 //Create map between NRLS Pointer and Medical Record
-                _pointerMapService.CreatePointerMap(newPointer.Id, newCrisisPlan.Id, RecordType.MentalHealthCrisisPlan);
+                _pointerMapService.CreatePointerMap(newPointer.ResourceId, newCrisisPlan.Id, RecordType.MentalHealthCrisisPlan);
 
-                return await Task.Run(() => CrisisPlan.ToViewModel(newCrisisPlan));
+                return await SystemTasks.Task.Run(() => CrisisPlan.ToViewModel(newCrisisPlan));
 
             }
             catch (Exception ex)
@@ -133,7 +135,7 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async Task<bool> DeletePlan(RequestViewModel request)
+        public async SystemTasks.Task<bool> DeletePlan(RequestViewModel request)
         {
             try
             {
@@ -149,11 +151,14 @@ namespace Demonstrator.Services.Service.Flows
                 if(pointerMap != null)
                 {
                     var pointerRequest = NrlsPointerRequest.Delete(pointerMap.NrlsPointerId, request.Asid, FhirConstants.DeleteInteractionId);
-                    deletedPointer = await _documentReferenceServices.DeletePointer(pointerRequest) == null;
+                    var outcome = await _documentReferenceServices.DeletePointer(pointerRequest);
+
+                    deletedPointer = (outcome != null && outcome.Success);
+ 
                 }
                 
 
-                return await Task.Run(() => previous.IsAcknowledged && previous.ModifiedCount > 0 && deletedPointer);
+                return await SystemTasks.Task.Run(() => previous.IsAcknowledged && previous.ModifiedCount > 0 && deletedPointer);
 
             }
             catch (Exception ex)

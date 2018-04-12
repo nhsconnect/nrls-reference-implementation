@@ -9,6 +9,8 @@ namespace Demonstrator.NRLSAdapter.Helpers
     {
         public Resource Resource { get; set; }
 
+        public Uri ResponseLocation { get; set; }
+
         public List<Bundle.EntryComponent> Entries => ((Bundle)Resource).Entry;
 
         public T GetResource<T>() where T : Resource

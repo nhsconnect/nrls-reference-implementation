@@ -1,0 +1,14 @@
+﻿{
+  "NRLSAPI": {
+    "ServerUrl": "http://localhost:51913/nrls/fhir"
+  },
+  "PDSAPI": {
+    "ServerUrl": "http://localhost:51913/pds/fhir"
+  },
+  "ODSAPI": {
+    "ServerUrl": "http://localhost:51913/ods/fhir"
+  },
+  "Spine": {
+    "Asid": "999999999999" 
+  }
+}

@@ -5,8 +5,11 @@ using Demonstrator.Models.Nrls;
 using Demonstrator.NRLSAdapter.DocumentReferences;
 using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,12 +25,16 @@ namespace Demonstrator.NRLSAdapter.Helpers
         private string[] _args = new string[0];
 
         private string _body = null;
-        private string _format = null;
+        private NrlsPointerBody _pointerBody = null;
+        private DocumentReference _pointer = null;
+        private string _format = ContentType.JSON_CONTENT_HEADER;
+        private string _input = null;
         private string _method = null;
         private string _output = null;
         private IDictionary<string, string> _parameters = null;
+        private IDictionary<string, string> _headers = null;
         private string _resource = null;
-        private string _uniqueId = null;
+        //private string _uniqueId = null;
 
         public FhirCommand(string[] args)
         {
@@ -76,10 +83,15 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         return CommandResponse.Set(false, $"The OPTION {option} has not been supplied with a value.");
                     }
 
-                    var optionValue = _args.ElementAt(optionValueKey)?.ToLowerInvariant();
+                    var optionValue = _args.ElementAt(optionValueKey);
+
+                    if (!string.IsNullOrEmpty(optionValue) && !SensitiveOptions.Contains(validOption.Key))
+                    {
+                        optionValue = optionValue.ToLowerInvariant();
+                    }
 
                     //If the OPTION has set values, check the incoming against this list
-                    if (validOption.Key != "parameters" && validOption.Value.Any() && optionValue != null && !validOption.Value.Contains(optionValue))
+                    if (validOption.Key != "parameters" && validOption.Key != "setheaders" && validOption.Value.Any() && optionValue != null && !validOption.Value.Contains(optionValue))
                     {
                         return CommandResponse.Set(false, $"The OPTION {option} value is invalid.");
                     }
@@ -110,6 +122,16 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 _format = value;
             }
 
+            if (key.Equals("input"))
+            {
+                _input = value;
+            }
+
+            if (key.Equals("setheaders"))
+            {
+                _headers = GetOptionDictionay(key, value);
+            }
+
             if (key.Equals("method"))
             {
                 _method = value;
@@ -125,10 +147,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 _parameters = GetOptionDictionay(key, value);
             }
 
-            if (key.Equals("uniqueid"))
-            {
-                _uniqueId = value;
-            }
+            //now a parameter
+            //if (key.Equals("id"))
+            //{
+            //    _uniqueId = value;
+            //}
         }
 
         private IDictionary<string, string> GetOptionDictionay(string key, string value)
@@ -163,66 +186,202 @@ namespace Demonstrator.NRLSAdapter.Helpers
             message.AppendLine("Resource: " + _resource);
             message.AppendLine("Format: " + _format);
 
-            if (_method == "get")
+            if (_headers == null || !_headers.Any())
+            {
+                return CommandResponse.Set(false, $"All requests requires the setheaders option.");
+            }
+
+            if (!ValidMethods.Contains(_method))
+            {
+                return CommandResponse.Set(false, $"The Method {_method} is invalid.");
+            }
+
+            if (_method == "get" || _method == "delete" || _method == "put")
             {
                 if (_parameters == null || !_parameters.Any())
                 {
-                    return CommandResponse.Set(false, $"The Parameters OPTION is missing. The GET method requires parameters.");
+                    return CommandResponse.Set(false, $"The Parameters OPTION is missing. The GET, PUT and DELETE method requires parameters.");
                 }
 
                 message.AppendLine("Parameters: " + _parameters);
             }
 
-            if ((_method == "put" || _method == "post") && string.IsNullOrWhiteSpace(_body))
+            if ((_method == "put" || _method == "post"))
             {
-                return CommandResponse.Set(false, $"The Body OPTION is missing. PUT and POST methods require a Body.");
-            }
-
-            if (_method == "put")
-            {
-                if (string.IsNullOrWhiteSpace(_uniqueId))
+                if (!string.IsNullOrWhiteSpace(_body))
                 {
-                    return CommandResponse.Set(false, $"The UniqueId OPTION is missing. PUT methods require a UniqueId.");
-                }
+                    try
+                    {
+                        _pointerBody = JsonConvert.DeserializeObject<NrlsPointerBody>(_body);
+                    }
+                    catch(Exception ex)
+                    {
+                        return CommandResponse.Set(false, $"The Body OPTION is invalid. Exception Message: {ex.Message}");
+                    }
 
-                message.AppendLine("UniqueId: " + _uniqueId);
+                }
+                else if (!string.IsNullOrWhiteSpace(_input))
+                {
+                    var inputLocation = GetInputLocation();
+
+                    if (inputLocation == null)
+                    {
+                        return CommandResponse.Set(false, $"The Input OPTION is invalid. See --help for more details.");
+                    }
+                    else
+                    {
+                        if (!inputLocation.Success)
+                        {
+                            return inputLocation;
+                        }
+
+                        try
+                        {
+                            var jsonParser = new FhirJsonParser();
+                            var pointer = File.ReadAllText(inputLocation.Result);
+                            _pointer = jsonParser.Parse<DocumentReference>(pointer);
+                        }
+                        catch(Exception ex)
+                        {
+                            return CommandResponse.Set(false, $"Error trying to parse input. Exception Message: {ex.Message}");
+                        }
+                        
+                       
+                    }
+                }
+                else
+                {
+                    return CommandResponse.Set(false, $"Both the Body OPTION and the Input OPTION are missing. PUT and POST methods require at least one.");
+                }
             }
+
+            ////not for beta
+            //if (_method == "put")
+            //{
+            //    //its now a parameter
+            //    if (string.IsNullOrWhiteSpace(_uniqueId))
+            //    {
+            //        return CommandResponse.Set(false, $"The id OPTION is missing. PUT methods require a id.");
+            //    }
+
+            //    message.AppendLine("id: " + _uniqueId);
+            //}
 
             return CommandResponse.Set(true, message.ToString());
         }
 
-        public async Task<CommandResult<Bundle>> RunCommand()
+        public async Task<CommandResult<string>> RunCommand()
         {
-            var pointers = new Bundle();
+            
+            var jsonSerializer = new FhirJsonSerializer();
 
-            if (_method == "get")
+            var jsonResponse = string.Empty;
+            NrlsPointerRequest pointerRequest;
+
+            var idParam = _parameters?.FirstOrDefault(n => n.Key.Equals("_id"));
+            var asid = _headers.FirstOrDefault(n => n.Key.Equals("fromasid"));
+            var interaction = _headers.FirstOrDefault(n => n.Key.Equals("ssp-interactionid"));
+
+
+            //Massive Try/catch
+
+            try
             {
-                var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("patient"));
-                var custodianParam = _parameters.FirstOrDefault(n => n.Key.Equals("custodian"));
+                if (_method == "get")
+                {
+                    var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("patient"));
+                    var custodianParam = _parameters.FirstOrDefault(n => n.Key.Equals("custodian"));
 
-                var pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, null, null);
 
-                pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
+                    if (!string.IsNullOrEmpty(idParam.Value.Value))
+                    {
+                        pointerRequest = NrlsPointerRequest.Read(idParam.Value.Value, asid.Value, interaction.Value);
+                    }
+                    else
+                    {
+                        pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, asid.Value, interaction.Value);
+                    }
+
+                    var pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
+
+                    jsonResponse = jsonSerializer.SerializeToString(pointers);
+                }
+
+                if (_method == "post")
+                {
+                    OperationOutcome documentOutcome;
+
+                    if (_pointerBody != null)
+                    {
+                        pointerRequest = NrlsPointerRequest.Create(_pointerBody.OrgCode, _pointerBody.NhsNumber, _pointerBody.Url, _pointerBody.ContentType, _pointerBody.TypeCode, _pointerBody.TypeDisplay, asid.Value, interaction.Value);
+
+                        var response = await _docRefService.GenerateAndCreatePointer(pointerRequest);
+
+                        documentOutcome = response.Resource as OperationOutcome;
+                    }
+                    else
+                    {
+                        pointerRequest = NrlsPointerRequest.Create(null, null, null, null, null, null, asid.Value, interaction.Value);
+
+                        var response = await _docRefService.CreatePointer(pointerRequest, _pointer);
+
+                        documentOutcome = response.Resource as OperationOutcome;
+                    }
+
+
+                    jsonResponse = jsonSerializer.SerializeToString(documentOutcome);
+                }
+
+                if (_method == "put")
+                {
+                    //not implemented
+                }
+
+                if (_method == "delete")
+                {
+
+                    pointerRequest = NrlsPointerRequest.Delete(idParam.Value.Value, asid.Value, interaction.Value);
+
+                    var outcome = await _docRefService.DeletePointer(pointerRequest);
+
+                    jsonResponse = jsonSerializer.SerializeToString(outcome);
+                }
             }
+            catch(Exception ex)
+            {
+                jsonResponse = ex.Message;
+            }
+            
 
-            return CommandResult<Bundle>.Set(true, "Success", pointers);
+
+            return CommandResult<string>.Set(true, "Success", jsonResponse.ToString());
         }
 
         public CommandResult<string> GetOutputLocation()
         {
-            if (string.IsNullOrWhiteSpace(_output))
+            return GetLocation(_output);
+        }
+
+        public CommandResult<string> GetInputLocation()
+        {
+            return GetLocation(_input);
+        }
+
+        public CommandResult<string> GetLocation(string _location)
+        {
+            if (string.IsNullOrWhiteSpace(_location))
             {
                 return null;
             }
 
-            var location = Path.GetDirectoryName(_output);
+            var location = Path.GetDirectoryName(_location);
 
             if (!Directory.Exists(location))
             {
                 return CommandResult<string>.Set(false, "Invalid location supplied.", null);
             }
 
-            return CommandResult<string>.Set(true, "Success.", _output);
+            return CommandResult<string>.Set(true, "Success.", _location);
         }
 
         private static bool IsEven(int value)
@@ -234,19 +393,26 @@ namespace Demonstrator.NRLSAdapter.Helpers
             { "body", new List<string>() },
             { "format", ValidFormats },
             { "help", new List<string>() },
+            { "input", new List<string>() },
             { "method", ValidMethods },
             { "output", new List<string>() },
             { "parameters", ValidParameters },
             { "resource", ValidResources },
-            { "uniqueid", new List<string>() },
+            { "setheaders", ValidHeaders },
+            //{ "id", new List<string>() },
             { "version", new List<string>() }
         };
 
-        private static List<string> ValidParameters = new List<string> { "patient", "custodian" };
+        private static List<string> SensitiveOptions = new List<string> { "parameters", "input", "output", "body" };
+
+        private static List<string> ValidParameters = new List<string> { "patient", "custodian", "_id" };
+
+        //Set to lower case for cmd line
+        private static List<string> ValidHeaders = new List<string> { "ssp-traceid", "fromasid", "toasid", "ssp-interactionid", "ssp-version" };
 
         private static List<string> ValidFormats = new List<string> { "json" };
 
-        private static List<string> ValidMethods = new List<string> { "get", "post", "put" };
+        private static List<string> ValidMethods = new List<string> { "get", "post", "delete" }; // put not in for beta
 
         private static List<string> ValidResources = new List<string> { "documentreference" };
 

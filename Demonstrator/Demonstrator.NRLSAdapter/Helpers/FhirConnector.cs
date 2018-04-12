@@ -21,6 +21,13 @@ namespace Demonstrator.NRLSAdapter.Helpers
             return fhirResponse.GetResource<T>();
         }
 
+        public async SystemTasks.Task<FhirResponse> RequestOne(CommandRequest request)
+        {
+            var fhirResponse = await Request(request);
+
+            return fhirResponse;
+        }
+
         public async SystemTasks.Task<List<T>> RequestMany<T>(CommandRequest request) where T : Resource
         {
 
@@ -73,6 +80,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     if (request.Method != HttpMethod.Delete && data == null)
                     {
                         throw new HttpRequestException($"Request resulted in nothing for: {request.FullUrl}.");
+                    }
+
+                    if(res.Headers?.Location != null)
+                    {
+                        fhirResponse.ResponseLocation = res.Headers.Location;
                     }
 
                     using (var reader = new StreamReader(data, Encoding.UTF8))

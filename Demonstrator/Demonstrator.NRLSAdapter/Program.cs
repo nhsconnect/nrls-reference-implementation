@@ -53,15 +53,11 @@ namespace Demonstrator.NRLSAdapter
                 return;
             }
 
-            var jsonSerializer = new FhirJsonSerializer();
-            var jsonPointers = jsonSerializer.SerializeToString(response.Result);
-            var jsonContent = jsonPointers.ToString();
-
             var outputLocation = cmdHelper.GetOutputLocation();
 
             if(outputLocation == null)
             {
-                Console.WriteLine(jsonContent);
+                Console.WriteLine(response.Result);
             }
             else
             {
@@ -71,7 +67,7 @@ namespace Demonstrator.NRLSAdapter
                     return;
                 }
 
-                File.WriteAllText(outputLocation.Result, jsonContent);
+                File.WriteAllText(outputLocation.Result, response.Result);
             }
 
 
@@ -95,8 +91,20 @@ namespace Demonstrator.NRLSAdapter
 
             Console.WriteLine("OPTIONS:");
             Console.WriteLine("    -b,--body          The body of the request in the format specficied by the 'format' OPTION.");
-            Console.WriteLine("                       Can be used with 'Method' OPTIONS of POST or PUT. The body should be ");
-            Console.WriteLine("                       wrapped in double quotes.");
+            Console.WriteLine("                       Can be used with 'Method' options of POST or PUT. The body should be ");
+            Console.WriteLine("                       wrapped in double quotes. An example: ");
+            Console.WriteLine("                       {");
+            Console.WriteLine("                           'Id': 'string',");
+            Console.WriteLine("                           'OrgCode': 'string',");
+            Console.WriteLine("                           'NhsNumber': 'string',");
+            Console.WriteLine("                           'Url': 'string',");
+            Console.WriteLine("                           'ContentType': 'string',");
+            Console.WriteLine("                           'TypeCode': 'string',");
+            Console.WriteLine("                           'TypeDisplay': 'string',");
+            Console.WriteLine("                           'Creation': 'FHIR Date'");
+            Console.WriteLine("                       }");
+            Console.WriteLine("                       NOTE: Id is only required for the PUT option.");
+            Console.WriteLine("                       This is an alternative to the input option. If Body is supplied input will be ignored.");
 
             Console.WriteLine("    -f,--format        The format of the content supplied (when POST or PUT methods are used) ");
             Console.WriteLine("                       and the format of the response. Currently only JSON is supported. If not ");
@@ -104,9 +112,13 @@ namespace Demonstrator.NRLSAdapter
 
             Console.WriteLine("    -h,--help          Displays this Help content.");
 
+            Console.WriteLine("    -i,--input         The location and filename of where to get the complete NRLS DocumentReference ");
+            Console.WriteLine("                       for POST and PUT methods. This is an alternative to the body option.");
+            Console.WriteLine("                       If Body is supplied Input will be ignored.");
+
             Console.WriteLine("    -m,--method        The HTTP method to use in the request. Allowed values include GET, POST, ");
             Console.WriteLine("                       PUT. The Method GET supports Search but not Read. Methods POST and PUT ");
-            Console.WriteLine("                       require the 'body' OPTION to be populated. The Method PUT requires the ");
+            Console.WriteLine("                       require the 'body' option to be populated. The Method PUT requires the ");
             Console.WriteLine("                       'uniqueid' option to be populated.");
 
             Console.WriteLine("    -o,--output        The location and file name of where to store the results. If not provided ");
@@ -118,8 +130,14 @@ namespace Demonstrator.NRLSAdapter
 
             Console.WriteLine("    -r,--resource      The FHIR Resource type. Allowed values are limited to 'DocumentReference'");
 
-            Console.WriteLine("    -u,--uniqueid      The unique id of the resource stored in the NRLS. This is required for the ");
-            Console.WriteLine("                       PUT method OPTION.");
+            Console.WriteLine("    -s,--setHeaders    An array of pipe delimited key/value pair headers used for the request. ");
+            Console.WriteLine("                       The Header array is required. See the NRLS spec for specific details. ");
+            Console.WriteLine("                       NOTE: Accept is generated from the format value and Authorization is auto generated.");
+            Console.WriteLine("                       e.g. fromASID|200000000117,toASID|999999999999");
+
+            //Now a parameter
+            //Console.WriteLine("    -i,--id            The unique id of the resource stored in the NRLS. This is required for the ");
+            //Console.WriteLine("                       PUT method OPTION.");
 
             Console.WriteLine("    -v,--version       Displays the current console application version.");
         }

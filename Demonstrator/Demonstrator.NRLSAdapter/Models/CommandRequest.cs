@@ -37,7 +37,8 @@ namespace Demonstrator.NRLSAdapter.Models
 
         private Uri BuildFullUrl()
         {
-            var url = new Uri($"{BaseUrl}/{ResourceType}{("/" + ResourceId ?? "")}{QueryString}");
+            //var url = new Uri($"{BaseUrl}/{ResourceType}{("/" + ResourceId ?? "")}{QueryString}"); // currently no endpoints contain a resource id
+            var url = new Uri($"{BaseUrl}/{ResourceType}{QueryString}");
 
             return url;
         }
@@ -51,7 +52,8 @@ namespace Demonstrator.NRLSAdapter.Models
 
                 foreach(var param in SearchParams.Parameters)
                 {
-                    queryString.Append($"{param.Item1}={param.Item2}");
+                    var prefix = queryString.Length > 1 ? "&" : "";
+                    queryString.Append($"{prefix}{param.Item1}={param.Item2}");
                 }
             }
 

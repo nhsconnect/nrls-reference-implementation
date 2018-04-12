@@ -19,8 +19,9 @@
 
 
         //ValueSets
-        public const string CodingSystemPointerType = "https://fhir.nhs.uk/STU3/ValueSet/CarePlanType-1";
-
+        //public const string CodingSystemPointerType = "https://fhir.nhs.uk/STU3/ValueSet/CarePlanType-1";
+        public const string CodingSystemPointerType = "http://snomed.info/sct";
+        
 
         //Headers
         public const string HeaderFromAsid = "fromASID";

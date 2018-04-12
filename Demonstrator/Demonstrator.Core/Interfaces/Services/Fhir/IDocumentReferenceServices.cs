@@ -8,10 +8,10 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
     {
         SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest);
 
-        SystemTasks.Task<DocumentReference> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest);
+        SystemTasks.Task<NrlsCreateResponse> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest);
 
-        SystemTasks.Task<DocumentReference> CreatePointer(NrlsPointerRequest pointerRequest, DocumentReference pointer);
+        SystemTasks.Task<NrlsCreateResponse> CreatePointer(NrlsPointerRequest pointerRequest, DocumentReference pointer);
 
-        SystemTasks.Task<DocumentReference> DeletePointer(NrlsPointerRequest pointerRequest);
+        SystemTasks.Task<OperationOutcome> DeletePointer(NrlsPointerRequest pointerRequest);
     }
 }

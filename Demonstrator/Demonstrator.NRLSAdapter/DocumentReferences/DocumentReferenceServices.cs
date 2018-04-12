@@ -31,12 +31,12 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
         {
-            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.NhsNumber, pointerRequest.OrgCode));
+            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.NhsNumber, pointerRequest.OrgCode, pointerRequest.PointerId));
 
             return pointers;
         }
 
-        public async SystemTasks.Task<DocumentReference> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest)
+        public async SystemTasks.Task<NrlsCreateResponse> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest)
         {
             var pointer = NrlsPointer.Generate(pointerRequest.OrgCode, pointerRequest.NhsNumber, pointerRequest.RecordUrl, pointerRequest.RecordContentType, pointerRequest.TypeCode, pointerRequest.TypeDisplay);
 
@@ -45,26 +45,32 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             return newPointer;
         }
 
-        public async SystemTasks.Task<DocumentReference> CreatePointer(NrlsPointerRequest pointerRequest, DocumentReference pointer)
+        public async SystemTasks.Task<NrlsCreateResponse> CreatePointer(NrlsPointerRequest pointerRequest, DocumentReference pointer)
         {
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
             var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
 
-            var newPointer = await new FhirConnector().RequestOne<DocumentReference>(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, content));
+            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, content));
 
-            return newPointer;
+            var createResponse = new NrlsCreateResponse
+            {
+                Resource = newPointer.GetResource<OperationOutcome>(),
+                ResponseLocation = newPointer.ResponseLocation
+            };
+
+            return createResponse;
         }
 
-        public async SystemTasks.Task<DocumentReference> DeletePointer(NrlsPointerRequest pointerRequest)
+        public async SystemTasks.Task<OperationOutcome> DeletePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = await new FhirConnector().RequestOne<DocumentReference>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, pointerRequest.PointerId));
+            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, pointerRequest.PointerId));
 
             return pointer;
         }
 
-        private CommandRequest BuildGetRequest(string asid, string interaction, string nhsNumber, string orgCode)
+        private CommandRequest BuildGetRequest(string asid, string interaction, string nhsNumber, string orgCode, string pointerId)
         {
-            return BuildRequest(asid, interaction, null, nhsNumber, orgCode, HttpMethod.Get, null);
+            return BuildRequest(asid, interaction, pointerId, nhsNumber, orgCode, HttpMethod.Get, null);
         }
 
         private CommandRequest BuildPostRequest(string asid, string interaction, string orgCode, HttpContent content)
@@ -85,7 +91,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
                 BaseUrl = _documentReferenceUrlBase,
                 ResourceId = resourceId,
                 ResourceType = ResourceType.DocumentReference,
-                SearchParams = GetParams(nhsNumber, orgCode),
+                SearchParams = GetParams(nhsNumber, orgCode, resourceId),
                 Method = method,
                 Content = content
             };
@@ -102,7 +108,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             return command;
         }
 
-        private SearchParams GetParams(string nhsNumber, string orgCode)
+        private SearchParams GetParams(string nhsNumber, string orgCode, string id)
         {
             var searchParams = new SearchParams();
 
@@ -114,6 +120,11 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             if (!string.IsNullOrWhiteSpace(nhsNumber))
             {
                 searchParams.Add("patient", $"{WebUtility.UrlEncode(FhirConstants.SystemPDS)}{nhsNumber}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                searchParams.Add("_id", id);
             }
 
             return searchParams;
