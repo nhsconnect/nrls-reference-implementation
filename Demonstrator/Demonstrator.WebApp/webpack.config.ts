@@ -105,7 +105,8 @@ let config = generateConfig(
   aurelia({root: rootDir, src: srcDir, title: title, baseUrl: baseUrl}),
   typescript(ENV !== 'test' ? {} : { options: { doTypeCheck: false, sourceMap: false, inlineSourceMap: true, inlineSources: true } }),
     html(),
-   /*copyFiles({ patterns: [{ from: 'webappconfig' + (ENV === 'production' ? '.production' : '') + '.json', to: 'webappconfig.json' }] }),*/
+    copyFiles({ patterns: [{ from: 'webappconfig' + (ENV === 'production' ? '.production' : '') + '.json', to: 'webappconfig.json' }] }),
+    copyFiles({ patterns: [{ from: 'Resources/*.docx', to: './' }] }),
   sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false}),
   css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
   fontAndImages(),

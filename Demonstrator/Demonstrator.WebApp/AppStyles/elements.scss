@@ -83,10 +83,22 @@
 
     & > i {
         position: absolute;
-        top: 20px;
-        left: 20px;
+        top: 15px;
+        left: 15px;
+    }
+
+    &.alert-warning {
+        background-color: $nhsWarmYellow75;
+        border-color: $nhsWarmYellow;
+        color: $nhsWarmYellow130;
+
+        .fa-padding-sqr {
+            background-color: $nhsWarmYellow130;
+            color: $nhsWarmYellow75;
+        }
     }
 }
+
 
 .yellow-tooltips {
     .gs-instructions {
