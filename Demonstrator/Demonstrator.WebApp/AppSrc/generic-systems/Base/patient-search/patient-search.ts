@@ -7,12 +7,25 @@ import { IPatient }                         from '../../../core/interfaces/IPati
 export class PatientSearch {
 
     nhsNumbers: Array<IPatientNumber> = [];
+
     nhsNumbersLoading: boolean = false;
-    @bindable({ defaultBindingMode: bindingMode.oneWay }) patientLoading: boolean;
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedPatient?: IPatientNumber;
-    @bindable({ defaultBindingMode: bindingMode.oneWay }) patientDetails: IPatient;
-    @bindable({ defaultBindingMode: bindingMode.oneWay }) setCurrent: boolean;
+
+    @bindable({ defaultBindingMode: bindingMode.oneWay })
+    patientLoading: boolean;
+
+    @bindable({ defaultBindingMode: bindingMode.twoWay })
+    selectedPatient?: IPatientNumber;
+
+    @bindable({ defaultBindingMode: bindingMode.oneWay })
+    patientDetails: IPatient;
+
+    @bindable({ defaultBindingMode: bindingMode.oneWay })
+    setCurrent: boolean;
+
     currentPatient?: IPatientNumber;
+
+    @bindable
+    type?: string;
 
     constructor(private patientSvc: PatientSvc) { }
 
@@ -23,18 +36,23 @@ export class PatientSearch {
             this.nhsNumbersLoading = false;
 
             if (this.setCurrent && this.nhsNumbers && this.nhsNumbers.length > 0) {
-                this.updateSelected(this.nhsNumbers[0]);
+                this.selectedPatient = this.nhsNumbers[0];
             }
         });
-    }
 
-    updateSelected(selected: IPatientNumber) {
-        this.currentPatient = selected;
-        this.setPatient();
+        console.log(this.type);
     }
 
     setPatient() {
         this.selectedPatient = this.currentPatient;
+    }
+
+    detached() {
+        this.type =
+        this.currentPatient =
+        this.selectedPatient = undefined;
+        this.nhsNumbers = [];
+
     }
 
 }

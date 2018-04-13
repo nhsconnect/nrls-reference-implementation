@@ -1,5 +1,6 @@
 <template>
-    <require from="../Base/patient-search/patient-search-as"></require>
+    <require from="../Base/patient-search/patient-search"></require>
+    <require from="../Base/nrls-pointers/nrls-pointers-table"></require>
 
     <section class="gs-container">
 
@@ -150,7 +151,7 @@
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="nrlstab">
-                                    <compose if.bind="request.active" view-model="../Base/nrls-pointers/nrls-pointers-table" model.bind="request"></compose>
+                                    <nrls-pointers-table request.one-way="request"></nrls-pointers-table>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +163,7 @@
 
 
             <div class="gs-context-panel">
-                <patient-search-as selected-patient.two-way="selectedPatient" set-current.one-way="true" patient-loading.one-way="patientLoading"></patient-search-as>
+                <patient-search selected-patient.two-way="selectedPatient" set-current.one-way="true" patient-loading.one-way="patientLoading" type="as"></patient-search>
             </div>
 
         </div>

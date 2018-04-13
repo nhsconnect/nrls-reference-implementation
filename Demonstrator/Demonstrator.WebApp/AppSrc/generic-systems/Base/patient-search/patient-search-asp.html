@@ -1,6 +1,6 @@
-﻿<template>
+﻿<template bindable="patientLoading, nhsNumbersLoading, nhsNumbers, selectedPatient">
     <form>
         <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
-        <button repeat.for="item of nhsNumbers" type="button" class="btn ${item.nhsNumber === selectedPatient.nhsNumber ? 'btn-info' : 'btn-default'}" disabled.bind="nhsNumbersLoading || patientLoading" click.delegate="updateSelected(item)"><i class="fa fa-user"></i> ${item.nhsNumber}</button>
+        <button repeat.for="item of nhsNumbers" type="button" class="btn ${item.nhsNumber === selectedPatient.nhsNumber ? 'btn-info' : 'btn-default'}" disabled.bind="nhsNumbersLoading || patientLoading" click.delegate="selectedPatient = item"><i class="fa fa-user"></i> ${item.nhsNumber}</button>
     </form>
 </template>

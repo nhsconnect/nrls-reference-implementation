@@ -44,6 +44,11 @@ export class GsASParamedicToughBook extends BaseGenericSystem {
     }
 
 
+    deactivate() {
+        this.data = {};
+    }
+
+
 }
 
 

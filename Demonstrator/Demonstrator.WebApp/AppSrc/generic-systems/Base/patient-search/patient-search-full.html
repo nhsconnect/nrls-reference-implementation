@@ -1,36 +1,5 @@
-﻿<template>
+﻿<template bindable="patientLoading, nhsNumbersLoading, nhsNumbers, currentPatient, setPatient">
     <form>
-        <table class="table table-bordered n-bg-pale-grey n-text-small nrls-pointer-results">
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="form-horizontal margin-top-nml">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Select a Patient</label>
-                                <div class="col-sm-10">
-                                    <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control">
-                                        <option value="">--select--</option>
-                                        <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
-                                    </select>
-
-                                    <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-9">
-                                    <button type="button" class="btn btn-info" click.delegate="setPatient()">View</button>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="alert alert-warning"><p><i class="fa fa-exclamation fa-padding-sqr"></i> Please note Patient Search has been disabled for this demonstration. Please select from the list of Patients above.</p></div>
-
-
         <table class="table table-bordered n-text-small n-bg-pale-grey">
             <tbody>
                 <tr>
@@ -96,13 +65,52 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-9">
-                                    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Find</button>
+                                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Patient Search is disabled in the Demo. Please select a Patient from below.">Find</button>
                                 </div>
                             </div>
                         </div>
 
 
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered n-bg-pale-grey n-text-small nrls-pointer-results">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-horizontal margin-top-nml">
+
+                            <div class="form-group form-group-header">
+                                <label class="col-sm-2 control-label">NHS Number</label>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr class="margin-hz hz-dark-grey" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Patient</label>
+                                <div class="col-sm-8">
+                                    <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control">
+                                        <option value="">--select--</option>
+                                        <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
+                                    </select>
+
+                                    <spinner-msg message="Loading NHS Numbers" logic.one-way="nhsNumbersLoading"></spinner-msg>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-9">
+                                    <button type="button" class="btn btn-info" click.delegate="setPatient()">View</button>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tbody>

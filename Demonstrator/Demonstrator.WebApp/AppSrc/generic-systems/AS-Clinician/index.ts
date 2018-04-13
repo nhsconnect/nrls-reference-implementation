@@ -41,6 +41,10 @@ export class GsASClinician extends BaseGenericSystem {
             active: true
         };
     }
+
+    deactivate() {
+        this.data = {};
+    }
 }
 
 

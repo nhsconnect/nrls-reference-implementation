@@ -135,6 +135,10 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
             crisisPlan.active,
             crisisPlan.patientNhsNumber);
     }
+
+    deactivate() {
+        this.data = undefined;
+    }
 }
 
 

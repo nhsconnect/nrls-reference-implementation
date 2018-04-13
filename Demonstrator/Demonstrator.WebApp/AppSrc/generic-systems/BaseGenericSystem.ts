@@ -12,6 +12,7 @@ export class BaseGenericSystem {
 
     @observable
     protected patient?: IPatient;
+
     patientLoading: boolean = false;
 
     @observable
@@ -22,15 +23,12 @@ export class BaseGenericSystem {
         this.vdController.validateTrigger = validateTrigger.manual;
     }
 
-    created() {
+    attached() {
 
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     getPatient() {
-
         if (!this.selectedPatient || !this.selectedPatient.nhsNumber || this.selectedPatient.id.length === 0) {
             return;
         }
@@ -58,6 +56,11 @@ export class BaseGenericSystem {
     get showPatientSearch(): boolean {
 
         return !this.patient;
+    }
+
+    detached() {
+
+        $('[data-toggle="tooltip"]').tooltip('dispose');
     }
 
 }
