@@ -50,7 +50,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
             var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
 
-            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, content));
+            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, null, content));
 
             var createResponse = new NrlsCreateResponse
             {
@@ -63,7 +63,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<OperationOutcome> DeletePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.OrgCode, pointerRequest.PointerId));
+            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, null, pointerRequest.PointerId));
 
             return pointer;
         }
