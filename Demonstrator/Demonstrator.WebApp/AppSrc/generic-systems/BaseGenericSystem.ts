@@ -14,6 +14,7 @@ export class BaseGenericSystem {
     protected patient?: IPatient;
 
     patientLoading: boolean = false;
+    instructionsActive: boolean = true;
 
     @observable
     selectedPatient?: IPatientNumber;
@@ -26,6 +27,10 @@ export class BaseGenericSystem {
     attached() {
 
         $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    toggleInstructions() {
+        this.instructionsActive = !this.instructionsActive;
     }
 
     getPatient() {

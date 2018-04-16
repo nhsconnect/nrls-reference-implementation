@@ -6,6 +6,7 @@ export class gridtabs {
     @bindable icon: string;
     @bindable showMoreHint: boolean;
     @bindable showMoreTitle: string;
+    @bindable showMoreBody: string;
 
     created() {
 

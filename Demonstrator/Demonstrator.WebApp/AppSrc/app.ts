@@ -8,6 +8,7 @@ import { IDialog } from './core/interfaces/IDialog';
 export class App {
     router: Router;
     errorDialog: IDialog;
+    showContact: boolean = false;
 
     constructor(private ea: EventAggregator) {
         ea.subscribe(DialogRequested, msg => {
@@ -46,6 +47,10 @@ export class App {
             details: msg.dialog.Details,
             debug: msg.dialog.Diagnostics
         };
+    }
+
+    showContactDialog() {
+        this.showContact = !this.showContact;
     }
 }
 

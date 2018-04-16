@@ -5,6 +5,7 @@
     <section class="gs-container">
 
         <p class="gs-instructions">
+            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">View Instructions</button>
             New Instructions go here...
         </p>
 
@@ -164,6 +165,14 @@
 
             <div class="gs-context-panel">
                 <patient-search selected-patient.two-way="selectedPatient" set-current.one-way="true" patient-loading.one-way="patientLoading" type="as"></patient-search>
+            </div>
+
+            <div show.bind="instructionsActive" class="gs-instructions">
+                <div class="gs-instruction-bg"></div>
+                <div class="gs-instruction-content">
+                    <p>Instructions go here....</p>
+                    <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                </div>
             </div>
 
         </div>

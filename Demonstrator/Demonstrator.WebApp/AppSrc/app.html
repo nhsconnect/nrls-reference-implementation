@@ -15,6 +15,7 @@
         <router-view></router-view>
     </div>
 
-    <footer-bar></footer-bar>
+    <footer-bar show-contact.call="showContactDialog()"></footer-bar>
     <error-modal if.bind="errorDialog" dialog.two-way="errorDialog"></error-modal>
+    <contact-modal if.bind="showContact"></contact-modal>
 </template>

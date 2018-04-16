@@ -16,10 +16,10 @@
     <None Remove="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
     <None Remove="AppSrc\core\helpers\modals\benefit-modal.ts" />
+    <None Remove="AppSrc\core\helpers\modals\contact-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\scenario-modal.ts" />
     <None Remove="AppSrc\core\helpers\popover.ts" />
-    <None Remove="AppSrc\core\helpers\ScrollHints.ts" />
     <None Remove="AppSrc\core\interfaces\IBenefitDialog.ts" />
     <None Remove="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
@@ -64,7 +64,6 @@
     <None Remove="AppSrc\core\helpers\EventMessages.ts" />
     <None Remove="AppSrc\core\models\IActorOrganisation.ts" />
     <None Remove="AppSrc\core\services\ActorOrganisationService.ts" />
-    <None Remove="AppSrc\core\types\List.ts" />
     <None Remove="AppSrc\core\WebApi.ts" />
   </ItemGroup>
 
@@ -92,6 +91,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\modals\contact-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\scenario-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\benefit-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\popover.ts" />
@@ -103,7 +103,6 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
-    <TypeScriptCompile Include="AppSrc\core\helpers\ScrollHints.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IContentView.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitDialog.ts" />
@@ -143,7 +142,6 @@
     <TypeScriptCompile Include="AppSrc\core\services\PatientService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
-    <TypeScriptCompile Include="AppSrc\core\types\List.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />

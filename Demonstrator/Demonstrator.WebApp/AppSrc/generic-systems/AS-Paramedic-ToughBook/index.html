@@ -4,7 +4,10 @@
 
     <section class="gs-container">
 
-        <p class="gs-instructions">New Instructions go here...</p>
+        <p class="gs-instructions">
+            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">View Instructions</button>
+            New Instructions go here...
+        </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-as-paramedic">
             <div class="gs-header">
@@ -82,6 +85,14 @@
                             <div class="col-sm-4">2 Not Read</div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div show.bind="instructionsActive" class="gs-instructions">
+                <div class="gs-instruction-bg"></div>
+                <div class="gs-instruction-content">
+                    <p>Instructions go here....</p>
+                    <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
                 </div>
             </div>
         </div>

@@ -2,32 +2,27 @@
 
     <section class="container">
 
-        <h1 class="h1 margin-bottom-xlrg">${heading}</h1>
+        <h1 class="h1 margin-bottom-xlrg">Welcome to the NRLS Interactive Guide <span>for phase 1</span></h1>
         <div class="row">
             <div class="col-md-9">
                 <div class="padding-right-lrg">
-                    <p>
-                        The National Record Locator Service (<b>NRLS</b>) is a service that aims to help <b>Health &amp; Social Care professionals</b> around the <b>country</b> understand what type of <b>medical records </b>exist for a Patient under their care and where those records exist. This is achieved by way of a <b>national index</b> of these records within the NRLS that Organisations can search through.
-                    </p>
-                    <p>
-                        The NRLS also aims to help these care professionals <b>retrieve those records</b> that this index identifies. We call each index item that exists for a record a <b>Pointer</b>. These Pointers are created by the Organisations that create the medical records, e.g. a Care Co-Ordinator in a Mental Health Trust creating a Care Plan for a Patient.
-                    </p>
-                    <p>
-                        <a route-href="route: about;" class="n-text-bold">Read more about the NRLS, Security and Sharing Agreements <i class="fa fa-chevron-right"></i></a>
-                    </p>
+                    <p>The National Record Locator Service (NRLS) will enable an authorised clinician, care worker and/or administrator, in any health or care setting, to access a patient&#8217;s information to support that patient&#8217;s direct care. Acces will be possible through multiple routes including SCRa.</p>
+                    <p>This interactive guide aims to explore some of the various routes, focusing on what NRLS will mean and could look like for the different organisations and personnel. There is also a <a route-href="route: developers;">developer area</a> with details about the specification and implementation.</p>
+                    <p>The work builds on a successful alpha phase and discovery workshops with our beta organisations and is now in its beta of phase 1 which is focused around mental health. Phase 2 of NRLS wil expand on organisations outside of the ambulance services and mental health trusts demonstrated as it increases in its capability for connecting patient information.</p>
+                    <p>Read more about the <a route-href="route: about;">Benefits, Security and Sharing Agreements <i class="fa fa-angle-right"></i></a></p>
 
                     <h3 id="chooseYourOrganisation" class="n-text-green n-text-bold margin-top-lrg">Start the Guide</h3>
 
-                    <p>The <b>NRLS</b> is designed to be <b>used by many</b> different types of Health &amp; Social Care <b>Organisations</b>.</p>
+                    <p>The NRLS is designed to be used by many different types of Health &amp; Social Care Organisations.</p>
 
-                    <p>Here are just a few <b>examples</b> of those <b>Organisations</b>, please select one to better understand what the NRLS means for them.</p>
+                    <p>Here are just a few examples of those organisations, please select one to better understand what the NRLS means for them.</p>
 
                     <spinner-msg message="Loading Organisations" logic.one-way="orgsLoading"></spinner-msg>
                 </div>
 
                 <div class="row margin-bottom-xlrg">
                     <div class="col-md-12">
-                        <gridtabs route="actor-organisation-personnel" items.one-way="actorOrganisations" show-more-hint="true" show-more-title="Your Organisation"></gridtabs>
+                        <gridtabs route="actor-organisation-personnel" items.one-way="actorOrganisations" show-more-hint="true" show-more-title="Your Organisation" show-more-body="For phase 1 of this project we have been working with mental health trusts and ambulance services. For phase 2 onwards we aim to work with other types of health organisations also."></gridtabs>
                     </div>
                 </div>
 

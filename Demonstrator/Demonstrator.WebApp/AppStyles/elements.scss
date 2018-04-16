@@ -255,10 +255,32 @@ a {
 
             .modal-content {
                 border: none;
+                overflow: hidden;
 
                 .modal-body {
                     padding: 0;
+                    max-height: calc(100vh - 160px);
                 }
+            }
+        }
+    }
+
+    &.nrls-contact-modal {
+        text-align: left;
+
+        .modal-dialog {
+            width: 704px;
+
+            .modal-header {
+                padding: 0 $spacing-large;
+
+                .close {
+                    margin-top: 20px;
+                }
+            }
+
+            .modal-body {
+                padding: 0 $spacing-large;
             }
         }
     }

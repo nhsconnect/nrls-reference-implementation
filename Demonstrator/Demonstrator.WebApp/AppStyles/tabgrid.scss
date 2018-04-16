@@ -42,6 +42,14 @@
                 height: 145px;
             }
 
+            .gridtab-alt {
+                display: none;
+                width: 100%;
+                height: 85px;
+                padding: 0 $spacing-small;
+                font-size: 0.8em;
+            }
+
             .gridtab-icon {
                 color: $black;
                 font-size: 8em;
@@ -61,6 +69,18 @@
 
                 img {
                     opacity: 0.6;
+                }
+            }
+
+            &.gridtab-link-alt {
+                &:hover {
+                    .gridtab-img {
+                        display: none;
+                    }
+
+                    .gridtab-alt {
+                        display: block;
+                    }
                 }
             }
         }

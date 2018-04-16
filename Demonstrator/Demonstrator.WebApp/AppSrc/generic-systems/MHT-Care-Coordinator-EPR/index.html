@@ -4,6 +4,7 @@
     <section class="gs-container">
 
         <p class="gs-instructions">
+            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">View Instructions</button>
             New Instructions go here...
         </p>
 
@@ -18,7 +19,7 @@
                     <li><a href="javascript:void(0)" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Home</a></li>
                     <li><a href="javascript:void(0)" class="grey-link" click.delegate="findPatient()">Search</a></li>
                     <li><a href="javascript:void(0)" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
-                    <li  class="pull-right">User: <b>${data.personnel.name}</b></li>
+                    <li class="pull-right">User: <b>${data.personnel.name}</b></li>
                 </ul>
             </div>
 
@@ -202,8 +203,16 @@
 
                 </div>
 
-               
 
+
+            </div>
+
+            <div show.bind="instructionsActive" class="gs-instructions">
+                <div class="gs-instruction-bg"></div>
+                <div class="gs-instruction-content">
+                    <p>Instructions go here....</p>
+                    <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                </div>
             </div>
         </div>
 
