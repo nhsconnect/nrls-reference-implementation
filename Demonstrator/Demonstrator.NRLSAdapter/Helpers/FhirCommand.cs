@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Core.Configuration;
+using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.Nrls;
@@ -22,6 +23,8 @@ namespace Demonstrator.NRLSAdapter.Helpers
     public class FhirCommand
     {
         private readonly IDocumentReferenceServices _docRefService;
+        private readonly IClientAsidHelper _clientAsidHelper;
+
         private string[] _args = new string[0];
 
         private string _body = null;
@@ -42,6 +45,9 @@ namespace Demonstrator.NRLSAdapter.Helpers
             ConfigureServices(out serviceProvider);
 
             _docRefService = serviceProvider.GetService<IDocumentReferenceServices>();
+            _clientAsidHelper = serviceProvider.GetService<IClientAsidHelper>();
+
+            _clientAsidHelper.Load();
 
             _args = args;
         }
@@ -428,8 +434,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 options.PdsServerUrl = new Uri(configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.OdsServerUrl = new Uri(configuration.GetSection("ODSAPI:ServerUrl").Value);
                 options.SpineAsid = configuration.GetSection("Spine:Asid").Value;
+                options.SpineThumbprint = configuration.GetSection("Spine:SslThumbprint").Value;
+                options.ClientAsidMapFile = configuration.GetSection("Spine:ClientAisMapFile").Value;
             });
             serviceCollection.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
+            serviceCollection.AddTransient<IClientAsidHelper, ClientAsidHelper>();
             serviceProvider = serviceCollection.BuildServiceProvider();
         }
     }

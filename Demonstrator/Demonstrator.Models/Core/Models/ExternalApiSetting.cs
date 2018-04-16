@@ -11,5 +11,9 @@ namespace Demonstrator.Models.Core.Models
         public Uri OdsServerUrl { get; set; }
 
         public string SpineAsid { get; set; }
+
+        public string SpineThumbprint { get; set; }
+
+        public string ClientAsidMapFile { get; set; }
     }
 }

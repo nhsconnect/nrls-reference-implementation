@@ -9,6 +9,8 @@
     "ServerUrl": "http://localhost:51913/ods/fhir"
   },
   "Spine": {
-    "Asid": "999999999999" 
+    "Asid": "999999999999",
+    "SslThumbprint": "",
+    "ClientAisMapFile": "Data/ClientAsidMap.json"
   }
 }

@@ -20,6 +20,8 @@ using Demonstrator.Services.Service.Nrls;
 using Demonstrator.WebApp.Core.Middlewares;
 using Demonstrator.Services.Service.Epr;
 using Demonstrator.Core.Interfaces.Services.Epr;
+using Demonstrator.Core.Interfaces.Services;
+using Demonstrator.NRLSAdapter.Helpers;
 
 namespace Demonstrator.WebApp
 {
@@ -53,6 +55,8 @@ namespace Demonstrator.WebApp
                 options.PdsServerUrl = new Uri(Configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.OdsServerUrl = new Uri(Configuration.GetSection("ODSAPI:ServerUrl").Value);
                 options.SpineAsid = Configuration.GetSection("Spine:Asid").Value;
+                options.SpineThumbprint = Configuration.GetSection("Spine:SslThumbprint").Value;
+                options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAisMapFile").Value;
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IActorOrganisationService, ActorOrganisationService>();
@@ -67,6 +71,7 @@ namespace Demonstrator.WebApp
             services.AddTransient<IBenefitsService, BenefitsService>(); 
             services.AddTransient<IBenefitsViewService, BenefitsViewService>();
             services.AddTransient<IPointerMapService, PointerMapService>();
+            services.AddTransient<IClientAsidHelper, ClientAsidHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +81,8 @@ namespace Demonstrator.WebApp
             {
                 ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
             });
+
+            app.UseClientInteractionCacheMiddleware();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
