@@ -10,6 +10,7 @@ export class benefitsdialog {
     @bindable({ defaultBindingMode: bindingMode.oneWay }) bindtomenu: boolean;
     @bindable benefitfor: string;
     @bindable benefitforid: string;
+    @bindable navigateToAbout: any;
     benefitdialog: IBenefitDialog;
     benefitMenu: IBenefitMenu;
     activeBenefit: string;
