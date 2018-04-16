@@ -24,9 +24,9 @@ echo "=> Data: MongoDB service running."
 
 REM START Data Import
 
-echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits from %MONGODB_APPLICATION_DATABASE%"
+echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits, NrlsPointerMaps, MedicalRecords from %MONGODB_APPLICATION_DATABASE%"
 
-mongo admin --eval "db=db.getSiblingDB('%MONGODB_APPLICATION_DATABASE%');db.auth('%MONGODB_APPLICATION_USER%','%MONGODB_APPLICATION_PASS%');db.Personnel.drop();db.ActorOrganisation.drop();db.GenericSystem.drop();db.Benefits.drop();quit()"
+mongo admin --eval "db=db.getSiblingDB('%MONGODB_APPLICATION_DATABASE%');db.auth('%MONGODB_APPLICATION_USER%','%MONGODB_APPLICATION_PASS%');db.Personnel.drop();db.ActorOrganisation.drop();db.GenericSystem.drop();db.Benefits.drop();db.NrlsPointerMaps.drop();db.MedicalRecords.drop();quit()"
 
 echo "=> Dropping Patient, Organization, DocumentReference from %MONGODB_NRLS_DATABASE%"
 

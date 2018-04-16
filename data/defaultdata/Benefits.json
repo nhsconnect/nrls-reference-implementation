@@ -142,7 +142,7 @@
     "_id": {
         "$oid": "5abcc0db84c20a48414e34b3"
     },
-    "Text": "Improving integrated care pathways across providers, including timely communication and collaboration between acute trusts, mental health providers, ambulance services, primary care, social care, public health (drug/alcohol services) and the voluntary sector; and",
+    "Text": "Improving integrated care pathways across providers, including timely communication and collaboration between acute trusts, mental health providers, ambulance services, primary care, social care, public health (drug/alcohol services) and the voluntary sector",
     "Categories": ["Safety", "Efficiency", "Financial"],
     "Order": 10,
     "Type": "Benefit",

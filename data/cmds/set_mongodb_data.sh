@@ -24,7 +24,7 @@ while [[ RET -ne 0 ]]; do
 done
 
 # START Data Import
-echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits"
+echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits, NrlsPointerMaps, MedicalRecords"
 
 mongo << EOF
 use $MONGODB_APPLICATION_DATABASE
@@ -33,6 +33,8 @@ db.Personnel.drop()
 db.ActorOrganisation.drop()
 db.GenericSystem.drop()
 db.Benefits.drop()
+db.NrlsPointerMaps.drop()
+db.MedicalRecords.drop()
 EOF
 
 echo "=> Dropping Patient, Organization, DocumentReference"
