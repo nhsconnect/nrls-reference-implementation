@@ -64,6 +64,7 @@ namespace NRLS_API.WebApp
                 options.SupportedResources = Configuration.GetSection("NRLSAPI:SupportedResources").Value.Split(",").ToList();
                 options.SupportedContentTypes = Configuration.GetSection("NRLSAPI:SupportedContentTypes").Value.Split(",").ToList();
                 options.ProfileUrl = Configuration.GetSection("NRLSAPI:ProfileUrl").Value;
+                options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value; ;
             });
             services.Configure<SpineSetting>(options =>
             {

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
@@ -18,11 +19,13 @@ namespace NRLS_API.WebApp.Controllers
     {
         private readonly INrlsSearch _nrlsSearch;
         private readonly INrlsMaintain _nrlsMaintain;
+        private readonly NrlsApiSetting _nrlsApiSettings;
 
-        public NrlsController(INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
+        public NrlsController(IOptions<NrlsApiSetting> nrlsApiSettings, INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
         {
             _nrlsSearch = nrlsSearch;
             _nrlsMaintain = nrlsMaintain;
+            _nrlsApiSettings = nrlsApiSettings.Value;
         }
 
         /// <summary>
@@ -101,7 +104,7 @@ namespace NRLS_API.WebApp.Controllers
 
             var response = OperationOutcomeFactory.CreateSuccess();
 
-            return Created($"{request.RequestUrl.AbsoluteUri}?_id={result.Id}", response);
+            return Created($"{_nrlsApiSettings.BaseUrl}{Request.Path}?_id={result.Id}", response);
         }
 
         // PUT fhir/DocumentReference/5

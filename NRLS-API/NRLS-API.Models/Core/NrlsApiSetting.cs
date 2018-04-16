@@ -9,5 +9,7 @@ namespace NRLS_API.Models.Core
         public List<string> SupportedContentTypes { get; set; }
 
         public string ProfileUrl { get; set; }
+
+        public string BaseUrl { get; set; }
     }
 }

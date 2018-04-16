@@ -37,8 +37,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var method = request.Method;
 
 
-            //TODO: Check _format param as if valid no need to error
-            //TODO: Ensure header when both invalid
             //Accept is optional but must be valid if supplied
             var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
             if (accept != null && !ValidAccept(accept))
@@ -46,12 +44,11 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 SetError(HttpRequestHeader.Accept.ToString());
             }
 
-            //TODO turn back on
-            //var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
-            //if (authorization == null || !ValidJwt(method, authorization))
-            //{
-            //    SetError(HttpRequestHeader.Authorization.ToString());
-            //}
+            var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
+            if (authorization == null || !ValidJwt(method, authorization))
+            {
+                SetError(HttpRequestHeader.Authorization.ToString());
+            }
 
             var fromASID = GetHeaderValue(headers, FhirConstants.HeaderFromAsid);
             if (fromASID == null || GetFromAsidMap(fromASID) == null)
