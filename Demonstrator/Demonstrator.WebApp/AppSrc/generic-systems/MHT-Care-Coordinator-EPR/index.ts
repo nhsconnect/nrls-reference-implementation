@@ -66,6 +66,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
                 if (planDelete) {
                     this.crisisPlan = new CrisisPlan();
+                    this.crisisPlan.version = "1";
+
                     this.allowCrisisPlan = false;
                     this.hasCrisisPlan = false;
                 }

@@ -98,13 +98,15 @@ namespace Demonstrator.Services.Service.Flows
         {
             try
             {
-                var currentPlan = await this.GetForPatient(crisisPlan.PatientNhsNumber, false);
+                var currentPlan = await this.GetForPatient(crisisPlan.PatientNhsNumber, true);
                 int version = 1;
 
                 if (currentPlan != null)
                 {
                     version = currentPlan.Version + 1;
                     currentPlan.Asid = crisisPlan.Asid;
+                    //Should really archive plans after update rather than mark as delete
+                    //Delete only when an active delete request is made
                     var deleted = await DeletePlan(currentPlan);
                 }
 
@@ -154,6 +156,11 @@ namespace Demonstrator.Services.Service.Flows
                     var outcome = await _documentReferenceServices.DeletePointer(pointerRequest);
 
                     deletedPointer = (outcome != null && outcome.Success);
+
+                    if (deletedPointer)
+                    {
+                        var delMap = _pointerMapService.DeletePointerMap(pointerMap.Id);
+                    }
  
                 }
                 

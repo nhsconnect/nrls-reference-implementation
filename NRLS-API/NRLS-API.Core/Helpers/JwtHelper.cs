@@ -15,15 +15,31 @@ namespace NRLS_API.Core.Helpers
         {
             var now = DateTime.UtcNow;
 
-            //This should be a basic Base64Encoded token
-            var decoded =  jwt.Split('.').Skip(1).Take(1).Select(x =>  Encoding.UTF8.GetString(Convert.FromBase64String(x.PadRight(x.Length + (x.Length % 4), '='))));
-
-            if (decoded.Count() == 0)
+            if (string.IsNullOrEmpty(jwt))
             {
                 return false;
             }
 
-            var claims = JsonConvert.DeserializeObject<IDictionary<string, string>>(decoded.First());
+            
+            if(jwt.StartsWith("Bearer "))
+            {
+                jwt = jwt.Replace("Bearer ", "");
+            }
+
+            //This should be a basic Base64UrlEncoded token
+            var claimsHash = jwt.Split('.').Skip(1).Take(1).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(claimsHash))
+            {
+                return false;
+            }
+
+            claimsHash = claimsHash.Replace('-', '+').Replace('_', '/');
+
+            var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(claimsHash.PadRight(claimsHash.Length + (4 - claimsHash.Length % 4) % 4, '=')));
+
+
+            var claims = JsonConvert.DeserializeObject<IDictionary<string, string>>(decoded);
 
             var iss = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtClientSysIssuer));
 

@@ -25,6 +25,7 @@ namespace Demonstrator.Services.Service.Epr
 
             filters.Add(builder.Eq(x => x.RecordId, recordId));
             filters.Add(builder.Eq(x => x.RecordType, recordType.ToString()));
+            filters.Add(builder.Eq(x => x.IsActive, true));
 
             return await _context.NrlsPointerMaps.FindSync(builder.And(filters), null).FirstOrDefaultAsync();
         }
@@ -40,6 +41,16 @@ namespace Demonstrator.Services.Service.Epr
             };
 
             _context.NrlsPointerMaps.InsertOne(pointerMapper);
+        }
+
+        public async Task<bool> DeletePointerMap(ObjectId id)
+        {
+            //Find and delete Pointer Map
+            var update = new UpdateDefinitionBuilder<NrlsPointerMap>().Set(n => n.IsActive, false);
+            var deleted = _context.NrlsPointerMaps.UpdateOne(item => item.Id == id, update);
+
+            return await Task.Run(() => deleted.IsAcknowledged && deleted.ModifiedCount > 0);
+
         }
     }
 }

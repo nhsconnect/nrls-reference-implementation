@@ -10,5 +10,7 @@ namespace Demonstrator.Core.Interfaces.Services.Epr
         Task<NrlsPointerMap> FindPointerMap(string recordId, RecordType recordType);
 
         void CreatePointerMap(string pointerId, ObjectId recordId, RecordType recordType);
+
+        Task<bool> DeletePointerMap(ObjectId id);
     }
 }

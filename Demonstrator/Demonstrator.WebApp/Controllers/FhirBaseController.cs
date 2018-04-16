@@ -1,4 +1,5 @@
-﻿using Demonstrator.Models.ViewModels.Base;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Models.ViewModels.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demonstrator.WebApp.Controllers
@@ -9,6 +10,11 @@ namespace Demonstrator.WebApp.Controllers
 
         protected void SetHeaders<T>(T resource) where T : RequestViewModel
         {
+            if(resource == null)
+            {
+                throw new HttpFhirException($"Supplied model is invalid.");
+            }
+
             if (Request.Headers.ContainsKey("Asid"))
             {
                 resource.Asid = Request.Headers["Asid"];

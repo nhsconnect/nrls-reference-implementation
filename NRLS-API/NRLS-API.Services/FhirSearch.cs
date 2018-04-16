@@ -43,13 +43,16 @@ namespace NRLS_API.Services
                 //var options = new FindOptions<BsonDocument, BsonDocument>();
                 //options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
 
-                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(builder.And(filters)).FirstOrDefault()?.ToFhirAsync<T>();
+                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(builder.And(filters)).FirstOrDefaultAsync();
+
+                Resource document;
 
                 var documents = new List<DocumentReference>();
 
                 if(resource != null)
                 {
-                    documents.Add(resource as DocumentReference);
+                    document = await resource?.ToFhirAsync<T>();
+                    documents.Add(document as DocumentReference);
                 }
 
                 //Get now returns bundle as per updated spec
