@@ -3,11 +3,18 @@ using Microsoft.AspNetCore.Http;
 using NRLS_API.Models.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NRLS_API.Models.Core
 {
     public class FhirRequest
     {
+        public FhirRequest()
+        {
+            QueryParameters = new List<Tuple<string, string>>();
+            AllowedParameters = new string[0];
+        }
+
         public string Id { get; set; }
 
         public ResourceType ResourceType { get; set; }
@@ -23,6 +30,10 @@ namespace NRLS_API.Models.Core
         public string[] AllowedParameters { get; set; }
 
         public string RequestingAsid { get; set; }
+
+        public string IdParameter => GetIdParameterValue();
+
+        public bool HasIdParameter => GetIdParameter() != null;
 
         public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)
         {
@@ -41,6 +52,16 @@ namespace NRLS_API.Models.Core
         public static Uri CreateUrl(string scheme, string host, string path, string queryString)
         {
             return new Uri($"{scheme}://{host}{path}{queryString}");
+        }
+
+        private string GetIdParameterValue()
+        {
+            return GetIdParameter()?.Item2;
+        }
+
+        private Tuple<string, string> GetIdParameter()
+        {
+            return QueryParameters.FirstOrDefault(x => x.Item1 == "_id");
         }
 
     }

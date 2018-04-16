@@ -26,7 +26,7 @@ namespace NRLS_API.Services
         //{
         //    ValidateResource(request.StrResourceType);
 
-        //    var id = request.QueryParameters.FirstOrDefault(x => x.Item1 == "_id");
+        //    var id = request.IdParameter;
 
         //    if (id == null || string.IsNullOrEmpty(id.Item2) || request.QueryParameters.Count() > 1)
         //    {
@@ -53,12 +53,12 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
-            var id = request.QueryParameters.FirstOrDefault(x => x.Item1 == "_id");
+            var id = request.IdParameter;
 
-            if (id != null)
+            if (request.HasIdParameter)
             {
 
-                if (string.IsNullOrEmpty(id.Item2))
+                if (string.IsNullOrEmpty(id))
                 {
                     return OperationOutcomeFactory.CreateNotFound("");
                 }
@@ -68,11 +68,11 @@ namespace NRLS_API.Services
                     throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
                 }
 
-                request.Id = id.Item2;
+                request.Id = id;
 
                 var results = await _fhirSearch.Get<T>(request);
 
-                var response = ParseRead(results, id.Item2);
+                var response = ParseRead(results, id);
 
                 return response;
             }

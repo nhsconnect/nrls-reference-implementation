@@ -54,18 +54,18 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
-            var id = request.QueryParameters.FirstOrDefault(x => x.Item1 == "_id");
+            var id = request.IdParameter;
 
-            if (id == null || string.IsNullOrEmpty(id.Item2))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new HttpFhirException("Missing or Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
             }
 
-            request.Id = id.Item2;
+            request.Id = id;
 
             var document = await _fhirSearch.Get<T>(request);
 
-            var documentResponse = ParseRead(document, id.Item2);
+            var documentResponse = ParseRead(document, id);
 
             if(documentResponse.ResourceType == ResourceType.Bundle)
             {
