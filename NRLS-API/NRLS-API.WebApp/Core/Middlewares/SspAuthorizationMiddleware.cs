@@ -65,7 +65,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var sspInteractionID = GetHeaderValue(headers, FhirConstants.HeaderSspInterationId);
             if (sspInteractionID == null || !ValidInteraction(method, sspInteractionID, fromASID))
             {
-                SetError(FhirConstants.HeaderSspInterationId);
+                SetUnauthorized();
             }
 
             //var sspTraceId = GetHeaderValue(headers, "Ssp-TraceID");
@@ -172,6 +172,11 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private void SetError(string header)
         {
             throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header), HttpStatusCode.BadRequest);
+        }
+
+        private void SetUnauthorized()
+        {
+            throw new HttpFhirException("Invalid Client Request", OperationOutcomeFactory.CreateAccessDenied(), HttpStatusCode.Unauthorized);
         }
 
     }

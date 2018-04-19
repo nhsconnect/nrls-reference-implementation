@@ -15,11 +15,11 @@ namespace Demonstrator.NRLSAdapter.Organisations
 {
     public class OrganisationServices : IOrganisationServices
     {
-        private string _organisationUrlBase;
+        private readonly ExternalApiSetting _odsSettings;
 
         public OrganisationServices(IOptions<ExternalApiSetting> externalApiSetting)
         {
-            _organisationUrlBase = $"{externalApiSetting.Value.OdsServerUrl}";
+            _odsSettings = externalApiSetting.Value;
         }
 
         public async SystemTasks.Task<Organization> GetOrganisation(string orgCode)
@@ -40,9 +40,10 @@ namespace Demonstrator.NRLSAdapter.Organisations
         {
             var command = new CommandRequest
             {
-                BaseUrl = _organisationUrlBase,
+                BaseUrl = $"{(_odsSettings.OdsUseSecure ? _odsSettings.OdsSecureServerUrl : _odsSettings.OdsServerUrl)}",
                 ResourceType = ResourceType.Organization,
-                Method = HttpMethod.Get
+                Method = HttpMethod.Get,
+                UseSecure = _odsSettings.OdsUseSecure
             };
 
             if (!string.IsNullOrEmpty(orgCode))

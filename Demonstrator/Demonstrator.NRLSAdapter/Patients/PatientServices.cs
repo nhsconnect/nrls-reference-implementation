@@ -14,11 +14,11 @@ namespace Demonstrator.NRLSAdapter.Patients
 {
     public class PatientServices : IPatientServices
     {
-        private string _patientUrlBase;
+        private readonly ExternalApiSetting _pdsSettings;
 
         public PatientServices(IOptions<ExternalApiSetting> externalApiSetting)
         {
-            _patientUrlBase = $"{externalApiSetting.Value.PdsServerUrl}";
+            _pdsSettings = externalApiSetting.Value;
         }
 
         public async SystemTasks.Task<Bundle> GetPatientAsBundle(string nhsNumber)
@@ -40,9 +40,10 @@ namespace Demonstrator.NRLSAdapter.Patients
         {
             var command = new CommandRequest
             {
-                BaseUrl = _patientUrlBase,
+                BaseUrl = $"{(_pdsSettings.PdsUseSecure ? _pdsSettings.PdsSecureServerUrl : _pdsSettings.PdsServerUrl)}",
                 ResourceType = ResourceType.Patient,
-                Method = HttpMethod.Get
+                Method = HttpMethod.Get,
+                UseSecure = _pdsSettings.PdsUseSecure,
             };
 
             if (!string.IsNullOrEmpty(nhsNumber))

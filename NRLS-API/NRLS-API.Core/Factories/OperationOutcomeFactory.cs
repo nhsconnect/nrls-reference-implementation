@@ -38,6 +38,13 @@ namespace NRLS_API.Core.Factories
             return Create(OperationOutcome.IssueSeverity.Fatal, OperationOutcome.IssueType.Exception, diagnostics, details);
         }
 
+        public static OperationOutcome CreateAccessDenied()
+        {
+            var details = CreateDetails("ACCESS_DENIED", "ResourceType is invalid");
+
+            return CreateError($"Invalid Client Connection.", details);
+        }
+
         public static OperationOutcome CreateInvalidResourceType(string resourceType)
         {
             var details = CreateDetails("INVALID_RESOURCE", "ResourceType is invalid");

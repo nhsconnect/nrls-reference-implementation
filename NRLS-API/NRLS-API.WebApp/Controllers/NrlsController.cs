@@ -104,7 +104,7 @@ namespace NRLS_API.WebApp.Controllers
 
             var response = OperationOutcomeFactory.CreateSuccess();
 
-            return Created($"{_nrlsApiSettings.BaseUrl}{Request.Path}?_id={result.Id}", response);
+            return Created($"{(_nrlsApiSettings.Secure ? "https" : "http")}{_nrlsApiSettings.BaseUrl}:{(_nrlsApiSettings.Secure ? _nrlsApiSettings.SecurePort : _nrlsApiSettings.DefaultPort)}{Request.Path}?_id={result.Id}", response);
         }
 
         // PUT fhir/DocumentReference/5

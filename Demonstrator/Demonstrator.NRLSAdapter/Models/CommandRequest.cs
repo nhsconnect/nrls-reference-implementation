@@ -25,6 +25,12 @@ namespace Demonstrator.NRLSAdapter.Models
 
         public string BaseUrl { get; set; }
 
+        public string ClientThumbprint { get; set; }
+
+        public string ServerThumbprint { get; set; }
+
+        public bool UseSecure { get; set; }
+
         public string ResourceId { get; set; }
 
         public IDictionary<string, string> Headers { get; set; }

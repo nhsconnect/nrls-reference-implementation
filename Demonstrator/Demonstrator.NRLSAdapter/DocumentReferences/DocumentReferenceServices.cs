@@ -7,8 +7,10 @@ using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -18,15 +20,15 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 {
     public class DocumentReferenceServices : IDocumentReferenceServices
     {
-        private string _documentReferenceUrlBase;
-        private string _spineAsid;
-        private string _systemUrlBase;
+        private readonly ExternalApiSetting _spineSettings;
+        private readonly ApiSetting _apiSettings;
+        private readonly IMemoryCache _cache;
 
-        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting)
+        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting, IMemoryCache cache)
         {
-            _documentReferenceUrlBase = $"{externalApiSetting.Value.NrlsServerUrl}";
-            _spineAsid = externalApiSetting.Value.SpineAsid;
-            _systemUrlBase = $"{(apiSetting.Value.Secure ? "https" : "http")}{apiSetting.Value.BaseUrl}";
+            _spineSettings = externalApiSetting.Value;
+            _apiSettings = apiSetting.Value;
+            _cache = cache;
         }
 
         public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
@@ -38,7 +40,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<NrlsCreateResponse> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = NrlsPointer.Generate(pointerRequest.OrgCode, pointerRequest.NhsNumber, pointerRequest.RecordUrl, pointerRequest.RecordContentType, pointerRequest.TypeCode, pointerRequest.TypeDisplay);
+            var pointer = NrlsPointer.Generate(_spineSettings.NrlsDefaultprofile, pointerRequest.OrgCode, pointerRequest.NhsNumber, pointerRequest.RecordUrl, pointerRequest.RecordContentType, pointerRequest.TypeCode, pointerRequest.TypeDisplay);
 
             var newPointer = await CreatePointer(pointerRequest, pointer);
 
@@ -88,19 +90,22 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
         {
             var command = new CommandRequest
             {
-                BaseUrl = _documentReferenceUrlBase,
+                BaseUrl = $"{(_spineSettings.NrlsUseSecure ? _spineSettings.NrlsSecureServerUrl : _spineSettings.NrlsServerUrl)}",
                 ResourceId = resourceId,
                 ResourceType = ResourceType.DocumentReference,
                 SearchParams = GetParams(nhsNumber, orgCode, resourceId),
                 Method = method,
-                Content = content
+                Content = content,
+                UseSecure = _spineSettings.NrlsUseSecure,
+                ClientThumbprint = ClientSettings(asid)?.Thumbprint,
+                ServerThumbprint = _spineSettings.SpineThumbprint
             };
 
-            var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, orgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, _systemUrlBase);
+            var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, orgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
 
             command.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
-            command.Headers.Add(FhirConstants.HeaderToAsid, _spineAsid);
+            command.Headers.Add(FhirConstants.HeaderToAsid, _spineSettings.SpineAsid);
             command.Headers.Add(FhirConstants.HeaderSspInterationId, interaction);
             command.Headers.Add(FhirConstants.HeaderFSspVersion, "1");
             command.Headers.Add(FhirConstants.HeaderSspTradeId, Guid.NewGuid().ToString());
@@ -128,6 +133,21 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             }
 
             return searchParams;
+        }
+
+        private ClientAsid ClientSettings(string asid)
+        {
+            var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
+
+            return map.ClientAsids.FirstOrDefault(x => !string.IsNullOrEmpty(asid) && x.Key == asid).Value;
+        }
+
+        private string SystemUrlBase
+        {
+            get
+            {
+                return $"{(_apiSettings.Secure ? "https" : "http")}{_apiSettings.BaseUrl}:{(_apiSettings.Secure ? _apiSettings.SecurePort : _apiSettings.DefaultPort)}";
+            }
         }
     }
 }
