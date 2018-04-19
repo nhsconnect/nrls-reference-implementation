@@ -48,12 +48,26 @@ namespace Demonstrator.WebApp
             {
                 options.BaseUrl = Configuration.GetSection("DemonstratorApi:BaseUrl").Value;
                 options.Secure = bool.Parse(Configuration.GetSection("DemonstratorApi:Secure").Value);
+                options.DefaultPort = Configuration.GetSection("DemonstratorApi:DefaultPort").Value;
+                options.SecurePort = Configuration.GetSection("DemonstratorApi:SecurePort").Value;
             });
             services.Configure<ExternalApiSetting>(options =>
             {
                 options.NrlsServerUrl = new Uri(Configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.NrlsSecureServerUrl = new Uri(Configuration.GetSection("NRLSAPI:SecureServerUrl").Value);
+                options.NrlsUseSecure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
+                options.NrlsDefaultprofile = Configuration.GetSection("NRLSAPI:DefaultProfile").Value;
+
                 options.PdsServerUrl = new Uri(Configuration.GetSection("PDSAPI:ServerUrl").Value);
+                options.PdsSecureServerUrl = new Uri(Configuration.GetSection("PDSAPI:SecureServerUrl").Value);
+                options.PdsUseSecure = bool.Parse(Configuration.GetSection("PDSAPI:Secure").Value);
+                options.PdsDefaultprofile = Configuration.GetSection("PDSAPI:DefaultProfile").Value;
+
                 options.OdsServerUrl = new Uri(Configuration.GetSection("ODSAPI:ServerUrl").Value);
+                options.OdsSecureServerUrl = new Uri(Configuration.GetSection("ODSAPI:SecureServerUrl").Value);
+                options.OdsUseSecure = bool.Parse(Configuration.GetSection("ODSAPI:Secure").Value);
+                options.OdsDefaultprofile = Configuration.GetSection("ODSAPI:DefaultProfile").Value;
+
                 options.SpineAsid = Configuration.GetSection("Spine:Asid").Value;
                 options.SpineThumbprint = Configuration.GetSection("Spine:SslThumbprint").Value;
                 options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAisMapFile").Value;

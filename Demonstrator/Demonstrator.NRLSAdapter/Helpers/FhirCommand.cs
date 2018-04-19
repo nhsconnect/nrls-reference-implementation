@@ -427,15 +427,36 @@ namespace Demonstrator.NRLSAdapter.Helpers
             IConfiguration configuration = ConfigurationHelper.GetConfigurationRoot();
 
             var serviceCollection = new ServiceCollection();
+            serviceCollection.AddMemoryCache();
             serviceCollection.AddOptions();
             serviceCollection.Configure<ExternalApiSetting>(options =>
             {
                 options.NrlsServerUrl = new Uri(configuration.GetSection("NRLSAPI:ServerUrl").Value);
+                options.NrlsSecureServerUrl = new Uri(configuration.GetSection("NRLSAPI:SecureServerUrl").Value);
+                options.NrlsUseSecure = bool.Parse(configuration.GetSection("NRLSAPI:Secure").Value);
+                options.NrlsDefaultprofile = configuration.GetSection("NRLSAPI:DefaultProfile").Value;
+
                 options.PdsServerUrl = new Uri(configuration.GetSection("PDSAPI:ServerUrl").Value);
+                options.PdsSecureServerUrl = new Uri(configuration.GetSection("PDSAPI:SecureServerUrl").Value);
+                options.PdsUseSecure = bool.Parse(configuration.GetSection("PDSAPI:Secure").Value);
+                options.PdsDefaultprofile = configuration.GetSection("PDSAPI:DefaultProfile").Value;
+
                 options.OdsServerUrl = new Uri(configuration.GetSection("ODSAPI:ServerUrl").Value);
+                options.OdsSecureServerUrl = new Uri(configuration.GetSection("ODSAPI:SecureServerUrl").Value);
+                options.OdsUseSecure = bool.Parse(configuration.GetSection("ODSAPI:Secure").Value);
+                options.OdsDefaultprofile = configuration.GetSection("ODSAPI:DefaultProfile").Value;
+
+
                 options.SpineAsid = configuration.GetSection("Spine:Asid").Value;
                 options.SpineThumbprint = configuration.GetSection("Spine:SslThumbprint").Value;
                 options.ClientAsidMapFile = configuration.GetSection("Spine:ClientAisMapFile").Value;
+            });
+            serviceCollection.Configure<ApiSetting>(options =>
+            {
+                options.BaseUrl = configuration.GetSection("DemonstratorApi:BaseUrl").Value;
+                options.Secure = bool.Parse(configuration.GetSection("DemonstratorApi:Secure").Value);
+                options.DefaultPort = configuration.GetSection("DemonstratorApi:DefaultPort").Value;
+                options.SecurePort = configuration.GetSection("DemonstratorApi:SecurePort").Value;
             });
             serviceCollection.AddTransient<IDocumentReferenceServices, DocumentReferenceServices>();
             serviceCollection.AddTransient<IClientAsidHelper, ClientAsidHelper>();

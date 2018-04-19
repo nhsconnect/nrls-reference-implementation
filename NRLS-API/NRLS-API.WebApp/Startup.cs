@@ -64,12 +64,17 @@ namespace NRLS_API.WebApp
                 options.SupportedResources = Configuration.GetSection("NRLSAPI:SupportedResources").Value.Split(",").ToList();
                 options.SupportedContentTypes = Configuration.GetSection("NRLSAPI:SupportedContentTypes").Value.Split(",").ToList();
                 options.ProfileUrl = Configuration.GetSection("NRLSAPI:ProfileUrl").Value;
-                options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value; ;
+                options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value;
+                options.Secure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
+                options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+                options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
             });
             services.Configure<SpineSetting>(options =>
             {
                 options.Asid = Configuration.GetSection("Spine:Asid").Value;
                 options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAsidMapFile").Value;
+                options.Thumbprint = Configuration.GetSection("Spine:Thumbprint").Value;
+                options.ThumbprintKey = Configuration.GetSection("Spine:ThumbprintKey").Value;
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IFhirSearch, FhirSearch>();
