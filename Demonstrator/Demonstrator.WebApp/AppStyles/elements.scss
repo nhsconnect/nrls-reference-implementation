@@ -298,15 +298,20 @@ a {
 
                     .switch-button {
                         position: fixed;
-                        top: 10px;
-                        left: 30px;
+                        bottom: 5px;
+                        right: 5px;
                         font-size: 1.1em;
                         font-weight: bold;
                         cursor: pointer;
+                        z-index: 3;
+                        background-color: $nhsBlue;
+                        padding: $spacing-small $spacing-normal;
+                        line-height: 1.3em;
 
                         .switch {
                             display: inline-block;
-                            width: 17px;
+                            width: 75px;
+                            text-align: right;
                         }
 
                         &.active {
@@ -326,16 +331,6 @@ a {
 
                             .on {
                                 display: none;
-                            }
-
-                            &:hover {
-                                .off {
-                                    display: none;
-                                }
-
-                                .on {
-                                    display: inline-block;
-                                }
                             }
                         }
                     }
@@ -367,7 +362,7 @@ a {
                                 position: absolute;
                                 z-index: 2;
                                 opacity: 0;
-                                transition: opacity 0.35s linear 0s;
+                                transition: opacity 0.45s linear 0s;
                             }
                         }
 

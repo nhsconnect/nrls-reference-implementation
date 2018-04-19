@@ -3,7 +3,8 @@
         <h4>An example scenario of how the NRLS works</h4>
         <p>
             Here you have a scenario of a patient in crisis. This scenario aims to describe what currently might happen in this situation but then also describe what might happen with the NRLS integrated into your organisations systems.
-            <br /><br /> Click 'Explore' to view the scenario popup and then click the 'Turn On NRLS' switch.
+            <br /><br /> Click 'Explore' to view the scenario popup. 
+            <br />You can control the animation using the bottom controls.
             <span class="scenario-img-wrapper">
                 <a href="javascript:void(0);" click.delegate="loadScenarioModal()"><img if.bind="cmodule" src="/images/scenario-context/${cmodule}_thumb.png" alt.bind="title" class="img-responsive" /></a>
                 <button class="btn btn-info btn-block" click.delegate="loadScenarioModal()">Explore the Scenario</button>
@@ -16,8 +17,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <span class="switch-button n-text-white ${switchContext ? 'active' : 'inactive'}" click.delegate="switchContext = !switchContext">
-                        <i class="fa fa-check-square-o switch on"></i><i class="fa fa-square-o switch off"></i> Turn On NRLS
+                    <span class="switch-button n-text-white ${switchAnimation ? 'active' : 'inactive'}" click.delegate="toggleAnimation()">
+                        <span class="switch on">Pause <i class="fa fa-pause"></i></span><span class="switch off">Play <i class="fa fa-play"></i></span>
                     </span>
                     <button type="button" class="close b-close-btn" data-dismiss="modal" aria-label="Close"><i class="fa fa-times b-close-icon"></i></button>
                     <div if.bind="cmodule" class="context-switch-wrap ${switchContext ? 'active' : 'inactive'}">
