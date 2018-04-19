@@ -6,10 +6,17 @@ namespace Demonstrator.NRLSAdapter.Helpers.Models
 {
     public static class NrlsPointer
     {
-        public static DocumentReference Generate(string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay)
+        public static DocumentReference Generate(string profile, string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay)
         {
             var pointer = new DocumentReference
             {
+                Meta = new Meta
+                {
+                    Profile = new List<string>
+                    {
+                        profile
+                    }
+                },
                 Status = DocumentReferenceStatus.Current,
                 Author = new List<ResourceReference>()
                     {
