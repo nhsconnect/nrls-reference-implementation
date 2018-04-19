@@ -3,6 +3,7 @@ import { ICarePlan } from "../interfaces/ICarePlan";
 import { MedicalRecord } from "./MedicalRecord";
 
 export class CrisisPlan extends MedicalRecord implements ICarePlan {
+
     constructor(public id?: string,
                 public version?: string,
                 public involveFamilyOrCarer?: boolean,
@@ -22,6 +23,18 @@ export class CrisisPlan extends MedicalRecord implements ICarePlan {
                 public patientNhsNumber?: string) {
 
         super(id, 'MentalHealthCrisisPlan', version);
+    }
+
+    public cleaned() {
+
+        this.signsFeelingUnwell = this.cleanContent(this.signsFeelingUnwell);
+        this.potentialTriggers = this.cleanContent(this.potentialTriggers);
+        this.whatHelpsInCrisis = this.cleanContent(this.whatHelpsInCrisis);
+        this.actionForDependants = this.cleanContent(this.actionForDependants);
+
+        this.emergencyLocation = this.cleanContent(this.emergencyLocation);
+        this.emergencyNumber = this.cleanContent(this.emergencyNumber);
+        this.crisisNumber = this.cleanContent(this.crisisNumber);
     }
 
     public crisisPlanRules() {

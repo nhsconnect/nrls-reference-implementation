@@ -19,6 +19,10 @@ export class BaseGenericSystem {
     @observable
     selectedPatient?: IPatientNumber;
 
+    showSystemMessage: boolean = false;
+
+    systemMessage?: string = "Unknown";
+
     constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory) {
         this.vdController = validationControllerFactory.createForCurrentScope();
         this.vdController.validateTrigger = validateTrigger.manual;
@@ -47,6 +51,11 @@ export class BaseGenericSystem {
 
     findPatient() {
         this.patient = undefined;
+    }
+
+    protected setSystemMessage(msg?: string) {
+        this.showSystemMessage = !this.showSystemMessage;
+        this.systemMessage = msg;
     }
 
     private selectedPatientChanged(newValue: string, oldValue: string): void {

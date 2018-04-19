@@ -47,6 +47,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
                     this.crisisPlan.planCreatedBy = `${this.data.personnel.name.substr(0,1)} Jones`;
                     this.crisisPlan.planCreatedByJobTitle = this.data.personnel.name;
 
+                    this.crisisPlan.cleaned();
+
                     if (this.hasCrisisPlan) {
                         this.updatePlan();
                     } else {
@@ -70,6 +72,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
                     this.allowCrisisPlan = false;
                     this.hasCrisisPlan = false;
+
+                    this.setSystemMessage("Patient plan has been delete successfully.");
                 }
             });
 
@@ -86,6 +90,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
                 this.setCrisisPlan(newPlan);
                 this.updatingPlan = false;
                 this.hasCrisisPlan = true;
+
+                this.setSystemMessage("Patient plan has been created successfully.");
             });
 
         }, 250); //Looks better with delay :)
@@ -99,6 +105,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
             this.eprSvc.update(this.createRequest(this.crisisPlan, this.crisisPlan.id)).then(newPlan => {
                 this.setCrisisPlan(newPlan);
                 this.updatingPlan = false;
+
+                this.setSystemMessage("Patient plan has been updated successfully.");
             });
 
         }, 250); //Looks better with delay :)

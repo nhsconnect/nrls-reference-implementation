@@ -203,7 +203,12 @@
 
                 </div>
 
-
+                <div show.bind="showSystemMessage" class="gs-system-notice">
+                    <div class="gs-notice-content text-center">
+                        <p textcontent.bind="systemMessage"></p>
+                        <p><button class="btn btn-default" click.delegate="setSystemMessage()">Ok</button></p>
+                    </div>
+                </div>
 
             </div>
 

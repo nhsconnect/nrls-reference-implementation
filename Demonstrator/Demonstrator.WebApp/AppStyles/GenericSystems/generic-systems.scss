@@ -223,4 +223,19 @@
             overflow: hidden;
         }
     }
+
+    .gs-system-notice {
+        display: block;
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        height: auto;
+        background-color: $white;
+        box-shadow: 0 0 7px rgba(0,0,0,0.5);
+        border: 3px solid $nhsBlue;
+        padding: $spacing-normal;
+        font-size: 0.9em;
+    }
 }

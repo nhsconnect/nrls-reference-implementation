@@ -14,6 +14,7 @@ using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.Models.ViewModels.Base;
 using System.Linq;
 using Hl7.Fhir.Model;
+using Demonstrator.Models.ViewModels.Factories;
 
 namespace Demonstrator.Services.Service.Flows
 {
@@ -98,6 +99,8 @@ namespace Demonstrator.Services.Service.Flows
         {
             try
             {
+                crisisPlan = crisisPlan.Cleaned();
+
                 var currentPlan = await this.GetForPatient(crisisPlan.PatientNhsNumber, true);
                 int version = 1;
 
