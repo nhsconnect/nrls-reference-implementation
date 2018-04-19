@@ -1,1 +1,1 @@
-copy %1..\Shared\globalsettings.json  %1Shared; && copy %1..\Shared\globalsettings.Production.json  %1Shared;
+copy %1..\Shared\globalsettings.json  %1Shared; && copy %1..\Shared\globalsettings.Production.json  %1Shared; && copy %1..\Shared\ClientAsidMap.json  %1Shared;

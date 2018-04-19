@@ -148,3 +148,33 @@
     }
   ]
 }
+{
+  "resourceType": "Organization",
+  "_id": {
+    "$oid": "5ad5ffac0ed89913c3d8c81c"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "AMS01"
+    }
+  ],
+  "name": "Otley Ambulance Service",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+44 1274 000 0006"
+    }
+  ],
+  "address": [
+    {
+      "line": [
+        "456 Hill Lane"
+      ],
+      "city": "Leeds",
+      "state": "West Yorkshire",
+      "postalCode": "LS25 2MS",
+      "country": "United Kingdom"
+    }
+  ]
+}

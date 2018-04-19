@@ -1,16 +1,31 @@
 ﻿{
   "NRLSAPI": {
-    "ServerUrl": "http://localhost:51913/nrls/fhir"
+    "ServerUrl": "http://localhost:51913/nrls/fhir",
+    "SecureServerUrl": "https://localhost:44313/nrls/fhir",
+    "Secure": true,
+    "DefaultProfile": "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
   },
   "PDSAPI": {
-    "ServerUrl": "http://localhost:51913/pds/fhir"
+    "ServerUrl": "http://localhost:51913/pds/fhir",
+    "SecureServerUrl": "http://localhost:51913/pds/fhir",
+    "Secure": false,
+    "DefaultProfile": "https://www.hl7.org/fhir/STU3/patient.html"
   },
   "ODSAPI": {
-    "ServerUrl": "http://localhost:51913/ods/fhir"
+    "ServerUrl": "http://localhost:51913/ods/fhir",
+    "SecureServerUrl": "http://localhost:51913/pds/fhir",
+    "Secure": false,
+    "DefaultProfile": "https://www.hl7.org/fhir/STU3/organization.html"
   },
   "Spine": {
     "Asid": "999999999999",
-    "SslThumbprint": "",
-    "ClientAisMapFile": "Data/ClientAsidMap.json"
+    "SslThumbprint": "604e59ca322ec8e9cf5aa8b53ed78f9aa643c07e",
+    "ClientAisMapFile": "Shared/ClientAsidMap.json"
+  },
+  "DemonstratorApi": {
+    "BaseUrl": "://localhost",
+    "Secure": false,
+    "DefaultPort": "55448",
+    "SecurePort": "55448"
   }
 }

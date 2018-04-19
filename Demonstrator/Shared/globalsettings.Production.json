@@ -1,11 +1,23 @@
 ﻿{
   "NRLSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/nrls/fhir"
+    "ServerUrl": "http://nrlsapiapp:5001/nrls/fhir",
+    "SecureServerUrl": "https://nrlsapiapp:443/nrls/fhir",
+    "Secure": true
   },
   "PDSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/pds/fhir"
+    "ServerUrl": "http://nrlsapiapp:5001/pds/fhir",
+    "SecureServerUrl": "http://nrlsapiapp:5001/pds/fhir",
+    "Secure": false
   },
   "ODSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/ods/fhir"
+    "ServerUrl": "http://nrlsapiapp:5001/ods/fhir",
+    "SecureServerUrl": "http://nrlsapiapp:5001/ods/fhir",
+    "Secure": false
+  },
+  "DemonstratorApi": {
+    "BaseUrl": "://nrlsdemoapp",
+    "Secure": false,
+    "DefaultPort": "80",
+    "SecurePort": "80"
   }
 }

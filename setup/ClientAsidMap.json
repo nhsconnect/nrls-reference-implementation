@@ -16,7 +16,7 @@
       "OrgCode": "AMS01"
     },
     "200000000118": {
-      "Thumbprint": "",
+      "Thumbprint": "f20e8b339eba2a348494c9af9c5cf1935f194235",
       "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference" ],
       "OrgCode": "MHT01"
     }
