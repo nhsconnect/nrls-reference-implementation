@@ -33,6 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonstratorTest.NRLSAdapte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{78264688-1E04-4B75-B932-873DE3C7E212}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\ClientAsidMap.json = Shared\ClientAsidMap.json
 		Shared\globalsettings.json = Shared\globalsettings.json
 		Shared\globalsettings.Production.json = Shared\globalsettings.Production.json
 	EndProjectSection
