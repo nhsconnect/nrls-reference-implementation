@@ -4,8 +4,14 @@
     <section class="gs-container">
 
         <p class="gs-instructions">
-            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">View Instructions</button>
-            New Instructions go here...
+            Once intergraded  NRLS will work seamlessly with your current systems without the need for you to alter your day-to-day tasks.
+            <br />
+            The following is a representation of how a screen would look when a ${data.personnel.name} creates a care plan. This is a generic system that should look similar to a system that you use daily.
+            <br />
+            Once a care co-ordinator has filled in the relevant fields and hit submit, their organisation's system can then automatically create an NRLS pointer which can be viewed by other organisations.
+            <br />
+            <span if.bind="data.organisation.personnelLinkId">One you have finished here why not also take a look at how these NRLS pointers can look for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Ambulance Service Staff</a>?</span>
+            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-mht-care-coordinator">
@@ -215,8 +221,56 @@
             <div show.bind="instructionsActive" class="gs-instructions">
                 <div class="gs-instruction-bg"></div>
                 <div class="gs-instruction-content">
-                    <p>Instructions go here....</p>
-                    <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                    <h2  class="gs-icontent-header h1">Instructions</h2>
+                    <div class="gs-icontent-inner">
+                        <ol>
+                            <li>
+                                On this screen you start with a patient search form.
+                                <ul>
+                                    <li>Select a patient from the drop down box and click view</li>
+                                </ul>
+                            </li>
+                            <li>
+                                You will then be taken into the generic system to view and edit patient information
+                                <ul>
+                                    <li>For this demonstration we automatically direct you to the 'Care Plan' section</li>
+                                    <li>You will see the patient banner at the top</li>
+                                    <li>There are varous tabs and buttons but they have been disabled for this demonstration</li>
+                                </ul>
+                            </li>
+                            <li>Some patients will already have a care plan, some will not.</li>
+                            <li>
+                                If they do not:
+                                <ul>
+                                    <li>Click 'Create Care Plan'</li>
+                                    <li>Fill out the required details and click 'Submit'</li>
+                                    <li>Once submitted the system will automatically create a pointer on the NRLS</li>
+                                    <li if.bind="data.organisation.personnelLinkId">You can then head over to the <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Ambulance Service staff</a> section to see the pointer that has been created.</li>
+                                    <li>Remember to note down the NHS number used here.</li>
+                                </ul>
+                            </li>
+                            <li>
+                                If they do you can either:
+                                <ul>
+                                    <li>Update the care plan and click 'Submit':</li>
+                                    <ul>
+                                        <li>Clicking 'Update' should increment the plan version number as viewed at the bottom of the form</li>
+                                    </ul>
+                                    <li>Or, click 'Delete' and follow the instructions from point 4</li>
+                                    <li if.bind="data.organisation.personnelLinkId">Once completed you can then head over to the <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Ambulance Service staff</a> section to see the pointer that has been created.</li>
+                                </ul>
+
+                            </li>
+                        </ol>
+                        <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
+                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                    </div>
+
+                    <div class="gs-icontent-footer">
+                        <p class="alert alert-warning alert-panel">
+                            <i class="fa fa-info fa-padding-sqr"></i> Please note these systems are for demonstration purposes only and do not connect to live systems or retrieve and display real patient data
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

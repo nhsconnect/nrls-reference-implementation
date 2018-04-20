@@ -9,4 +9,5 @@ export interface IActorOrganisation {
     imageUrl: string;
     context: Array<IContentView>;
     orgCode: string;
+    personnelLinkId: string;
 }

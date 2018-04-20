@@ -37,7 +37,8 @@ namespace DemonstratorTest.ModelFactory
                     }
                 },
                 OrgCode = "AMSR01",
-                Benefits = new List<string> { "benefitid" }
+                Benefits = new List<string> { "benefitid" },
+                PersonnelLinkId = "testlink"
             };
 
             Assert.Equal(expectedViewModel, orgViewModel, Comparers.ModelComparer<ActorOrganisationViewModel>());

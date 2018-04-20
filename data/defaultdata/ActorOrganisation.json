@@ -15,6 +15,7 @@
         "$date": "2018-02-08T10:00:00.000Z"
     },
     "OrgCode": "MHT01",
+    "PersonnelLinkId":"5a8daa5c952e372cbdb317eb",
     "Benefits": ["5abcc0d784c20a48414e34a9","5abcc0d884c20a48414e34aa","5abcc0d884c20a48414e34ab","5abcc0d984c20a48414e34ac","5abcc0d984c20a48414e34ad","5abcc0da84c20a48414e34ae","5abcc0da84c20a48414e34af","5abcc0da84c20a48414e34b0","5abcc0db84c20a48414e34b1","5abcc0db84c20a48414e34b2","5abcc0db84c20a48414e34b3","5abcc0dc84c20a48414e34b4","5abcc0dc84c20a48414e34b5"],
     "BenefitsTitle": "As a Mental Health Trust, the NRLS will benefit us by"
 }
@@ -35,6 +36,7 @@
         "$date": "2018-02-08T10:00:00.000Z"
     },
     "OrgCode": "AMS01",
+    "PersonnelLinkId":"5a8daa5c952e372cbdb317ea",
     "Benefits": ["5abcc42b84c20a48414e34b8", "5abcc0d984c20a48414e34ac", "5abcc0d984c20a48414e34ad", "5abcc0db84c20a48414e34b1", "5ac54b9ee2ca3709a4662711", "5ac54b9fe2ca3709a4662712", "5ac54b9fe2ca3709a4662713", "5ac54ba0e2ca3709a4662714", "5ac54ba1e2ca3709a4662715", "5ac54ba1e2ca3709a4662716", "5ac54ba2e2ca3709a4662717", "5ac54ba2e2ca3709a4662718", "5ac54ba3e2ca3709a4662719", "5ac54ba3e2ca3709a466271a", "5ac54ba4e2ca3709a466271b"],
     "BenefitsTitle": "As an Ambulance Trust, NRLS will benefit us by"
 }

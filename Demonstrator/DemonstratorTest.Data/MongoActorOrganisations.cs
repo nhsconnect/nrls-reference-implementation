@@ -33,7 +33,8 @@ namespace DemonstratorTest.Data.Helpers
                         IsActive = true,
                         CreatedOn = DateTime.Parse("2018-02-08T10:00:00"),
                         OrgCode = "AMSR01",
-                        Benefits = new List<string> { "benefitid" }
+                        Benefits = new List<string> { "benefitid" },
+                        PersonnelLinkId = "testlink"
                     }
                 };
             }

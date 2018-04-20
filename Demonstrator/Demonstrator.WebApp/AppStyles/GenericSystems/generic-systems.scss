@@ -215,12 +215,49 @@
             transform: translate(-50%, -50%);
             z-index: 3;
             background-color: $white;
-            width: 70%;
-            height: 60%;
+            width: 75%;
+            height: 80%;
             padding: $spacing-large;
             box-shadow: 0 0 5px rgba(0,0,0,0.5);
             border: 2px solid $nhsDarkGrey;
             overflow: hidden;
+            font-weight: normal;
+
+            .gs-icontent-header {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                overflow: hidden;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .gs-icontent-inner {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100% - 160px);
+                padding: 20px;
+                overflow: auto;
+                padding: 0 20px;
+            }
+
+            .gs-icontent-footer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 90px;
+                overflow: hidden;
+                padding: 20px;
+
+                .alert-panel {
+                    font-size: 0.7em;
+                }
+            }
         }
     }
 
@@ -237,5 +274,16 @@
         border: 3px solid $nhsBlue;
         padding: $spacing-normal;
         font-size: 0.9em;
+    }
+}
+
+
+p.gs-instructions {
+    padding-bottom: 35px;
+
+    button {
+        position: relative;
+        top: 25px;
+        left: 0;
     }
 }

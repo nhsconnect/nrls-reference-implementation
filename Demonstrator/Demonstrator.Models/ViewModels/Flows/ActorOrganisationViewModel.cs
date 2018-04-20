@@ -22,5 +22,7 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         public IList<string> Benefits { get; set; }
 
+        public string PersonnelLinkId { get; set; }
+
     }
 }

@@ -39,6 +39,8 @@ namespace Demonstrator.Models.DataModels.Flows
 
         public string BenefitsTitle { get; set; }
 
+        public string PersonnelLinkId { get; set; }
+
         public static ActorOrganisationViewModel ToViewModel(ActorOrganisation model)
         {
             if (model == null)
@@ -54,7 +56,8 @@ namespace Demonstrator.Models.DataModels.Flows
                 Name = model.Name,
                 OrgCode = model.OrgCode,
                 Type = EnumHelpers.GetEnum<ActorType>(model.Type),
-                Benefits = model.Benefits
+                Benefits = model.Benefits,
+                PersonnelLinkId = model.PersonnelLinkId
             };
 
             return viewModel;
