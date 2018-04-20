@@ -5,41 +5,59 @@
 
         <p>Welcome to the Developer Area, here we aim to introduce you to the code behind the Demonstrator (Interactive Guide) and our development approach which has led us to where we are now.</p>
         <p>First off I just want to briefly describe the 5 main areas within our development and the chosen technology stack.</p>
-        <p>The work we have undertaken here can be roughly grouped into 5 areas, or for those Agile enough, epics! These areas have been <strong>Discovery & Planning</strong>, <strong>Front-end Design & Development</strong>, <strong>Back-end Development</strong>, <strong>NRLS Integration</strong> and <strong>Devops</strong>.</p>
-        <p>For the most part we have tried to work in <strong>2 weeks sprints</strong> but due to the nature of <strong>Discovery</strong> that has not always been possible given the time required to setup and facilitate meetings and to gather data.</p>
+        <p>The work we have undertaken here can be roughly grouped into 5 areas, or for those agile enough, epics. These areas have been:</p>
+        
+        <ul>
+            <li>Discovery & Planning</li>
+            <li>Front-end Design & Development</li>
+            <li>Back-end Development</li>
+            <li>NRLS Integration</li>
+            <li>Devops</li>
+        </ul>
+
+        <p>For the most part we have tried to work in 2 weeks sprints but due to the nature of discovery that has not always been possible given the time required to setup and facilitate meetings and to gather data.</p>
+        <p>We aimed to do a show and tell at the end of each sprint, and during prints when required to gather feedback from the wider team.</p>
+        <p>Jira has been the planning tool of choice to plan and manage our sprint work, starting with four 2 week sprints.</p>
+        <p>Then as we near completion we aim to ramp up the iterations and feedback and will move to 1 weeks sprints which should carry on for the last 4 weeks.</p>
 
         <h4 class="margin-top-lrg">Discovery & Planning</h4>
-        <p>Our Discovery & Planning phase including meeting with System Suppliers and Health organisations that have been identified as <a href="#">[LINK Consumers & Providers]</a> of the NRLS, for the Beta phase of the NRLS project.</p>
-        <p>Running alongside this we had early white board session sketching out what the Demonstrator will be and quickly followed by a Solution Design. This was then followed by some early wireframe concepts of our vision for the Demonstrator.</p>
+        <p>Our discovery & planning phase included meeting with system suppliers and health organisations that have been identified as <a route-href="route: about-consumers-providers;">Consumers & Providers</a> of the NRLS, for the beta phase of the NRLS project.</p>
+        <p>Running alongside this we had early white board session sketching out what the Demonstrator will be and quickly followed by a solution design. This was then followed by some early wireframe concepts of our vision for the demonstrator.</p>
 
         <h4 class="margin-top-lrg">Front-end Design & Development, Back-end Development</h4>
-        <p>Following this we went on to move our wireframe concepts and our Solution Design into something real we can work with.</p>
-        <p> As a .NET developer my chosen technology stack here was <strong>Aurelia JavaScript Framework</strong> and a <strong>.NET Core WebAPI</strong> which held the services that was our bridge between then Front-end UI and the NRLS.</p>
-        <p>Aurelia is very comprehensive Framework with plenty of features and tools to make our development that much cleaner and leaner, partly by way of its simple conventions and having less need to write boiler plate stuff. It is also standards compliant and forward thinking when we consider what is and will be in the ECMAScript Specification.</p>
-        <p>With .NET, what can I say, any .NET developers reading this will agree it is a solid choice and also has a handy <a href="#">[LINK STU3 FHIR Library]</a> available too. With regards to versions of .NET I have chosen .NET Core v2, not just because it is new but like with Aurelia it has some handy features baked in; DI for one meaning more boiler plate stuff can be delegated with very little effort. That and it's cross-platform compatibility opens the field for us in deployment. There is plenty more but I will leave the rest up to Google.</p>
+        <p>Following this we went on to move our wireframe concepts and our solution design into something real we can work with.</p>
+        <p> As a .NET developer my chosen technology stack here was Aurelia JavaScript Framework and a .NET Core WebAPI which held the services that was our bridge between then front-end UI and the NRLS.</p>
+        <p>Aurelia is very comprehensive Framework with plenty of features and tools to make our development that much cleaner and leaner, partly by way of its simple conventions and having less need to write boiler plate stuff. It is also standards compliant and forward thinking when we consider what is and will be in the ECMAScript specification.</p>
+        <p>With .NET, what can I say, any .NET developers reading this will agree it is a solid choice and also has a handy <a href="https://github.com/ewoutkramer/fhir-net-api" target="_blank">.NET STU3 FHIR Library</a> available too. With regards to versions of .NET I have chosen .NET Core v2, not just because it is new but like with Aurelia it has some handy features baked in; DI for one meaning more boiler plate stuff can be delegated with very little effort. That and it's cross-platform compatibility opens the field for us in deployment. There is plenty more but I will leave the rest up to Google.</p>
 
         <h4 class="margin-top-lrg">NRLS Integration</h4>
         <p>There is the obvious need to integrate with the NRLS or at least a version of the NRLS. At the early stages of development the NRLS was not available as a service to integrate with which could be seen as a problem.</p>
-        <p>Even early than that during our Back-end development stage there was a need to test what has been created against some sort of FHIR API that at least gave us a FHIR API to interrogate not just for DocumentReference's but also as PDS traces and ODS searches.</p>
-        <p>To begin with we chose to deploy a <strong>HAPI FHIR Server</strong> (Java Based) which at least gave us an API that would conform the right data structure without any trouble. The HAPI FHIR Library has an excellent out of the box solution that takes around 15 minutes to set up and deploy. It also open source and free to use which was another good reason for this.</p>
+        <p>Even earlier than that during our back-end development stage there was a need to test what has been created against some sort of FHIR API that at least gave us a FHIR API to interrogate not just for DocumentReference's but also as PDS traces and ODS searches.</p>
+        <p>To begin with we chose to deploy a HAPI FHIR Server (Java Based) which at least gave us an API that would conform to the right data structure without any trouble. The <a href="http://hapifhir.io/doc_jpa.html" target="_blank">HAPI FHIR Library</a> has an excellent out of the box solution that takes around 15 minutes to set up and deploy. It's also open source and free to use which was another good reason for this.</p>
         <p>With that we had something to test against.</p>
-        <p>But now during the latter stages we needed to be a bit more specific about our requirements and in LIEU of an NRLS we planned to create an NRLS Stub you could say.</p>
-        <p>This was not too dissimilar to our early HAPI FHIR concept but with some constraints around the DocumentReference as the NRLS uses a constrained version of this so additional validation was required.</p>
-        <p>We also need to mimic some basic checks around SSP Authentication and JWT's too so this was also handled in our NRLS Stub.</p>
+        <p>But now during the latter stages we needed to be a bit more specific about our requirements and in lieu of an NRLS we planned to create an NRLS Stub you could say.</p>
+        <p>This was a bit more involved than our earlier version as it included additional validation around our constrained version of a DocumentReference and custom error responses. We switched back to .NET Core for this.</p>
+        <p>We also needed to mimic some basic checks around SSP Authentication and JWT's too which was also handled in our NRLS Stub.</p>
 
         <h4 class="margin-top-lrg">Devops</h4>
-        <p>Lastly, Devops which has really ran throughout is detailed to ensure we maintain integrity around our sprints and also to ensure we have and can deploy and test with ease.</p>
+        <p>Lastly, devops which has really ran throughout this project is detailed to ensure we maintain integrity around our sprints and also to ensure we have and can deploy and test with ease throughout the project.</p>
         <p>There are a few things to orchestrate here and in summary:</p>
-        <p>From our <strong>GitHub</strong> repo we build our Front-end, Back-end, and NRLS</p>
-        <p>Then we can move on to run our tests in each of these areas, mostly Unit Testing and Functional Testing.</p>
-        <p>Lastly we deploy! Once complete as far as our Beta plan goes the Demonstrator development is really complete. No new releases are currently planned but you never know bugs have a way of rearing their ugly heads from time to time and in any case we can redeploy with ease on any bug fixes are updates. All of which is orchestrated by Jenkins.</p>
+        <ul>
+            <li>Firstly take a fresh pull of the GitHub repo</li>
+            <li>We then run the data commands to reset the default data</li>
+            <li>Then we build the front-end, back-end, and NRLS Stub</li>
+            <li>Then we can move on to run the tests in each of these areas, mostly unit testing and functional testing</li>
+            <li>Lastly we deploy!</li>
+        </ul>
+        <p>Once complete as far as our beta plan goes the Demonstrator development is really complete. No new releases are currently planned. Any bugs found in the mean time can be fixed and we can redeploy with ease. All of which is orchestrated by Docker.</p>
 
         <h4 class="margin-top-lrg">Data</h4>
-        <p>There is also a need to refresh data periodically and so nightly rebuilds do happen which refresh the data and also for an opportunity for new data to be included when new Organisations (Consumers & Providers) are onboarded to the NRLS project.</p>
+        <p>Data in stored in a MongoDB for both the front-end app data and also the NRLS Stub data. It's only a small set of data but can be added to really easily and you should just need to rerun the data commands (see the Wiki).</p>
+        <p>The data scripts can be set to re-run on a nightly job to ensure the data is kept fresh.</p>
 
         <h4 class="margin-top-lrg">Code</h4>
-        <p>At the start I mentioned the 'code behind'. This wasn't a lie but if you head over to our GitHub repo you will find a handy <strong>Readme</strong> that will help you get set up and also a more in depth <strong>Wiki</strong> that will take you into more detail around the code written and approaches taken.</p>
-        <p><button class="btn btn-default">[LINK GitHub]</button></p>
+        <p>At the start I mentioned the 'code behind'. This wasn't a lie but if you head over to our GitHub repo you will find a handy Readme that will help you get set up and also a more in depth Wiki that will take you into more detail around the code written and approaches taken.</p>
+        <p><a class="btn btn-info" href="https://github.com/nhsconnect/nrls-reference-implementation/wiki" target="_blank">NRLS Reference Implementation Wiki</a></p>
 
     </section>
 </template>

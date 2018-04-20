@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+//In reality all end points would be secured
 namespace Demonstrator.WebApp.Controllers
 {
     [Route("api/[controller]")]

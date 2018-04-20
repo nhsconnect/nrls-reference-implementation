@@ -2,6 +2,7 @@
 using Demonstrator.Models.ViewModels.Base;
 using Microsoft.AspNetCore.Mvc;
 
+//In reality all end points would be secured
 namespace Demonstrator.WebApp.Controllers
 {
     public class FhirBaseController : Controller
