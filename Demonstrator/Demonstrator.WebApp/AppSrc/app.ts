@@ -32,7 +32,10 @@ export class App {
         config.map([
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
             { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
-            { route: 'about/consumers-providers', name: 'about-consumers-providers', moduleId: './pages/about/consumers-providers', nav: true, title: 'About - Consumers Providers' },
+            { route: 'about/consumers-providers', name: 'about-consumers-providers', moduleId: './pages/about/consumers-providers', nav: false, title: 'About - Consumers Providers' },
+            { route: 'about/security', name: 'about-security', moduleId: './pages/about/security', nav: false, title: 'About - Security' },
+            { route: 'about/timeline', name: 'about-timeline', moduleId: './pages/about/timeline', nav: false, title: 'About - Timeline' },
+            { route: 'about/benefits', name: 'about-benefits', moduleId: './pages/about/benefits', nav: false, title: 'About - Benefits' },
             { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
             { route: 'actor-organisation/:routeParamId', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona' },
             { route: 'personnel/:routeParamId', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me' },

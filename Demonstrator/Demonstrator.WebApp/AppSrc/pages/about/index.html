@@ -10,31 +10,6 @@
             This will be achieved by way of a national index of pointers that are essentially bookmarks that can tell authorised clinicians, care workers and/or administrators what records may exist for a patient and where they exist.
         </p>
 
-        <h4 class="margin-top-lrg">Providers create Pointers</h4>
-        <p>Pointers are created by the organisations that create the medical records, e.g. a Care Co-Ordinator in a Mental Health Trust creating a Care Plan for a patient. We call these organisations 'Providers'.</p>
-        <p>These Pointers can be created automatically by the organisations electronic care systems after a Care Co-Ordinator has created a Care Plan for a patient, for example</p>
-
-        <h4 class="margin-top-lrg">Consumers read Pointers</h4>
-        <p>These Pointers can then be viewed and read by other organisations in their electronic care system. We call these organisations that search for and read points 'Consumers' and an example Consumer organisation is an Ambulance Service.</p>
-        <p>An example scenario could be a Paramedic out on call treating a patient. This particular patient lives and is receiving specialist treatment in the North East. This patient then visits family in the South West but during their vist require urgent medical treatment.</p>
-        <p>Using their mobile device to search the NRLS this Paramedic in the South West can now understand that this patient is undergoing specialist care which allows the Paramedic to provide more accurate and timely care.</p>
-
-        <h4 class="margin-top-lrg">Security and Data Sharing</h4>
-        <p class="alert alert-info alert-panel">
-            <i class="fa fa-info fa-padding-sqr n-bg-blue n-text-white"></i> It is important to note that there are <b>levels of security</b> required to use the NRLS and <b>levels of agreement</b> required between Organisations on <b>sharing data</b> before Consumers can view NRLS Pointers and retrieve records.
-        </p>
-
-        <div if.bind="dpiaLink">
-            <p>
-                Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
-            </p>
-            <p class="alert alert-warning alert-panel">
-                <i class="fa fa-info fa-padding-sqr"></i> The DPIA will be revised in April 2018 following further discussions with Trusts that are implementing NRLS.
-            </p>
-        </div>
-
-        <h3 id="whyTheNrls" class="n-text-green n-text-bold margin-top-lrg">Why the NRLS?</h3>
-
         <h4 class="margin-bottom-lrg">Aims of the NRLS <span class="n-text-muted">for phase 1</span></h4>
 
         <ul class="margin-bottom-xlrg">
@@ -52,12 +27,41 @@
             <li>To provide cross border interoperability, transparency and real time information for the purposes of direct care</li>
         </ul>
 
-        <h4 class="margin-bottom-lrg">The Benefits of the NRLS</h4>
-        <p>The NRLS will bring many benefits to patients, organisations within the NHS, the National Health Service itself, as well services further afield such our national police forces.</p>
-        <p>The benefits can be considered as Primary - Directly effecting patient welfare and at the heart of aims of the National Health Service. Secondary benefits which help organistions such as our Ambulance Services and Health Trusts; and finally Tertiary benefits which are those affecting the NHS as a whole and our services outside of health such as our national police forces.</p>
-        <p>Below you can explore some of the many benefits that the NRLS aims to bring. Currently shown are the benefits delivered through phase 1, however later phases of the NRLS will see the benefits listed here grow along with the organisations and roles that use the NRLS.</p>
+        <p>Explore more about the NRLS timeline, benefits, security and our consumers &amp; providers using the options below.</p>
 
-        <benefitsdialog bindtomenu.one-way="true" ispopup.one-way="false" withmenu.one-way="true"></benefitsdialog>
+        <div class="row margin-top-lrg">
+            <div class="col-md-12">
+                <div class="grid-tabs-row">
+                    <div class="nrls-gridtab">
+                        <a class="gridtab-link" route-href="route: about-timeline;">
+                            <span class="gridtab-heading">Timeline</span>
+                            <span class="gridtab-img"><i class="fa fa-calendar fa-6x"></i></span>
+                        </a>
+                    </div>
+
+                    <div class="nrls-gridtab">
+                        <a class="gridtab-link" route-href="route: about-benefits;">
+                            <span class="gridtab-heading">Benefits</span>
+                            <span class="gridtab-img"><i class="fa fa-check-circle fa-6x"></i></span>
+                        </a>
+                    </div>
+
+                    <div class="nrls-gridtab">
+                        <a class="gridtab-link" route-href="route: about-security;">
+                            <span class="gridtab-heading">Security</span>
+                            <span class="gridtab-img"><i class="fa fa-lock fa-6x"></i></span>
+                        </a>
+                    </div>
+
+                    <div class="nrls-gridtab">
+                        <a class="gridtab-link" route-href="route: about-consumers-providers;">
+                            <span class="gridtab-heading">Consumers &amp; Providers</span>
+                            <span class="gridtab-img"><i class="fa fa-hospital-o fa-6x"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </section>
 </template>
