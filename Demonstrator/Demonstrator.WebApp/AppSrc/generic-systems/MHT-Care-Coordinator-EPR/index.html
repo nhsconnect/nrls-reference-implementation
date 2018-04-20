@@ -221,7 +221,7 @@
             <div show.bind="instructionsActive" class="gs-instructions">
                 <div class="gs-instruction-bg"></div>
                 <div class="gs-instruction-content">
-                    <h2  class="gs-icontent-header h1">Instructions</h2>
+                    <h2 class="gs-icontent-header h1">Instructions</h2>
                     <div class="gs-icontent-inner">
                         <ol>
                             <li>
@@ -235,7 +235,7 @@
                                 <ul>
                                     <li>For this demonstration we automatically direct you to the 'Care Plan' section</li>
                                     <li>You will see the patient banner at the top</li>
-                                    <li>There are varous tabs and buttons but they have been disabled for this demonstration</li>
+                                    <li>There are various tabs and buttons but they have been disabled for this demonstration</li>
                                 </ul>
                             </li>
                             <li>Some patients will already have a care plan, some will not.</li>
@@ -274,6 +274,8 @@
                 </div>
             </div>
         </div>
+
+        <d-content-modal if.bind="showActionModal" content-file-url="../../../generic-systems/Base/Content/provider-action-complete-modal-content" title="Did you know?" show-action-modal.two-way="showActionModal"></d-content-modal>
 
     </section>
 </template>

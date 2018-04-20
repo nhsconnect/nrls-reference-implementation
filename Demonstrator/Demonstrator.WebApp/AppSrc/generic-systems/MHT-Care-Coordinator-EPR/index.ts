@@ -9,6 +9,7 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
     hasCrisisPlan: boolean = false;
     updatingPlan: boolean = false;
     allowCrisisPlan: boolean = false;
+    showActionModal: boolean = false;
 
     activate(model) {
         this.data = model;
@@ -92,6 +93,8 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
                 this.hasCrisisPlan = true;
 
                 this.setSystemMessage("Patient plan has been created successfully.");
+
+                this.setActionModal();
             });
 
         }, 250); //Looks better with delay :)
@@ -107,9 +110,19 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
                 this.updatingPlan = false;
 
                 this.setSystemMessage("Patient plan has been updated successfully.");
+
+                this.setActionModal();
             });
 
         }, 250); //Looks better with delay :)
+    }
+
+    private setActionModal() {
+        window.setTimeout(() => {
+
+            this.showActionModal = true;
+
+        }, 250);
     }
 
     private createRequest(resource?: any, id?: string): IRequest {

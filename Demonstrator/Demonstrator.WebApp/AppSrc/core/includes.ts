@@ -7,6 +7,7 @@
         '../helpers/modals/benefit-modal',
         '../helpers/modals/scenario-modal',
         '../helpers/modals/contact-modal',
+        '../helpers/modals/d-content-modal',
         '../helpers/popover'
     ]);
 }

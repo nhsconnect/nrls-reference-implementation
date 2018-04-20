@@ -18,6 +18,7 @@
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
     <None Remove="AppSrc\core\helpers\modals\benefit-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\contact-modal.ts" />
+    <None Remove="AppSrc\core\helpers\modals\d-content-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\scenario-modal.ts" />
     <None Remove="AppSrc\core\helpers\popover.ts" />
@@ -60,6 +61,7 @@
     <None Remove="AppSrc\core\services\PersonnelService.ts" />
     <None Remove="AppSrc\core\services\PointerService.ts" />
     <None Remove="AppSrc\generic-systems\BaseGenericSystem.ts" />
+    <None Remove="AppSrc\generic-systems\Base\Content\provider-action-complete-modal-content.ts" />
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers-table.ts" />
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers.ts" />
     <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
@@ -95,6 +97,7 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\string.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\modals\d-content-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\contact-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\scenario-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\benefit-modal.ts" />
@@ -150,6 +153,7 @@
     <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
+    <TypeScriptCompile Include="AppSrc\generic-systems\Base\Content\provider-action-complete-modal-content.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers-table.ts" />

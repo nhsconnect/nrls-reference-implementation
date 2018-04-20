@@ -16,7 +16,7 @@ export class BenefitModalCustomElement {
             if (this.navigateToAbout) {
                 this.router.navigateToRoute('about');
             }
-        })
+        });
     }
 
     loadBenefitModal() {
