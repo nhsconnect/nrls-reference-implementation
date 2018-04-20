@@ -1,0 +1,11 @@
+authorityKeyIdentifier  = keyid,issuer
+basicConstraints        = CA:FALSE  
+keyUsage            = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment 
+subjectAltName          = @alternate_names  
+nsComment           = "OpenSSL Generated Certificate"
+
+[ alternate_names ]
+DNS.1       = localhost
+DNS.2       = pink.testlab.nhs.net
+DNS.3		= nrlsdemoapp
+

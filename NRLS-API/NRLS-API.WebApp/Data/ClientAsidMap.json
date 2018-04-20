@@ -6,17 +6,17 @@
       "OrgCode": "AMS01"
     },
     "200000000116": {
-      "Thumbprint": "",
+      "Thumbprint": "79876facc15a6c2ca0de0138f7e810e0f67fc69d",
       "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ],
       "OrgCode": "AMS01"
     },
     "200000000117": {
-      "Thumbprint": "",
+      "Thumbprint": "d2d476597e6d7568b4f157216214cd2cc3a85500",
       "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ],
       "OrgCode": "AMS01"
     },
     "200000000118": {
-      "Thumbprint": "f20e8b339eba2a348494c9af9c5cf1935f194235",
+      "Thumbprint": "8d1b0e02bc98ba5b9f89ac389f477c7a7972e803",
       "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference" ],
       "OrgCode": "MHT01"
     }

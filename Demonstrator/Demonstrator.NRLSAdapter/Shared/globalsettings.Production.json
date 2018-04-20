@@ -2,7 +2,7 @@
   "NRLSAPI": {
     "ServerUrl": "http://nrlsapiapp:5001/nrls/fhir",
     "SecureServerUrl": "https://nrlsapiapp:443/nrls/fhir",
-    "Secure": true
+    "Secure": false
   },
   "PDSAPI": {
     "ServerUrl": "http://nrlsapiapp:5001/pds/fhir",

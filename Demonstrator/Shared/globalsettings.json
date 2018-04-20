@@ -2,7 +2,7 @@
   "NRLSAPI": {
     "ServerUrl": "http://localhost:51913/nrls/fhir",
     "SecureServerUrl": "https://localhost:44313/nrls/fhir",
-    "Secure": true,
+    "Secure": false,
     "DefaultProfile": "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
   },
   "PDSAPI": {
@@ -19,7 +19,7 @@
   },
   "Spine": {
     "Asid": "999999999999",
-    "SslThumbprint": "604e59ca322ec8e9cf5aa8b53ed78f9aa643c07e",
+    "SslThumbprint": "86b0951e9dc07d621b11208c4b8704034dcf08d6",
     "ClientAisMapFile": "Shared/ClientAsidMap.json"
   },
   "DemonstratorApi": {
