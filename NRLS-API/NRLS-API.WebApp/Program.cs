@@ -50,22 +50,26 @@ namespace NRLS_API.WebApp
                     // listen for HTTP
                     options.Listen(IPAddress.Any, int.Parse(apiSettings.DefaultPort));
 
-                    var certificate = ServerCertificate(int.Parse(apiSettings.SecurePort));
 
                     // listen for HTTPS
-                    if (apiSettings.Secure && certificate != null)
+                    if (apiSettings.Secure)
                     {
-                        options.Listen(IPAddress.Any, int.Parse(apiSettings.SecurePort), listenOptions =>
+                        var certificate = ServerCertificate(int.Parse(apiSettings.SecurePort));
+
+                        if(certificate != null)
                         {
-                            listenOptions.UseHttps(new HttpsConnectionAdapterOptions
+                            options.Listen(IPAddress.Any, int.Parse(apiSettings.SecurePort), listenOptions =>
                             {
-                                SslProtocols = SslProtocols.Tls12,
-                                CheckCertificateRevocation = false, //TODO: turn this on
-                                ClientCertificateMode = ClientCertificateMode.AllowCertificate,
-                                ServerCertificate = certificate,
-                                ClientCertificateValidation = (cert, chain, error) => ValidateClient(cert, chain, error)
+                                listenOptions.UseHttps(new HttpsConnectionAdapterOptions
+                                {
+                                    SslProtocols = SslProtocols.Tls12,
+                                    CheckCertificateRevocation = false, //TODO: turn this on
+                                    ClientCertificateMode = ClientCertificateMode.AllowCertificate,
+                                    ServerCertificate = certificate,
+                                    ClientCertificateValidation = (cert, chain, error) => ValidateClient(cert, chain, error)
+                                });
                             });
-                        });
+                        }
                     }
 
                 })
@@ -75,7 +79,7 @@ namespace NRLS_API.WebApp
 
         private static X509Certificate2 ServerCertificate(int securePort)
         {
-            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
             {
                 store.Open(OpenFlags.ReadOnly);
                 var serverCertificates = store.Certificates.Find(X509FindType.FindByThumbprint, _spineSettings.Thumbprint, false);
@@ -90,7 +94,7 @@ namespace NRLS_API.WebApp
 
         private static bool ValidateClient(X509Certificate2 cert, X509Chain chain, SslPolicyErrors error)
         {
-            using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.LocalMachine))
+            using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser))
             {
                 store.Open(OpenFlags.ReadOnly);
 

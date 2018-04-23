@@ -145,7 +145,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
         private bool ValidateServer(HttpRequestMessage sender, X509Certificate2 cert, X509Chain chain, SslPolicyErrors error, string spineThumbprint)
         {
             //Update to ensure we grab certs in a cross platform way
-            using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.LocalMachine))
+            using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser))
             {
 
                 store.Open(OpenFlags.ReadOnly);

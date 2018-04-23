@@ -39,7 +39,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 var clientAsidMap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
                 var clientCertificate = context.Connection.ClientCertificate;
 
-                using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.LocalMachine))
+                using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser))
                 {
                     //Get ASID
                     var fromAsid = GetHeaderValue(context.Request.Headers, FhirConstants.HeaderFromAsid);
