@@ -1,0 +1,42 @@
+﻿.animate-provider-feedback {
+
+    .arrow-animate {
+        .arrow-a {
+            opacity: 0;
+            animation-name: show-hide;
+            animation-duration: 2s;
+            animation-delay: 0s;
+            animation-iteration-count: infinite;
+        }
+
+        .arrow-b {
+            opacity: 0;
+            animation-name: show-hide;
+            animation-duration: 3s;
+            animation-delay: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        .arrow-c {
+            opacity: 0;
+            animation-name: show-hide;
+            animation-duration: 4s;
+            animation-delay: 2s;
+            animation-iteration-count: infinite;
+        }
+    }
+}
+
+@keyframes show-hide {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

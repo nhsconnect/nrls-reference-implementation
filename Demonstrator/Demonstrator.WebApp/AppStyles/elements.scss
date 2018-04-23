@@ -249,6 +249,17 @@ a {
         border-top: none;
     }
 
+    &.nrls-d-content-modal {
+
+        .modal-dialog {
+            width: 704px;
+
+            .modal-header {
+                height: 85px;
+            }
+        }
+    }
+
     &.nrls-benefit-modal {
         .modal-dialog {
             width: 704px;
