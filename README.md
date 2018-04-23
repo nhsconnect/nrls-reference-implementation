@@ -50,6 +50,7 @@ Download the official release from [https://www.mongodb.com/download-center#comm
 
 #### Visual Studio / Visual Studio Code
 Download Visual Studio official release from [https://www.visualstudio.com/vs/](https://www.visualstudio.com/vs/)
+
 Download Visual Studio Code official release from [https://code.visualstudio.com/](https://code.visualstudio.com/)
 
 #### Docker
