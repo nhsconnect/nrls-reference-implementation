@@ -50,7 +50,7 @@
             </div>
 
             <div show.bind="showPatientSearch" class="gs-content">
-                <patient-search selected-patient.two-way="selectedPatient" type="full"></patient-search>
+                <patient-search selected-patient.two-way="selectedPatient" patient-loading.bind="patientLoading" type="full"></patient-search>
             </div>
 
             <div show.bind="!showPatientSearch" class="gs-content">
@@ -210,6 +210,7 @@
                 </div>
 
                 <div show.bind="showSystemMessage" class="gs-system-notice">
+                    <a href="javascript:void(0);" class="system-notice-close"  click.delegate="setSystemMessage()"><i class="fa fa-window-close"></i></a>
                     <div class="gs-notice-content text-center">
                         <p textcontent.bind="systemMessage"></p>
                         <p><button class="btn btn-default" click.delegate="setSystemMessage()">Ok</button></p>

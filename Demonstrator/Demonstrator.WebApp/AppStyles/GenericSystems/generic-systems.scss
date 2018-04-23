@@ -274,6 +274,15 @@
         border: 3px solid $nhsBlue;
         padding: $spacing-normal;
         font-size: 0.9em;
+        border-top-width: 25px;
+
+        .system-notice-close {
+            display: block;
+            position: absolute;
+            top: -22px;
+            right: 5px;
+            color: $red;
+        }
     }
 }
 
