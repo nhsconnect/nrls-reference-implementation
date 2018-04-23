@@ -31,8 +31,10 @@ COPY --from=build-env /app/Demonstrator.WebApp/out .
 WORKDIR /app/Shared
 COPY --from=build-env /app/Shared/globalsettings.json .
 COPY --from=build-env /app/Shared/globalsettings.Production.json .
+COPY --from=build-env /app/Shared/ClientAsidMap.json .
 RUN chmod 644 ./globalsettings.json
 RUN chmod 644 ./globalsettings.Production.json
+RUN chmod 644 ./ClientAsidMap.json
 
 WORKDIR /app
 
