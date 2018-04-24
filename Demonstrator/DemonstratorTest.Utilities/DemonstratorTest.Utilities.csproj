@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Demonstrator.Core\Demonstrator.Core.csproj" />
     <ProjectReference Include="..\Demonstrator.Services\Demonstrator.Services.csproj" />
     <ProjectReference Include="..\Demonstrator.Utilities\Demonstrator.Utilities.csproj" />
+    <ProjectReference Include="..\DemonstratorTest.Comparer\DemonstratorTest.Comparer.csproj" />
   </ItemGroup>
 
 </Project>
