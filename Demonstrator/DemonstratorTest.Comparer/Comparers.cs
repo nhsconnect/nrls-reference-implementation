@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace DemonstratorTest.Comparer
@@ -7,16 +8,23 @@ namespace DemonstratorTest.Comparer
     {
         public static IEqualityComparer<T> ModelComparer<T>()
         {
-            var fields = typeof(T).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var fields = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
 
             var actions = new List<Func<T, T, bool>>();
 
-            foreach (var field in fields)
-            {
-                    actions.Add((x, y) => (field.GetValue(x) == null && field.GetValue(y) == null) ||
-                                          (field.GetType() == typeof(string) && string.Equals(field.GetValue(x), field.GetValue(y))) ||  
-                                          field.GetValue(x) == field.GetValue(y));
-            }
+
+            //Assert.Equal(obj1Str, obj2Str);
+
+            //foreach (var field in fields)
+            //{
+                    actions.Add((x, y) => {
+
+                        var xToString = JsonConvert.SerializeObject(x);
+                        var yToString = JsonConvert.SerializeObject(y);
+
+                        return string.Equals(xToString, yToString);
+                    });
+            //}
 
 
             return new GenericComparer<T>(actions.ToArray());
