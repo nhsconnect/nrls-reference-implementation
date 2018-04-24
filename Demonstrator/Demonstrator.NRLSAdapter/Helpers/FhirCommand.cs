@@ -162,7 +162,8 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
         private IDictionary<string, string> GetOptionDictionay(string key, string value)
         {
-            var paramsList = value.Split(",");
+            var paramsList = value?.Split(",") ?? new string[0];
+
             var parameters = new Dictionary<string, string>();
 
             for (var p = 0; p < paramsList.Length; p++)

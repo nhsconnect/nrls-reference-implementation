@@ -15,9 +15,11 @@ namespace DemonstratorTest.NRLSAdapter
                 "--method",
                 "GET",
                 "--parameters",
-                "patient=https://example.com|code",
+                "patient|code",
                 "--format",
-                "JSON"
+                "JSON",
+                "--setheaders",
+                "ssp-traceid|value"
             };
 
             var fhirCommand = new FhirCommand(validArgs);
@@ -38,7 +40,9 @@ namespace DemonstratorTest.NRLSAdapter
                 "--method",
                 "GET",
                 "--parameters",
-                "patient=https://example.com|code"
+                "patient|code",
+                "--setheaders",
+                "ssp-traceid|value"
             };
 
             var fhirCommand = new FhirCommand(validArgs);
@@ -81,7 +85,7 @@ namespace DemonstratorTest.NRLSAdapter
                 "--method",
                 "GET",
                 "--parameters",
-                "patient=https://example.com|code"
+                "patient|code"
             };
 
             var fhirCommand = new FhirCommand(validArgs);
