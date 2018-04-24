@@ -33,7 +33,8 @@ namespace Demonstrator.Models.DataModels.Flows
                 Id = model.Id.ToString(),
                 Text = model.Text,
                 Categories = model.Categories,
-                Order = model.Order
+                Order = model.Order,
+                Type = model.Type
             };
 
             return viewModel;
