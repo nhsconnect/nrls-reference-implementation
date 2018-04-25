@@ -34,12 +34,7 @@ namespace Demonstrator.WebApp.Controllers
         {
             var benefits = await _benefitsViewService.GetFor(listFor, listForId);
 
-            if (benefits == null)
-            {
-                return NotFound($"Benefits not found for type {listForId} with id {listFor}.");
-            }
-
-            var hasBenefits = (benefits.BenefitIds != null && benefits.BenefitIds.Count > 0);
+            var hasBenefits = (benefits != null);
 
             return Ok(hasBenefits);
         }

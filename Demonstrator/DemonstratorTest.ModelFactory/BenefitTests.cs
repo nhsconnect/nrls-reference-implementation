@@ -14,17 +14,18 @@ namespace DemonstratorTest.ModelFactory
         [Fact]
         public void Benefit_Returns_ValidViewModel()
         {
-            var models = MongoBenefit.Benefits;
+            var models = MongoBenefit.EfficiencyBenefits;
 
             var viewModel = models.Select(Benefit.ToViewModel).First();
 
             var expectedViewModel = new BenefitViewModel
             {
                 Id = "5a8417f68317338c8e080a62",
-                Text = "Benefit",
-                Categories = new List<string> { "Test" },
+                Text = "Benefit E1",
+                Categories = new List<string> { "Efficiency" },
                 Order = 1,
-                Type = "Test"
+                Type = "Test",
+                Active = true
             };
 
             Assert.Equal(expectedViewModel, viewModel, Comparers.ModelComparer<BenefitViewModel>());

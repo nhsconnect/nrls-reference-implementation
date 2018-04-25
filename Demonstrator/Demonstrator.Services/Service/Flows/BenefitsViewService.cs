@@ -30,6 +30,13 @@ namespace Demonstrator.Services.Service.Flows
         {
   
             var benefitsDialog = await GetBenefitIds(listFor, listForId);
+            if (benefitsDialog.BenefitIds == null || benefitsDialog.BenefitIds.Count() == 0)
+            {
+                return null;
+            }
+
+            var benefits = await _benefitsService.GetByIdList(benefitsDialog.BenefitIds);
+            benefitsDialog.Benefits = new Dictionary<string, IList<BenefitViewModel>> { { "All", benefits } };
 
             return benefitsDialog;
 
@@ -38,14 +45,14 @@ namespace Demonstrator.Services.Service.Flows
         public async Task<BenefitDialogViewModel> GetForCategorised(string listFor, string listForId)
         {
 
-            var benefitsDialog = await GetBenefitIds(listFor, listForId);
-            if (benefitsDialog.BenefitIds == null || benefitsDialog.BenefitIds.Count() == 0)
+            var benefitsDialog = await GetFor(listFor, listForId);
+
+            if(benefitsDialog == null)
             {
-                return benefitsDialog;
+                return null;
             }
 
-            var benefits = await _benefitsService.GetByIdList(benefitsDialog.BenefitIds);
-            benefitsDialog.Benefits = ParseBenefits(benefits);
+            benefitsDialog.Benefits = ParseBenefits(benefitsDialog.Benefits["All"]);
 
             return benefitsDialog;
         }
@@ -116,7 +123,7 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        private IDictionary<string, IList<BenefitViewModel>> ParseBenefits(IList<BenefitViewModel> benefits)
+        public IDictionary<string, IList<BenefitViewModel>> ParseBenefits(IList<BenefitViewModel> benefits)
         {
             var categorisedBenefits = new Dictionary<string, IList<BenefitViewModel>>();
 

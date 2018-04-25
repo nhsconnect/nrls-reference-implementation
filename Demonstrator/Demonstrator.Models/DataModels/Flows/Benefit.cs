@@ -34,7 +34,8 @@ namespace Demonstrator.Models.DataModels.Flows
                 Text = model.Text,
                 Categories = model.Categories,
                 Order = model.Order,
-                Type = model.Type
+                Type = model.Type,
+                Active = model.IsActive
             };
 
             return viewModel;

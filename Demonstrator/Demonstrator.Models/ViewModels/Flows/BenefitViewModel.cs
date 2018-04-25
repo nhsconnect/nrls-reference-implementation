@@ -15,5 +15,7 @@ namespace Demonstrator.Models.ViewModels.Flows
         public int Order { get; set; }
 
         public string Type { get; set; }
+
+        public bool Active { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Demonstrator.Models.Core.Enums;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demonstrator.Models.ViewModels.Flows
 {
@@ -25,7 +26,7 @@ namespace Demonstrator.Models.ViewModels.Flows
 
         private bool CheckBenefitCategory(string category)
         {
-            return Benefits != null && Benefits.ContainsKey(category) && Benefits[category].Count > 0;
+            return Benefits != null && Benefits.ContainsKey(category) && Benefits[category].Any(x => x.Active);
         }
 
         private IList<string> ActiveCategories()
@@ -37,7 +38,7 @@ namespace Demonstrator.Models.ViewModels.Flows
 
             foreach(var key in Benefits.Keys)
             {
-                if(Benefits[key] != null && Benefits[key].Count > 0)
+                if(Benefits[key] != null && Benefits[key].Count > 0 && Benefits[key].Any(x => x.Active))
                 {
                     categories.Add(key);
                 }
