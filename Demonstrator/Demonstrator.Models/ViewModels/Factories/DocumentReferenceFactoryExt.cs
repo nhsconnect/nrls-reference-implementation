@@ -17,10 +17,12 @@ namespace Demonstrator.Models.ViewModels.Factories
                 Created = documentReference.CreatedElement?.ToDateTimeOffset(),
                 Custodian = documentReference.Custodian.ToViewModel(),
                 Id = documentReference.Id,
+                Status = documentReference.Status?.ToString(),
                 Identifier = documentReference.Identifier.ToViewModelList(),
                 Subject = documentReference.Subject.ToViewModel(),
                 Type = documentReference.Type.ToViewModel(),
-                Author = documentReference.Author.FirstOrDefault()?.ToViewModel()
+                Author = documentReference.Author.FirstOrDefault()?.ToViewModel(),
+                Indexed = documentReference.Indexed
             };
 
             return viewModel;
