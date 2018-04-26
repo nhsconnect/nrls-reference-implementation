@@ -1,5 +1,8 @@
 using Demonstrator.NRLSAdapter.Models;
 using DemonstratorTest.Comparer;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using System;
 using Xunit;
 
 namespace DemonstratorTest.NRLSAdapter
@@ -47,6 +50,33 @@ namespace DemonstratorTest.NRLSAdapter
             var commandResponse = CommandResult<string>.Set(true, "Success", null);
 
             Assert.Equal(validCommandResponse, commandResponse, Comparers.ModelComparer<CommandResult<string>>());
+        }
+
+        [Fact]
+        public void CommandRequest_Set_BuildsUrl()
+        {
+
+            var testBaseUrl = "https://testurl.com";
+            var testResourceType = ResourceType.DocumentReference;
+
+            var testSearchParams = new SearchParams();
+            testSearchParams.Add("paramA", "valueA");
+            testSearchParams.Add("paramB", "valueB");
+
+            var validCommandRequest = new CommandRequest
+            {
+                BaseUrl = testBaseUrl,
+                ResourceType = testResourceType,
+                SearchParams = testSearchParams
+            };
+
+            var expectedQueryString = "?paramA=valueA&paramB=valueB";
+
+            var expectedFullUrl = new Uri($"{testBaseUrl}/{testResourceType}{expectedQueryString}");
+
+            Assert.Equal(validCommandRequest.QueryString, expectedQueryString);
+
+            Assert.Equal(validCommandRequest.FullUrl.AbsoluteUri, expectedFullUrl.AbsoluteUri);
         }
     }
 }
