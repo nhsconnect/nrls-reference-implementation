@@ -1,10 +1,8 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Nrls;
-using Demonstrator.NRLSAdapter.Helpers;
 using DemonstratorTest.Data.Helpers;
 using Hl7.Fhir.Model;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SystemTasks = System.Threading.Tasks;
@@ -30,7 +28,7 @@ namespace DemonstratorTest.Services.Nrls
             var testOrgCode = "AMS01";
 
             var _docRefService = new Mock<IDocumentReferenceServices>();
-            _docRefService.Setup(m => m.GetPointersAsBundle(It.IsAny<NrlsPointerRequest>())).Returns(SystemTasks.Task.Run(() => GetBundle<DocumentReference>(documentReferenceModels))).Verifiable();
+            _docRefService.Setup(m => m.GetPointersAsBundle(It.IsAny<NrlsPointerRequest>())).Returns(SystemTasks.Task.Run(() => FhirBundle.GetBundle<DocumentReference>(documentReferenceModels))).Verifiable();
 
             var _patientService = new Mock<IPatientServices>();
             _patientService.Setup(m => m.GetPatients()).Returns(SystemTasks.Task.Run(() => patientModels)).Verifiable();
@@ -68,39 +66,5 @@ namespace DemonstratorTest.Services.Nrls
 
         }
 
-        private Bundle GetBundle<T>(IList<T> resources) where T : Resource
-        {
-            var bundle = new Bundle
-            {
-                Id = Guid.NewGuid().ToString(),
-                Meta = new Meta
-                {
-                    LastUpdated = DateTime.UtcNow,
-                    VersionId = Guid.NewGuid().ToString()
-                },
-                Type = Bundle.BundleType.Searchset,
-                Total = resources.Count,
-                Link = new List<Bundle.LinkComponent>
-                {
-                    new Bundle.LinkComponent
-                    {
-                        Relation = "_self",
-                        Url = "TestLink"
-                    }
-                },
-                Entry = resources.Select(r => new Bundle.EntryComponent
-                {
-                    Search = new Bundle.SearchComponent
-                    {
-                        Mode = Bundle.SearchEntryMode.Match
-                    },
-                    FullUrl = $"ResourceLink",
-                    Resource = r
-                }).ToList()
-
-            };
-
-            return bundle;
-        }
     }
 }
