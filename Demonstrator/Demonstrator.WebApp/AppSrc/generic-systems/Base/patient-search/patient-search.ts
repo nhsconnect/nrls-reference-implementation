@@ -40,7 +40,6 @@ export class PatientSearch {
             }
         });
 
-        console.log(this.type);
     }
 
     setPatient() {
