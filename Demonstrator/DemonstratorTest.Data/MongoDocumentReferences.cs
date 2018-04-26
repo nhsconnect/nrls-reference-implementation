@@ -6,6 +6,19 @@ namespace DemonstratorTest.Data.Helpers
 {
     public static class MongoDocumentReferences
     {
+        public static IList<DocumentReference> DocumentReferences
+        {
+            get
+            {
+                var documentReferences =  new List<DocumentReference>();
+
+                documentReferences.AddRange(DocumentReferences_2686033207);
+                documentReferences.AddRange(DocumentReferences_3656987882);
+
+                return documentReferences;
+            }
+        }
+
         public static IList<DocumentReference> DocumentReferences_2686033207
         {
             get
