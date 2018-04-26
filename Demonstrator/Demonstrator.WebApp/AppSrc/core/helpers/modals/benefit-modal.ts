@@ -14,7 +14,7 @@ export class BenefitModalCustomElement {
         $('.nrls-benefit-modal').on('hidden.bs.modal', () => {
 
             if (this.navigateToAbout) {
-                this.router.navigateToRoute('about');
+                this.router.navigateToRoute('about-benefits');
             }
         });
     }

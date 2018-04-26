@@ -10,7 +10,11 @@
                     <div repeat.for="menuItem of benefitMenu.menuItems" class="panel panel-default ${$parent.benefitforid === menuItem.id ? 'nrls-panel-active' : ''}">
                         <div class="panel-heading b-menu-parent" role="tab" id="${menuItem.id}">
                             <h4 class="panel-title">
-                                <a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(menuItem.type, menuItem.id)"> ${menuItem.title} <i class="fa fa-angle-right"></i></a> <a show.bind="menuItem.children && menuItem.children.length > 0" href="#${menuItem.id}_children" class="btn btn-default b-menu-parent-btn pull-right" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="${menuItem.id}_children"><i class="fa fa-angle-down b-menu-parent-icon-up"></i><i class="fa fa-angle-up b-menu-parent-icon-down"></i></a>
+                                <a href="javascript:void(0)" class="grey-link" click.delegate="getBenefit(menuItem.type, menuItem.id)"> ${menuItem.title} <i class="fa fa-angle-right"></i></a> 
+                                <a show.bind="menuItem.children && menuItem.children.length > 0" href="#${menuItem.id}_children" class="btn btn-default b-menu-parent-btn pull-right collapsed" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="${menuItem.id}_children">
+                                    <i class="fa fa-angle-down b-menu-parent-icon-up"></i>
+                                    <i class="fa fa-angle-up b-menu-parent-icon-down"></i>
+                                </a>
                             </h4>
                         </div>
                         <div show.bind="menuItem.children && menuItem.children.length > 0" class="panel-collapse collapse ${$index === 0 ? 'in' : ''}" role="tabpanel" id="${menuItem.id}_children" aria-labelledby="${menuItem.id}" aria-expanded="true">
@@ -19,6 +23,10 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+
+                <div class="b-menu-notification">
+                    <div class="b-menu-noti-content">Future phases to include further organisations for NRLS.</div>
                 </div>
 
             </div>
