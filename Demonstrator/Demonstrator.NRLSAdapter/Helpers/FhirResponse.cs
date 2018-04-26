@@ -1,4 +1,5 @@
-﻿using Hl7.Fhir.Model;
+﻿using Demonstrator.NRLSAdapter.Helpers.Exceptions;
+using Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
         {
             var type = typeof(T);
 
-            if (Resource.ResourceType == ResourceType.Bundle)
+            if (Resource.ResourceType == ResourceType.Bundle && ResourceTypeMap.ContainsKey(type))
             {
                 return Entries
                     .Where(entry => entry.Resource.ResourceType.Equals(ResourceTypeMap[type]))
@@ -32,10 +33,18 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     .ToList();
             }
 
-            return new List<T>
+            var resourceType = Resource.GetType();
+
+            if (type == resourceType)
             {
-                (T)Resource
-            };
+                return new List<T>
+                {
+                    (T)Resource
+                };
+            }
+
+
+            throw new InvalidResourceException(type.Name);
         }
 
         private static Dictionary<Type, ResourceType> ResourceTypeMap => new Dictionary<Type, ResourceType>
