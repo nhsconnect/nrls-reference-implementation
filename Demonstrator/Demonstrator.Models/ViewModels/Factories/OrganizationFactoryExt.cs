@@ -6,6 +6,7 @@ namespace Demonstrator.Models.ViewModels.Factories
 {
     public static class OrganizationFactoryExt
     {
+        //TODO : Set up test
         public static OrganizationViewModel ToViewModel(this Organization organization, string orgCodeSystem)
         {
             var viewModel = new OrganizationViewModel

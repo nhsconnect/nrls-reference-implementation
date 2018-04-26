@@ -7,7 +7,7 @@ using Moq;
 using System.Linq;
 using Xunit;
 
-namespace DemonstratorTest.Services
+namespace DemonstratorTest.Services.Flows
 {
     public class BenefitsViewServiceTests
     {

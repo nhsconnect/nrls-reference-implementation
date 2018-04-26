@@ -8,24 +8,15 @@ namespace DemonstratorTest.Comparer
     {
         public static IEqualityComparer<T> ModelComparer<T>()
         {
-            var fields = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-
             var actions = new List<Func<T, T, bool>>();
 
+            actions.Add((x, y) => {
 
-            //Assert.Equal(obj1Str, obj2Str);
+                var xToString = JsonConvert.SerializeObject(x);
+                var yToString = JsonConvert.SerializeObject(y);
 
-            //foreach (var field in fields)
-            //{
-                    actions.Add((x, y) => {
-
-                        var xToString = JsonConvert.SerializeObject(x);
-                        var yToString = JsonConvert.SerializeObject(y);
-
-                        return string.Equals(xToString, yToString);
-                    });
-            //}
-
+                return string.Equals(xToString, yToString);
+            });
 
             return new GenericComparer<T>(actions.ToArray());
         }

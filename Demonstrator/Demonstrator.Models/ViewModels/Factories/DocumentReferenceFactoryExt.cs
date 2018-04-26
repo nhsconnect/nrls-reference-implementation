@@ -8,7 +8,7 @@ namespace Demonstrator.Models.ViewModels.Factories
 {
     public static class DocumentReferenceFactoryExt
     {
-
+        //TODO : Set up test
         public static PointerViewModel ToViewModel(this DocumentReference documentReference)
         {
             var viewModel = new PointerViewModel

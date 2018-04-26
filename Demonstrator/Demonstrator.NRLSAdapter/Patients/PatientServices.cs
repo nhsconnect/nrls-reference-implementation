@@ -62,22 +62,6 @@ namespace Demonstrator.NRLSAdapter.Patients
             return searchParams;
         }
 
-        //private string GetPatientNhsNumberUrl(string nhsNumber, bool includes)
-        //{
-        //    var parameters = $"identifier={WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}";
-
-        //    return GetPatientUrl(null, parameters, includes);
-        //}
-
-        //private string GetPatientUrl(string id = null, string parameters = null, bool includes = false)
-        //{
-        //    if (includes)
-        //    {
-        //        parameters = $"{(parameters + "&" ?? "")}_include=Patient:organization";
-        //    }
-
-        //    return $"{_patientUrlBase}{("/" + id ?? "")}?_format=json{("&" + parameters ?? "")}";
-        //}
 
     }
 }

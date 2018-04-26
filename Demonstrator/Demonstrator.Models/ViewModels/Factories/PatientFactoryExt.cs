@@ -7,6 +7,7 @@ namespace Demonstrator.Models.ViewModels.Factories
 {
     public static class PatientFactoryExt
     {
+        //TODO : Set up test
         public static PatientViewModel ToViewModel(this Patient patient, string nhsNumberIdentifier)
         {
             var dob = patient.BirthDateElement;
