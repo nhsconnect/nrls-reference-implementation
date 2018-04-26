@@ -8,18 +8,19 @@ namespace Demonstrator.NRLSAdapter.Helpers
 {
     public class JwtFactory
     {
-        public static string Generate(JwtScopes scope, string orgCode, string roleProfileId, string asid, string endpoint, string tokenOrigin)
+        public static string Generate(JwtScopes scope, string orgCode, string roleProfileId, string asid, string endpoint, string tokenOrigin, DateTime? tokenStart = null)
         {
-            return $"{Header}.{Payload(scope, orgCode, roleProfileId, asid, endpoint, tokenOrigin)}.";
+            return $"{Header}.{Payload(scope, orgCode, roleProfileId, asid, endpoint, tokenOrigin, tokenStart)}.";
         }
 
         private static string Header => new JwtHeader().Base64UrlEncode();
 
-        private static string Payload(JwtScopes scope, string orgCode, string roleProfileId, string asid, string endpoint, string tokenOrigin)
+        private static string Payload(JwtScopes scope, string orgCode, string roleProfileId, string asid, string endpoint, string tokenOrigin, DateTime? tokenStart)
         {
+            var start = tokenStart.HasValue ? tokenStart.Value : DateTime.UtcNow;
             var claims = new List<Claim>();
-            var exp = DateTime.UtcNow.AddMinutes(5);
-            var iat = DateTime.UtcNow;
+            var exp = start.AddMinutes(5);
+            var iat = start;
 
             claims.Add(new Claim(FhirConstants.JwtClientSysIssuer, tokenOrigin, ClaimValueTypes.String));
             claims.Add(new Claim(FhirConstants.JwtIndOrSysIdentifier, $"{FhirConstants.IdsSdsRolePofileId}|{roleProfileId}", ClaimValueTypes.String));

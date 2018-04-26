@@ -6,6 +6,9 @@ namespace DemonstratorTest.NRLSAdapter
 {
     public class FhirCommandPutTests
     {
+        //TURNED OFF while PUT is not supported
+
+
         //[Fact]
         //public void Valid_Returns_Success()
         //{
