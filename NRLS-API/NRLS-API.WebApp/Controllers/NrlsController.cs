@@ -125,7 +125,6 @@ namespace NRLS_API.WebApp.Controllers
         [HttpDelete()]
         public async Task<IActionResult> Delete()
         {
-            //TODO: Update to reflect new ID parameter
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
             var result = await _nrlsMaintain.Delete<DocumentReference>(request);

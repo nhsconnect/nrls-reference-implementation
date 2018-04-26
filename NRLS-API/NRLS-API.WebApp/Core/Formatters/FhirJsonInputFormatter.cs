@@ -19,6 +19,9 @@ namespace NRLS_API.WebApp.Core.Formatters
         {
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/fhir+json"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/json+fhir"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/json"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("text/json"));
+
             SupportedEncodings.Clear();
             SupportedEncodings.Add(Encoding.UTF8);
         }
@@ -44,7 +47,9 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 try
                 {
-                    //TODO: create a dumb model to allow passthrough to validation
+                    //TODO: parse json
+
+                    //TODO: create a dumb model to allow passthrough to validation because a missing element will throw wrong error here
                     var resource = new FhirJsonParser().Parse(jsonReader, type);
                     return InputFormatterResult.SuccessAsync(resource);
                 }
@@ -53,7 +58,8 @@ namespace NRLS_API.WebApp.Core.Formatters
                     //TODO: Remove Fhir Hack
                     if (ex != null)
                     {
-                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidResource("Unknown", ex.Message));
+                        //Assuming invalid json here, see above
+                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidRequest());
                     }
 
                     return InputFormatterResult.FailureAsync();

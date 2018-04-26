@@ -62,7 +62,7 @@ namespace NRLS_API.Core.Helpers
                 return false;
             }
 
-            // TODO
+            // TODO : parse and validate code from valueset
             //if (validateFromSet)
             //{
             //    var values = GetCodableConceptValueSet(validSystem);
@@ -74,6 +74,11 @@ namespace NRLS_API.Core.Helpers
             //}
 
             return true;
+        }
+
+        public string GetResourceReferenceId(ResourceReference reference, string systemUrl)
+        {
+            return reference?.Reference?.Replace(systemUrl, "");
         }
 
         public bool ValidReference(ResourceReference reference, string startsWith)

@@ -38,11 +38,12 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
 
             //Accept is optional but must be valid if supplied
-            var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
-            if (accept != null && !ValidAccept(accept))
-            {
-                SetError(HttpRequestHeader.Accept.ToString());
-            }
+            //Check is delegated to FhirInputMiddleware
+            //var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
+            //if (accept != null && !ValidAccept(accept))
+            //{
+            //    SetError(HttpRequestHeader.Accept.ToString());
+            //}
 
             var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
             if (authorization == null || !ValidJwt(method, authorization))

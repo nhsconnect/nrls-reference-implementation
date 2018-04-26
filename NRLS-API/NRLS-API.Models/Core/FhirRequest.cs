@@ -49,6 +49,20 @@ namespace NRLS_API.Models.Core
             };
         }
 
+        public static FhirRequest Copy(FhirRequest request, ResourceType resourceType, Resource resource, IEnumerable<Tuple<string, string>> queryParameters)
+        {
+            return new FhirRequest
+            {
+                Id = request.Id,
+                ResourceType = resourceType,
+                Resource = resource,
+                RequestUrl = request.RequestUrl,
+                QueryParameters = queryParameters,
+                AllowedParameters = resourceType.GetAllowed(),
+                RequestingAsid = request.RequestingAsid
+            };
+        }
+
         public static Uri CreateUrl(string scheme, string host, string path, string queryString)
         {
             return new Uri($"{scheme}://{host}{path}{queryString}");

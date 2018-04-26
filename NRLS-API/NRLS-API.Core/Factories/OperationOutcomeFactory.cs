@@ -25,9 +25,10 @@ namespace NRLS_API.Core.Factories
             return outcome;
         }
 
-        public static OperationOutcome CreateError(string diagnostics, CodeableConcept details)
+        public static OperationOutcome CreateError(string diagnostics, CodeableConcept details, OperationOutcome.IssueType? issueType = null)
         {
-            return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, diagnostics, details);
+            var issueTypeVal = issueType.HasValue ? issueType.Value : OperationOutcome.IssueType.Invalid;
+            return Create(OperationOutcome.IssueSeverity.Error, issueTypeVal, diagnostics, details);
         }
 
         public static OperationOutcome CreateInternalError(string diagnostics)
@@ -122,7 +123,23 @@ namespace NRLS_API.Core.Factories
 
             var details = CreateDetails("NO_RECORD_FOUND", "No record found");
 
-            return CreateError($"No record found for supplied DocumentReference identifier – {id}.", details);
+            return CreateError($"No record found for supplied DocumentReference identifier – {id}.", details, OperationOutcome.IssueType.NotFound);
+        }
+
+        public static OperationOutcome CreateOrganizationNotFound(string id)
+        {
+
+            var details = CreateDetails("ORGANISATION_NOT_FOUND", "Organisation record not found");
+
+            return CreateError($"The ODS code in the custodian and/or author element is not resolvable – {id}.", details, OperationOutcome.IssueType.NotFound);
+        }
+
+        public static OperationOutcome CreateInvalidRequest()
+        {
+
+            var details = CreateDetails("INVALID_REQUEST_MESSAGE", "Invalid Request Message");
+
+            return CreateError("Invalid Request Message", details, OperationOutcome.IssueType.Value);
         }
 
         public static OperationOutcome CreateOk()

@@ -37,20 +37,17 @@ namespace NRLS_API.WebApp
             services.AddMemoryCache();
             services.AddMvc(config =>
             {
-               
+                config.InputFormatters.Clear();
+
                 //Default to fhir+json
                 config.InputFormatters.Insert(0, new FhirJsonInputFormatter());
                 config.OutputFormatters.Insert(0, new FhirJsonOutputFormatter());
                 config.InputFormatters.Insert(1, new FhirXmlInputFormatter());
                 config.OutputFormatters.Insert(1, new FhirXmlOutputFormatter());
 
-                //Add graceful xml support as not including by default
-                config.InputFormatters.Add(new XmlSerializerInputFormatter());
-                config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
-
                 // Add FHIR Content Negotiation
                 config.RespectBrowserAcceptHeader = true;
-                config.ReturnHttpNotAcceptable = true;
+                config.ReturnHttpNotAcceptable = false;
 
             });
             services.AddOptions();

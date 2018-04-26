@@ -36,8 +36,6 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
-            //TODO throw error on invalid content type
-
             //status
             if(pointer.Status == null)
             {
@@ -73,9 +71,7 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidResource(null);
             }
 
-            //TODO: Validate the OrgCode - see specific error response
-            //TODO: validate orgcode matches fromASID - see specific error response
-            //ORGANISATION_NOT_FOUND or INVALID_RESOURCE
+            //validate orgcode is real done outside of here
             //author
             if (pointer.Author != null && pointer.Author.Count == 1)
             {
@@ -92,9 +88,7 @@ namespace NRLS_API.Services
             }
 
 
-            //TODO: Validate the OrgCode - see specific error response
-            //TODO: validate orgcode matches ASID - see specific error response
-            //ORGANISATION_NOT_FOUND or INVALID_RESOURCE
+            //validate orgcode for match against fromASID and is real done outside of here
             //custodian
             if (pointer.Custodian != null)
             {
@@ -159,7 +153,7 @@ namespace NRLS_API.Services
         {
             if(!ValidReferenceParameter(parameterVal, FhirConstants.SystemPDS))
             {
-                return OperationOutcomeFactory.CreateInvalidParameter("Missing or Invalid Parameter : patient");
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemPDS}[NHS Number]");
             }
 
             var nhsNumber = parameterVal.Replace(FhirConstants.SystemPDS, "");
@@ -174,16 +168,22 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidateCustodianParameter(string parameterVal)
         {
+            var valid = true;
             if (!ValidReferenceParameter(parameterVal, FhirConstants.SystemODS))
             {
-                return OperationOutcomeFactory.CreateInvalidParameter("Missing or Invalid Parameter : custodian");
+                valid = false;
             }
 
             var orgCode = parameterVal.Replace(FhirConstants.SystemODS, "");
 
             if (string.IsNullOrWhiteSpace(orgCode))
             {
-                return OperationOutcomeFactory.CreateInvalidParameter("Missing or Invalid Parameter : custodian");
+                valid = false;
+            }
+
+            if (!valid)
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemODS}[ODS Code]");
             }
 
             return null;
@@ -192,6 +192,11 @@ namespace NRLS_API.Services
         public bool ValidReferenceParameter(string parameterVal, string systemPrefix)
         {
             return (!string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(systemPrefix));
+        }
+
+        public string GetOrganizationReferenceId(ResourceReference reference)
+        {
+            return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemODS);
         }
 
         public OperationOutcome ValidateOrganisationReference(ResourceReference reference, string type)
@@ -228,6 +233,7 @@ namespace NRLS_API.Services
                 }
 
                 //attachment.contentType
+                //TODO validate content type format
                 var contentType = content.Attachment.ContentType;
                 if (string.IsNullOrEmpty(contentType))
                 {

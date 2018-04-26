@@ -167,10 +167,11 @@ namespace NRLS_API.Services
                 Id = Guid.NewGuid().ToString(),
                 Meta = new Meta
                 {
-                    LastUpdated = DateTime.UtcNow,
-                    VersionId = Guid.NewGuid().ToString()
+                    LastUpdated = DateTime.UtcNow
+                    //VersionId = Guid.NewGuid().ToString()
+                    //TODO: check if this requires http://fhir.nhs.net/StructureDefinition/nrls-searchset-bundle-1-0
                 },
-                Type = Bundle.BundleType.Searchset,
+                Type = Bundle.BundleType.Searchset, 
                 Total = resources.Count,
                 Link = new List<Bundle.LinkComponent>
                 {

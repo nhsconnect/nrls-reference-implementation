@@ -14,6 +14,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         bool ValidReference(ResourceReference reference, string startsWith);
 
+        string GetResourceReferenceId(ResourceReference reference, string systemUrl);
+
         bool ValidNhsNumber(string nhsNumber);
     }
 }

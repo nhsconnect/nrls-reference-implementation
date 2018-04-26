@@ -11,5 +11,7 @@ namespace NRLS_API.Core.Interfaces.Services
         OperationOutcome ValidatePatientParameter(string parameterVal);
 
         OperationOutcome ValidateCustodianParameter(string parameterVal);
+
+        string GetOrganizationReferenceId(ResourceReference reference);
     }
 }

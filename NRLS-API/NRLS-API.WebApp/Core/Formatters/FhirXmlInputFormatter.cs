@@ -18,6 +18,8 @@ namespace NRLS_API.WebApp.Core.Formatters
         {
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/fhir+xml"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml+fhir"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml"));
+
             SupportedEncodings.Clear();
             SupportedEncodings.Add(Encoding.UTF8);
         }
@@ -42,7 +44,9 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 try
                 {
-                    //TODO: create a dumb model to allow passthrough to validation
+                    //TODO: parse xml
+
+                    //TODO: create a dumb model to allow passthrough to validation because a missing element will throw wrong error here
                     var resource = new FhirXmlParser().Parse(xmlReader, type);
                     return InputFormatterResult.SuccessAsync(resource);
                 }
@@ -51,7 +55,8 @@ namespace NRLS_API.WebApp.Core.Formatters
                     //TODO: Remove Fhir Hack
                     if (ex != null)
                     {
-                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidResource("Unknown", ex.Message));
+                        //Assuming invalid xml here, see above
+                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidRequest());
                     }
 
                     return InputFormatterResult.FailureAsync();

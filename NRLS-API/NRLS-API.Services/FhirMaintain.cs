@@ -4,14 +4,12 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using SystemTasks = System.Threading.Tasks;
 
 
@@ -21,33 +19,24 @@ namespace NRLS_API.Services
     {
 
         private readonly INRLSMongoDBContext _context;
-
-        private readonly IFhirValidation _fhirValidation;
-
-        private string _profileUrl;
-        
-        public FhirMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context, IFhirValidation fhirValidation) : base(nrlsApiSetting)
+      
+        public FhirMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting)
         {
             _context = context;
-            _fhirValidation = fhirValidation;
-            _profileUrl = nrlsApiSetting.Value.ProfileUrl;
         }
 
         public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
-            var validProfile = _fhirValidation.ValidPointer((DocumentReference)request.Resource);
-
-            if (!validProfile.Success)
-            {
-                throw new HttpFhirException("Invalid NRLS Pointer", validProfile, HttpStatusCode.BadRequest);
-            }
-
             try
             {
                 //At present NRLS spec states updates are performed by delete and create so version will always be 1
                 request.Resource.VersionId = "1";
+
+                request.Resource.Meta = request.Resource.Meta ?? new Meta();
+                request.Resource.Meta.LastUpdated = DateTime.UtcNow;
+                request.Resource.Meta.VersionId = "1";
 
                 var pointerJson = new FhirJsonSerializer().SerializeToString(request.Resource);
 

@@ -1,4 +1,5 @@
 ﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
@@ -6,6 +7,9 @@ using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
+using NRLS_API.Models.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using SystemTasks = System.Threading.Tasks;
@@ -17,25 +21,57 @@ namespace NRLS_API.Services
         private readonly IFhirMaintain _fhirMaintain;
         private readonly IFhirSearch _fhirSearch;
         private readonly IMemoryCache _cache;
+        private readonly IFhirValidation _fhirValidation;
 
-        public NrlsMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, IMemoryCache memoryCache) : base(nrlsApiSetting)
+        public NrlsMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, IMemoryCache memoryCache, IFhirValidation fhirValidation) : base(nrlsApiSetting)
         {
             _fhirMaintain = fhirMaintain;
             _cache = memoryCache;
             _fhirSearch = fhirSearch;
+            _fhirValidation = fhirValidation;
         }
 
         public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
         {
+            ValidateResource(request.StrResourceType);
+
+
+            // NRLS Layers of validation before Fhir Search Call
             var document = request.Resource as DocumentReference;
 
-            var orgCode = document?.Custodian?.Reference?.Replace(FhirConstants.SystemODS, "");
+            //Pointer Validation
+            var validProfile = _fhirValidation.ValidPointer(document);
 
-            var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid);
+            if (!validProfile.Success)
+            {
+                throw new HttpFhirException("Invalid NRLS Pointer", validProfile, HttpStatusCode.BadRequest);
+            }
+
+
+            //Now we need to do some additional validation on ODS codes
+            //We need to use an external source (in reality yes but we are just going to do an internal query to fake ods search)
+
+            var custodianOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
+            var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
+
+            var invalidAsid = InvalidAsid(custodianOrgCode, request.RequestingAsid, true);
 
             if (invalidAsid != null)
             {
                 return invalidAsid;
+            }
+
+            var unknownCustodianOrg = await UnkownOrganization(request, custodianOrgCode);
+            var unknownAuthorOrg = await UnkownOrganization(request, authorOrgCode);
+
+            if (unknownCustodianOrg != null)
+            {
+                return unknownCustodianOrg;
+            }
+
+            if (unknownAuthorOrg != null)
+            {
+                return unknownAuthorOrg;
             }
 
             return await _fhirMaintain.Create<T>(request);
@@ -54,6 +90,8 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
+
+            // NRLS Layers of validation before Fhir Delete Call
             var id = request.IdParameter;
 
             if (string.IsNullOrEmpty(id))
@@ -75,9 +113,9 @@ namespace NRLS_API.Services
                 {
                     var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
 
-                    var orgCode = orgDocument.Custodian?.Reference?.Replace(FhirConstants.SystemODS, "");
+                    var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
 
-                    var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid);
+                    var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
 
                     if (invalidAsid != null)
                     {
@@ -93,7 +131,7 @@ namespace NRLS_API.Services
             return await _fhirMaintain.Delete<T>(request);
         }
 
-        private OperationOutcome InvalidAsid(string orgCode, string asid)
+        private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)
         {
             var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
 
@@ -107,7 +145,39 @@ namespace NRLS_API.Services
                 }
             }
 
+            if (isCreate)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
+            }
+
             return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
+        }
+
+        private async SystemTasks.Task<OperationOutcome> UnkownOrganization(FhirRequest request, string orgCode)
+        {
+            var invalid = true;
+
+            if (!string.IsNullOrWhiteSpace(orgCode))
+            {
+                var queryParameters = new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("identifier", $"{FhirConstants.SystemOrgCode}|{orgCode}")
+                };
+
+                var orgRequest = FhirRequest.Copy(request, ResourceType.Organization, null, queryParameters);
+
+                var result = await _fhirSearch.Find<Organization>(orgRequest) as Bundle;
+
+                invalid = result.Entry.Count == 0;
+            }
+
+
+            if (invalid)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
+            }
+
+            return null;
         }
     }
 }
