@@ -124,6 +124,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         { HttpRequestHeader.AcceptLanguage.ToString(), "en-GB,en" },
                         { HttpRequestHeader.CacheControl.ToString(), "no-cache" },
                         { HttpRequestHeader.Connection.ToString(), "Keep-Alive" },
+                        { HttpRequestHeader.ContentType.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}"},
                         { HttpRequestHeader.Host.ToString(), $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
                     }
             };

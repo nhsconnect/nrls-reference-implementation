@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
@@ -20,12 +21,14 @@ namespace NRLS_API.WebApp.Controllers
     {
         private readonly INrlsSearch _nrlsSearch;
         private readonly INrlsMaintain _nrlsMaintain;
+        private readonly INrlsConformance _nrlsConformance;
         private readonly NrlsApiSetting _nrlsApiSettings;
 
-        public NrlsController(IOptions<NrlsApiSetting> nrlsApiSettings, INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
+        public NrlsController(IOptions<NrlsApiSetting> nrlsApiSettings, INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain, INrlsConformance nrlsConformance)
         {
             _nrlsSearch = nrlsSearch;
             _nrlsMaintain = nrlsMaintain;
+            _nrlsConformance = nrlsConformance;
             _nrlsApiSettings = nrlsApiSettings.Value;
         }
 
@@ -136,6 +139,20 @@ namespace NRLS_API.WebApp.Controllers
             }
 
             return NotFound(result);
+        }
+
+        /// <summary>
+        /// Returns Server Conformance
+        /// </summary>
+        /// <returns>A FHIR Conformance Statement</returns>
+        /// <response code="200">Returns the FHIR Conformance Statement</response>
+        [ProducesResponseType(typeof(Resource), 200)]
+        [HttpGet("metadata")]
+        public IActionResult Conformance()
+        {
+            var conformance = _nrlsConformance.GetConformance();
+
+            return Ok(conformance);
         }
 
         private string RequestingAsid()

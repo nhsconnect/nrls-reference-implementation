@@ -80,6 +80,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<IFhirValidation, FhirValidation>();
             services.AddTransient<INrlsSearch, NrlsSearch>();
             services.AddTransient<INrlsMaintain, NrlsMaintain>();
+            services.AddTransient<INrlsConformance, NrlsConformance>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
