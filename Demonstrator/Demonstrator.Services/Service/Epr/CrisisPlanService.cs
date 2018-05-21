@@ -24,7 +24,7 @@ namespace Demonstrator.Services.Service.Flows
         private readonly IDocumentReferenceServices _documentReferenceServices;
         private readonly IPointerMapService _pointerMapService;
 
-        private const string MentalHealthCrisisPlanTypeCode = "718347000";
+        private const string MentalHealthCrisisPlanTypeCode = "736253002";
 
         private const string MentalHealthCrisisPlanTypeDisplay = "Mental Health Crisis Plan";
 

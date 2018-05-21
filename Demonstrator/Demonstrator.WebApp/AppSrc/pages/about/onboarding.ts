@@ -3,8 +3,8 @@ import { ConfigSvc } from "../../core/services/ConfigService";
 import { inject } from "aurelia-framework";
 
 @inject(ConfigSvc)
-export class AboutSecurity {
-    heading: string = 'Security';
+export class AboutOnboarding {
+    heading: string = 'Onboarding';
     breadcrumb: Array<IBreadcrumb> = [];
     dpiaLink: string;
 
@@ -21,7 +21,7 @@ export class AboutSecurity {
     private setBreadcrumb(): void {
         this.breadcrumb.push(<IBreadcrumb>{ title: 'Home', route: 'welcome' });
         this.breadcrumb.push(<IBreadcrumb>{ title: 'About', route: 'about', isActive: false, isBack: true });
-        this.breadcrumb.push(<IBreadcrumb>{ title: this.heading, route: 'about-security', isActive: true });
+        this.breadcrumb.push(<IBreadcrumb>{ title: this.heading, route: 'about-onboarding', isActive: true });
     }
 
 }

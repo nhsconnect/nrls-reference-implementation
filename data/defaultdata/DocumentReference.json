@@ -8,8 +8,8 @@
     "coding": [
       {
         "system": "http://snomed.info/sct",
-        "code": "718347000",
-        "display": "Mental health care plan"
+        "code": "736253002",
+        "display": "Mental Health Crisis Plan"
       }
     ]
   },
@@ -47,7 +47,7 @@
       {
         "system": "http://snomed.info/sct",
         "code": "718347002",
-        "display": "Cancer care plan"
+        "display": "Cancer Care Plan"
       }
     ]
   },
@@ -84,8 +84,8 @@
     "coding": [
       {
         "system": "http://snomed.info/sct",
-        "code": "718347001",
-        "display": "Mental health care plan"
+        "code": "736253002",
+        "display": "Mental Health Crisis Plan"
       }
     ]
   },

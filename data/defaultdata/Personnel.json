@@ -145,7 +145,7 @@
     "_id": {
         "$oid": "5a8dabea952e372cbdb318de"
     },
-    "Name": "Counselor",
+    "Name": "Counsellor",
     "ImageUrl": "mental_health_service_care_plan_co-ordinator.png",
     "Context": [{
             "Title": "Does this affect me?",
@@ -174,7 +174,6 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator",
     "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
     "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
@@ -211,7 +210,6 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator",
     "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
     "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
@@ -248,7 +246,6 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator",
     "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
     "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }
@@ -285,7 +282,6 @@
     "SystemIds": [
         "5a8daa86952e372cbdb31801"
     ],
-    "PersonnelType": "Care Co-ordinator",
     "BenefitsTitle": "As a Mental Health Clinician, NRLS will benefit me by",
     "Benefits": ["5ababc7ffd9330c68e94aa28", "5ababca6fd9330c68e94aa29", "5ababcaefd9330c68e94aa2a", "5ababcb8fd9330c68e94aa2b"]
 }

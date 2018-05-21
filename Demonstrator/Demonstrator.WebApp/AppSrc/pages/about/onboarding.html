@@ -1,0 +1,39 @@
+<template>
+    <section class="container nrls-select-container">
+        <breadcrumb breadcrumb.one-way="breadcrumb"></breadcrumb>
+        <h1 class="h1 margin-bottom-xlrg">${heading}</h1>
+
+        <p>There is a process in which each trust must go through to 'on-board' and be granted access to the NRLS.</p>
+
+        <p>
+            The process involves meeting security and sharing requirements to use the NRLS and includes agreements between Organisations on sharing data before Consumers can view NRLS Pointers and retrieve records.
+        </p>
+
+        <h4 class="margin-top-lrg">DPIA <span>(Data Privacy Impact Assessment)</span></h4>
+        <div if.bind="dpiaLink">
+            <p>
+                Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
+            </p>
+
+            <p><em>Notable information contained within the DPIA are as follows:</em></p>
+
+            <ul>
+                <li><em>Type of data & legal basis for holding and sharing in terms of GDPR / Data Protection and Common Law Duty of Confidence - personal, sensitive & confidential / health data</em></li>
+                <li><em>Data flows - from NHS Trusts to NHS Digital (pointers)</em></li>
+                <li><em>Risk assessment and controls to limit and provide countermeasures to the risks</em></li>
+            </ul>
+        </div>
+
+        <h4 class="margin-top-lrg">TOM <span>(Target Operating Model)</span></h4>
+
+        <p>
+            There is also a requirement for the solutions that each trust will use to Provide or Consume on the NRLS to go through the Solutions Assurance process.
+        </p>
+
+        <p>
+            Link to the TOM here ...
+        </p>
+
+
+    </section>
+</template>

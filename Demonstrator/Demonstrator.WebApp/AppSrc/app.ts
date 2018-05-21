@@ -1,5 +1,5 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
-import { Router, RouterConfiguration, NavigationInstruction, Next } from 'aurelia-router';
+import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
@@ -25,7 +25,7 @@ export class App {
 
         var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
 
-        config.mapUnknownRoutes(notFoundRoute);
+        config.mapUnknownRoutes(<RouteConfig>notFoundRoute);
 
         config.addPipelineStep('postcomplete', PostCompleteStep);
 
@@ -33,7 +33,7 @@ export class App {
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
             { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
             { route: 'about/consumers-providers', name: 'about-consumers-providers', moduleId: './pages/about/consumers-providers', nav: false, title: 'About - Consumers Providers' },
-            { route: 'about/security', name: 'about-security', moduleId: './pages/about/security', nav: false, title: 'About - Security' },
+            { route: 'about/onboarding', name: 'about-onboarding', moduleId: './pages/about/onboarding', nav: false, title: 'About - Onboarding' },
             { route: 'about/timeline', name: 'about-timeline', moduleId: './pages/about/timeline', nav: false, title: 'About - Timeline' },
             { route: 'about/benefits', name: 'about-benefits', moduleId: './pages/about/benefits', nav: false, title: 'About - Benefits' },
             { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
