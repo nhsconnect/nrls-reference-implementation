@@ -10,8 +10,8 @@
         </p>
 
         <h4 class="margin-top-lrg">DPIA <span>(Data Privacy Impact Assessment)</span></h4>
-        <div if.bind="dpiaLink">
-            <p>
+        <div >
+            <p if.bind="dpiaLink">
                 Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
             </p>
 
@@ -27,13 +27,21 @@
         <h4 class="margin-top-lrg">TOM <span>(Target Operating Model)</span></h4>
 
         <p>
-            There is also a requirement for the solutions that each trust will use to Provide or Consume on the NRLS to go through the Solutions Assurance process.
+            Connecting to the NRLS relies on Suppliers and End Users completing the NHS Digital self-certification tool, known as the Target Operating Model (TOM). The purpose of the Target Operating Model (TOM) is to inform and assist End User organisations with the implementation of SMS integrated systems within their local environment. It provides an assessment framework of their responsibilities in terms of ensuring that their local system meets the technical, IG, Clinical safety and functionality required for the business context.
         </p>
 
         <p>
-            Link to the TOM here ...
+            The TOM is typically completed in three phases although in reality some of these can be done concurrently:
         </p>
 
+        <ul>
+            <li>Phase 1a: Usage and Settings information provided to NHS Digital for approval</li>
+            <li>Phase 1b: Technical Conformance information provided to NHS Digital for approval</li>
+            <li>Phase 2: End User Approval</li>
+        </ul>
+        <p if.bind="tomLink">
+            Download the current version of the <a href.bind="tomLink" target="_blank">NRLS TOM</a>.
+        </p>
 
     </section>
 </template>

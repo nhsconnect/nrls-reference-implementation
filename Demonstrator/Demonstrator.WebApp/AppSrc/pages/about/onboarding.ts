@@ -7,6 +7,7 @@ export class AboutOnboarding {
     heading: string = 'Onboarding';
     breadcrumb: Array<IBreadcrumb> = [];
     dpiaLink: string;
+    tomLink: string;
 
     constructor(private configSvc: ConfigSvc) { }
 
@@ -15,6 +16,10 @@ export class AboutOnboarding {
 
         if (this.configSvc.config.DPIALink) {
             this.dpiaLink = this.configSvc.config.DPIALink;
+        }
+
+        if (this.configSvc.config.TOMLink) {
+            this.tomLink = this.configSvc.config.TOMLink;
         }
     }
 
