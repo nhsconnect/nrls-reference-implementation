@@ -13,6 +13,7 @@ export class ActorOrganisationPersonnel {
     organisationLoading: boolean = false;
     personnelListLoading: boolean = false;
     breadcrumb: Array<IBreadcrumb> = [];
+    benefitsForName: string;
 
     constructor(private actorOrgSvc: ActorOrganisationSvc) {
         
@@ -26,6 +27,7 @@ export class ActorOrganisationPersonnel {
         this.organisationLoading = true;
         this.actorOrgSvc.getOne(this.actorOrgId).then(organisation => {
             this.organisation = organisation;
+            this.benefitsForName = `the ${this.organisation.name}`;
             this.heading = this.organisation.name;
             this.organisationLoading = false;
 

@@ -7,7 +7,7 @@
             <br />You can control the animation using the bottom controls.
             <span class="scenario-img-wrapper">
                 <a href="javascript:void(0);" click.delegate="loadScenarioModal()"><img if.bind="cmodule" src="/images/scenario-context/${cmodule}_thumb.png" alt.bind="title" class="img-responsive" /></a>
-                <button class="btn btn-info btn-block" click.delegate="loadScenarioModal()">Explore the Scenario</button>
+                <button class="btn btn-info btn-block" click.delegate="loadScenarioModal()">Explore the Scenario <i class="fa fa-expand"></i></button>
             </span>
         </p>
     </div>
@@ -17,13 +17,21 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <span class="switch-button n-text-white ${switchAnimation ? 'active' : 'inactive'}" click.delegate="toggleAnimation()">
-                        <span class="switch on">Pause <i class="fa fa-pause"></i></span><span class="switch off">Play <i class="fa fa-play"></i></span>
-                    </span>
                     <button type="button" class="close b-close-btn" data-dismiss="modal" aria-label="Close"><i class="fa fa-times b-close-icon"></i></button>
-                    <div if.bind="cmodule" class="context-switch-wrap ${switchContext ? 'active' : 'inactive'}">
-                        <img src="/images/scenario-context/${cmodule}-1.png" alt.bind="title" class="img-responsive context off" />
-                        <img src="/images/scenario-context/${cmodule}-2.png" alt.bind="title" class="img-responsive context on" />
+
+                    <ul class="nav nav-tabs nav-justified nrls-context-tabs">
+                        <li class="active"><a data-toggle="tab" href="#current-context">Current scenario when a patient is in crisis</a></li>
+                        <li><a data-toggle="tab" href="#nrls-context">NRLS scenario when a patient is in crisis</a></li>
+                    </ul>
+
+                    <div if.bind="cmodule" class="tab-content">
+                        <div id="current-context" class="tab-pane fade in active">
+                            <img src="/images/scenario-context/${cmodule}-1.png" alt.bind="title" class="img-responsive" />
+                        </div>
+                        <div id="nrls-context" class="tab-pane fade">
+                            <img src="/images/scenario-context/${cmodule}-2.png" alt.bind="title" class="img-responsive" />
+                            <a href="javascript:void(0);" click.delegate="setBenefitsNav()" class="benefits-button"></a>
+                        </div>
                     </div>
                 </div>
             </div>

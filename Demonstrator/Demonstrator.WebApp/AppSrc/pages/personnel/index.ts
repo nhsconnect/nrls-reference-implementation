@@ -68,13 +68,13 @@ export class Personnel {
 
                 this.benefitsFor = "Personnel";
                 this.benefitsForId = this.personnel.id;
-                this.benefitsForName = this.personnel.name;
+                this.benefitsForName = `a ${this.personnel.name}`;
             } else {
 
                 // The assumtion is that an organisation will always have benefits
                 this.benefitsFor = "ActorOrganisation";
                 this.benefitsForId = this.organisation.id;
-                this.benefitsForName = this.organisation.name;
+                this.benefitsForName = `the ${this.organisation.name}`;
             }
 
             this.hasBenefits = true;

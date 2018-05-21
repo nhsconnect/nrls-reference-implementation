@@ -1,6 +1,10 @@
-﻿import { bindable, bindingMode } from 'aurelia-framework';
+﻿import { bindable, bindingMode, inject } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
 
+@inject(Router)
 export class ScenarioModalCustomElement {
+
+    constructor(private router: Router) { }
 
     @bindable({ defaultBindingMode: bindingMode.oneWay })
     cmodule: string;
@@ -8,52 +12,22 @@ export class ScenarioModalCustomElement {
     @bindable({ defaultBindingMode: bindingMode.oneWay })
     title: string;
 
-    switchContext: boolean = false;
-
-    switchTimer: any;
-
-    switchAnimation: boolean = true;
-
-    toggleContext() {
-        this.switchContext = !this.switchContext;
-    }
-
-    toggleAnimation() {
-        this.switchAnimation = !this.switchAnimation;
-
-        if (!this.switchAnimation) {
-            this.stopContext();
-        }
-        else {
-            this.animateContext();
-        }
-    }
-
-    animateContext() {
-        this.switchTimer = window.setInterval(() => this.toggleContext(), 2500);
-    }
-
-    initContext() {
-        let ani = window.setTimeout(() => {
-            this.toggleContext();
-            this.animateContext();
-        }, 1000);
-    }
-
-    stopContext() {
-        window.clearInterval(this.switchTimer);
-    }
+    navigateToBenefits: boolean = false;
 
     loadScenarioModal() {
 
         $('.nrls-scenario-modal').modal('show');
 
-        $('.nrls-scenario-modal').on('shown.bs.modal', () => {
-            this.initContext();
+        $('.nrls-scenario-modal').on('hidden.bs.modal', () => {
+            if (this.navigateToBenefits) {
+                this.router.navigateToRoute('about-benefits');
+                this.navigateToBenefits = false;
+            }
         });
+    }
 
-        $('.nrls-scenario-modal').on('hide.bs.modal', () => {
-            this.stopContext();
-        })
+    setBenefitsNav() {
+        this.navigateToBenefits = true;
+        $('.nrls-scenario-modal').modal('hide');
     }
 }

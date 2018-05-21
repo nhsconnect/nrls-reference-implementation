@@ -304,8 +304,17 @@ a {
                 border-top-width: 40px;
 
                 .modal-body {
-                    padding: 0;
+                    padding: 0 0 10px 0;
                     max-height: calc(100vh - 110px);
+                    background-color: $paleYellow;
+
+                    .benefits-button {
+                        position: absolute;
+                        top: 772px;
+                        left: 358px;
+                        width: 239px;
+                        height: 33px;
+                    }
 
                     .switch-button {
                         position: fixed;
@@ -384,6 +393,41 @@ a {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    .nrls-context-tabs {
+        li {
+
+            a {
+                text-decoration: none;
+                background-color: $nhsPink75;
+                color: $white;
+                font-weight: bold;
+                border: none;
+                border-radius: 0;
+                box-shadow: 2px -2px 9px rgba(0,0,0,0.4) inset;
+
+                &:hover {
+                    background-color: $nhsPink;
+                }
+            }
+
+            &.active {
+
+                a {
+                    border: none;
+                    background-color: $nhsPink;
+                    box-shadow: none;
+
+                    &:hover,
+                    &:focus {
+                        border: none;
+                        background-color: $nhsPink;
+                        color: $white;
                     }
                 }
             }
