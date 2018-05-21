@@ -4,7 +4,6 @@ using Moq;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using NRLS_API.Services;
-using NRLS_APITest.Comparer;
 using NRLS_APITest.Data;
 using System;
 using System.Collections.Generic;

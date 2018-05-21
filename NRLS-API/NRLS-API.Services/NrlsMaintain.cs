@@ -1,5 +1,4 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
@@ -8,9 +7,6 @@ using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
-using NRLS_API.Models.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using SystemTasks = System.Threading.Tasks;
