@@ -39,7 +39,7 @@
         "$oid": "5a8dabea952e372cbdb318df"
     },
     "Name": "Clinician (call centre)",
-    "ImageUrl": "ambulance_service_clinician.png",
+    "ImageUrl": "ambulance_service_clinician.jpg",
     "Context": [{
             "Title": "Does this affect me?",
             "Order": 1,
@@ -75,7 +75,7 @@
         "$oid": "5a8dabea952e372cbdb318e0"
     },
     "Name": "Paramedic",
-    "ImageUrl": "ambulance_service_paramedic.png",
+    "ImageUrl": "ambulance_service_paramedic.jpg",
     "Context": [{
             "Title": "Does this affect me?",
             "Order": 1,
@@ -111,7 +111,7 @@
         "$oid": "5a9879fd96592c5454267599"
     },
     "Name": "Dispatcher",
-    "ImageUrl": "ambulance_service_dispatcher.png",
+    "ImageUrl": "ambulance_service_dispatcher.jpg",
     "Context": [{
             "Title": "Does this affect me?",
             "Order": 1,
