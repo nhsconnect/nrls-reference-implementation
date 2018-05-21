@@ -63,6 +63,7 @@ namespace NRLS_API.Core.Helpers
             }
 
             // TODO : parse and validate code from valueset
+            // only available code is 736253002
             //if (validateFromSet)
             //{
             //    var values = GetCodableConceptValueSet(validSystem);
@@ -78,12 +79,17 @@ namespace NRLS_API.Core.Helpers
 
         public string GetResourceReferenceId(ResourceReference reference, string systemUrl)
         {
+            if (string.IsNullOrEmpty(systemUrl))
+            {
+                return reference?.Reference;
+            }
+
             return reference?.Reference?.Replace(systemUrl, "");
         }
 
         public bool ValidReference(ResourceReference reference, string startsWith)
         {
-            return !string.IsNullOrEmpty(reference.Reference) && !string.IsNullOrEmpty(startsWith) && reference.Reference.StartsWith(startsWith);
+            return reference != null && !string.IsNullOrEmpty(reference.Reference) && !string.IsNullOrEmpty(startsWith) && reference.Reference.StartsWith(startsWith);
         }
 
         public bool ValidNhsNumber(string nhsNumber)
@@ -96,7 +102,9 @@ namespace NRLS_API.Core.Helpers
             int nhsNumberLength = 10;
             nhsNumber = nhsNumber.Trim();
 
-            if (nhsNumber.Length != nhsNumberLength || !Regex.Match(nhsNumber, "(\\d+)").Success)
+            nhsNumber = Regex.Replace(nhsNumber, "([^\\d]+)", "");
+
+            if (nhsNumber.Length != nhsNumberLength)
             {
                 return false;
             }
@@ -136,6 +144,11 @@ namespace NRLS_API.Core.Helpers
             return total.Equals(checkNumber);
             
 
+        }
+
+        public bool ValidReferenceParameter(string parameterVal, string systemPrefix)
+        {
+            return (!string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(systemPrefix));
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

@@ -7,6 +7,7 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Models.Core;
 using NRLS_API.Models.Extensions;
+using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -30,17 +31,21 @@ namespace NRLS_API.WebApp.Core.Middlewares
         {
             var formatKey = "_format";
             var acceptKey = HttpRequestHeader.Accept.ToString();
-            
-            string formatParam = context.Request.QueryString.Value.GetParameters()?.GetParameter(formatKey);
+
+            var parameters = context.Request.QueryString.Value.GetParameters();
+
+            bool hasFormatParam = parameters?.FirstOrDefault(x => x.Item1 == "_format") != null;
+            string formatParam = parameters != null ? parameters.GetParameter(formatKey) : null;
 
             string acceptHeader = null;
-            if (context.Request.Headers.ContainsKey(acceptKey))
+            bool hasAcceptHeader = context.Request.Headers.ContainsKey(acceptKey);
+            if (hasAcceptHeader)
             {
                 acceptHeader = context.Request.Headers[acceptKey];
             }
 
-            var validFormatParam = !string.IsNullOrEmpty(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam);
-            var validAcceptHeader = !string.IsNullOrEmpty(acceptHeader) && ValidAccept(acceptHeader);
+            var validFormatParam = !hasFormatParam || (!string.IsNullOrWhiteSpace(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam));
+            var validAcceptHeader = !hasAcceptHeader || (!string.IsNullOrWhiteSpace(acceptHeader) && ValidAccept(acceptHeader));
 
 
             if(!validFormatParam && !validAcceptHeader)

@@ -46,7 +46,7 @@ namespace NRLS_API.WebApp.Core.Formatters
                 {
                     //TODO: parse xml
 
-                    //TODO: create a dumb model to allow passthrough to validation because a missing element will throw wrong error here
+                    //TODO: create a simple model to allow passthrough to validation because a missing element will throw wrong error here
                     var resource = new FhirXmlParser().Parse(xmlReader, type);
                     return InputFormatterResult.SuccessAsync(resource);
                 }

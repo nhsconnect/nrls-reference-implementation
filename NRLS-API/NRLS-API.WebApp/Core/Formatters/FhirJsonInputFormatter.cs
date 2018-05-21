@@ -49,7 +49,7 @@ namespace NRLS_API.WebApp.Core.Formatters
                 {
                     //TODO: parse json
 
-                    //TODO: create a dumb model to allow passthrough to validation because a missing element will throw wrong error here
+                    //TODO: create a simple model to allow passthrough to validation because a missing element will throw wrong error here
                     var resource = new FhirJsonParser().Parse(jsonReader, type);
                     return InputFormatterResult.SuccessAsync(resource);
                 }

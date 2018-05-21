@@ -11,9 +11,9 @@ namespace NRLS_API.Core.Helpers
 {
     public class JwtHelper
     {
-        public static bool IsValid(string jwt, JwtScopes reqScope)
+        public static bool IsValid(string jwt, JwtScopes reqScope, DateTime? tokenIssued = null)
         {
-            var now = DateTime.UtcNow;
+            var now = tokenIssued ?? DateTime.UtcNow;
 
             if (string.IsNullOrEmpty(jwt))
             {
@@ -38,8 +38,16 @@ namespace NRLS_API.Core.Helpers
 
             var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(claimsHash.PadRight(claimsHash.Length + (4 - claimsHash.Length % 4) % 4, '=')));
 
+            IDictionary<string, string> claims;
 
-            var claims = JsonConvert.DeserializeObject<IDictionary<string, string>>(decoded);
+            try
+            {
+                claims = JsonConvert.DeserializeObject<IDictionary<string, string>>(decoded);
+            }
+            catch
+            {
+                return false;
+            }
 
             var iss = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtClientSysIssuer));
 
@@ -81,7 +89,7 @@ namespace NRLS_API.Core.Helpers
             var issuedDt = EpochTime.DateTime(iatVal);
             var expireDt = EpochTime.DateTime(expVal);
 
-            if (issuedDt.AddMinutes(5) != expireDt || expireDt < now)
+            if (issuedDt.AddMinutes(5) != expireDt || issuedDt > now || expireDt < now)
             {
                 return false;
             }

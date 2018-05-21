@@ -151,7 +151,7 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidatePatientParameter(string parameterVal)
         {
-            if(!ValidReferenceParameter(parameterVal, FhirConstants.SystemPDS))
+            if(!_validationHelper.ValidReferenceParameter(parameterVal, FhirConstants.SystemPDS))
             {
                 return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemPDS}[NHS Number]");
             }
@@ -169,7 +169,7 @@ namespace NRLS_API.Services
         public OperationOutcome ValidateCustodianParameter(string parameterVal)
         {
             var valid = true;
-            if (!ValidReferenceParameter(parameterVal, FhirConstants.SystemODS))
+            if (!_validationHelper.ValidReferenceParameter(parameterVal, FhirConstants.SystemODS))
             {
                 valid = false;
             }
@@ -187,11 +187,6 @@ namespace NRLS_API.Services
             }
 
             return null;
-        }
-
-        public bool ValidReferenceParameter(string parameterVal, string systemPrefix)
-        {
-            return (!string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(systemPrefix));
         }
 
         public string GetOrganizationReferenceId(ResourceReference reference)

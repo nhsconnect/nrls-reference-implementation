@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
+using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
@@ -52,7 +53,6 @@ namespace NRLS_API.Services
             //We need to use an external source (in reality yes but we are just going to do an internal query to fake ods search)
 
             var custodianOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
-            var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
 
             var invalidAsid = InvalidAsid(custodianOrgCode, request.RequestingAsid, true);
 
@@ -61,18 +61,22 @@ namespace NRLS_API.Services
                 return invalidAsid;
             }
 
-            var unknownCustodianOrg = await UnkownOrganization(request, custodianOrgCode);
-            var unknownAuthorOrg = await UnkownOrganization(request, authorOrgCode);
+            var custodianRequest = NrlsPointerHelper.CreateOrgSearch(request, custodianOrgCode);
+            var custodians = await _fhirSearch.Find<Organization>(custodianRequest) as Bundle;
 
-            if (unknownCustodianOrg != null)
+            if (custodians.Entry.Count == 0)
             {
-                return unknownCustodianOrg;
+                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
             }
 
-            if (unknownAuthorOrg != null)
-            {
-                return unknownAuthorOrg;
-            }
+            //var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
+            //var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
+            //var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
+
+            //if (authors.Entry.Count == 0)
+            //{
+            //    return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
+            //}
 
             return await _fhirMaintain.Create<T>(request);
         }
@@ -153,31 +157,5 @@ namespace NRLS_API.Services
             return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
         }
 
-        private async SystemTasks.Task<OperationOutcome> UnkownOrganization(FhirRequest request, string orgCode)
-        {
-            var invalid = true;
-
-            if (!string.IsNullOrWhiteSpace(orgCode))
-            {
-                var queryParameters = new List<Tuple<string, string>>
-                {
-                    new Tuple<string, string>("identifier", $"{FhirConstants.SystemOrgCode}|{orgCode}")
-                };
-
-                var orgRequest = FhirRequest.Copy(request, ResourceType.Organization, null, queryParameters);
-
-                var result = await _fhirSearch.Find<Organization>(orgRequest) as Bundle;
-
-                invalid = result.Entry.Count == 0;
-            }
-
-
-            if (invalid)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
-            }
-
-            return null;
-        }
     }
 }

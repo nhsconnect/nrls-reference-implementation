@@ -44,8 +44,9 @@ namespace NRLS_API.Services
 
                 _context.Resource(request.StrResourceType).InsertOne(document);
 
-                request.Resource.Id = document.GetElement("_id").Value.ToString();
-
+                BsonElement documentId;
+                var hasId = document.TryGetElement("_id", out documentId);
+                request.Resource.Id = documentId.Value?.ToString();
 
                 return await SystemTasks.Task.Run(() => request.Resource);
             }
