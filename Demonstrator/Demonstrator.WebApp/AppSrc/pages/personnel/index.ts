@@ -21,6 +21,7 @@ export class Personnel {
     breadcrumb: Array<IBreadcrumb> = [];
     benefitsFor: string;
     benefitsForId: string;
+    benefitsForName: string;
     hasBenefits: boolean = false;
     systemModel: any = {};
     systemModelCount: number = 0; // should be 3
@@ -67,11 +68,13 @@ export class Personnel {
 
                 this.benefitsFor = "Personnel";
                 this.benefitsForId = this.personnel.id;
+                this.benefitsForName = this.personnel.name;
             } else {
 
                 // The assumtion is that an organisation will always have benefits
                 this.benefitsFor = "ActorOrganisation";
                 this.benefitsForId = this.organisation.id;
+                this.benefitsForName = this.organisation.name;
             }
 
             this.hasBenefits = true;

@@ -28,7 +28,7 @@
         <p if.bind="!organisation">You can read more about NRLS Benefits on the <a route-href="route: about;">About Page</a>.</p>
 
         <!-- The assumtion is that an organisation will always have benefits -->
-        <benefit-modal if.bind="organisation" benefitfor="ActorOrganisation" benefitforid.one-way="organisation.id"></benefit-modal>
+        <benefit-modal if.bind="organisation" benefitfor="ActorOrganisation" benefitforid.one-way="organisation.id" benefitforname.one-way="organisation.name"></benefit-modal>
 
         <p class="margin-top-lrg"><a class="pull-right btn btn-default" route-href="route: welcome;"><i class="fa fa-chevron-left"></i> Back</a></p>
 

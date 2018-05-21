@@ -6,6 +6,7 @@ export class BenefitModalCustomElement {
 
     @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitforid: string;
     @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitfor: string;
+    @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitforname: string;
     navigateToAbout: boolean = false;
 
     constructor(private router: Router) { }
