@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
+using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using System;
@@ -19,13 +20,15 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private readonly SpineSetting _spineSettings;
         private readonly NrlsApiSetting _nrlsApiSettings;
         private IMemoryCache _cache;
+        private readonly INrlsValidation _nrlsValidation;
 
-        public SspAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IOptions<NrlsApiSetting> nrlsApiSettings, IMemoryCache memoryCache)
+        public SspAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IOptions<NrlsApiSetting> nrlsApiSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
         {
             _next = next;
             _spineSettings = spineSettings.Value;
             _nrlsApiSettings = nrlsApiSettings.Value;
             _cache = memoryCache;
+            _nrlsValidation = nrlsValidation;
         }
 
         public async SystemTasks.Task Invoke(HttpContext context)
@@ -45,7 +48,8 @@ namespace NRLS_API.WebApp.Core.Middlewares
             //}
 
             var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
-            if (authorization == null || !ValidJwt(method, authorization))
+            var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
+            if (authorization == null || !_nrlsValidation.ValidJwt(scope, authorization))
             {
                 SetError(HttpRequestHeader.Authorization.ToString());
             }
@@ -84,13 +88,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
             await _next.Invoke(context);
             return;
 
-        }
-
-        private bool ValidJwt(string method, string jwt)
-        {
-            var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
-
-            return JwtHelper.IsValid(jwt, scope);
         }
 
         private bool ValidAccept(string accept)

@@ -22,6 +22,7 @@
     <ProjectReference Include="..\NRLS-API.Models\NRLS-API.Models.csproj" />
     <ProjectReference Include="..\NRLS-API.WebApp\NRLS-API.WebApp.csproj" />
     <ProjectReference Include="..\NRLS-APITest.Data\NRLS-APITest.Data.csproj" />
+    <ProjectReference Include="..\NRLS-APITest.StubClasses\NRLS-APITest.StubClasses.csproj" />
   </ItemGroup>
 
 </Project>
