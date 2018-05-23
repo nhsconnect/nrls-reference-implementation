@@ -4,13 +4,13 @@
     <require from="./core/helpers/modals/error-modal"></require>
 
     <div show.bind="!hideBanner" class="app-warning-banner bg-warning navbar-fixed-top">
-        <p class="no-margin"><strong>This interactive guide is for demonstration purposes only and does not interact with live systems. Images and Systems viewed may not represent live systems. <button class="btn btn-default" click.delegate="hideBanner=true"><i class="fa fa-close"></i></button></strong></p>
+        <p class="no-margin"><strong>This guide is for demonstration purposes only and does not interact with live systems. Images and Systems viewed may not represent live systems. <button class="btn btn-default" click.delegate="hideBanner=true"><i class="fa fa-close"></i></button></strong></p>
     </div>
     <nav-bar router.bind="router" has-banner.one-way="!hideBanner"></nav-bar>
 
     <div class="page-host text-left ${hideBanner !== true ? 'has-banner' : ''}">
         <div class="container">
-            <div class="alert alert-warning"><p><i class="fa fa-exclamation fa-padding-sqr"></i> This site is under ongoing development. Content and images shown are subject to change.</p></div>
+            <div class="alert alert-warning alert-panel"><p><i class="fa fa-exclamation fa-padding-sqr"></i> This site is under ongoing development. Content and images shown are subject to change.</p></div>
         </div>
         <router-view></router-view>
     </div>

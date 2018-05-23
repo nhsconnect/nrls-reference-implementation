@@ -8,7 +8,8 @@
 @import "GenericSystems/generic-systems.scss";
 @import "GenericSystems/gs-as-clinician.scss";
 @import "GenericSystems/gs-as-paramedic.scss";
-@import "GenericSystems//gs-mht-care-coordinator.scss";
+@import "GenericSystems/gs-mht-care-coordinator.scss";
+@import "GenericSystems/gs-mht-care-coordinator-static.scss";
 @import "benefits-dialog.scss";
 @import "animations.scss";
 
@@ -16,17 +17,20 @@ body {
     font-family: Arial;
     font-size: medium;
     color: $black;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
+    min-width: 992px;
 }
 
 .app-warning-banner {
-    font-size: 0.85em;
+    font-size: 0.8em;
     padding: 6px;
-    height: 37px;
+    min-height: 37px;
+    height:auto;
     overflow: hidden;
     background-color: $nhsWarmYellow;
     border-bottom: 2px solid $nhsOrange;
+    z-index:1031;
 
     .btn {
         font-size: 0.8em;

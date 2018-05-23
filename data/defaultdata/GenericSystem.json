@@ -58,8 +58,24 @@
         "Consumer",
         "Provider"
     ],
-    "IsActive": true,
+    "IsActive": false,
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
+    }
+}
+{
+    "_id": {
+        "$oid": "5b0437534b74a3f7dcdb876b"
+    },
+    "Name": "Care Co-ordinator EPR",
+    "FModule": "MHT-Care-Coordinator-EPR-Static",
+    "Asid": "200000000118",
+    "Context": "...",
+    "ActionTypes": [
+        "Provider"
+    ],
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2018-05-21T16:30:00.000Z"
     }
 }
