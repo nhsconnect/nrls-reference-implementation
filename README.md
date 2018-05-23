@@ -74,7 +74,7 @@ On the command line, from the Demonstrator/Demonstrator.WebApp folder run:
 ##### Build
 npm install to get the latest packages
 ##### Run
-run npm run build
+npm run build
 
 #### NRLS Stub
 Open up the NRLS-API Solution from with the NRLS-API sub folder
