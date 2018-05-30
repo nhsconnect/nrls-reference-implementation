@@ -106,12 +106,11 @@
                                 On this screen you have an active call displayed which shows:
                                 <ul>
                                     <li>At the top, patient information that has been found through a patient search</li>
-                                    <li>Amongst the tabs in the centre you can see an NRLS tab (<img src="/images/screen-instructions/asc-nrls-tab.png" style="width:120px;" alt="NRLS Tab" />), click that to display NRLS pointers for that patient</li>
                                     <li>
-                                        If a patient does not have any pointers:
+                                        Amongst the tabs in the centre you can see an NRLS tab (<img src="/images/screen-instructions/asc-nrls-tab.png" style="width:120px;" alt="NRLS Tab" />), click that to display NRLS pointers for that patient
                                         <ul>
-                                            <li>Take a note of the NHS number</li>
-                                            <li if.bind="data.organisation.personnelLinkId">Head over to the <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health</a> section and follow the instructions which will demonstrate how to create pointers.</li>
+                                            <li>Some patients will have one or more pointers</li>
+                                            <li>Others might not have any</li>
                                         </ul>
                                     </li>
                                 </ul>
