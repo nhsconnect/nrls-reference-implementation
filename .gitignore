@@ -11,6 +11,12 @@ Demonstrator/Demonstrator.WebApp/Shared/*
 Demonstrator/Demonstrator.WebApp/wwwroot/*
 !*.gitkeep
 
+setup/certificates/*.csr
+setup/certificates/*.key
+setup/certificates/*.pem
+setup/certificates/*.pfx
+setup/certificates/*.srl
+
 /**/node_modules
 /**/test/coverage
 /**/*.log

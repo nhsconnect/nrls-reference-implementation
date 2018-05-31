@@ -23,6 +23,8 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
+echo "=> Data: MongoDB service running."
+
 # START Data Import
 echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits, NrlsPointerMaps, MedicalRecords"
 
@@ -47,6 +49,8 @@ db.Organization.drop()
 db.DocumentReference.drop()
 EOF
 
+echo "=> Importing Default Data from ${MONGODB_DEFAULT_DATA_PATH}"
+
 mongoimport -c ActorOrganisation -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}ActorOrganisation.json
 echo "=> ActorOrganisation IMPORTED"
 mongoimport -c GenericSystem -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}GenericSystem.json
@@ -63,3 +67,5 @@ echo "=> Patient IMPORTED"
 mongoimport -c DocumentReference -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGODB_NRLS_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}DocumentReference.json
 echo "=> DocumentReference IMPORTED" 
 # END Data Import
+
+echo "=> Data setup complete"

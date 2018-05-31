@@ -57,3 +57,5 @@ mongoimport -c DocumentReference -d %MONGODB_NRLS_DATABASE% -u %MONGODB_NRLS_USE
 echo "=> DocumentReference IMPORTED" 
 
 REM END Data Import
+
+echo "=> Data setup complete"

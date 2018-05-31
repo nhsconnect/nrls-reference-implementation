@@ -53,16 +53,17 @@ mongo admin --eval "db=db.getSiblingDB('%MONGODB_NRLS_DATABASE%');db.createUser(
 
 REM If everything went well, add a file as a flag so we know in the future to not re-create the
 REM users if we're recreating the container (provided we're using some persistent storage)
-echo "=> Done creating users!"
 
 echo. 2>%PASSWORD_LOCK_FILE%
+echo "=> User data done!"
 
-echo "=> Restarting Mongod in auth mode"
+
 
 net stop %MONGO_SVC_NAME%
 mongod --auth --dbpath %MONGO_DATA_PATH% --logpath %MONGO_LOG_PATH% --reinstall --serviceName %MONGO_SVC_NAME% --serviceDisplayName %MONGO_SVC_NAME%
 net start %MONGO_SVC_NAME%
+echo "=> User: MongoDb restarting in Auth mode"
 
 REM END User Setup
 :userscomplete
-echo "=> Users: End user creation file."
+echo "=> User setup complete"

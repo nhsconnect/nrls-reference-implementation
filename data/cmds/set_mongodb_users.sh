@@ -29,6 +29,8 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
+echo "=> Users: MongoDB service running."
+
 # START User Setup
 if [ ! -f $MONGODB_PASSWORD_LOCK_FILE ]; then
 
@@ -61,11 +63,14 @@ sleep 1
  
 # If everything went well, add a file as a flag so we know in the future to not re-create the
 # users if we're recreating the container (provided we're using some persistent storage)
-echo "=> Done!"
 touch $MONGODB_PASSWORD_LOCK_FILE
+echo "=> User data done!"
 
-mongod --shutdown
+# mongod --shutdown --dbpath ${MONGODB_DATA_PATH}
 mongod --auth --bind_ip 0.0.0.0 --dbpath ${MONGODB_DATA_PATH} --logpath ${MONGODB_LOG_PATH}
+echo "=> User: MongoDb restarting in Auth mode"
 
 fi
 # END User Setup
+
+echo "=> User setup complete"
