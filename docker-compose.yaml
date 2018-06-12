@@ -5,6 +5,7 @@ services:
     image: nrlsdemo
     ports:
       - "80:5000"
+      - "443:5443"
     networks:
       - nrlsdemo-network
 

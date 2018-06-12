@@ -48,6 +48,7 @@ namespace Demonstrator.WebApp
             {
                 options.BaseUrl = Configuration.GetSection("DemonstratorApi:BaseUrl").Value;
                 options.Secure = bool.Parse(Configuration.GetSection("DemonstratorApi:Secure").Value);
+                options.SecureOnly = bool.Parse(Configuration.GetSection("DemonstratorApi:SecureOnly").Value);
                 options.DefaultPort = Configuration.GetSection("DemonstratorApi:DefaultPort").Value;
                 options.SecurePort = Configuration.GetSection("DemonstratorApi:SecurePort").Value;
             });

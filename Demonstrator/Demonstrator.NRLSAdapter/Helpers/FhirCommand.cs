@@ -456,6 +456,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 options.BaseUrl = configuration.GetSection("DemonstratorApi:BaseUrl").Value;
                 options.Secure = bool.Parse(configuration.GetSection("DemonstratorApi:Secure").Value);
+                options.SecureOnly = bool.Parse(configuration.GetSection("DemonstratorApi:SecureOnly").Value);
                 options.DefaultPort = configuration.GetSection("DemonstratorApi:DefaultPort").Value;
                 options.SecurePort = configuration.GetSection("DemonstratorApi:SecurePort").Value;
             });

@@ -41,7 +41,8 @@ WORKDIR /app
 
 # Set Server ENVs
 EXPOSE 5000/tcp
-ENV ASPNETCORE_URLS http://*:5000
+EXPOSE 5443/tcp
+ENV ASPNETCORE_URLS http://*:5000;https://*:5443
 ENV ASPNETCORE_ENVIRONMENT Production
 
 ENTRYPOINT ["dotnet", "Demonstrator.WebApp.dll"]

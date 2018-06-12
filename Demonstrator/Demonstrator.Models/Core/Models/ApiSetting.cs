@@ -6,6 +6,8 @@
 
         public bool Secure { get; set; }
 
+        public bool SecureOnly { get; set; }
+
         public string DefaultPort { get; set; }
 
         public string SecurePort { get; set; }

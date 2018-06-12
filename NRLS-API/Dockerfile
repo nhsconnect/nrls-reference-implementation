@@ -19,7 +19,8 @@ COPY --from=build-env /app/NRLS-API.WebApp/out .
 
 # Set Server ENVs
 EXPOSE 5001/tcp
-ENV ASPNETCORE_URLS http://*:5001
+EXPOSE 5444/tcp
+ENV ASPNETCORE_URLS http://*:5001;https://*:5444
 ENV ASPNETCORE_ENVIRONMENT Production
 
 ENTRYPOINT ["dotnet", "NRLS-API.WebApp.dll"]

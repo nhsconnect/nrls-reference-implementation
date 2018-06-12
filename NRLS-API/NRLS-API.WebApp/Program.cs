@@ -48,8 +48,10 @@ namespace NRLS_API.WebApp
                     // for demo we will leave both open
 
                     // listen for HTTP
-                    options.Listen(IPAddress.Any, int.Parse(apiSettings.DefaultPort));
-
+                    if (!apiSettings.SecureOnly)
+                    {
+                        options.Listen(IPAddress.Any, int.Parse(apiSettings.DefaultPort));
+                    }
 
                     // listen for HTTPS
                     if (apiSettings.Secure)
@@ -94,7 +96,7 @@ namespace NRLS_API.WebApp
 
         private static bool ValidateClient(X509Certificate2 cert, X509Chain chain, SslPolicyErrors error)
         {
-            using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser))
+            using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
             {
                 store.Open(OpenFlags.ReadOnly);
 

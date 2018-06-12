@@ -63,6 +63,7 @@ namespace NRLS_API.WebApp
                 options.ProfileUrl = Configuration.GetSection("NRLSAPI:ProfileUrl").Value;
                 options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value;
                 options.Secure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
+                options.SecureOnly = bool.Parse(Configuration.GetSection("NRLSAPI:SecureOnly").Value);
                 options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
                 options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
             });

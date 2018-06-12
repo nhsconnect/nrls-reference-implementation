@@ -14,6 +14,8 @@ namespace NRLS_API.Models.Core
 
         public bool Secure { get; set; }
 
+        public bool SecureOnly { get; set; }
+
         public string DefaultPort { get; set; }
 
         public string SecurePort { get; set; }
