@@ -41,11 +41,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             //Accept is optional but must be valid if supplied
             //Check is delegated to FhirInputMiddleware
-            //var accept = GetHeaderValue(headers, HttpRequestHeader.Accept.ToString());
-            //if (accept != null && !ValidAccept(accept))
-            //{
-            //    SetError(HttpRequestHeader.Accept.ToString());
-            //}
+
 
             var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
@@ -66,69 +62,9 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 SetError(FhirConstants.HeaderToAsid);
             }
 
-            var sspInteractionID = GetHeaderValue(headers, FhirConstants.HeaderSspInterationId);
-            if (sspInteractionID == null || !ValidInteraction(method, sspInteractionID, fromASID))
-            {
-                SetUnauthorized();
-            }
-
-            //var sspTraceId = GetHeaderValue(headers, "Ssp-TraceID");
-            //if (sspTraceId == null)
-            //{
-            //    SetError("Ssp-TraceID");
-            //}
-
-            //var sspVersion = GetHeaderValue(headers, "Ssp-Version");
-            //if (sspVersion == null)
-            //{
-            //    SetError("Ssp-Version");
-            //}
-
             //We've Passed! Continue to App...
             await _next.Invoke(context);
             return;
-
-        }
-
-        private bool ValidAccept(string accept)
-        {
-            foreach(var type in _nrlsApiSettings.SupportedContentTypes)
-            {
-                if (accept.Contains(type))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool ValidInteraction(string method, string interactionId, string fromASID)
-        {
-
-            var clientAsid = GetFromAsidMap(fromASID);
-
-            if (method.Equals(HttpMethods.Get) && clientAsid.Interactions.Contains(interactionId) && (FhirConstants.ReadInteractionId.Equals(interactionId) || FhirConstants.SearchInteractionId.Equals(interactionId)))
-            {
-                return true;
-            }
-
-            if (method.Equals(HttpMethods.Post) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.CreateInteractionId.Equals(interactionId))
-            {
-                return true;
-            }
-
-            if (method.Equals(HttpMethods.Put) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.UpdateInteractionId.Equals(interactionId))
-            {
-                return true;
-            }
-
-            if (method.Equals(HttpMethods.Delete) && clientAsid.Interactions.Contains(interactionId) && FhirConstants.DeleteInteractionId.Equals(interactionId))
-            {
-                return true;
-            }
-
-            return false;
 
         }
 
@@ -169,11 +105,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private void SetError(string header)
         {
             throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header), HttpStatusCode.BadRequest);
-        }
-
-        private void SetUnauthorized()
-        {
-            throw new HttpFhirException("Invalid Client Request", OperationOutcomeFactory.CreateAccessDenied(), HttpStatusCode.Unauthorized);
         }
 
     }

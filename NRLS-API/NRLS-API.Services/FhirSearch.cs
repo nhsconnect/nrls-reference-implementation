@@ -1,10 +1,7 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NRLS_API.Core.Exceptions;
-using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
@@ -13,9 +10,7 @@ using NRLS_API.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using static Hl7.Fhir.Model.ModelInfo;
 
 namespace NRLS_API.Services
 {

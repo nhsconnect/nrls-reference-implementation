@@ -17,6 +17,8 @@
 
         public const string SystemODS = "https://directory.spineservices.nhs.uk/STU3/Organization/";
 
+        public const string SystemType = "http://snomed.info/sct";
+
 
         //ValueSets
         //public const string CodingSystemPointerType = "https://fhir.nhs.uk/STU3/ValueSet/CarePlanType-1";

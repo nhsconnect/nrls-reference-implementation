@@ -149,13 +149,15 @@ namespace NRLS_API.Core.Factories
 
         public static OperationOutcome CreateSuccess()
         {
-            var details = CreateDetails(null, null, null, Guid.NewGuid().ToString());
+            var details = CreateDetails("RESOURCE_CREATED", "New resource created", null, Guid.NewGuid().ToString());
 
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully created resource DocumentReference", details);
         }
 
         public static OperationOutcome CreateDelete(string url)
         {
+            var details = CreateDetails("RESOURCE_DELETED", "Resource removed", null, Guid.NewGuid().ToString());
+
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully removed resource DocumentReference: {url}", null);
         }
 

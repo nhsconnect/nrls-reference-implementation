@@ -126,7 +126,7 @@ namespace Demonstrator.NRLSAdapter
 
             Console.WriteLine("    -p,--parameters    A array of pipe delimited key/value pair search parameters to include in a ");
             Console.WriteLine("                       GET request. Allowed keys are limited to 'patient' and 'custodian' ");
-            Console.WriteLine("                       e.g. custodian|RR8,patient|500000000");
+            Console.WriteLine("                       e.g. custodian|RR8,subject|500000000");
 
             Console.WriteLine("    -r,--resource      The FHIR Resource type. Allowed values are limited to 'DocumentReference'");
 

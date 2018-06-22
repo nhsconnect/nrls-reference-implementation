@@ -145,12 +145,8 @@ namespace NRLS_API.Services
                 }
             }
 
-            if (isCreate)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
-            }
+            return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
 
-            return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
         }
 
     }

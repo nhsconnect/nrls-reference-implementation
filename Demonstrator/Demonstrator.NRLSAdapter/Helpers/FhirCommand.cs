@@ -287,7 +287,6 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
             var idParam = _parameters?.FirstOrDefault(n => n.Key.Equals("_id"));
             var asid = _headers.FirstOrDefault(n => n.Key.Equals("fromasid"));
-            var interaction = _headers.FirstOrDefault(n => n.Key.Equals("ssp-interactionid"));
 
 
             //Massive Try/catch
@@ -296,17 +295,17 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 if (_method == "get")
                 {
-                    var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("patient"));
+                    var patientParam = _parameters.FirstOrDefault(n => n.Key.Equals("subject"));
                     var custodianParam = _parameters.FirstOrDefault(n => n.Key.Equals("custodian"));
-
+                    var typeParam = _parameters.FirstOrDefault(n => n.Key.Equals("type"));
 
                     if (!string.IsNullOrEmpty(idParam.Value.Value))
                     {
-                        pointerRequest = NrlsPointerRequest.Read(idParam.Value.Value, asid.Value, interaction.Value);
+                        pointerRequest = NrlsPointerRequest.Read(idParam.Value.Value, asid.Value);
                     }
                     else
                     {
-                        pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, asid.Value, interaction.Value);
+                        pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, typeParam.Value, asid.Value);
                     }
 
                     var pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
@@ -320,7 +319,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     if (_pointerBody != null)
                     {
-                        pointerRequest = NrlsPointerRequest.Create(_pointerBody.OrgCode, _pointerBody.NhsNumber, _pointerBody.Url, _pointerBody.ContentType, _pointerBody.TypeCode, _pointerBody.TypeDisplay, asid.Value, interaction.Value);
+                        pointerRequest = NrlsPointerRequest.Create(_pointerBody.OrgCode, _pointerBody.NhsNumber, _pointerBody.Url, _pointerBody.ContentType, _pointerBody.TypeCode, _pointerBody.TypeDisplay, asid.Value);
 
                         var response = await _docRefService.GenerateAndCreatePointer(pointerRequest);
 
@@ -328,7 +327,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     }
                     else
                     {
-                        pointerRequest = NrlsPointerRequest.Create(null, null, null, null, null, null, asid.Value, interaction.Value);
+                        pointerRequest = NrlsPointerRequest.Create(null, null, null, null, null, null, asid.Value);
 
                         var response = await _docRefService.CreatePointer(pointerRequest, _pointer);
 
@@ -347,7 +346,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 if (_method == "delete")
                 {
 
-                    pointerRequest = NrlsPointerRequest.Delete(idParam.Value.Value, asid.Value, interaction.Value);
+                    pointerRequest = NrlsPointerRequest.Delete(idParam.Value.Value, asid.Value);
 
                     var outcome = await _docRefService.DeletePointer(pointerRequest);
 
@@ -412,10 +411,10 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
         private static List<string> SensitiveOptions = new List<string> { "parameters", "input", "output", "body" };
 
-        private static List<string> ValidParameters = new List<string> { "patient", "custodian", "_id" };
+        private static List<string> ValidParameters = new List<string> { "subject", "custodian", "_id", "type" };
 
         //Set to lower case for cmd line
-        private static List<string> ValidHeaders = new List<string> { "ssp-traceid", "fromasid", "toasid", "ssp-interactionid", "ssp-version" };
+        private static List<string> ValidHeaders = new List<string> { "fromasid", "toasid"};
 
         private static List<string> ValidFormats = new List<string> { "json" };
 

@@ -33,7 +33,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
         {
-            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.Interaction, pointerRequest.NhsNumber, pointerRequest.OrgCode, pointerRequest.PointerId));
+            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.NhsNumber, pointerRequest.OrgCode, pointerRequest.PointerId, pointerRequest.TypeCode));
 
             return pointers;
         }
@@ -52,7 +52,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
             var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
 
-            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.Interaction, null, content));
+            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, null, content));
 
             var createResponse = new NrlsCreateResponse
             {
@@ -65,35 +65,35 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<OperationOutcome> DeletePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.Interaction, null, pointerRequest.PointerId));
+            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, null, pointerRequest.PointerId));
 
             return pointer;
         }
 
-        private CommandRequest BuildGetRequest(string asid, string interaction, string nhsNumber, string orgCode, string pointerId)
+        private CommandRequest BuildGetRequest(string asid, string nhsNumber, string orgCode, string pointerId, string typeCode)
         {
-            return BuildRequest(asid, interaction, pointerId, nhsNumber, orgCode, HttpMethod.Get, null);
+            return BuildRequest(asid, pointerId, nhsNumber, orgCode, typeCode, HttpMethod.Get, null);
         }
 
-        private CommandRequest BuildPostRequest(string asid, string interaction, string orgCode, HttpContent content)
+        private CommandRequest BuildPostRequest(string asid, string orgCode, HttpContent content)
         {
             
-            return BuildRequest(asid, interaction, null, null, orgCode, HttpMethod.Post, content);
+            return BuildRequest(asid, null, null, orgCode, null, HttpMethod.Post, content);
         }
 
-        private CommandRequest BuildDeleteRequest(string asid, string interaction, string orgCode, string pointerId)
+        private CommandRequest BuildDeleteRequest(string asid, string orgCode, string pointerId)
         {
-            return BuildRequest(asid, interaction, pointerId, null, orgCode, HttpMethod.Delete, null);
+            return BuildRequest(asid, pointerId, null, orgCode, null, HttpMethod.Delete, null);
         }
 
-        private CommandRequest BuildRequest(string asid, string interaction, string resourceId, string nhsNumber, string orgCode, HttpMethod method, HttpContent content)
+        private CommandRequest BuildRequest(string asid, string resourceId, string nhsNumber, string orgCode, string typeCode, HttpMethod method, HttpContent content)
         {
             var command = new CommandRequest
             {
                 BaseUrl = $"{(_spineSettings.NrlsUseSecure ? _spineSettings.NrlsSecureServerUrl : _spineSettings.NrlsServerUrl)}",
                 ResourceId = resourceId,
                 ResourceType = ResourceType.DocumentReference,
-                SearchParams = GetParams(nhsNumber, orgCode, resourceId),
+                SearchParams = GetParams(nhsNumber, orgCode, resourceId, typeCode),
                 Method = method,
                 Content = content,
                 UseSecure = _spineSettings.NrlsUseSecure,
@@ -106,14 +106,11 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             command.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
             command.Headers.Add(FhirConstants.HeaderToAsid, _spineSettings.SpineAsid);
-            command.Headers.Add(FhirConstants.HeaderSspInterationId, interaction);
-            command.Headers.Add(FhirConstants.HeaderFSspVersion, "1");
-            command.Headers.Add(FhirConstants.HeaderSspTradeId, Guid.NewGuid().ToString());
 
             return command;
         }
 
-        private SearchParams GetParams(string nhsNumber, string orgCode, string id)
+        private SearchParams GetParams(string nhsNumber, string orgCode, string id, string typeCode)
         {
             var searchParams = new SearchParams();
 
@@ -124,7 +121,12 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
             if (!string.IsNullOrWhiteSpace(nhsNumber))
             {
-                searchParams.Add("patient", $"{WebUtility.UrlEncode(FhirConstants.SystemPDS)}{nhsNumber}");
+                searchParams.Add("subject", $"{WebUtility.UrlEncode(FhirConstants.SystemPDS)}{nhsNumber}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(typeCode))
+            {
+                searchParams.Add("type.coding", $"{WebUtility.UrlEncode(FhirConstants.SystemType)}|{typeCode}");
             }
 
             if (!string.IsNullOrWhiteSpace(id))

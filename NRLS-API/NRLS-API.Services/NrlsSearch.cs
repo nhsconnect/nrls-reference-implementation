@@ -77,7 +77,7 @@ namespace NRLS_API.Services
                 return response;
             }
 
-            var patient = request.QueryParameters.FirstOrDefault(x => x.Item1 == "patient");
+            var patient = request.QueryParameters.FirstOrDefault(x => x.Item1 == "subject");
 
             if (patient != null)
             {

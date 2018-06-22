@@ -38,10 +38,8 @@ namespace NRLS_API.Core.Helpers
 
                 if (param.Type.Equals(SearchParamType.Reference) && !string.IsNullOrEmpty(paramVal))
                 {
-                    //NRLS Hack
-                    var paramName = (param.Name?.Equals("patient") == true) ? "subject" : param.Name;
-
-                    filters.Add(builder.Eq($"{paramName}.reference", paramVal));
+ 
+                    filters.Add(builder.Eq($"{param.Name}.reference", paramVal));
                 }
 
                 if (param.Type.Equals(SearchParamType.Token) && !string.IsNullOrEmpty(paramVal))

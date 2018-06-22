@@ -65,7 +65,7 @@ namespace NRLS_API.Services
                                             new Extension
                                             {
                                                 Url = "required",
-                                                Value = new FhirString("patient")
+                                                Value = new FhirString("subject")
                                             },
                                             new Extension
                                             {
