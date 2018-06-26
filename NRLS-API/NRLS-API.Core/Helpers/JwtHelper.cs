@@ -6,18 +6,29 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using NRLS_API.Models.Core;
+using Microsoft.Extensions.Caching.Memory;
+using NRLS_API.Core.Enums;
+using NRLS_API.Core.Interfaces.Helpers;
 
 namespace NRLS_API.Core.Helpers
 {
-    public class JwtHelper
+    public class JwtHelper : IJwtHelper
     {
-        public static bool IsValid(string jwt, JwtScopes reqScope, DateTime? tokenIssued = null)
+        private IMemoryCache _cache;
+
+        public JwtHelper(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
+
+        public Response IsValid(string jwt, JwtScopes reqScope, DateTime? tokenIssued = null)
         {
             var now = tokenIssued ?? DateTime.UtcNow;
 
             if (string.IsNullOrEmpty(jwt))
             {
-                return false;
+                return new Response("The Authorisation header must be supplied");
             }
 
             
@@ -27,11 +38,12 @@ namespace NRLS_API.Core.Helpers
             }
 
             //This should be a basic Base64UrlEncoded token
-            var claimsHash = jwt.Split('.').Skip(1).Take(1).FirstOrDefault();
+            var claimsHashItems = jwt.Split('.');
+            var claimsHash = claimsHashItems.Skip(1).Take(1).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(claimsHash))
+            if (claimsHashItems.Count() != 3 || string.IsNullOrEmpty(claimsHash))
             {
-                return false;
+                return new Response("The JWT associated with the Authorisation header must have the 3 sections");
             }
 
             claimsHash = claimsHash.Replace('-', '+').Replace('_', '/');
@@ -46,28 +58,21 @@ namespace NRLS_API.Core.Helpers
             }
             catch
             {
-                return false;
+                return new Response("The Authorisation header must be supplied");
             }
 
             var iss = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtClientSysIssuer));
 
             if (string.IsNullOrEmpty(iss.Value))
             {
-                return false;
-            }
-
-            var sub = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtIndOrSysIdentifier));
-
-            if (string.IsNullOrEmpty(sub.Value))
-            {
-                return false;
+                return new Response("The mandatory claim iss from the JWT associated with the Authorisation header is missing");
             }
 
             var aud = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtEndpointUrl));
 
             if (string.IsNullOrEmpty(aud.Value))
             {
-                return false;
+                return new Response("The mandatory claim aud from the JWT associated with the Authorisation header is missing");
             }
 
             var iat = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtIssued));
@@ -75,7 +80,7 @@ namespace NRLS_API.Core.Helpers
 
             if (!long.TryParse(iat.Value, out iatVal))
             {
-                return false;
+                return new Response("The mandatory claim iat from the JWT associated with the Authorisation header is missing");
             }
 
             var exp = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtExpiration));
@@ -83,60 +88,112 @@ namespace NRLS_API.Core.Helpers
 
             if (!long.TryParse(exp.Value, out expVal))
             {
-                return false;
+                return new Response("The mandatory claim iat from the JWT associated with the Authorisation header is missing");
             }
 
             var issuedDt = EpochTime.DateTime(iatVal);
             var expireDt = EpochTime.DateTime(expVal);
 
-            if (issuedDt.AddMinutes(5) != expireDt || issuedDt > now || expireDt < now)
+            if (issuedDt.AddMinutes(5) != expireDt )
             {
-                return false;
+                return new Response($"exp {exp.Value} must be 5 minutes greater than iat {iat.Value}");
+            }
+
+            if (issuedDt > now || expireDt < now)
+            {
+                return new Response($"iat {iat.Value} must be in the past or now and exp {exp.Value} must be in the future or now");
             }
 
             var resForReq = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtReasonForRequest));
 
             if (resForReq.Value != "directcare")
             {
-                return false;
+                return new Response($"reason_for_request ({resForReq.Value}) must be ‘directcare’");
             }
 
             var scope = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtScope));
             var expScope = $"patient/DocumentReference.{reqScope.ToString().ToLowerInvariant()}";
 
-            if (scope.Value != expScope)
+            if (scope.Value != expScope || !new string[2] { "patient/DocumentReference.read", "patient/DocumentReference.write" }.Contains(scope.Value))
             {
-                return false;
+                return new Response($"scope ({scope.Value}) must match either 'patient/DocumentReference.read' or 'patient/DocumentReference.write'");
+            }
+
+            var sub = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtIndOrSysIdentifier));
+
+            if (string.IsNullOrEmpty(sub.Value))
+            {
+                return new Response("The mandatory claim sub from the JWT associated with the Authorisation header is missing");
             }
 
             var reqSys = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtRequestingSystem));
+            var fromAsid = reqSys.Value.Replace(FhirConstants.SystemASID, "").Replace("|", "");
 
             if (string.IsNullOrEmpty(reqSys.Value))
             {
-                return false;
+                return new Response("The mandatory claim requesting_system from the JWT associated with the Authorisation header is missing");
+            }
+
+            if (!reqSys.Value.StartsWith(FhirConstants.SystemASID) || string.IsNullOrWhiteSpace(fromAsid))
+            {
+                return new Response($"requesting_system ({reqSys.Value}) must be of the form [{FhirConstants.SystemASID}|[ASID]]");
+            }
+
+            var fromAsidMap = GetFromAsidMap(fromAsid);
+
+            if (fromAsidMap == null)
+            {
+                return new Response($"The ASID defined in the requesting_system ({fromAsid}) is unknown");
             }
 
             var reqOrg = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtRequestingOrganization));
+            var orgCode = reqOrg.Value.Replace(FhirConstants.SystemOrgCode, "").Replace("|", "");
 
             if (string.IsNullOrEmpty(reqOrg.Value))
             {
-                return false;
+                return new Response("The mandatory claim requesting_organization from the JWT associated with the Authorisation header is missing");
+            }
+
+            if (!reqOrg.Value.StartsWith(FhirConstants.SystemOrgCode) || string.IsNullOrWhiteSpace(orgCode))
+            {
+                return new Response($"requesting_organisation ({reqOrg.Value}) must be of the form [{FhirConstants.SystemOrgCode}|[ODSCode]");
+            }
+
+            if(fromAsidMap.OrgCode != orgCode)
+            {
+                return new Response($"requesting_system ASID ({fromAsid}) is not associated with the requesting_organisation ODS code ({orgCode})");
             }
 
             var reqUsr = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtRequestingUser));
 
-            if (string.IsNullOrEmpty(reqUsr.Value))
+            if (!string.IsNullOrEmpty(reqUsr.Value) && reqUsr.Value != sub.Value)
             {
-                return false;
+                return new Response($"requesting_user ({reqUsr.Value}) and sub ({sub.Value}) claim's values must match");
             }
 
-            return true;
-        }
-    }
+            if (string.IsNullOrEmpty(reqUsr.Value) && reqSys.Value != sub.Value)
+            {
+                return new Response($"requesting_system ({reqSys.Value}) and sub ({sub.Value}) claim's values must match");
+            }
 
-    public enum JwtScopes
-    {
-        Read = 1,
-        Write
+            return new Response(true);
+        }
+
+        private ClientAsid GetFromAsidMap(string fromASID)
+        {
+            ClientAsidMap clientAsidMap;
+
+            if (!_cache.TryGetValue<ClientAsidMap>(ClientAsidMap.Key, out clientAsidMap))
+            {
+                return null;
+            }
+
+            if (clientAsidMap.ClientAsids == null || !clientAsidMap.ClientAsids.ContainsKey(fromASID))
+            {
+                return null;
+            }
+
+            return clientAsidMap.ClientAsids[fromASID];
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
@@ -45,21 +46,22 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
-            if (authorization == null || !_nrlsValidation.ValidJwt(scope, authorization))
+            var jwtResponse = _nrlsValidation.ValidJwt(scope, authorization);
+            if (authorization == null || !jwtResponse.Success)
             {
-                SetError(HttpRequestHeader.Authorization.ToString());
+                SetError(HttpRequestHeader.Authorization.ToString(), jwtResponse.Message);
             }
 
             var fromASID = GetHeaderValue(headers, FhirConstants.HeaderFromAsid);
             if (fromASID == null || GetFromAsidMap(fromASID) == null)
             {
-                SetError(FhirConstants.HeaderFromAsid);
+                SetError(FhirConstants.HeaderFromAsid, null);
             }
 
             var toASID = GetHeaderValue(headers, FhirConstants.HeaderToAsid);
             if (toASID == null || toASID != _spineSettings.Asid)
             {
-                SetError(FhirConstants.HeaderToAsid);
+                SetError(FhirConstants.HeaderToAsid, null);
             }
 
             //We've Passed! Continue to App...
@@ -102,9 +104,9 @@ namespace NRLS_API.WebApp.Core.Middlewares
             return clientAsidMap.ClientAsids[fromASID];
         }
 
-        private void SetError(string header)
+        private void SetError(string header, string diagnostics)
         {
-            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header), HttpStatusCode.BadRequest);
+            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header, diagnostics), HttpStatusCode.BadRequest);
         }
 
     }

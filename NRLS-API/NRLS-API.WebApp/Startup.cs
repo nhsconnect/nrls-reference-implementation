@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Database;
 using NRLS_API.Models;
@@ -83,6 +84,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<INrlsMaintain, NrlsMaintain>();
             services.AddTransient<INrlsConformance, NrlsConformance>();
             services.AddTransient<INrlsValidation, NrlsValidation>();
+            services.AddTransient<IJwtHelper, JwtHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

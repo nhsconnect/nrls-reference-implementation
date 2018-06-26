@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq;
+using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
@@ -42,8 +43,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
 
             var nrlsValidationMock = new Mock<INrlsValidation>();
-            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Read), It.IsAny<string>())).Returns(true);
-            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Write), It.IsAny<string>())).Returns(false);
+            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Read), It.IsAny<string>())).Returns(new Response(true));
+            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Write), It.IsAny<string>())).Returns(new Response());
 
             var clientMapCache = new ClientAsidMap
             {

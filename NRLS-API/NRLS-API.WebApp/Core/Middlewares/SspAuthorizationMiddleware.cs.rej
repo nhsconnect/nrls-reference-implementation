@@ -1,0 +1,29 @@
+diff a/NRLS-API/NRLS-API.WebApp/Core/Middlewares/SspAuthorizationMiddleware.cs b/NRLS-API/NRLS-API.WebApp/Core/Middlewares/SspAuthorizationMiddleware.cs	(rejected hunks)
+@@ -65,6 +65,27 @@
+                  SetError(FhirConstants.HeaderToAsid, null);
+              }
+  
+++<<<<<<< Updated upstream
+++=======
++             //var sspInteractionID = GetHeaderValue(headers, FhirConstants.HeaderSspInterationId);
++             //if (sspInteractionID == null || !ValidInteraction(method, sspInteractionID, fromASID))
++             //{
++             //    SetUnauthorized();
++             //}
++ 
++             //var sspTraceId = GetHeaderValue(headers, "Ssp-TraceID");
++             //if (sspTraceId == null)
++             //{
++             //    SetError("Ssp-TraceID");
++             //}
++ 
++             //var sspVersion = GetHeaderValue(headers, "Ssp-Version");
++             //if (sspVersion == null)
++             //{
++             //    SetError("Ssp-Version");
++             //}
++ 
+++>>>>>>> Stashed changes
+              //We've Passed! Continue to App...
+              await _next.Invoke(context);
+              return;

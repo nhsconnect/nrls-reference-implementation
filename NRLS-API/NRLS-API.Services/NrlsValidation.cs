@@ -1,13 +1,22 @@
-﻿using NRLS_API.Core.Helpers;
+﻿using NRLS_API.Core.Enums;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
+using NRLS_API.Models.Core;
 
 namespace NRLS_API.Services
 {
     public class NrlsValidation : INrlsValidation
     {
-        public bool ValidJwt(JwtScopes scope, string jwt)
+        private readonly IJwtHelper _jwtHelper;
+
+        public NrlsValidation(IJwtHelper jwtHelper)
         {
-            return JwtHelper.IsValid(jwt, scope);
+            _jwtHelper = jwtHelper;
+        }
+
+        public Response ValidJwt(JwtScopes scope, string jwt)
+        {
+            return _jwtHelper.IsValid(jwt, scope);
         }
     }
 }
