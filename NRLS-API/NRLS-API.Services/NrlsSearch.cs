@@ -90,7 +90,7 @@ namespace NRLS_API.Services
             }
             else
             {
-                throw new HttpFhirException("Missing or Invalid patient parameter", OperationOutcomeFactory.CreateInvalidParameter("Missing parameter: patient"), HttpStatusCode.BadRequest);
+                throw new HttpFhirException("Missing or Invalid patient parameter", OperationOutcomeFactory.CreateInvalidParameter("Missing parameter: subjects"), HttpStatusCode.BadRequest);
             }
 
             var custodian = request.QueryParameters.FirstOrDefault(x => x.Item1 == "custodian");
