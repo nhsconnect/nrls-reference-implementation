@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
-using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
@@ -13,9 +12,7 @@ using NRLS_APITest.Data;
 using NRLS_APITest.StubClasses;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
