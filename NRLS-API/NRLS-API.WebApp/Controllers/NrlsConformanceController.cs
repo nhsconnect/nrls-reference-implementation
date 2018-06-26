@@ -4,6 +4,7 @@ using NRLS_API.Core.Interfaces.Services;
 
 namespace NRLS_API.WebApp.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("nrls/fhir/metadata")]
     public class NrlsConformanceController : Controller
     {

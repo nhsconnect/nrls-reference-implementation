@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -7,8 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Services;
@@ -18,6 +21,7 @@ using NRLS_API.Models.Core;
 using NRLS_API.Services;
 using NRLS_API.WebApp.Core.Formatters;
 using NRLS_API.WebApp.Core.Middlewares;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace NRLS_API.WebApp
 {
@@ -50,6 +54,24 @@ namespace NRLS_API.WebApp
                 config.ReturnHttpNotAcceptable = false;
 
             });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info
+            //    {
+            //        Version = "v1",
+            //        Title = "NRLS API Reference Implementation",
+            //        Description = "A reference implementation of the NRLS API which conforms to the NRLS Technical Specification.",
+            //        Contact = new Contact()
+            //        {
+            //            Name = "NRLS Team",
+            //            Email = "nrls@nhs.net"
+            //        }
+            //    });
+
+            //    var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+            //    var xmlPath = Path.Combine(basePath, "NRLS-API.WebApp.xml");
+            //    c.IncludeXmlComments(xmlPath);
+            //});
             services.AddOptions();
             services.Configure<DbSetting>(options =>
             {
@@ -103,6 +125,21 @@ namespace NRLS_API.WebApp
             //app.UseFhirOuputMiddleware();
 
             app.UseMvc();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+                RequestPath = "/Resources"
+            });
+
+            //app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/Resources/swagger.json", "NRLS Reference Implementation");
+                c.InjectStylesheet("/Resources/swagger-custom.css");
+                c.DefaultModelsExpandDepth(-1);
+                c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream; 
+            });
 
         }
     }

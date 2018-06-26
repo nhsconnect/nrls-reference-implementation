@@ -1,0 +1,375 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "NRLS API Reference Implementation",
+    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server will be regularly cleared and refreshed with test data.</b></div><br /><br />",
+    "contact": {
+      "name": "NRLS Team",
+      "email": "nrls@nhs.net"
+    }
+  },
+  "schemes": ["http"],
+  "parameters": {
+    "authHeaderWrite": {
+      "name": "Authorization",
+      "in": "header",
+      "description": "A JWT Bearer Token",
+      "required": true,
+      "type": "string",
+      "example": "{\"iss\": \"https://demonstrator.com\",\"sub\": \"https://fhir.nhs.uk/Id/accredited-system|200000000118\",\"aud\": \"https://nrls.com/fhir/documentreference\",\"exp\": 1528978926,\"iat\": 1528978626,\"reason_for_request\": \"directcare\",\"scope\": \"patient/DocumentReference.write\",\"requesting_system\": \"https://fhir.nhs.uk/Id/accredited-system|200000000118\",\"requesting_organization\": \"https://fhir.nhs.uk/Id/ods-organization-code|MHT01\"}"
+    },
+    "toASIDHeader": {
+      "name": "toASID",
+      "in": "header",
+      "description": "The ASID of the receiving system. E.g. The SPINE",
+      "required": true,
+      "type": "string",
+      "example": "999999999999"
+    }
+  },
+  "paths": {
+    "/nrls/fhir/DocumentReference": {
+      "get": {
+        "tags": [ "Nrls" ],
+        "summary": "Searches for the requested resource type.\r\nOR\r\nGets a resource by the supplied _id search parameter.",
+        "operationId": "NrlsFhirDocumentReferenceGet",
+        "consumes": [],
+        "produces": [ "application/fhir+json", "application/fhir+xml" ],
+        "parameters": [
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Who/what is the subject of the document",
+            "required": true,
+            "type": "string",
+            "example": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
+          },
+          {
+            "name": "custodian",
+            "in": "query",
+            "description": "Organization which maintains the document reference",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "_id",
+            "in": "query",
+            "description": "The logical id of the resource",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Kind of document (SNOMED CT)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "A JWT Bearer Token",
+            "required": true,
+            "type": "string",
+            "example": "{\"iss\": \"https://demonstrator.com\",\"sub\": \"https://fhir.nhs.uk/Id/sds-role-profile-id|fakeRoleId\",\"aud\": \"https://nrls.com/fhir/documentreference\",\"exp\": 1528978926,\"iat\": 1528978626,\"reason_for_request\": \"directcare\",\"scope\": \"patient/DocumentReference.read\",\"requesting_system\": \"https://fhir.nhs.uk/Id/accredited-system|200000000117\",\"requesting_organization\": \"https://fhir.nhs.uk/Id/ods-organization-code|AMS01\",\"requesting_user\": \"https://fhir.nhs.uk/Id/sds-role-profile-id|fakeRoleId\"}"
+          },
+          {
+            "name": "fromASID",
+            "in": "header",
+            "description": "The Consumer/Provider ASID of the system that the request originates from.",
+            "required": true,
+            "type": "string",
+            "example": "200000000117"
+          },
+          {
+            "$ref": "#/parameters/toASIDHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success: Returns the FHIR Resource Bundle containing zero or more FHIR Resource's of type DocumentReference"
+          },
+          "400": {
+            "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "401": {
+            "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
+          }
+        }
+      },
+      "post": {
+        "tags": [ "Nrls" ],
+        "summary": "Creates and Persists a new record of the requested resource type into a datastore.",
+        "operationId": "NrlsFhirDocumentReferencePost",
+        "consumes": [ "application/fhir+json", "application/fhir+xml" ],
+        "produces": [ "application/fhir+json", "application/fhir+xml" ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/authHeaderWrite"
+          },
+          {
+            "name": "fromASID",
+            "in": "header",
+            "description": "The Consumer/Provider ASID of the system that the request originates from.",
+            "required": true,
+            "type": "string",
+            "example": "200000000118"
+          },
+          {
+            "$ref": "#/parameters/toASIDHeader"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "example": {
+                "resourceType": "DocumentReference",
+                "status": "current",
+                "type": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "736253002",
+                      "display": "Mental Health Crisis Plan"
+                    }
+                  ]
+                },
+                "subject": {
+                  "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
+                },
+                "indexed": "2005-12-24T09:43:41+00:00",
+                "author": [
+                  {
+                    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
+                  }
+                ],
+                "custodian": {
+                  "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/MHT01"
+                },
+                "content": [
+                  {
+                    "attachment": {
+                      "contentType": "application/pdf",
+                      "url": "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
+                      "title": "Mental health Care Plan Report",
+                      "creation": "2016-03-08T15:26:00+00:00"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "400": {
+            "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "401": {
+            "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
+          }
+        }
+      },
+      "delete": {
+        "tags": [ "Nrls" ],
+        "summary": "Deletes a record that was previously persisted into a datastore.",
+        "operationId": "NrlsFhirDocumentReferenceDelete",
+        "consumes": [],
+        "produces": [ "application/fhir+json", "application/fhir+xml" ],
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "query",
+            "description": "The logical Id of the pointer",
+            "required": true,
+            "type": "string",
+            "example": "5ab13f41957d0ad5d93a1339"
+          },
+          {
+            "$ref": "#/parameters/authHeaderWrite"
+          },
+          {
+            "name": "fromASID",
+            "in": "header",
+            "description": "The Consumer/Provider ASID of the system that the request originates from.",
+            "required": true,
+            "type": "string",
+            "example": "200000000118"
+          },
+          {
+            "$ref": "#/parameters/toASIDHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "400": {
+            "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "404": {
+            "description": "Not Found: Returns the FHIR Resource of type OperationOutcome"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AuthHeaderWrite": {
+      "iss": "https://demonstrator.com",
+      "sub": "https://fhir.nhs.uk/Id/sds-role-profile-id%7CfakeRoleId",
+      "aud": "https://nrls.com/fhir/documentreference",
+      "exp": 1528978926,
+      "iat": 1528978626,
+      "reason_for_request": "directcare",
+      "scope": "patient/DocumentReference.write",
+      "requesting_system": "https://fhir.nhs.uk/Id/accredited-system%7C435345",
+      "requesting_organization": "https://fhir.nhs.uk/Id/ods-organization-code%7CfakeOrgCode",
+      "requesting_user": "https://fhir.nhs.uk/Id/sds-role-profile-id%7CfakeRoleId"
+    },
+    "Resource": {
+      "type": "object",
+      "properties": {
+        "idElement": { "$ref": "#/definitions/Id" },
+        "meta": { "$ref": "#/definitions/Meta" },
+        "implicitRulesElement": { "$ref": "#/definitions/FhirUri" },
+        "languageElement": { "$ref": "#/definitions/Code" }
+      }
+    },
+    "Id": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "string" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "versionIdElement": { "$ref": "#/definitions/Id" },
+        "lastUpdatedElement": { "$ref": "#/definitions/Instant" },
+        "profileElement": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FhirUri" }
+        },
+        "security": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Coding" }
+        },
+        "tag": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Coding" }
+        },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "FhirUri": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "string" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Code": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "string" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Extension": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "value": { "$ref": "#/definitions/Element" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Instant": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Coding": {
+      "type": "object",
+      "properties": {
+        "systemElement": { "$ref": "#/definitions/FhirUri" },
+        "versionElement": { "$ref": "#/definitions/FhirString" },
+        "codeElement": { "$ref": "#/definitions/Code" },
+        "displayElement": { "$ref": "#/definitions/FhirString" },
+        "userSelectedElement": { "$ref": "#/definitions/FhirBoolean" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "Element": {
+      "type": "object",
+      "properties": {
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "FhirString": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "string" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    },
+    "FhirBoolean": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "boolean" },
+        "elementId": { "type": "string" },
+        "extension": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Extension" }
+        }
+      }
+    }
+  }
+}
