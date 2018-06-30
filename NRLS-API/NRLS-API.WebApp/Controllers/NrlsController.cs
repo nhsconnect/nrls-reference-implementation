@@ -35,6 +35,11 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>A FHIR Bundle Resource</returns>
         /// <response code="200">Returns the FHIR Resource</response>
+        /// <param name="subject" required="true" dataType="reference" paramType="query" example="https%3A%2F%2Fdemographics.spineservices.nhs.uk%2FSTU3%2FPatient%2F2686033207">Who/what is the subject of the document</param>
+        /// <param name="custodian" required="false" dataType="reference" paramType="query">Organization which maintains the document reference</param>
+        /// <param name="type" required="false" dataType="token" paramType="query">Kind of document (SNOMED CT)</param>
+        /// <param name="_id" required="false" dataType="token" paramType="query">The logical id of the resource</param>
+
         [ProducesResponseType(typeof(Resource), 200)]
         [HttpGet]
         public async Task<IActionResult> Search()
@@ -108,6 +113,7 @@ namespace NRLS_API.WebApp.Controllers
         }
 
         // PUT fhir/DocumentReference/5
+        [ApiExplorerSettings(IgnoreApi = true)]
         [ProducesResponseType(typeof(Resource), 200)]
         [HttpPut("{id}")]
         public IActionResult Update(string id, [FromBody]Resource resource)

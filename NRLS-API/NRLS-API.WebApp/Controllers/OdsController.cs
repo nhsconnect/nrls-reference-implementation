@@ -6,6 +6,7 @@ using NRLS_API.Models.Core;
 
 namespace NRLS_API.WebApp.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("ods/fhir/Organization")]
     public class OdsController : Controller
     {
