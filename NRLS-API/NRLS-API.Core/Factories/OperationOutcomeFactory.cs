@@ -117,10 +117,11 @@ namespace NRLS_API.Core.Factories
 
             if (string.IsNullOrEmpty(diagnostics))
             {
-                diagnostics = $"{header} HTTP Header is missing or invalid.";
+                diagnostics = $"{header} HTTP Header is missing";
             }
 
             return CreateError(diagnostics, details);
+
         }
 
         public static OperationOutcome CreateNotFound(string id)

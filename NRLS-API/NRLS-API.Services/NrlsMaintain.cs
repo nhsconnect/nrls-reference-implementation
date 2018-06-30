@@ -62,17 +62,17 @@ namespace NRLS_API.Services
 
             if (custodians.Entry.Count == 0)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
+                return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
             }
 
-            //var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
-            //var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
-            //var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
+            var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
+            var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
+            var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
 
-            //if (authors.Entry.Count == 0)
-            //{
-            //    return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
-            //}
+            if (authors.Entry.Count == 0)
+            {
+                return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
+            }
 
             return await _fhirMaintain.Create<T>(request);
         }

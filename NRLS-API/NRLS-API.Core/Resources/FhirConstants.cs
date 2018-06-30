@@ -22,6 +22,9 @@
         public const string SystemPointerType = "http://snomed.info/sct";
 
 
+        //ValueSets
+        public const string VsRecordType = "https://fhir.nhs.uk/STU3/ValueSet/NRLS-RecordType-1";
+
 
         //Headers
         public const string HeaderFromAsid = "fromASID";
