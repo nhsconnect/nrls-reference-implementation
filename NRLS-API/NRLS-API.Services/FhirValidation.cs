@@ -51,7 +51,7 @@ namespace NRLS_API.Services
             {
                 return OperationOutcomeFactory.CreateInvalidResource(null);
             }
-            else if(!_validationHelper.ValidCodableConcept(pointer.Type, FhirConstants.SystemPointerType))
+            else if(!_validationHelper.ValidCodableConcept(pointer.Type, FhirConstants.SystemPointerType, true, true, true, true, FhirConstants.VsRecordType))
             {
                 return OperationOutcomeFactory.CreateInvalidResource("type");
             }
@@ -130,6 +130,27 @@ namespace NRLS_API.Services
             }
 
             return OperationOutcomeFactory.CreateOk();
+        }
+
+        public OperationOutcome ValidTypeParameter(string type)
+        {
+
+            if(!_validationHelper.ValidReferenceParameter(type, FhirConstants.SystemPointerType))
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given terminology system is not of the expected value - {FhirConstants.SystemPointerType}");
+            }
+
+            var typeCode = _validationHelper.GetTokenParameterId(type, FhirConstants.SystemPointerType);
+
+            var concept = new CodeableConcept(FhirConstants.VsRecordType, typeCode);
+
+
+            if (!_validationHelper.ValidCodableConcept(concept, FhirConstants.SystemPointerType, true, false, true, false, FhirConstants.VsRecordType))
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given code is not from the expected terminology system - {FhirConstants.SystemPointerType}");
+            }
+
+            return null;
         }
 
         public OperationOutcome ValidatePatientReference(ResourceReference reference)

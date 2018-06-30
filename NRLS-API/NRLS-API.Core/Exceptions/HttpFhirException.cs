@@ -1,8 +1,6 @@
 ﻿using Hl7.Fhir.Model;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace NRLS_API.Core.Exceptions
 {
@@ -10,22 +8,23 @@ namespace NRLS_API.Core.Exceptions
     {
         public HttpFhirException() : base()
         {
-
+            StatusCode = HttpStatusCode.InternalServerError;
         }
 
         public HttpFhirException(string message) : base(message)
         {
-
+            StatusCode = HttpStatusCode.InternalServerError;
         }
 
         public HttpFhirException(string message, Exception innerException) : base(message, innerException)
         {
-
+            StatusCode = HttpStatusCode.InternalServerError;
         }
 
         public HttpFhirException(string message, OperationOutcome operationOutcome, Exception innerException = null) : base(message, innerException)
         {
             OperationOutcome = operationOutcome;
+            StatusCode = HttpStatusCode.InternalServerError;
         }
 
         public HttpFhirException(string message, OperationOutcome operationOutcome, HttpStatusCode statusCode) : base(message)

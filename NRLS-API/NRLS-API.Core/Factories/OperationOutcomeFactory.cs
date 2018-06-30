@@ -110,12 +110,18 @@ namespace NRLS_API.Core.Factories
             return CreateError(diagnostics, details);
         }
 
-        public static OperationOutcome CreateInvalidHeader(string header)
+        public static OperationOutcome CreateInvalidHeader(string header, string diagnostics = null)
         {
 
             var details = CreateDetails("MISSING_OR_INVALID_HEADER", "There is a required header missing or invalid");
 
-            return CreateError($"{header} HTTP Header is missing or invalid.", details);
+            if (string.IsNullOrEmpty(diagnostics))
+            {
+                diagnostics = $"{header} HTTP Header is missing";
+            }
+
+            return CreateError(diagnostics, details);
+
         }
 
         public static OperationOutcome CreateNotFound(string id)
@@ -149,13 +155,15 @@ namespace NRLS_API.Core.Factories
 
         public static OperationOutcome CreateSuccess()
         {
-            var details = CreateDetails(null, null, null, Guid.NewGuid().ToString());
+            var details = CreateDetails("RESOURCE_CREATED", "New resource created", null, Guid.NewGuid().ToString());
 
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully created resource DocumentReference", details);
         }
 
         public static OperationOutcome CreateDelete(string url)
         {
+            var details = CreateDetails("RESOURCE_DELETED", "Resource removed", null, Guid.NewGuid().ToString());
+
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully removed resource DocumentReference: {url}", null);
         }
 
@@ -192,12 +200,12 @@ namespace NRLS_API.Core.Factories
         {
             var outcome = new OperationOutcome
             {
-                Meta = new Meta
-                {
-                    Profile = new List<string>{
-                        FhirConstants.SDSpineOpOutcome
-                    }
-                }
+                //Meta = new Meta
+                //{
+                //    Profile = new List<string>{
+                //        FhirConstants.SDSpineOpOutcome
+                //    }
+                //}
             };
 
             return outcome;

@@ -1,10 +1,8 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Validation;
 using NRLS_API.Core.Interfaces.Services;
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -19,11 +17,7 @@ namespace NRLS_API.Core.Helpers
         public ValidationHelper()
         {
 
-            var basePath = DirectoryHelper.GetBaseDirectory();
-
-            var zip = Path.Combine(basePath, "Data\\definitions.xml.zip");
-
-            _source = new CachedResolver(new MultiResolver(new WebResolver(uri => new FhirClient("https://fhir.nhs.uk/STU3")), new ZipSource(zip)));
+            _source = FhirCacheHelper.Source;
 
             var ctx = new ValidationSettings()
             {
@@ -38,7 +32,7 @@ namespace NRLS_API.Core.Helpers
             Validator = new Validator(ctx);
         }
 
-        public bool ValidCodableConcept(CodeableConcept concept, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired)
+        public bool ValidCodableConcept(CodeableConcept concept, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet)
         {
             if(concept == null || concept.Coding.Count != 1)
             {
@@ -47,7 +41,7 @@ namespace NRLS_API.Core.Helpers
 
             var coding = concept.Coding.ElementAt(0);
 
-            if(systemRequired && string.IsNullOrEmpty(coding.System)) // || !coding.System.Equals(validSystem)
+            if(systemRequired && (string.IsNullOrEmpty(coding.System) || !coding.System.Equals(validSystem)))
             {
                 return false;
             }
@@ -64,15 +58,12 @@ namespace NRLS_API.Core.Helpers
 
             // TODO : parse and validate code from valueset
             // only available code is 736253002
-            //if (validateFromSet)
-            //{
-            //    var values = GetCodableConceptValueSet(validSystem);
-            //
-            //    if(values != null)
-            //    {
-            //      
-            //    }
-            //}
+            if (validateFromSet && !string.IsNullOrWhiteSpace(valueSet))
+            {
+                var values = GetCodableConceptValueSet(valueSet);
+
+                return values?.Compose?.Include?.FirstOrDefault(x => x.System == validSystem)?.Concept?.FirstOrDefault(x => x.Code == coding.Code) != null;
+            }
 
             return true;
         }
@@ -149,6 +140,11 @@ namespace NRLS_API.Core.Helpers
         public bool ValidReferenceParameter(string parameterVal, string systemPrefix)
         {
             return (!string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(systemPrefix));
+        }
+
+        public string GetTokenParameterId(string parameterVal, string systemPrefix)
+        {
+            return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace(systemPrefix, "").Replace("|", "") : null ;
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

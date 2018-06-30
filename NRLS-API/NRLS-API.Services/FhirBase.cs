@@ -13,9 +13,12 @@ namespace NRLS_API.Services
     {
         protected readonly IList<string> _supportedResources;
 
+        public string _resourceProfile { get; set; }
+
         public FhirBase(IOptions<NrlsApiSetting> nrlsApiSetting)
         {
             _supportedResources = nrlsApiSetting.Value.SupportedResources;
+            _resourceProfile = nrlsApiSetting.Value.ProfileUrl;
         }
 
         protected void ValidateResource(string resourceType)

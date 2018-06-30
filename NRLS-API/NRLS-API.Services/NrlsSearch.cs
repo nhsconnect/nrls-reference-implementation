@@ -53,6 +53,8 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
+            request.ProfileUri = _resourceProfile;
+
             var id = request.IdParameter;
 
             if (request.HasIdParameter)
@@ -77,7 +79,7 @@ namespace NRLS_API.Services
                 return response;
             }
 
-            var patient = request.QueryParameters.FirstOrDefault(x => x.Item1 == "patient");
+            var patient = request.QueryParameters.FirstOrDefault(x => x.Item1 == "subject");
 
             if (patient != null)
             {
@@ -90,7 +92,7 @@ namespace NRLS_API.Services
             }
             else
             {
-                throw new HttpFhirException("Missing or Invalid patient parameter", OperationOutcomeFactory.CreateInvalidParameter("Missing parameter: patient"), HttpStatusCode.BadRequest);
+                throw new HttpFhirException("Missing or Invalid patient parameter", OperationOutcomeFactory.CreateInvalidParameter("Missing parameter: subject"), HttpStatusCode.BadRequest);
             }
 
             var custodian = request.QueryParameters.FirstOrDefault(x => x.Item1 == "custodian");
@@ -102,6 +104,18 @@ namespace NRLS_API.Services
                 if (validCustodian != null)
                 {
                     throw new HttpFhirException("Missing or Invalid custodian parameter", validCustodian, HttpStatusCode.BadRequest);
+                }
+            }
+
+            var type = request.QueryParameters.FirstOrDefault(x => x.Item1 == "type.coding");
+
+            if (type != null)
+            {
+                var validType = _fhirValidation.ValidTypeParameter(type.Item2);
+
+                if (validType != null)
+                {
+                    throw new HttpFhirException("Missing or Invalid type parameter", validType, HttpStatusCode.BadRequest);
                 }
             }
 

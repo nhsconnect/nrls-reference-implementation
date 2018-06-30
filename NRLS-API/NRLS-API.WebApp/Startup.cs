@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Database;
 using NRLS_API.Models;
@@ -43,11 +44,12 @@ namespace NRLS_API.WebApp
             {
                 config.InputFormatters.Clear();
 
-                //Default to fhir+json
-                config.InputFormatters.Insert(0, new FhirJsonInputFormatter());
-                config.OutputFormatters.Insert(0, new FhirJsonOutputFormatter());
-                config.InputFormatters.Insert(1, new FhirXmlInputFormatter());
-                config.OutputFormatters.Insert(1, new FhirXmlOutputFormatter());
+                //Default to fhir+xml
+
+                config.InputFormatters.Insert(0, new FhirXmlInputFormatter());
+                config.OutputFormatters.Insert(0, new FhirXmlOutputFormatter());
+                config.InputFormatters.Insert(1, new FhirJsonInputFormatter());
+                config.OutputFormatters.Insert(1, new FhirJsonOutputFormatter());
 
                 // Add FHIR Content Negotiation
                 config.RespectBrowserAcceptHeader = true;
@@ -105,6 +107,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<INrlsMaintain, NrlsMaintain>();
             services.AddTransient<INrlsConformance, NrlsConformance>();
             services.AddTransient<INrlsValidation, NrlsValidation>();
+            services.AddTransient<IJwtHelper, JwtHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

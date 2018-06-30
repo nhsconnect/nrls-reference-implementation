@@ -8,6 +8,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         OperationOutcome ValidPointer(DocumentReference pointer);
 
+        OperationOutcome ValidTypeParameter(string type);
+
         OperationOutcome ValidatePatientParameter(string parameterVal);
 
         OperationOutcome ValidateCustodianParameter(string parameterVal);

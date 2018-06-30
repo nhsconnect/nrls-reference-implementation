@@ -35,6 +35,8 @@ namespace NRLS_API.Models.Core
 
         public bool HasIdParameter => GetIdParameter() != null;
 
+        public string ProfileUri { get; set; }
+
         public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)
         {
             return new FhirRequest

@@ -19,34 +19,31 @@
 
         public string Asid { get; set; }
 
-        public string Interaction { get; set; }
-
-        public static NrlsPointerRequest Read(string pointerId, string asid, string interaction)
+        public static NrlsPointerRequest Read(string pointerId, string asid)
         {
-            return Generate(pointerId, null, null, null, null, null, null, asid, interaction);
+            return Generate(pointerId, null, null, null, null, null, null, asid);
         }
 
-        public static NrlsPointerRequest Search(string orgCode, string nhsNumber, string asid, string interaction)
+        public static NrlsPointerRequest Search(string orgCode, string nhsNumber, string typeCode, string asid)
         {
-            return Generate(null, orgCode, nhsNumber, null, null, null, null, asid, interaction);
+            return Generate(null, orgCode, nhsNumber, null, null, typeCode, null, asid);
         }
 
-        public static NrlsPointerRequest Create(string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay, string asid, string interaction)
+        public static NrlsPointerRequest Create(string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay, string asid)
         {
-            return Generate(null, orgCode, nhsNumber, recordUrl, recordContentType, typeCode, typeDisplay, asid, interaction);
+            return Generate(null, orgCode, nhsNumber, recordUrl, recordContentType, typeCode, typeDisplay, asid);
         }
 
-        public static NrlsPointerRequest Delete(string pointerId, string asid, string interaction)
+        public static NrlsPointerRequest Delete(string pointerId, string asid)
         {
-            return Generate(pointerId, null, null, null, null, null, null, asid, interaction);
+            return Generate(pointerId, null, null, null, null, null, null, asid);
         }
 
-        private static NrlsPointerRequest Generate(string pointerId, string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay, string asid, string interaction)
+        private static NrlsPointerRequest Generate(string pointerId, string orgCode, string nhsNumber, string recordUrl, string recordContentType, string typeCode, string typeDisplay, string asid)
         {
             return new NrlsPointerRequest
             {
                 Asid = asid,
-                Interaction = interaction,
                 NhsNumber = nhsNumber,
                 OrgCode = orgCode,
                 PointerId = pointerId,

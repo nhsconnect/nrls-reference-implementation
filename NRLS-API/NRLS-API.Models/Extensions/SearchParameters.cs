@@ -20,7 +20,7 @@ namespace NRLS_API.Models.Extensions
                 case "Organization":
                     return new[] { "identifier" };
                 case "DocumentReference":
-                    return new[] { "custodian", "patient", "_id" };
+                    return new[] { "custodian", "subject", "_id", "type" };
                 default:
                     return new string[] { };
             }

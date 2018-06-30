@@ -62,17 +62,17 @@ namespace NRLS_API.Services
 
             if (custodians.Entry.Count == 0)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
+                return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
             }
 
-            //var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
-            //var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
-            //var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
+            var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
+            var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
+            var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
 
-            //if (authors.Entry.Count == 0)
-            //{
-            //    return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
-            //}
+            if (authors.Entry.Count == 0)
+            {
+                return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
+            }
 
             return await _fhirMaintain.Create<T>(request);
         }
@@ -109,19 +109,22 @@ namespace NRLS_API.Services
             {
                 var result = documentResponse as Bundle;
 
-                if(result.Entry.FirstOrDefault() != null)
+                if(!result.Total.HasValue || result.Total.Value < 1 || result.Entry.FirstOrDefault() == null)
                 {
-                    var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
-
-                    var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
-
-                    var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
-
-                    if (invalidAsid != null)
-                    {
-                        return invalidAsid;
-                    }
+                    return OperationOutcomeFactory.CreateNotFound(id);
                 }
+
+                var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
+
+                var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
+
+                var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
+
+                if (invalidAsid != null)
+                {
+                    return invalidAsid;
+                }
+                
             }
             else
             {
@@ -145,12 +148,8 @@ namespace NRLS_API.Services
                 }
             }
 
-            if (isCreate)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
-            }
+            return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
 
-            return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "Provider system does not own DocumentReference resource.");
         }
 
     }

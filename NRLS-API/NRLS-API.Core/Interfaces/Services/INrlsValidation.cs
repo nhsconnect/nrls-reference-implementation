@@ -1,9 +1,10 @@
-﻿using NRLS_API.Core.Helpers;
+﻿using NRLS_API.Core.Enums;
+using NRLS_API.Models.Core;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
     public interface INrlsValidation
     {
-        bool ValidJwt(JwtScopes scope, string jwt);
+        Response ValidJwt(JwtScopes scope, string jwt);
     }
 }
