@@ -60,11 +60,12 @@
             "type": "string"
           },
           {
-            "name": "type",
+            "name": "type.coding",
             "in": "query",
             "description": "Kind of document (SNOMED CT)",
             "required": false,
-            "type": "string"
+            "type": "string",
+            "example": "http://snomed.info/sct|736253002"
           },
           {
             "name": "Authorization",
