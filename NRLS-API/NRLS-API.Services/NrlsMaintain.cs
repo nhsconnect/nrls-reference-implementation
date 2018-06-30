@@ -109,19 +109,22 @@ namespace NRLS_API.Services
             {
                 var result = documentResponse as Bundle;
 
-                if(result.Entry.FirstOrDefault() != null)
+                if(!result.Total.HasValue || result.Total.Value < 1 || result.Entry.FirstOrDefault() == null)
                 {
-                    var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
-
-                    var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
-
-                    var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
-
-                    if (invalidAsid != null)
-                    {
-                        return invalidAsid;
-                    }
+                    return OperationOutcomeFactory.CreateNotFound(id);
                 }
+
+                var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
+
+                var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
+
+                var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
+
+                if (invalidAsid != null)
+                {
+                    return invalidAsid;
+                }
+                
             }
             else
             {
