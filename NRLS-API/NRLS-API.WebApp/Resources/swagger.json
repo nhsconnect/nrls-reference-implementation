@@ -3,7 +3,7 @@
   "info": {
     "version": "v1",
     "title": "NRLS API Reference Implementation",
-    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server will be regularly cleared and refreshed with test data.</b></div><br /><br />",
+    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
       "name": "NRLS Team",
       "email": "nrls@nhs.net"
