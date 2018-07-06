@@ -51,7 +51,7 @@ namespace NRLS_API.Models.Core
             };
         }
 
-        public static FhirRequest Copy(FhirRequest request, ResourceType resourceType, Resource resource, IEnumerable<Tuple<string, string>> queryParameters)
+        public static FhirRequest Copy(FhirRequest request, ResourceType resourceType, Resource resource, IEnumerable<Tuple<string, string>> queryParameters, string profileUrl = null)
         {
             return new FhirRequest
             {
@@ -61,7 +61,8 @@ namespace NRLS_API.Models.Core
                 RequestUrl = request.RequestUrl,
                 QueryParameters = queryParameters,
                 AllowedParameters = resourceType.GetAllowed(),
-                RequestingAsid = request.RequestingAsid
+                RequestingAsid = request.RequestingAsid,
+                ProfileUri = profileUrl
             };
         }
 

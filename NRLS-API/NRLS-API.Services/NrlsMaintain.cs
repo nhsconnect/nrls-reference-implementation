@@ -32,6 +32,7 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
+            request.ProfileUri = _resourceProfile;
 
             // NRLS Layers of validation before Fhir Search Call
             var document = request.Resource as DocumentReference;

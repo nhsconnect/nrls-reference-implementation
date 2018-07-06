@@ -19,7 +19,7 @@ namespace NRLS_API.Core.Helpers
                     new Tuple<string, string>("identifier", $"{FhirConstants.SystemOrgCode}|{orgCode}")
                 };
 
-                return  FhirRequest.Copy(request, ResourceType.Organization, null, queryParameters);
+                return  FhirRequest.Copy(request, ResourceType.Organization, null, queryParameters, request.ProfileUri);
 
             }
 
