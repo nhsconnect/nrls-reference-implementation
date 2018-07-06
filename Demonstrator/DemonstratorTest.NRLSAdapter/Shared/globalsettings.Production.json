@@ -17,7 +17,8 @@
   "DemonstratorApi": {
     "BaseUrl": "://nrlsdemoapp",
     "Secure": false,
+    "SecureOnly": false,
     "DefaultPort": "5000",
-    "SecurePort": "5000"
+    "SecurePort": "5443"
   }
 }

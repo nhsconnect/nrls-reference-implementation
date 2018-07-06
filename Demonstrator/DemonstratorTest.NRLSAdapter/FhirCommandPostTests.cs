@@ -19,7 +19,7 @@ namespace DemonstratorTest.NRLSAdapter
                 "--format",
                 "JSON",
                 "--setheaders",
-                "ssp-traceid|value"
+                "fromasid|value"
             };
 
             var fhirCommand = new FhirCommand(validArgs);
@@ -42,7 +42,7 @@ namespace DemonstratorTest.NRLSAdapter
                 "--body",
                 "{'OrgCode': 'MHT01','NhsNumber': '3656987882','Url': 'http://example.org/xds/mhd/Binary/test12345.pdf','ContentType': 'application/pdf','TypeCode': '718347001','TypeDisplay': 'Mental health care plan','Creation': '2018-04-02T11:15:45+00:00'}",
                 "--setheaders",
-                "ssp-traceid|value"
+                "fromasid|value"
             };
 
             var fhirCommand = new FhirCommand(validArgs);
@@ -63,7 +63,7 @@ namespace DemonstratorTest.NRLSAdapter
                 "--method",
                 "POST",
                 "--setheaders",
-                "ssp-traceid|value"
+                "fromasid|value"
             };
 
             var fhirCommand = new FhirCommand(validArgs);

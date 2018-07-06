@@ -19,13 +19,14 @@
   },
   "Spine": {
     "Asid": "999999999999",
-    "SslThumbprint": "86b0951e9dc07d621b11208c4b8704034dcf08d6",
+    "SslThumbprint": "b8062eae75405afafb975e126b179ea1211f06c8",
     "ClientAisMapFile": "Shared/ClientAsidMap.json"
   },
   "DemonstratorApi": {
     "BaseUrl": "://localhost",
     "Secure": false,
+    "SecureOnly": false,
     "DefaultPort": "55448",
-    "SecurePort": "55448"
+    "SecurePort": "55443"
   }
 }
