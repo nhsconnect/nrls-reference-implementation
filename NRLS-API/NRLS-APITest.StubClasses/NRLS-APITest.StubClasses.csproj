@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NRLS-API.Services\NRLS-API.Services.csproj" />
+    <ProjectReference Include="..\NRLS-APITest.Data\NRLS-APITest.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,20 +1,40 @@
 ﻿using Hl7.Fhir.Model;
+using Moq;
 using NRLS_API.Core.Helpers;
+using NRLS_API.Core.Interfaces.Helpers;
+using NRLS_API.Core.Resources;
+using NRLS_APITest.Data;
+using NRLS_APITest.StubClasses;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace NRLS_APITest.Core.Helpers
 {
-    public class ValidationHelperTests
+    public class ValidationHelperTests : IDisposable
     {
+        private IFhirCacheHelper _fhirCacheHelper;
+
+        public ValidationHelperTests()
+        {
+            var mockCacheHelper = new Mock<IFhirCacheHelper>();
+            mockCacheHelper.Setup(op => op.GetSource()).Returns(ResourceResolverStub.MockResourceResolver.GetSource());
+            mockCacheHelper.Setup(op => op.GetValueSet(It.Is<string>(s => s.Equals(FhirConstants.VsRecordType)))).Returns(FhirResources.ValueSet_NrlsType);
+
+            _fhirCacheHelper = mockCacheHelper.Object;
+        }
+
+        public void Dispose()
+        {
+            _fhirCacheHelper = null;
+        }
+
         [Fact]
         public void Validation_ValidCodableConcept_InvalidNoConcept()
         {
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(null, null, false, true, false, false);
+            var actual = helper.ValidCodableConcept(null, null, false, true, false, false, null);
 
             Assert.False(actual);
         }
@@ -27,9 +47,9 @@ namespace NRLS_APITest.Core.Helpers
                 Coding = new List<Coding>()
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false);
+            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -57,9 +77,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false);
+            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -81,9 +101,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false);
+            var actual = helper.ValidCodableConcept(concept, "TestSystem", false, true, false, false, null);
 
 
             Assert.True(actual);
@@ -105,9 +125,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false);
+            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -129,9 +149,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false);
+            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false, null);
 
 
             Assert.True(actual);
@@ -153,9 +173,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false);
+            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false, null);
 
 
             Assert.False(actual);
@@ -177,9 +197,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true);
+            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true, null);
 
 
             Assert.True(actual);
@@ -201,9 +221,9 @@ namespace NRLS_APITest.Core.Helpers
                 }
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true);
+            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true, null);
 
 
             Assert.False(actual);
@@ -212,7 +232,7 @@ namespace NRLS_APITest.Core.Helpers
         [Fact]
         public void Validation_GetResourceReferenceId_HandlesNull()
         {
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.GetResourceReferenceId(null, null);
 
@@ -228,7 +248,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.GetResourceReferenceId(reference, "testsystem/");
 
@@ -244,7 +264,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.GetResourceReferenceId(reference, "testsystem_blaa/");
 
@@ -260,7 +280,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.GetResourceReferenceId(reference, "testsystem_blaa/");
 
@@ -276,7 +296,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.GetResourceReferenceId(reference, null);
 
@@ -292,7 +312,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReference(reference, "testsystem");
 
@@ -308,7 +328,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "blaa_testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReference(reference, "testsystem");
 
@@ -319,7 +339,7 @@ namespace NRLS_APITest.Core.Helpers
         [Fact]
         public void Validation_ValidReference_HandlesNull()
         {
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReference(null, null);
 
@@ -335,7 +355,7 @@ namespace NRLS_APITest.Core.Helpers
                 Reference = "testsystem/id"
             };
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReference(reference, "");
 
@@ -347,7 +367,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_Valid()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber("2686033207");
 
@@ -359,7 +379,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_InvalidTooShort()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber("268603320");
 
@@ -371,7 +391,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_InvalidNumbers()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber("2686033201");
 
@@ -383,7 +403,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_InvalidNotNumbers()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber("268a6_0301");
 
@@ -395,7 +415,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_HandlesNull()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber(null);
 
@@ -407,7 +427,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidNhsNumber_HandlesEmptyString()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidNhsNumber("");
 
@@ -419,7 +439,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidReferenceParameter_HandlesEmptyParameterVal()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReferenceParameter(null, "test");
 
@@ -431,7 +451,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidReferenceParameter_Valid()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReferenceParameter("testprefix/testparam", "testprefix");
 
@@ -443,7 +463,7 @@ namespace NRLS_APITest.Core.Helpers
         public void Validation_ValidReferenceParameter_Invalid()
         {
 
-            var helper = new ValidationHelper();
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
             var actual = helper.ValidReferenceParameter("otherprefix/testparam", "testprefix");
 

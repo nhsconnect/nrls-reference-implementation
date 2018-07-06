@@ -69,7 +69,7 @@ namespace NRLS_APITest.Services
                                             new Extension
                                             {
                                                 Url = "required",
-                                                Value = new FhirString("patient")
+                                                Value = new FhirString("subject")
                                             },
                                             new Extension
                                             {
@@ -124,9 +124,10 @@ namespace NRLS_APITest.Services
                                                 Value = new FhirString("MUST")
                                             }
                                         },
-                                        Name = "patient",
+                                        Name = "subject",
                                         Definition = "http://hl7.org/fhir/SearchParameter/DocumentReference.subject",
-                                        Type = SearchParamType.Reference
+                                        Type = SearchParamType.Reference,
+                                        Documentation = "The Patient the DocumentReference relates to."
                                     },
                                     new CapabilityStatement.SearchParamComponent
                                     {
@@ -140,7 +141,8 @@ namespace NRLS_APITest.Services
                                         },
                                         Name = "custodian",
                                         Definition = "http://hl7.org/fhir/SearchParameter/DocumentReference.custodian",
-                                        Type = SearchParamType.Reference
+                                        Type = SearchParamType.Reference,
+                                        Documentation = "The owner of the DocumentReference"
                                     },
                                     new CapabilityStatement.SearchParamComponent
                                     {
@@ -152,10 +154,25 @@ namespace NRLS_APITest.Services
                                                 Value = new FhirString("MAY")
                                             }
                                         },
-                                        Name = "_count",
+                                        Name = "_id",
                                         Definition = "http://hl7.org/fhir/search",
-                                        Type = SearchParamType.Number,
-                                        Documentation = "Number of records to return"
+                                        Type = SearchParamType.String,
+                                        Documentation = "Logical id of the DocumentReference"
+                                    },
+                                    new CapabilityStatement.SearchParamComponent
+                                    {
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
+                                                Value = new FhirString("MAY")
+                                            }
+                                        },
+                                        Name = "type",
+                                        Definition = "http://hl7.org/fhir/search",
+                                        Type = SearchParamType.Token,
+                                        Documentation = "Clinical type the DocumentReference refers too"
                                     }
                                 }
                             }

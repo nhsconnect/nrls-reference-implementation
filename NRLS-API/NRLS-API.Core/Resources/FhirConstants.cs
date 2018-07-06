@@ -2,6 +2,8 @@
 {
     public class FhirConstants
     {
+        public const string SystemNrlsProfile = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1";
+
         public const string SDSpineOpOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0";
 
         public const string SystemNhsNumber = "https://fhir.nhs.uk/Id/nhs-number";

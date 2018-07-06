@@ -1,27 +1,42 @@
-﻿using Hl7.Fhir.Rest;
+﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
 using Hl7.Fhir.Specification.Source;
+using NRLS_API.Core.Interfaces.Helpers;
 using System.IO;
 
 namespace NRLS_API.Core.Helpers
 {
-    public static class FhirCacheHelper
+    public class FhirCacheHelper : IFhirCacheHelper
     {
         private static IResourceResolver _source { get; set; }
 
-        public static IResourceResolver Source
+        public FhirCacheHelper()
         {
-            get
-            {
-                if(_source == null)
-                {
-                    _source = GetResolver();
-                }
-
-                return _source;
-            }
+            GetSource();
         }
 
-        private static IResourceResolver GetResolver()
+        public Resource GetResourceProfile(string profileUrl)
+        {
+            return _source.ResolveByUri(profileUrl);
+        }
+
+        public ValueSet GetValueSet(string uri)
+        {
+            return _source.FindValueSet(uri);
+        }
+
+        public IResourceResolver GetSource()
+        {
+
+            if(_source == null)
+            {
+                _source = GetResolver();
+            }
+
+            return _source;
+        }
+
+        private IResourceResolver GetResolver()
         {
             var basePath = DirectoryHelper.GetBaseDirectory();
 

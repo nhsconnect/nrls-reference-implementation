@@ -15,12 +15,12 @@ namespace NRLS_APITest.Core.Factories
         {
             var expected = new OperationOutcome()
             {
-                Meta = new Meta
-                {
-                    Profile = new List<string>{
-                        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
-                    }
-                },
+                //Meta = new Meta
+                //{
+                //    Profile = new List<string>{
+                //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
+                //    }
+                //},
                 Issue = new List<OperationOutcome.IssueComponent>
                 {
                     new OperationOutcome.IssueComponent
@@ -44,12 +44,12 @@ namespace NRLS_APITest.Core.Factories
 
             var expected = new OperationOutcome()
             {
-                Meta = new Meta
-                {
-                    Profile = new List<string>{
-                        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
-                    }
-                },
+                //Meta = new Meta
+                //{
+                //    Profile = new List<string>{
+                //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
+                //    }
+                //},
                 Issue = new List<OperationOutcome.IssueComponent>
                 {
                     new OperationOutcome.IssueComponent

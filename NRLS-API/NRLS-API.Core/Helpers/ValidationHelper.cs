@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Validation;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using System;
 using System.Linq;
@@ -14,10 +15,13 @@ namespace NRLS_API.Core.Helpers
 
         private IResourceResolver _source { get; }
 
-        public ValidationHelper()
-        {
+        private readonly IFhirCacheHelper _fhirCacheHelper;
 
-            _source = FhirCacheHelper.Source;
+        public ValidationHelper(IFhirCacheHelper fhirCacheHelper)
+        {
+            _fhirCacheHelper = fhirCacheHelper;
+
+            _source = _fhirCacheHelper.GetSource();
 
             var ctx = new ValidationSettings()
             {
@@ -149,7 +153,7 @@ namespace NRLS_API.Core.Helpers
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)
         {
-            ValueSet values = _source.FindValueSet(systemUrl);
+            ValueSet values = _fhirCacheHelper.GetValueSet(systemUrl);
 
             return values;
         }

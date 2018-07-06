@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using NRLS_API.Services.Extensions;
@@ -17,10 +18,12 @@ namespace NRLS_API.Services
     public class FhirSearch : FhirBase, IFhirSearch
     {
         private readonly INRLSMongoDBContext _context;
+        private readonly IFhirSearchHelper _fhirSearchHelper;
 
-        public FhirSearch(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting)
+        public FhirSearch(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context, IFhirSearchHelper fhirSearchHelper) : base(nrlsApiSetting)
         {
             _context = context;
+            _fhirSearchHelper = fhirSearchHelper;
         }
 
         public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
@@ -72,7 +75,7 @@ namespace NRLS_API.Services
             try
             {
                 // IMPORTANT - this query currently does not filter for active/un-deleted pointers
-                var query = FhirSearchHelper.BuildQuery(request);
+                var query = _fhirSearchHelper.BuildQuery(request);
 
                 var resources = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(query).ToFhirListAsync<T>();
 

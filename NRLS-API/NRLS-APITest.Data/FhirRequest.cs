@@ -137,12 +137,13 @@ namespace NRLS_APITest.Data
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     Resource = NrlsPointers.Valid,
                     ResourceType = ResourceType.DocumentReference,
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
                     QueryParameters = new List<Tuple<string, string>>
                     {
-                        new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),
                         new Tuple<string, string>("custodian", "https://directory.spineservices.nhs.uk/STU3/Organization/odscode")
                     },
-                    AllowedParameters = new string[] { "custodian", "Patient" }
+                    AllowedParameters = new string[] { "custodian", "subject" }
                 };
             }
         }
@@ -174,6 +175,7 @@ namespace NRLS_APITest.Data
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     Resource = NrlsPointers.Valid,
                     ResourceType = ResourceType.DocumentReference,
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("practitioner", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),

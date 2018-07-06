@@ -1,29 +1,32 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
+using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Models.Core;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static Hl7.Fhir.Model.ModelInfo;
 
 namespace NRLS_API.Core.Helpers
 {
-    public class FhirSearchHelper
+    public class FhirSearchHelper : IFhirSearchHelper
     {
-        public static Resource GetResourceProfile(string profileUrl)
-        {
-            var source = FhirCacheHelper.Source;
+        private readonly IFhirCacheHelper _fhirCacheHelper;
 
-            return source.ResolveByUri(profileUrl);
+        public FhirSearchHelper(IFhirCacheHelper fhirCacheHelper)
+        {
+            _fhirCacheHelper = fhirCacheHelper;
         }
 
-        public static FilterDefinition<BsonDocument> BuildQuery(FhirRequest request)
+        public Resource GetResourceProfile(string profileUrl)
+        {
+            return _fhirCacheHelper.GetResourceProfile(profileUrl);
+        }
+
+        public FilterDefinition<BsonDocument> BuildQuery(FhirRequest request)
         {
             var builder = Builders<BsonDocument>.Filter;
             var filters = new List<FilterDefinition<BsonDocument>>();

@@ -95,8 +95,8 @@ namespace NRLS_APITest.Services
                                     new Coding
                                     {
                                         System = "http://snomed.info/sct",
-                                        Code = "718347000",
-                                        Display = "Mental health care plan"
+                                        Code = "736253002",
+                                        Display = "Mental health crisis plan (record artifact)"
                                     }
                                 }
                             },
