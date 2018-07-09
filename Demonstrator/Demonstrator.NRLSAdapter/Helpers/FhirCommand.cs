@@ -287,7 +287,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
             var idParam = _parameters?.FirstOrDefault(n => n.Key.Equals("_id"));
             var asid = _headers.FirstOrDefault(n => n.Key.Equals("fromasid"));
-
+            var orgCode = _headers.FirstOrDefault(n => n.Key.Equals("orgcode"));
 
             //Massive Try/catch
 
@@ -301,11 +301,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     if (!string.IsNullOrEmpty(idParam.Value.Value))
                     {
-                        pointerRequest = NrlsPointerRequest.Read(idParam.Value.Value, asid.Value);
+                        pointerRequest = NrlsPointerRequest.Read(idParam.Value.Value, asid.Value, orgCode.Value);
                     }
                     else
                     {
-                        pointerRequest = NrlsPointerRequest.Search(custodianParam.Value, patientParam.Value, typeParam.Value, asid.Value);
+                        pointerRequest = NrlsPointerRequest.Search(orgCode.Value, patientParam.Value, typeParam.Value, asid.Value, custodianParam.Value);
                     }
 
                     var pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
@@ -319,7 +319,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     if (_pointerBody != null)
                     {
-                        pointerRequest = NrlsPointerRequest.Create(_pointerBody.OrgCode, _pointerBody.NhsNumber, _pointerBody.Url, _pointerBody.ContentType, _pointerBody.TypeCode, _pointerBody.TypeDisplay, asid.Value);
+                        pointerRequest = NrlsPointerRequest.Create(orgCode.Value, _pointerBody.OrgCode, _pointerBody.NhsNumber, _pointerBody.Url, _pointerBody.ContentType, _pointerBody.TypeCode, _pointerBody.TypeDisplay, asid.Value);
 
                         var response = await _docRefService.GenerateAndCreatePointer(pointerRequest);
 
@@ -327,7 +327,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     }
                     else
                     {
-                        pointerRequest = NrlsPointerRequest.Create(null, null, null, null, null, null, asid.Value);
+                        pointerRequest = NrlsPointerRequest.Create(orgCode.Value, null, null, null, null, null, null, asid.Value);
 
                         var response = await _docRefService.CreatePointer(pointerRequest, _pointer);
 
@@ -346,7 +346,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 if (_method == "delete")
                 {
 
-                    pointerRequest = NrlsPointerRequest.Delete(idParam.Value.Value, asid.Value);
+                    pointerRequest = NrlsPointerRequest.Delete(idParam.Value.Value, asid.Value, orgCode.Value);
 
                     var outcome = await _docRefService.DeletePointer(pointerRequest);
 
@@ -414,7 +414,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
         private static List<string> ValidParameters = new List<string> { "subject", "custodian", "_id", "type" };
 
         //Set to lower case for cmd line
-        private static List<string> ValidHeaders = new List<string> { "fromasid", "toasid"};
+        private static List<string> ValidHeaders = new List<string> { "fromasid", "toasid", "orgcode"};
 
         private static List<string> ValidFormats = new List<string> { "json" };
 

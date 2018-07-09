@@ -122,7 +122,7 @@ namespace Demonstrator.Services.Service.Flows
                 _context.CrisisPlans.InsertOne(newCrisisPlan);
 
                 //Hardcoded values - this is a demo with urls to ficticious documents
-                var pointerRequest = NrlsPointerRequest.Create(crisisPlan.OrgCode, crisisPlan.PatientNhsNumber, $"https://spine-proxy.national.ncrs.nhs.uk/{newCrisisPlan.Id}/mental-health-care-plan.pdf", "application/pdf", MentalHealthCrisisPlanTypeCode, MentalHealthCrisisPlanTypeDisplay, crisisPlan.Asid);
+                var pointerRequest = NrlsPointerRequest.Create(crisisPlan.OrgCode, crisisPlan.OrgCode, crisisPlan.PatientNhsNumber, $"https://spine-proxy.national.ncrs.nhs.uk/{newCrisisPlan.Id}/mental-health-care-plan.pdf", "application/pdf", MentalHealthCrisisPlanTypeCode, MentalHealthCrisisPlanTypeDisplay, crisisPlan.Asid);
 
                 //Create new NRLS pointer
                 var newPointer = await _documentReferenceServices.GenerateAndCreatePointer(pointerRequest);
@@ -155,7 +155,7 @@ namespace Demonstrator.Services.Service.Flows
                 var deletedPointer = true;
                 if(pointerMap != null && !string.IsNullOrEmpty(pointerMap.NrlsPointerId))
                 {
-                    var pointerRequest = NrlsPointerRequest.Delete(pointerMap.NrlsPointerId, request.Asid);
+                    var pointerRequest = NrlsPointerRequest.Delete(pointerMap.NrlsPointerId, request.Asid, request.OrgCode);
                     var outcome = await _documentReferenceServices.DeletePointer(pointerRequest);
 
                     deletedPointer = (outcome != null && outcome.Success);

@@ -2,7 +2,7 @@
   "profiles": {
     "Demonstrator.NRLSAdapter": {
       "commandName": "Project",
-      "commandLineArgs": " -m GET -r DocumentReference -s \"fromASID|200000000118,ssp-interactionid|urn:nhs:names:services:nrls:fhir:rest:search:documentreference\" -p \"patient|2686033207\"",
+      "commandLineArgs": " -m GET -r DocumentReference -s \"fromASID|200000000118,orgcode|AMS01\" -p \"patient|2686033207\"",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

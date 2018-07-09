@@ -119,7 +119,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 Method = request.Method,
                 Headers =
                     {
-                        { HttpRequestHeader.Accept.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}"},
+                        { HttpRequestHeader.Accept.ToString(), $"{ContentType.JSON_CONTENT_HEADER}"},
                         { HttpRequestHeader.AcceptEncoding.ToString(), "gzip, deflate" },
                         { HttpRequestHeader.AcceptLanguage.ToString(), "en-GB,en" },
                         { HttpRequestHeader.CacheControl.ToString(), "no-cache" },

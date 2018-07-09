@@ -30,7 +30,7 @@ namespace Demonstrator.Services.Service.Nrls
         {
             var pointerViewModels = new List<PointerViewModel>();
 
-            var pointerRequest = NrlsPointerRequest.Search(null, request.Id, request.Asid, FhirConstants.SearchInteractionId);
+            var pointerRequest = NrlsPointerRequest.Search(request.OrgCode, request.Id, null, request.Asid, null);
 
             var pointerBundle = await _docRefService.GetPointersAsBundle(pointerRequest);
             var pointerEntries = pointerBundle.Entry;

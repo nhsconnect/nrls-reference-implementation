@@ -33,14 +33,15 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
         {
-            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.NhsNumber, pointerRequest.OrgCode, pointerRequest.PointerId, pointerRequest.TypeCode));
+            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.NhsNumber, null, pointerRequest.PointerId, pointerRequest.TypeCode, pointerRequest.JwtOrgCode));
 
             return pointers;
         }
 
         public async SystemTasks.Task<NrlsCreateResponse> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = NrlsPointer.Generate(_spineSettings.NrlsDefaultprofile, pointerRequest.OrgCode, pointerRequest.NhsNumber, pointerRequest.RecordUrl, pointerRequest.RecordContentType, pointerRequest.TypeCode, pointerRequest.TypeDisplay);
+            //update to allow seperate org codes for custodians and authors
+            var pointer = NrlsPointer.Generate(_spineSettings.NrlsDefaultprofile, pointerRequest.CustodianOrgCode, pointerRequest.NhsNumber, pointerRequest.RecordUrl, pointerRequest.RecordContentType, pointerRequest.TypeCode, pointerRequest.TypeDisplay);
 
             var newPointer = await CreatePointer(pointerRequest, pointer);
 
@@ -52,7 +53,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
             var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
 
-            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, null, content));
+            var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.JwtOrgCode, content));
 
             var createResponse = new NrlsCreateResponse
             {
@@ -65,35 +66,35 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         public async SystemTasks.Task<OperationOutcome> DeletePointer(NrlsPointerRequest pointerRequest)
         {
-            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, null, pointerRequest.PointerId));
+            var pointer = await new FhirConnector().RequestOne<OperationOutcome>(BuildDeleteRequest(pointerRequest.Asid, pointerRequest.JwtOrgCode, pointerRequest.PointerId));
 
             return pointer;
         }
 
-        private CommandRequest BuildGetRequest(string asid, string nhsNumber, string orgCode, string pointerId, string typeCode)
+        private CommandRequest BuildGetRequest(string asid, string nhsNumber, string custodianOrgCode, string pointerId, string typeCode, string jwtOrgCode)
         {
-            return BuildRequest(asid, pointerId, nhsNumber, orgCode, typeCode, HttpMethod.Get, null);
+            return BuildRequest(asid, pointerId, nhsNumber, custodianOrgCode, typeCode, jwtOrgCode, HttpMethod.Get, null);
         }
 
-        private CommandRequest BuildPostRequest(string asid, string orgCode, HttpContent content)
+        private CommandRequest BuildPostRequest(string asid, string jwtOrgCode, HttpContent content)
         {
             
-            return BuildRequest(asid, null, null, orgCode, null, HttpMethod.Post, content);
+            return BuildRequest(asid, null, null, null, null, jwtOrgCode, HttpMethod.Post, content);
         }
 
-        private CommandRequest BuildDeleteRequest(string asid, string orgCode, string pointerId)
+        private CommandRequest BuildDeleteRequest(string asid, string jwtOrgCode, string pointerId)
         {
-            return BuildRequest(asid, pointerId, null, orgCode, null, HttpMethod.Delete, null);
+            return BuildRequest(asid, pointerId, null, null, null, jwtOrgCode, HttpMethod.Delete, null);
         }
 
-        private CommandRequest BuildRequest(string asid, string resourceId, string nhsNumber, string orgCode, string typeCode, HttpMethod method, HttpContent content)
+        private CommandRequest BuildRequest(string asid, string resourceId, string nhsNumber, string custodianOrgCode, string typeCode, string jwtOrgCode, HttpMethod method, HttpContent content)
         {
             var command = new CommandRequest
             {
                 BaseUrl = $"{(_spineSettings.NrlsUseSecure ? _spineSettings.NrlsSecureServerUrl : _spineSettings.NrlsServerUrl)}",
                 ResourceId = resourceId,
                 ResourceType = ResourceType.DocumentReference,
-                SearchParams = GetParams(nhsNumber, orgCode, resourceId, typeCode),
+                SearchParams = GetParams(nhsNumber, custodianOrgCode, resourceId, typeCode),
                 Method = method,
                 Content = content,
                 UseSecure = _spineSettings.NrlsUseSecure,
@@ -101,7 +102,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
                 ServerThumbprint = _spineSettings.SpineThumbprint
             };
 
-            var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, orgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
+            var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
 
             command.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
