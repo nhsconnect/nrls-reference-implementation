@@ -80,7 +80,7 @@ namespace NRLS_API.WebApp
                 options.ConnectionString = Configuration.GetSection("NRLSMongoDb:ConnectionString").Value;
                 options.Database = Configuration.GetSection("NRLSMongoDb:Database").Value;
             });
-            services.Configure<NrlsApiSetting>(options =>
+            services.Configure<ApiSetting>("NrlsApiSetting", options =>
             {
                 options.SupportedResources = Configuration.GetSection("NRLSAPI:SupportedResources").Value.Split(",").ToList();
                 options.SupportedContentTypes = Configuration.GetSection("NRLSAPI:SupportedContentTypes").Value.Split(",").ToList();
@@ -90,6 +90,14 @@ namespace NRLS_API.WebApp
                 options.SecureOnly = bool.Parse(Configuration.GetSection("NRLSAPI:SecureOnly").Value);
                 options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
                 options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+            });
+            services.Configure<ApiSetting>("PdsApiSetting", options =>
+            {
+                options.ProfileUrl = Configuration.GetSection("PDSAPI:ProfileUrl").Value;
+            });
+            services.Configure<ApiSetting>("OdsApiSetting", options =>
+            {
+                options.ProfileUrl = Configuration.GetSection("ODSAPI:ProfileUrl").Value;
             });
             services.Configure<SpineSetting>(options =>
             {
@@ -104,6 +112,8 @@ namespace NRLS_API.WebApp
             services.AddTransient<IValidationHelper, ValidationHelper>();
             services.AddTransient<IFhirValidation, FhirValidation>();
             services.AddTransient<INrlsSearch, NrlsSearch>();
+            services.AddTransient<IPdsSearch, PdsSearch>();
+            services.AddTransient<IOdsSearch, OdsSearch>();
             services.AddTransient<INrlsMaintain, NrlsMaintain>();
             services.AddTransient<INrlsConformance, NrlsConformance>();
             services.AddTransient<INrlsValidation, NrlsValidation>();

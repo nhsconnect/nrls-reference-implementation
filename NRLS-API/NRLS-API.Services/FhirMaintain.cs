@@ -20,7 +20,7 @@ namespace NRLS_API.Services
 
         private readonly INRLSMongoDBContext _context;
       
-        public FhirMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting)
+        public FhirMaintain(IOptionsSnapshot<ApiSetting> nrlsApiSetting, INRLSMongoDBContext context) : base(nrlsApiSetting, "NrlsApiSetting")
         {
             _context = context;
         }

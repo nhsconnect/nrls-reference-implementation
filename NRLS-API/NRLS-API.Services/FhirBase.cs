@@ -15,10 +15,15 @@ namespace NRLS_API.Services
 
         public string _resourceProfile { get; set; }
 
-        public FhirBase(IOptions<NrlsApiSetting> nrlsApiSetting)
+        public FhirBase(IOptionsSnapshot<ApiSetting> apiSetting, string optionName = null)
         {
-            _supportedResources = nrlsApiSetting.Value.SupportedResources;
-            _resourceProfile = nrlsApiSetting.Value.ProfileUrl;
+            if(!string.IsNullOrEmpty(optionName))
+            {
+                var apiSettings = apiSetting.Get(optionName);
+                _supportedResources = apiSettings.SupportedResources;
+                _resourceProfile = apiSettings.ProfileUrl;
+            }
+
         }
 
         protected void ValidateResource(string resourceType)

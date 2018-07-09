@@ -7,7 +7,7 @@ namespace NRLS_APITest.StubClasses
 {
     public class FhirBaseStub : FhirBase
     {
-        public FhirBaseStub(IOptions<NrlsApiSetting> options) : base(options) { }
+        public FhirBaseStub(IOptionsSnapshot<ApiSetting> options) : base(options, "NrlsApiSetting") { }
 
         public void ValidateResourceStub(string resourceType)
         {

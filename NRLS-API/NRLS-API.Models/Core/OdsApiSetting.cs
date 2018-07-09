@@ -1,7 +1,7 @@
 ﻿
 namespace NRLS_API.Models.Core
 {
-    public class NrlsApiSetting : ApiSetting
+    public class OdsApiSetting : ApiSetting
     {
     }
 }

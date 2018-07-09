@@ -20,7 +20,7 @@ namespace NRLS_API.Services
         private readonly IMemoryCache _cache;
         private readonly IFhirValidation _fhirValidation;
 
-        public NrlsMaintain(IOptions<NrlsApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, IMemoryCache memoryCache, IFhirValidation fhirValidation) : base(nrlsApiSetting)
+        public NrlsMaintain(IOptionsSnapshot<ApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, IMemoryCache memoryCache, IFhirValidation fhirValidation) : base(nrlsApiSetting, "NrlsApiSetting")
         {
             _fhirMaintain = fhirMaintain;
             _cache = memoryCache;

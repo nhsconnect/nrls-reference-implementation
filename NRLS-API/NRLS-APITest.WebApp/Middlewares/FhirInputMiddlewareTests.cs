@@ -25,8 +25,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -45,10 +45,10 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
-            await fhirInputMiddleware.Invoke(contextMock.Object);
+            await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
 
         [Fact]
@@ -57,8 +57,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -74,10 +74,10 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
-            await fhirInputMiddleware.Invoke(contextMock.Object);
+            await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
 
         [Fact]
@@ -86,8 +86,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -106,10 +106,10 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
-            await fhirInputMiddleware.Invoke(contextMock.Object);
+            await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
 
         [Fact]
@@ -118,8 +118,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -138,9 +138,9 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
-            await fhirInputMiddleware.Invoke(contextMock.Object);
+            await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
 
         [Fact]
@@ -149,8 +149,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -169,9 +169,9 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
-            await fhirInputMiddleware.Invoke(contextMock.Object);
+            await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
 
         [Fact]
@@ -180,8 +180,8 @@ namespace NRLS_APITest.WebApp.Middlewares
 
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var requestMock = new Mock<HttpRequest>();
             requestMock.Setup(x => x.Scheme).Returns("http");
@@ -200,12 +200,12 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0), nrlsApiSettings: settingsMock.Object);
+            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await fhirInputMiddleware.Invoke(contextMock.Object);
+                await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
 
             });
         }

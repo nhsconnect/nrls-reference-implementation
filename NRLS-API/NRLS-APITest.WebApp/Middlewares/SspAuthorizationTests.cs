@@ -21,7 +21,7 @@ namespace NRLS_APITest.WebApp.Middlewares
     public class SspAuthorizationTests : IDisposable
     {
         private IOptions<SpineSetting> _spineSettings;
-        private IOptions<NrlsApiSetting> _nrlsSettings;
+        private IOptionsSnapshot<NrlsApiSetting> _nrlsSettings;
         private IMemoryCache _cache;
         private readonly INrlsValidation _nrlsValidation;
 
@@ -35,8 +35,8 @@ namespace NRLS_APITest.WebApp.Middlewares
             var spineSettingsMock = new Mock<IOptions<SpineSetting>>();
             spineSettingsMock.Setup(op => op.Value).Returns(spineSettings);
 
-            var nrlsSettingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            nrlsSettingsMock.Setup(op => op.Value).Returns(AppSettings.NrlsApiSettings);
+            var nrlsSettingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            nrlsSettingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(AppSettings.NrlsApiSettings);
 
 
             var nrlsValidationMock = new Mock<INrlsValidation>();
@@ -85,10 +85,10 @@ namespace NRLS_APITest.WebApp.Middlewares
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             //Test will fail if invalid
-            await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+            await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
         }
 
         [Fact]
@@ -106,11 +106,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -131,11 +131,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -155,11 +155,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -180,11 +180,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -204,11 +204,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -229,11 +229,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -253,11 +253,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }
@@ -278,11 +278,11 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, nrlsApiSettings: _nrlsSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object);
+                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
             });
         }

@@ -10,11 +10,11 @@ namespace NRLS_API.WebApp.Controllers
     [Route("ods/fhir/Organization")]
     public class OdsController : Controller
     {
-        private readonly IFhirSearch _fhirSearch;
+        private readonly IOdsSearch _odsSearch;
 
-        public OdsController(IFhirSearch fhirSearch)
+        public OdsController(IOdsSearch odsSearch)
         {
-            _fhirSearch = fhirSearch;
+            _odsSearch = odsSearch;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(null, ResourceType.Organization, null, Request, null);
 
-            var result = await _fhirSearch.Find<Organization>(request);
+            var result = await _odsSearch.Find<Organization>(request);
 
             return result;
         }
@@ -43,7 +43,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(id, ResourceType.Organization, null, Request, null);
 
-            var result = await _fhirSearch.Find<Organization>(request);
+            var result = await _odsSearch.Find<Organization>(request);
 
             return result;
         }

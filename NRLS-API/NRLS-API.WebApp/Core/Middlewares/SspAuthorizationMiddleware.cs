@@ -19,21 +19,23 @@ namespace NRLS_API.WebApp.Core.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly SpineSetting _spineSettings;
-        private readonly NrlsApiSetting _nrlsApiSettings;
+        private ApiSetting _nrlsApiSettings;
         private IMemoryCache _cache;
         private readonly INrlsValidation _nrlsValidation;
 
-        public SspAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IOptions<NrlsApiSetting> nrlsApiSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
+        public SspAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
         {
             _next = next;
             _spineSettings = spineSettings.Value;
-            _nrlsApiSettings = nrlsApiSettings.Value;
             _cache = memoryCache;
             _nrlsValidation = nrlsValidation;
         }
 
-        public async SystemTasks.Task Invoke(HttpContext context)
+        public async SystemTasks.Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> nrlsApiSettings)
         {
+            _nrlsApiSettings = nrlsApiSettings.Get("NrlsApiSetting");
+
+
             //Order of validation is Important
             var request = context.Request;
             var headers = request.Headers;

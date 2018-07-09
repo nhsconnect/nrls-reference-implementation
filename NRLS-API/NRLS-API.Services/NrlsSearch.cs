@@ -16,7 +16,7 @@ namespace NRLS_API.Services
 
         private readonly IFhirValidation _fhirValidation;
 
-        public NrlsSearch(IOptions<NrlsApiSetting> nrlsApiSetting, IFhirSearch fhirSearch, IFhirValidation fhirValidation) : base(nrlsApiSetting)
+        public NrlsSearch(IOptionsSnapshot<ApiSetting> apiSetting, IFhirSearch fhirSearch, IFhirValidation fhirValidation) : base(apiSetting, "NrlsApiSetting")
         {
             _fhirSearch = fhirSearch;
             _fhirValidation = fhirValidation;

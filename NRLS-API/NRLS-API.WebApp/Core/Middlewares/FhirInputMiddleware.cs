@@ -19,16 +19,17 @@ namespace NRLS_API.WebApp.Core.Middlewares
     public class FhirInputMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly NrlsApiSetting _nrlsApiSettings;
+        private ApiSetting _nrlsApiSettings;
 
-        public FhirInputMiddleware(RequestDelegate next, IOptions<NrlsApiSetting> nrlsApiSettings)
+        public FhirInputMiddleware(RequestDelegate next)
         {
             _next = next;
-            _nrlsApiSettings = nrlsApiSettings.Value;
         }
 
-        public async SystemTasks.Task Invoke(HttpContext context)
+        public async SystemTasks.Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> nrlsApiSettings)
         {
+            _nrlsApiSettings = nrlsApiSettings.Get("NrlsApiSetting");
+
             var formatKey = "_format";
             var acceptKey = HttpRequestHeader.Accept.ToString();
 

@@ -19,7 +19,7 @@ namespace NRLS_APITest.Services
 
         private IFhirValidation _fhirValidation;
         private IFhirSearch _fhirSearch;
-        private IOptions<NrlsApiSetting> _nrlsApiSettings;
+        private IOptionsSnapshot<NrlsApiSetting> _nrlsApiSettings;
 
         private Bundle _expectedBundle;
 
@@ -52,8 +52,8 @@ namespace NRLS_APITest.Services
                 SupportedResources = new List<string> { "DocumentReference" }
             };
 
-            var mock = new Mock<IOptions<NrlsApiSetting>>();
-            mock.Setup(op => op.Value).Returns(opts);
+            var mock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            mock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             _nrlsApiSettings = mock.Object;
 

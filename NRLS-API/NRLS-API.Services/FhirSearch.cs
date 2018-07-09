@@ -1,8 +1,8 @@
 ﻿using Hl7.Fhir.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
@@ -20,7 +20,7 @@ namespace NRLS_API.Services
         private readonly INRLSMongoDBContext _context;
         private readonly IFhirSearchHelper _fhirSearchHelper;
 
-        public FhirSearch(IOptions<NrlsApiSetting> nrlsApiSetting, INRLSMongoDBContext context, IFhirSearchHelper fhirSearchHelper) : base(nrlsApiSetting)
+        public FhirSearch(IOptionsSnapshot<ApiSetting> apiSetting, INRLSMongoDBContext context, IFhirSearchHelper fhirSearchHelper) : base(apiSetting, "NrlsApiSetting")
         {
             _context = context;
             _fhirSearchHelper = fhirSearchHelper;

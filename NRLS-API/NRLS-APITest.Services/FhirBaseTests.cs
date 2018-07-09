@@ -13,14 +13,14 @@ namespace NRLS_APITest.Services
 {
     public class FhirBaseTests : IDisposable
     {
-        IOptions<NrlsApiSetting> _nrlsApiSettings;
+        IOptionsSnapshot<NrlsApiSetting> _nrlsApiSettings;
 
         public FhirBaseTests()
         {
             var opts = AppSettings.NrlsApiSettings;
 
-            var mock = new Mock<IOptions<NrlsApiSetting>>();
-            mock.Setup(op => op.Value).Returns(opts);
+            var mock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            mock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             _nrlsApiSettings = mock.Object;
         }

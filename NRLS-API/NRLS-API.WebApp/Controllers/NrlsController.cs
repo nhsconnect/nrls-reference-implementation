@@ -19,13 +19,13 @@ namespace NRLS_API.WebApp.Controllers
     {
         private readonly INrlsSearch _nrlsSearch;
         private readonly INrlsMaintain _nrlsMaintain;
-        private readonly NrlsApiSetting _nrlsApiSettings;
+        private readonly ApiSetting _nrlsApiSettings;
 
-        public NrlsController(IOptions<NrlsApiSetting> nrlsApiSettings, INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
+        public NrlsController(IOptionsSnapshot<ApiSetting> apiSettings, INrlsSearch nrlsSearch, INrlsMaintain nrlsMaintain)
         {
             _nrlsSearch = nrlsSearch;
             _nrlsMaintain = nrlsMaintain;
-            _nrlsApiSettings = nrlsApiSettings.Value;
+            _nrlsApiSettings = apiSettings.Get("NrlsApiSetting");
         }
 
         /// <summary>

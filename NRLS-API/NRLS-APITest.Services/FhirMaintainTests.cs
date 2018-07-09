@@ -18,8 +18,8 @@ namespace NRLS_APITest.Services
         {
             var opts = AppSettings.NrlsApiSettings;
 
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var collectionMock = new Mock<IMongoCollection<BsonDocument>>();
             collectionMock.Setup(m => m.InsertOne(It.IsAny<BsonDocument>(), null, default(System.Threading.CancellationToken)));

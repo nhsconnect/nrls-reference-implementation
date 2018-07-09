@@ -10,11 +10,11 @@ namespace NRLS_API.WebApp.Controllers
     [Route("pds/fhir/Patient")]
     public class PdsController : Controller
     {
-        private readonly IFhirSearch _fhirSearch;
+        private readonly IPdsSearch _pdsSearch;
 
-        public PdsController(IFhirSearch fhirSearch)
+        public PdsController(IPdsSearch pdsSearch)
         {
-            _fhirSearch = fhirSearch;
+            _pdsSearch = pdsSearch;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(null, ResourceType.Patient, null, Request, null);
 
-            var result = await _fhirSearch.Find<Patient>(request);
+            var result = await _pdsSearch.Find<Patient>(request);
 
             return result;
         }
@@ -43,7 +43,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(id, ResourceType.Patient, null,  Request, null);
 
-            var result = await _fhirSearch.Get<Patient>(request);
+            var result = await _pdsSearch.Get<Patient>(request);
 
             return result;
         }

@@ -17,7 +17,7 @@ namespace NRLS_APITest.Services
 {
     public class NrlsMaintainTests : IDisposable
     {
-        IOptions<NrlsApiSetting> _nrlsApiSettings;
+        IOptionsSnapshot<NrlsApiSetting> _nrlsApiSettings;
         IFhirMaintain _fhirMaintain;
         IFhirSearch _fhirSearch;
         IMemoryCache _cache;
@@ -26,8 +26,8 @@ namespace NRLS_APITest.Services
         public NrlsMaintainTests()
         {
             var opts = AppSettings.NrlsApiSettings;
-            var settingsMock = new Mock<IOptions<NrlsApiSetting>>();
-            settingsMock.Setup(op => op.Value).Returns(opts);
+            var settingsMock = new Mock<IOptionsSnapshot<NrlsApiSetting>>();
+            settingsMock.Setup(op => op.Get(It.IsAny<string>())).Returns(opts);
 
             var searchOrgList = new List<Organization> { FhirOrganizations.Valid_Organization };
             var searchOrgBundle = FhirBundle.GetBundle<Organization>(searchOrgList);

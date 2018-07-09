@@ -21,20 +21,21 @@ namespace NRLS_API.WebApp.Core.Middlewares
     {
         private readonly RequestDelegate _next;
         private IMemoryCache _cache;
-        private NrlsApiSetting _nrlsApiSetting;
+        private ApiSetting _nrlsApiSetting;
 
-        public ClientCertificateCheckMiddleware(IOptions<NrlsApiSetting> apiSettings, RequestDelegate next, IMemoryCache memoryCache)
+        public ClientCertificateCheckMiddleware( RequestDelegate next, IMemoryCache memoryCache)
         {
             _next = next;
             _cache = memoryCache;
-            _nrlsApiSetting = apiSettings.Value;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> apiSettings)
         {
+            _nrlsApiSetting = apiSettings.Get("NrlsApiSetting");
+
             //Fake SSP Interaction/ASID datastore
 
-            if(_nrlsApiSetting.Secure)
+            if (_nrlsApiSetting.Secure)
             {
                 var clientAsidMap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
                 var clientCertificate = context.Connection.ClientCertificate;
