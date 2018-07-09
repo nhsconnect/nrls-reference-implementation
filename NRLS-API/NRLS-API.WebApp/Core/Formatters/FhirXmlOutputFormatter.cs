@@ -1,9 +1,11 @@
 ﻿using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using System;
+using System.Net;
 using System.Text;
 using SystemTask = System.Threading.Tasks;
 
@@ -40,6 +42,10 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 buffer.Append(resource);
             }
+
+            response.Headers.Remove(HttpResponseHeader.ContentType.ToString());
+            response.Headers.Add(HttpResponseHeader.ContentType.ToString(), $"{ContentType.XML_CONTENT_HEADER}; {Encoding.UTF8.WebName}");
+
 
             return response.WriteAsync(buffer.ToString(), Encoding.UTF8);
         }
