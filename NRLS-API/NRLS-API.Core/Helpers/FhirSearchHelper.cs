@@ -40,33 +40,32 @@ namespace NRLS_API.Core.Helpers
 
             var modelParams = SearchParameters.Where(s => s.Resource.Equals(request.StrResourceType) && request.AllowedParameters.Contains(s.Name));
 
-            StructureDefinition profile;
+            StructureDefinition profile = null;
 
-            try
+            if (!string.IsNullOrEmpty(request.ProfileUri))
             {
-                profile = (StructureDefinition)GetResourceProfile(request.ProfileUri);
+                try
+                {
+                    profile = (StructureDefinition)GetResourceProfile(request.ProfileUri);
+                }
+                catch
+                {
+                    throw new HttpFhirException("Failed to parse fhir type for search query.", OperationOutcomeFactory.CreateInternalError($"Failed to parse fhir type of {request.StrResourceType} for search query."));
+                }
             }
-            catch
-            {
-                throw new HttpFhirException("Failed to parse fhir type for search query.", OperationOutcomeFactory.CreateInternalError($"Failed to parse fhir type of {request.StrResourceType} for search query."));
-            }
+
 
 
             foreach (var param in modelParams)
             {
                 var criteria = searchQuery.Parameters.FirstOrDefault(x => (!x.Item1.Contains(".") && x.Item1.Equals(param.Name)) || (x.Item1.Contains(".") && x.Item1.StartsWith(param.Name)));
 
-                if (criteria == null || profile == null || profile.Snapshot == null)
+                if (criteria == null)
                 {
                     continue;
                 }
 
-                var paramDef = profile.Snapshot.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{param.Name}"));
-
-                if(paramDef == null)
-                {
-                    continue;
-                }
+                var paramDef = profile?.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{param.Name}"));
 
                 var paramVal = criteria.Item2;
 
@@ -87,7 +86,7 @@ namespace NRLS_API.Core.Helpers
                     var arrayPath = "";
 
                     //extend for other types
-                    if(paramDef.Type.FirstOrDefault(t => t.Code.Equals(FHIRAllTypes.CodeableConcept.ToString())) != null)
+                    if(paramDef != null && paramDef.Type.FirstOrDefault(t => t.Code.Equals(FHIRAllTypes.CodeableConcept.ToString())) != null)
                     {
                         valType = "code";
 
