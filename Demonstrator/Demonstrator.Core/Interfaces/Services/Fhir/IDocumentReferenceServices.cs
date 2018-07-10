@@ -6,7 +6,7 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
 {
     public interface IDocumentReferenceServices
     {
-        SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest);
+        SystemTasks.Task<Resource> GetPointersBundle(NrlsPointerRequest pointerRequest);
 
         SystemTasks.Task<NrlsCreateResponse> GenerateAndCreatePointer(NrlsPointerRequest pointerRequest);
 

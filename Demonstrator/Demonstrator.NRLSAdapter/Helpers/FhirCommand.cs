@@ -207,7 +207,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 if (_parameters == null || !_parameters.Any())
                 {
-                    return CommandResponse.Set(false, $"The Parameters OPTION is missing. The GET, PUT and DELETE method requires parameters.");
+                    return CommandResponse.Set(false, $"The Parameters OPTION is missing or invalid. The GET, PUT and DELETE method requires parameters.");
                 }
 
                 message.AppendLine("Parameters: " + _parameters);
@@ -308,7 +308,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         pointerRequest = NrlsPointerRequest.Search(orgCode.Value, patientParam.Value, typeParam.Value, asid.Value, custodianParam.Value);
                     }
 
-                    var pointers = await _docRefService.GetPointersAsBundle(pointerRequest);
+                    var pointers = await _docRefService.GetPointersBundle(pointerRequest);
 
                     jsonResponse = jsonSerializer.SerializeToString(pointers);
                 }

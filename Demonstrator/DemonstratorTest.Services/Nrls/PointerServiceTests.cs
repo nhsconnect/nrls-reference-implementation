@@ -28,7 +28,7 @@ namespace DemonstratorTest.Services.Nrls
             var testOrgCode = "AMS01";
 
             var _docRefService = new Mock<IDocumentReferenceServices>();
-            _docRefService.Setup(m => m.GetPointersAsBundle(It.IsAny<NrlsPointerRequest>())).Returns(SystemTasks.Task.Run(() => FhirBundle.GetBundle<DocumentReference>(documentReferenceModels))).Verifiable();
+            _docRefService.Setup(m => m.GetPointersBundle(It.IsAny<NrlsPointerRequest>())).Returns(SystemTasks.Task.Run(() => FhirBundle.GetBundle<DocumentReference>(documentReferenceModels) as Resource)).Verifiable();
 
             var _patientService = new Mock<IPatientServices>();
             _patientService.Setup(m => m.GetPatients()).Returns(SystemTasks.Task.Run(() => patientModels)).Verifiable();

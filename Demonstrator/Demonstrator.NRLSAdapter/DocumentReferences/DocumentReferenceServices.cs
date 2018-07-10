@@ -31,9 +31,9 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             _cache = cache;
         }
 
-        public async SystemTasks.Task<Bundle> GetPointersAsBundle(NrlsPointerRequest pointerRequest)
+        public async SystemTasks.Task<Resource> GetPointersBundle(NrlsPointerRequest pointerRequest)
         {
-            var pointers = await new FhirConnector().RequestOne<Bundle>(BuildGetRequest(pointerRequest.Asid, pointerRequest.NhsNumber, null, pointerRequest.PointerId, pointerRequest.TypeCode, pointerRequest.JwtOrgCode));
+            var pointers = await new FhirConnector().RequestOne<Resource>(BuildGetRequest(pointerRequest.Asid, pointerRequest.NhsNumber, pointerRequest.CustodianOrgCode, pointerRequest.PointerId, pointerRequest.TypeCode, pointerRequest.JwtOrgCode));
 
             return pointers;
         }
