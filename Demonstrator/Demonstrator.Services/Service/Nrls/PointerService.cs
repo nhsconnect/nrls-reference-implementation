@@ -1,4 +1,5 @@
-﻿using Demonstrator.Core.Interfaces.Services.Fhir;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.Nrls;
 using Demonstrator.Models.ViewModels.Base;
@@ -32,15 +33,21 @@ namespace Demonstrator.Services.Service.Nrls
 
             var pointerRequest = NrlsPointerRequest.Search(request.OrgCode, request.Id, null, request.Asid, null);
 
-            var pointerBundle = await _docRefService.GetPointersAsBundle(pointerRequest);
-            var pointerEntries = pointerBundle.Entry;
+            var pointerResponse = await _docRefService.GetPointersBundle(pointerRequest);
+
+            if (pointerResponse.ResourceType.Equals(ResourceType.OperationOutcome))
+            {
+                throw new HttpFhirException("Invalid Fhir Request", (OperationOutcome)pointerResponse, null);
+            }
+
+            var pointerBundle = pointerResponse as Bundle;
 
             //need a more slick solution for getting related references
             //we are connecting to NRLS so will only get Pointers back - a complete Fhir server would allow for includes
             var patients = await _patientService.GetPatients(); //In live this could be lots
             var organisations = await _organisationServices.GetOrganisations(); //In live this could be lots
 
-            var pointers = ListEntries<DocumentReference>(pointerEntries, ResourceType.DocumentReference);
+            var pointers = ListEntries<DocumentReference>(pointerBundle.Entry, ResourceType.DocumentReference);
             //var patients = ListEntries<Patient>(entries, ResourceType.Patient); // If we could do includes take from bundle
             //var organisations = ListEntries<Organization>(entries, ResourceType.Organization); // If we could do includes take from bundle
 
