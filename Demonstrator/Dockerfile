@@ -1,7 +1,7 @@
 FROM microsoft/aspnetcore-build:2.0 AS build-env
 
 # start in our app directory
-WORKDIR /nrlsdemoapp
+WORKDIR /nrls-demonstrator
 
 # Copy all of solution
 COPY . ./
@@ -14,29 +14,29 @@ RUN chmod +x ./Shared/copyconfig
 RUN dotnet restore Demonstrator.WebApp/Demonstrator.WebApp.csproj
 
 #Start Front-end build
-WORKDIR /nrlsdemoapp/Demonstrator.WebApp
+WORKDIR /nrls-demonstrator/Demonstrator.WebApp
 RUN npm install
 RUN npm run build:prod
 
 #Start Back-end build
-WORKDIR /nrlsdemoapp
+WORKDIR /nrls-demonstrator
 RUN dotnet publish Demonstrator.WebApp/Demonstrator.WebApp.csproj -c Release -o out
 
 # Build runtime image
 FROM microsoft/aspnetcore:2.0
-WORKDIR /nrlsdemoapp
-COPY --from=build-env /nrlsdemoapp/Demonstrator.WebApp/out .
+WORKDIR /nrls-demonstrator
+COPY --from=build-env /nrls-demonstrator/Demonstrator.WebApp/out .
 
 # Re-Copy shared config. File is lost during transfer from images.
-WORKDIR /nrlsdemoapp/Shared
-COPY --from=build-env /nrlsdemoapp/Shared/globalsettings.json .
-COPY --from=build-env /nrlsdemoapp/Shared/globalsettings.Production.json .
-COPY --from=build-env /nrlsdemoapp/Shared/ClientAsidMap.json .
+WORKDIR /nrls-demonstrator/Shared
+COPY --from=build-env /nrls-demonstrator/Shared/globalsettings.json .
+COPY --from=build-env /nrls-demonstrator/Shared/globalsettings.Production.json .
+COPY --from=build-env /nrls-demonstrator/Shared/ClientAsidMap.json .
 RUN chmod 644 ./globalsettings.json
 RUN chmod 644 ./globalsettings.Production.json
 RUN chmod 644 ./ClientAsidMap.json
 
-WORKDIR /nrlsdemoapp
+WORKDIR /nrls-demonstrator
 
 
 # Set Server ENVs
