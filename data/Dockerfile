@@ -1,11 +1,11 @@
 FROM mongo:3.6
 
-WORKDIR /data
+WORKDIR /nrlsdata
 ADD defaultdata defaultdata
 ADD cmds cmds
 
-RUN chmod +x /data/cmds/run.sh
-RUN chmod +x /data/cmds/set_mongodb_users.sh
-RUN chmod +x /data/cmds/set_mongodb_data.sh
+RUN chmod +x /nrlsdata/cmds/run.sh
+RUN chmod +x /nrlsdata/cmds/set_mongodb_users.sh
+RUN chmod +x /nrlsdata/cmds/set_mongodb_data.sh
 
-CMD ["/data/cmds/run.sh"]
+CMD ["/nrlsdata/cmds/run.sh"]
