@@ -7,7 +7,7 @@ using NRLS_API.Models.Core;
 namespace NRLS_API.WebApp.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("pds/fhir/Patient")]
+    [Route("nrls-ri/Patient")]
     public class PdsController : Controller
     {
         private readonly IPdsSearch _pdsSearch;

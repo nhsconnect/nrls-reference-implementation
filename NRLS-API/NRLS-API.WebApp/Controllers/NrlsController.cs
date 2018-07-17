@@ -14,7 +14,7 @@ namespace NRLS_API.WebApp.Controllers
 {
     [MiddlewareFilter(typeof(ClientCertificateCheckPipeline))]
     [MiddlewareFilter(typeof(SspAuthorizationPipeline))]
-    [Route("nrls/fhir/DocumentReference")]
+    [Route("nrls-ri/DocumentReference")]
     public class NrlsController : Controller
     {
         private readonly INrlsSearch _nrlsSearch;
