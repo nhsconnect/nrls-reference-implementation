@@ -6,6 +6,7 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Models.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Hl7.Fhir.Model.ModelInfo;

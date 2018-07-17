@@ -7,7 +7,7 @@ cmd_message="=> Starting MongoDB:Open"
 
 if [ -f /data/db/.mongodb_password_set ]; then
     cmd="$cmd --auth"
-    cmd_message="=> Starting MongoDB:Secure"
+    cmd_message="=> Starting MongoDB:Secured"
 fi
  
 echo "${cmd_message}";

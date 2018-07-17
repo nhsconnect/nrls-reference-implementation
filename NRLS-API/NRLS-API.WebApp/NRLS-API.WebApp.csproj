@@ -9,11 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\definitions.xml.zip" />
     <None Remove="Resources\swagger-custom.css" />
     <None Remove="Resources\swagger-ui-index.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Data\definitions.xml.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\swagger-custom.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
