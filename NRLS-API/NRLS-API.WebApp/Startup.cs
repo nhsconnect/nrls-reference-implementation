@@ -148,7 +148,7 @@ namespace NRLS_API.WebApp
 
             //app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.RoutePrefix = "/nrls-ri";
+                c.RoutePrefix = "nrls-ri";
                 c.SwaggerEndpoint("/Resources/swagger.json", "NRLS Reference Implementation");
                 c.InjectStylesheet("/Resources/swagger-custom.css");
                 c.DefaultModelsExpandDepth(-1);
