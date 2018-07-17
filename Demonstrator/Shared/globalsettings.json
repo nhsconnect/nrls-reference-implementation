@@ -1,19 +1,19 @@
 ﻿{
   "NRLSAPI": {
-    "ServerUrl": "http://localhost:51913/nrls/fhir",
-    "SecureServerUrl": "https://localhost:44313/nrls/fhir",
+    "ServerUrl": "http://localhost:51913/nrls-ri",
+    "SecureServerUrl": "https://localhost:44313/nrls-ri",
     "Secure": false,
     "DefaultProfile": "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
   },
   "PDSAPI": {
-    "ServerUrl": "http://localhost:51913/pds/fhir",
-    "SecureServerUrl": "http://localhost:51913/pds/fhir",
+    "ServerUrl": "http://localhost:51913/nrls-ri",
+    "SecureServerUrl": "http://localhost:51913/nrls-ri",
     "Secure": false,
     "DefaultProfile": "https://www.hl7.org/fhir/STU3/patient.html"
   },
   "ODSAPI": {
-    "ServerUrl": "http://localhost:51913/ods/fhir",
-    "SecureServerUrl": "http://localhost:51913/pds/fhir",
+    "ServerUrl": "http://localhost:51913/nrls-ri",
+    "SecureServerUrl": "http://localhost:51913/nrls-ri",
     "Secure": false,
     "DefaultProfile": "https://www.hl7.org/fhir/STU3/organization.html"
   },
