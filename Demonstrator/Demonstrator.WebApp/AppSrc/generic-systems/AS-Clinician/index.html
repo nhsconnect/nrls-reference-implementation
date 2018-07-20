@@ -14,17 +14,17 @@
             Once live, these pointer results may be able to return patient information such as care plans as created by Mental Health professionals.
             <br />
             <span if.bind="data.organisation.personnelLinkId">These care plans are created separately from the NRLS at the point of care by the care professional - Why not also take a look at how NRLS can work for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health Trusts</a>?</span>
-            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
+            <button href="#showInstructions" aria-controls="genericSystemInstructions" class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-as-clinician">
-            <div class="gs-header-banner">${data.genericSystem.name} Demo System <a href="javascript:void(0);" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a></div>
+            <div class="gs-header-banner">${data.genericSystem.name} Demo System <a href="#epr-close" click.delegate="return false" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a></div>
             <div class="gs-header">
                 <ul class="gs-top-menu text-right">
-                    <li class="pull-left"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>New Event</span> <i class="fa fa-phone-square"></i></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Call Tools</span> <i class="fa fa-cogs"></i></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Resources</span> <i class="fa fa-info-circle"></i></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Mail</span> <i class="fa fa-envelope"></i></a></li>
+                    <li class="pull-left"><a href="#epr-new-event" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>New Event</span> <i class="fa fa-phone-square"></i></a></li>
+                    <li><a href="#epr-call-tools" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Call Tools</span> <i class="fa fa-cogs"></i></a></li>
+                    <li><a href="#epr-resources" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Resources</span> <i class="fa fa-info-circle"></i></a></li>
+                    <li><a href="#epr-mail" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Mail</span> <i class="fa fa-envelope"></i></a></li>
                 </ul>
             </div>
 
@@ -139,9 +139,9 @@
                         <div class="col-sm-2">
                             <div class="gs-action-menu">
                                 <ul class="list-unstyled n-text-large text-right">
-                                    <li><a href="javascript:void(0);" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Save <i class="fa fa-save"></i></a></li>
-                                    <li><a href="javascript:void(0);" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Print <i class="fa fa-print"></i></a></li>
-                                    <li><a href="javascript:void(0);" class="grey-link" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Close <i class="fa fa-close"></i></a></li>
+                                    <li><a href="#epr-save" click.delegate="return false" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Save <i class="fa fa-save"></i></a></li>
+                                    <li><a href="#epr-print" click.delegate="return false" class="grey-link margin-bottom-nml" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Print <i class="fa fa-print"></i></a></li>
+                                    <li><a href="#epr-close" click.delegate="return false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Close <i class="fa fa-close"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -150,12 +150,12 @@
                     <div class="row">
                         <div class="col-sm-12 gs-tab-panels">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Call Notes</a></li>
-                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-exclamation"></i> Notifications</a></li>
-                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Chronology</a></li>
-                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">EMD Data</a></li>
-                                <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Crew Notes</a></li>
-                                <li role="presentation" class="active"><a href="jacascript:void(0);">NRLS</a></li>
+                                <li role="presentation"><a href="#epr-call-notes" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Call Notes</a></li>
+                                <li role="presentation"><a href="#epr-notifications" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-exclamation"></i> Notifications</a></li>
+                                <li role="presentation"><a href="#epr-chronology" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Chronology</a></li>
+                                <li role="presentation"><a href="#epr-emd-data" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">EMD Data</a></li>
+                                <li role="presentation"><a href="#epr-crew-notes" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Crew Notes</a></li>
+                                <li role="presentation" class="active"><a href="#epr-nrls" click.delegate="return false">NRLS</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -175,9 +175,9 @@
                 <patient-search selected-patient.two-way="selectedPatient" set-current.one-way="true" patient-loading.one-way="patientLoading" type="as"></patient-search>
             </div>
 
-            <div show.bind="instructionsActive" class="gs-instructions">
+            <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
                 <div class="gs-instruction-bg"></div>
-                <div class="gs-instruction-content">
+                <div class="gs-instruction-content" role="document">
                     <h2 class="gs-icontent-header h1">Instructions</h2>
                     <div class="gs-icontent-inner">
                         <ol>
@@ -200,7 +200,7 @@
                             </li>
                         </ol>
                         <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
-                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()" aria-label="Close">Ok</button></p>
                     </div>
 
                     <div class="gs-icontent-footer">

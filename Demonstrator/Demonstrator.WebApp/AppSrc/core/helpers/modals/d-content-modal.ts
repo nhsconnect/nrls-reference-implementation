@@ -10,6 +10,9 @@ export class DContentModalCustomElement {
 
     @bindable
     title: string;
+
+    @bindable
+    id: string;
     
     attached() {
 

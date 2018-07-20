@@ -147,6 +147,20 @@ a {
         }
     }
 
+    &.black-link {
+        &:link,
+        &:visited {
+            color: $black;
+            text-decoration: none;
+        }
+
+        &:hover,
+        &:active {
+            color: $nhsDarkGrey;
+            text-decoration: underline;
+        }
+    }
+
     &.btn {
         text-decoration: none;
     }

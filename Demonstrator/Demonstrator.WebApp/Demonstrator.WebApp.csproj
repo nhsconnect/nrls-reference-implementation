@@ -27,6 +27,7 @@
     <None Remove="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <None Remove="AppSrc\core\interfaces\IContentView.ts" />
+    <None Remove="AppSrc\core\interfaces\IDemonstratorConfig.ts" />
     <None Remove="AppSrc\core\interfaces\IRecord.ts" />
     <None Remove="AppSrc\core\interfaces\IRequest.ts" />
     <None Remove="AppSrc\core\interfaces\IWebAppConfig.ts" />
@@ -110,6 +111,7 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\EventMessages.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\loaders\index.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\error-modal.ts" />
+    <TypeScriptCompile Include="AppSrc\core\interfaces\IDemonstratorConfig.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IContentView.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitDialog.ts" />

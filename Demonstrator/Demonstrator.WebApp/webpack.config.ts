@@ -32,6 +32,7 @@ const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() |
 
 // basic configuration:
 const title = 'NRLS Demonstrator';
+const appVersion = '0.0.1-Beta';
 const baseUrl = '/';
 const rootDir = path.resolve();
 const srcDir = path.resolve('AppSrc');
@@ -75,45 +76,50 @@ const coreBundles = {
  * Main Webpack Configuration
  */
 let config = generateConfig(
-  {
-    entry: {
-      'app': ['./AppSrc/main' /* this is filled by the aurelia-webpack-plugin */],
-      'aurelia-bootstrap': coreBundles.bootstrap,
-      'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
+    {
+        entry: {
+            'app': ['./AppSrc/main' /* this is filled by the aurelia-webpack-plugin */],
+            'aurelia-bootstrap': coreBundles.bootstrap,
+            'aurelia': coreBundles.aurelia.filter(pkg => coreBundles.bootstrap.indexOf(pkg) === -1)
+        },
+        output: {
+            path: outDir,
+        }
     },
-    output: {
-      path: outDir,
-    }
-  },
 
-  /**
-   * Don't be afraid, you can put bits of standard Webpack configuration here
-   * (or at the end, after the last parameter, so it won't get overwritten by the presets)
-   * Because that's all easy-webpack configs are - snippets of premade, maintained configuration parts!
-   * 
-   * For Webpack docs, see: https://webpack.js.org/configuration/
-   */
+    /**
+     * Don't be afraid, you can put bits of standard Webpack configuration here
+     * (or at the end, after the last parameter, so it won't get overwritten by the presets)
+     * Because that's all easy-webpack configs are - snippets of premade, maintained configuration parts!
+     * 
+     * For Webpack docs, see: https://webpack.js.org/configuration/
+     */
 
-  ENV === 'test' || ENV === 'development' ? 
-    envDev(ENV !== 'test' ? {} : {devtool: 'inline-source-map'}) :
-    envProd({ /* devtool: '...' */ }),
+    ENV === 'test' || ENV === 'development' ?
+        envDev(ENV !== 'test' ? {} : { devtool: 'inline-source-map' }) :
+        envProd({ /* devtool: '...' */ }),
 
-  aurelia({root: rootDir, src: srcDir, title: title, baseUrl: baseUrl}),
-  typescript(ENV !== 'test' ? {} : { options: { doTypeCheck: false, sourceMap: false, inlineSourceMap: true, inlineSources: true } }),
-  html(),
-  copyFiles({
-      patterns: [
-          { from: 'webappconfig' + (ENV === 'development' ? '' : '.' + ENV) + '.json', to: 'webappconfig.json' },
-          { from: 'Resources/*.docx', to: './' },
-          { from: 'images', to: 'images' }
-      ]
-  }),
-  sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false}),
-  css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
-  fontAndImages(),
-  globalBluebird(),
-  globalJquery(),
-  generateIndexHtml({minify: ENV === 'production'}),
+    aurelia({ root: rootDir, src: srcDir, title: title, baseUrl: baseUrl }),
+    typescript(ENV !== 'test' ? {} : { options: { doTypeCheck: false, sourceMap: false, inlineSourceMap: true, inlineSources: true } }),
+    html(),
+    copyFiles({
+        patterns: [
+            { from: 'webappconfig' + (ENV === 'development' ? '' : '.' + ENV) + '.json', to: 'webappconfig.json' },
+            { from: 'Resources/*.docx', to: './' },
+            { from: 'images', to: 'images' }
+        ]
+    }),
+    sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false }),
+    css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),
+    fontAndImages(),
+    globalBluebird(),
+    globalJquery(),
+    generateIndexHtml({
+        minify: ENV === 'production', overrideOptions: {
+            updatedAt: getUpdatedStamp(),
+            appVersion: appVersion
+        }
+    }),
   
   ...(ENV === 'production' || ENV === 'development' ? [
       commonChunksOptimize({appChunkName: 'app', firstChunk: 'aurelia-bootstrap'})/*,
@@ -128,3 +134,14 @@ let config = generateConfig(
 );
 
 module.exports = stripMetadata(config);
+
+
+function getUpdatedStamp() {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var dtNow = new Date();
+    var currentDay = dtNow.getDate();
+    var cdLast = ('' + currentDay).length > 1 ? ('' + currentDay).substr(1, 1) : ('' + currentDay);
+    var ordinal = currentDay > 9 && currentDay < 20 ? "th" : (cdLast == "1" ? "st" : (cdLast == "2" ? "nd" : (cdLast == "3" ? "rd" : "th")));
+
+    return currentDay + ordinal + ' ' + months[dtNow.getMonth()] + ' ' + dtNow.getFullYear();
+}

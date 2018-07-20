@@ -92,12 +92,12 @@
         a {
             &.gridtab-link {
                 .gridtab-icon {
-                    color: $nhsDarkGrey80;
+                    /*color: $nhsDarkGrey80;*/
                 }
 
                 &:link, &:visited, &:hover, &:active {
                     background-color: $nhsPaleGrey95;
-                    color: $nhsDarkGrey80;
+                    /*color: $nhsDarkGrey80;*/
                     text-decoration: none;
                     outline: none;
                 }

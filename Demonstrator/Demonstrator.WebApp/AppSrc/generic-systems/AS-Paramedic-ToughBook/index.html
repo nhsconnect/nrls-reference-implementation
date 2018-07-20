@@ -14,24 +14,24 @@
             Once live, these pointer results may be able to return patient information such as care plans as created by Mental Health professionals.
             <br />
             <span if.bind="data.organisation.personnelLinkId">These care plans are created separately from the NRLS at the point of care by the care professional - Why not also take a look at how NRLS can work for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health Trusts</a>?</span>
-            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
+            <button class="btn btn-primary pull-right" href="#showInstructions" aria-controls="genericSystemInstructions" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-as-paramedic">
             <div class="gs-header">
                 <ul class="gs-top-menu">
-                    <li class="set"><a href="javascript:void(0)" click.delegate="tabSwitch()"><span>Home</span></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Clinical Guidelines</span></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Timings</span></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Treatment</span></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Secondary Survey</span></a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Alert</span></a></li>
+                    <li class="set"><a href="#epr-home" click.delegate="tabSwitch()"><span>Home</span></a></li>
+                    <li><a href="#epr-clincal-guidelines" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Clinical Guidelines</span></a></li>
+                    <li><a href="#epr-timings" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Timings</span></a></li>
+                    <li><a href="#epr-treatment" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Treatment</span></a></li>
+                    <li><a href="#epr-secondary-survey" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Secondary Survey</span></a></li>
+                    <li><a href="#epr-alert" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Alert</span></a></li>
 
-                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-power-off"></i></a></li>
-                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-cog"></i></a></li>
-                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-battery-half fa-rotate-270"></i></a></li>
-                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-wifi"></i></a></li>
-                    <li class="icon-tab"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-heartbeat"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-off" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-power-off"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-settings" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-cog"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-battery" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-battery-half fa-rotate-270"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-wifi" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-wifi"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-health" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-heartbeat"></i></a></li>
                 </ul>
             </div>
 
@@ -96,9 +96,9 @@
                 </div>
             </div>
 
-            <div show.bind="instructionsActive" class="gs-instructions">
+            <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
                 <div class="gs-instruction-bg"></div>
-                <div class="gs-instruction-content">
+                <div class="gs-instruction-content" role="document">
                     <h2 class="gs-icontent-header h1">Instructions</h2>
                     <div class="gs-icontent-inner">
                         <ol>
@@ -122,7 +122,7 @@
                             </li>
                         </ol>
                         <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
-                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()"  aria-label="Close">Ok</button></p>
 
                     </div>
 

@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="grid-tabs-row">
         <div repeat.for="item of items" class="nrls-gridtab">
-            <a class="gridtab-link" route-href="route.bind: route; params.bind: { routeParamId: item.id }">
+            <a class="gridtab-link" route-href="route.bind: route; params.bind: { routeParamId: item.id, routeParamTitle: item.safeName }">
                 <span class="gridtab-heading">${item.name}<span if.bind="item.personnelType != null" class="n-text-small"><br />(${item.personnelType})</span></span>
                 <span if.bind="!icon" class="gridtab-img"><img src="/images/gridtabs/${item.imageUrl}" alt="{item.name}" /></span>
                 <span if.bind="icon" class="gridtab-img"><img src="/images/gridtabs/${icon}" alt="{item.name}" /></span>

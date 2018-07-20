@@ -1,5 +1,6 @@
 ﻿using Demonstrator.Models.Core.Enums;
 using Demonstrator.Models.Core.Models;
+using Demonstrator.Utilities;
 using System.Collections.Generic;
 
 namespace Demonstrator.Models.ViewModels.Flows
@@ -13,6 +14,8 @@ namespace Demonstrator.Models.ViewModels.Flows
         public ActorType Type { get; set; }
 
         public string Name { get; set; }
+
+        public string SafeName => StringHelper.UrlString(Name);
 
         public string ImageUrl { get; set; }
 

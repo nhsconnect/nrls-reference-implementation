@@ -1,4 +1,4 @@
-<template bindable="router, hasBanner">
+<template bindable="router, hasBanner, baseUrl">
   <nav class="navbar navbar-default navbar-fixed-top nrls-navbar container ${hasBanner === true ? 'has-banner' : ''}" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nrls-navbar-collapse">
@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand nrls-brand" href="#">
+      <a class="navbar-brand nrls-brand" href="${baseUrl}">
         <img src="/images/NHS-Digital-Logo-120.png" alt="NHS Digital Logo " width="120" height="95" />
       </a>
     </div>

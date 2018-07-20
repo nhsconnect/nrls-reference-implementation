@@ -22,6 +22,7 @@ using Demonstrator.Services.Service.Epr;
 using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.NRLSAdapter.Helpers;
+using System.IO;
 
 namespace Demonstrator.WebApp
 {
@@ -98,6 +99,18 @@ namespace Demonstrator.WebApp
             });
 
             app.UseClientInteractionCacheMiddleware();
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                var validLocations = new[] { "resources", "images", "api" };
+
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

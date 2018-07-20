@@ -11,20 +11,20 @@
             Once a care co-ordinator has filled in the relevant fields and hit submit, their organisation's system can then automatically create an NRLS pointer which can be viewed by other organisations.
             <br />
             <span if.bind="data.organisation.personnelLinkId">One you have finished here why not also take a look at how these NRLS pointers can look for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Ambulance Service Staff</a>?</span>
-            <button class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
+            <button class="btn btn-primary pull-right" href="#showInstructions" aria-controls="genericSystemInstructions" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-mht-care-coordinator">
 
             <div class="gs-header-banner">
-                <span class="pull-left">${data.genericSystem.name} Demo System</span> <a href="javascript:void(0);" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a>
+                <span class="pull-left">${data.genericSystem.name} Demo System</span> <a href="#close" click.delegate="return false" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a>
             </div>
 
             <div class="gs-header">
                 <ul class="gs-top-menu">
-                    <li><a href="javascript:void(0)" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Home</a></li>
-                    <li><a href="javascript:void(0)" class="grey-link" click.delegate="findPatient()">Search</a></li>
-                    <li><a href="javascript:void(0)" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
+                    <li><a href="#epr-home" click.delegate="return false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Home</a></li>
+                    <li><a href="#epr-search" class="grey-link" click.delegate="findPatient()">Search</a></li>
+                    <li><a href="#epr-help" click.delegate="return false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
                     <li class="pull-right">User: <b>${data.personnel.name}</b></li>
                 </ul>
             </div>
@@ -40,12 +40,12 @@
 
             <div show.bind="!showPatientSearch" class="gs-sub-header">
                 <ul class="gs-records-menu">
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Admin</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Physical Health</a></li>
-                    <li class="active"><a href="javascript:void(0)">Mental Health</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Allergies</a></li>
-                    <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Medication</a></li>
+                    <li><a href="#epr-admin" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Admin</a></li>
+                    <li><a href="#epr-clinical" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
+                    <li><a href="#epr-physical-health" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Physical Health</a></li>
+                    <li class="active"><a href="#epr-mental-health" click.delegate="return false">Mental Health</a></li>
+                    <li><a href="#epr-allergies" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Allergies</a></li>
+                    <li><a href="#epr-medications" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Medication</a></li>
                 </ul>
             </div>
 
@@ -58,11 +58,11 @@
                 <div class="row">
                     <div class="col-sm-12 gs-tab-panels">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Episodes</a></li>
-                            <li role="presentation" class="active"><a href="jacascript:void(0);">Care Plan</a></li>
-                            <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Teams</a></li>
-                            <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Encounters</a></li>
-                            <li role="presentation"><a href="jacascript:void(0);" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatments</a></li>
+                            <li role="presentation"><a href="#epr-episodes" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Episodes</a></li>
+                            <li role="presentation" class="active"><a href="#epr-care-plan" click.delegate="return false">Care Plan</a></li>
+                            <li role="presentation"><a href="#epr-teams" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Teams</a></li>
+                            <li role="presentation"><a href="#epr-encounters" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Encounters</a></li>
+                            <li role="presentation"><a href="#epr-treatments" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatments</a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -200,7 +200,7 @@
                                             </tbody>
                                         </table>
 
-                                        <p show.bind="!updatingPlan" class="text-center"><button class="btn btn-info" click.delegate="savePlan()">Submit</button> <button show.bind="hasCrisisPlan" class="btn btn-danger" click.delegate="deletePlan()">Delete</button></p>
+                                        <p show.bind="!updatingPlan" class="text-center"><button href="#SavePlan" class="btn btn-info" click.delegate="savePlan()">Submit</button> <button href="#DeletePlan" show.bind="hasCrisisPlan" class="btn btn-danger" click.delegate="deletePlan()">Delete</button></p>
                                     </form>
                                 </div>
                             </div>
@@ -209,19 +209,19 @@
 
                 </div>
 
-                <div show.bind="showSystemMessage" class="gs-system-notice">
-                    <a href="javascript:void(0);" class="system-notice-close"  click.delegate="setSystemMessage()"><i class="fa fa-window-close"></i></a>
-                    <div class="gs-notice-content text-center">
+                <div show.bind="showSystemMessage" class="gs-system-notice" role="dialog" aria-label="System Messages">
+                    <a href="#close" class="system-notice-close"  click.delegate="setSystemMessage()" aria-label="Close"><i class="fa fa-window-close"></i></a>
+                    <div class="gs-notice-content text-center" role="document">
                         <p textcontent.bind="systemMessage"></p>
-                        <p><button class="btn btn-default" click.delegate="setSystemMessage()">Ok</button></p>
+                        <p><button class="btn btn-default" click.delegate="setSystemMessage()" aria-label="Close">Ok</button></p>
                     </div>
                 </div>
 
             </div>
 
-            <div show.bind="instructionsActive" class="gs-instructions">
+            <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
                 <div class="gs-instruction-bg"></div>
-                <div class="gs-instruction-content">
+                <div class="gs-instruction-content" role="document">
                     <h2 class="gs-icontent-header h1">Instructions</h2>
                     <div class="gs-icontent-inner">
                         <ol>
@@ -264,7 +264,7 @@
                             </li>
                         </ol>
                         <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
-                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()">Ok</button></p>
+                        <p class="text-center"><button class="btn -btn-default" click.delegate="toggleInstructions()" aria-label="Close">Ok</button></p>
                     </div>
 
                     <div class="gs-icontent-footer">
@@ -276,7 +276,7 @@
             </div>
         </div>
 
-        <d-content-modal if.bind="showActionModal" content-file-url="../../../generic-systems/Base/Content/provider-action-complete-modal-content" title="NRLS Pointers" show-action-modal.two-way="showActionModal"></d-content-modal>
+        <d-content-modal if.bind="showActionModal" content-file-url="../../../generic-systems/Base/Content/provider-action-complete-modal-content" title="NRLS Pointers" id="provideractioncompletemodalcontent" show-action-modal.two-way="showActionModal"></d-content-modal>
 
     </section>
 </template>

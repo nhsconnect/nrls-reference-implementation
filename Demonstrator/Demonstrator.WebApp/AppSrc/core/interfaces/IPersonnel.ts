@@ -3,6 +3,7 @@
 export interface IPersonnel {
     id: string;
     name: string;
+    safeName: string;
     personnelType: string;
     imageUrl: string;
     context: Array<IContentView>;

@@ -15,5 +15,19 @@ namespace Demonstrator.Utilities
 
             return rgx.Replace(input, "");
         }
+
+        public static string UrlString(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            var clean = Regex.Replace(value, @"\s+", "-");
+
+            clean = Regex.Replace(clean, "-+", "-");
+
+            return Regex.Replace(clean, @"[^a-zA-Z0-9-]", "");
+        }
     }
 }

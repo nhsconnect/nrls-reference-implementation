@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Models.Core.Models;
+using Demonstrator.Utilities;
 using System.Collections.Generic;
 
 namespace Demonstrator.Models.ViewModels.Flows
@@ -8,6 +9,8 @@ namespace Demonstrator.Models.ViewModels.Flows
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public string SafeName => StringHelper.UrlString(Name);
 
         public string PersonnelType { get; set; }
 
