@@ -103,7 +103,7 @@ export class Personnel {
 
     private setBreadcrumb(): void {
         this.breadcrumb.push(<IBreadcrumb>{ title: 'Home', route: 'welcome' });
-        this.breadcrumb.push(<IBreadcrumb>{ title: this.organisation.name, route: 'actor-organisation-personnel', param: this.organisation.id, isBack: true });
+        this.breadcrumb.push(<IBreadcrumb>{ title: this.organisation.name, route: 'actor-organisation-personnel', param: this.organisation.id, paramName: this.organisation.safeName, isBack: true });
         this.breadcrumb.push(<IBreadcrumb>{ title: 'View Persona', isActive: true });
     }
 

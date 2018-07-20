@@ -51,7 +51,7 @@
         </div>
 
 
-        <p if.bind="organisation" class="margin-top-lrg"><a class="pull-right btn btn-default" route-href="route: actor-organisation-personnel; params.bind: { routeParamId: organisation.id }"><i class="fa fa-chevron-left"></i> Back</a></p>
+        <p if.bind="organisation" class="margin-top-lrg"><a class="pull-right btn btn-default" route-href="route: actor-organisation-personnel; params.bind: { routeParamId: organisation.id, routeParamTitle: organisation.safeName }"><i class="fa fa-chevron-left"></i> Back</a></p>
 
     </section>
 </template>
