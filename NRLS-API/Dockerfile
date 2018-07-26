@@ -1,7 +1,7 @@
 FROM microsoft/aspnetcore-build:2.0 AS build-env
 
 # start in our app directory
-WORKDIR /nrls-ri
+WORKDIR /app
 
 # Copy all of solution
 COPY . ./
@@ -14,8 +14,8 @@ RUN dotnet publish NRLS-API.WebApp/NRLS-API.WebApp.csproj -c Release -o out
 
 # Build runtime image
 FROM microsoft/aspnetcore:2.0
-WORKDIR /nrls-ri
-COPY --from=build-env /nrls-ri/NRLS-API.WebApp/out .
+WORKDIR /app
+COPY --from=build-env /app/NRLS-API.WebApp/out .
 
 # Set Server ENVs
 EXPOSE 5001/tcp
