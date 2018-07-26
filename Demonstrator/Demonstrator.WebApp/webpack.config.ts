@@ -105,7 +105,7 @@ let config = generateConfig(
     copyFiles({
         patterns: [
             { from: 'webappconfig' + (ENV === 'development' ? '' : '.' + ENV) + '.json', to: 'webappconfig.json' },
-            { from: 'Resources/*.docx', to: './' },
+            { from: 'Resources/*.+(docx|xlsx)', to: './' },
             { from: 'images', to: 'images' }
         ]
     }),
