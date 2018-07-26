@@ -10,6 +10,7 @@ using Demonstrator.Core.Interfaces.Database;
 using Demonstrator.Core.Interfaces.Services.Flows;
 using System.Linq;
 using Demonstrator.Core.Exceptions;
+using Demonstrator.Models.Core.Enums;
 
 namespace Demonstrator.Services.Service.Flows
 {
@@ -26,7 +27,7 @@ namespace Demonstrator.Services.Service.Flows
             _benefitsService = benefitsService;
         }
 
-        public async Task<BenefitDialogViewModel> GetFor(string listFor, string listForId)
+        public async Task<BenefitDialogViewModel> GetFor(BenefitForType listFor, string listForId)
         {
   
             var benefitsDialog = await GetBenefitIds(listFor, listForId);
@@ -42,7 +43,7 @@ namespace Demonstrator.Services.Service.Flows
 
         }
 
-        public async Task<BenefitDialogViewModel> GetForCategorised(string listFor, string listForId)
+        public async Task<BenefitDialogViewModel> GetForCategorised(BenefitForType listFor, string listForId)
         {
 
             var benefitsDialog = await GetFor(listFor, listForId);
@@ -138,24 +139,24 @@ namespace Demonstrator.Services.Service.Flows
             return categorisedBenefits;
         }
 
-        private async Task<BenefitDialogViewModel> GetBenefitIds(string listFor, string listForId)
+        private async Task<BenefitDialogViewModel> GetBenefitIds(BenefitForType listFor, string listForId)
         {
             var benefits = new BenefitDialogViewModel();
 
             switch (listFor)
             {
-                case "Personnel":
+                case BenefitForType.Personnel:
                     var personnel = await _personnelService.GetModelById(listForId);
                     benefits.BenefitsTitle = personnel.BenefitsTitle;
                     benefits.BenefitIds = personnel.Benefits;
                     break;
-                case "ActorOrganisation":
+                case BenefitForType.ActorOrganisation:
                     var orgs = await _actorOrganisationService.GetModelById(listForId);
                     benefits.BenefitsTitle = orgs.BenefitsTitle;
                     benefits.BenefitIds = orgs.Benefits;
                     break;
                 default:
-                    throw new BenefitForException(listFor);
+                    throw new BenefitForException(listFor.ToString());
             }
 
             return benefits;

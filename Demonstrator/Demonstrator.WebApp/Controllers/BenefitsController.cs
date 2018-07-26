@@ -1,4 +1,6 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Flows;
+using Demonstrator.Models.Core.Enums;
+using Demonstrator.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -32,7 +34,9 @@ namespace Demonstrator.WebApp.Controllers
         [HttpGet("Has/{listFor}/{listForId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public async Task<IActionResult> Has(string listFor, string listForId)
         {
-            var benefits = await _benefitsViewService.GetFor(listFor, listForId);
+            var benefitForType = EnumHelpers.GetEnum<BenefitForType>(listFor);
+
+            var benefits = await _benefitsViewService.GetFor(benefitForType, listForId);
 
             var hasBenefits = (benefits != null);
 
@@ -43,7 +47,9 @@ namespace Demonstrator.WebApp.Controllers
         [HttpGet("{listFor}/{listForId:regex(^[[A-Fa-f0-9]]{{1,1024}}$)}")]
         public async Task<IActionResult> Get(string listFor, string listForId)
         {
-            var benefits = await _benefitsViewService.GetForCategorised(listFor, listForId);
+            var benefitForType = EnumHelpers.GetEnum<BenefitForType>(listFor);
+
+            var benefits = await _benefitsViewService.GetForCategorised(benefitForType, listForId);
 
             if (benefits == null)
             {
