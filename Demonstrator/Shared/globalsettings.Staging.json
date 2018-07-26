@@ -1,0 +1,24 @@
+﻿{
+  "NRLSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "https://nrlsapiapp:5443/nrls-ri",
+    "Secure": false
+  },
+  "PDSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "Secure": false
+  },
+  "ODSAPI": {
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "Secure": false
+  },
+  "DemonstratorApi": {
+    "BaseUrl": "://nrlsdemoapp",
+    "Secure": false,
+    "SecureOnly": false,
+    "DefaultPort": "5000",
+    "SecurePort": "5443"
+  }
+}

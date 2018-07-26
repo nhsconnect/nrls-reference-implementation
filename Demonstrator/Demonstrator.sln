@@ -36,9 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{782646
 		Shared\ClientAsidMap.json = Shared\ClientAsidMap.json
 		Shared\globalsettings.json = Shared\globalsettings.json
 		Shared\globalsettings.Production.json = Shared\globalsettings.Production.json
+		Shared\globalsettings.Staging.json = Shared\globalsettings.Staging.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemonstratorTest.Services", "DemonstratorTest.Services\DemonstratorTest.Services.csproj", "{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonstratorTest.Services", "DemonstratorTest.Services\DemonstratorTest.Services.csproj", "{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
