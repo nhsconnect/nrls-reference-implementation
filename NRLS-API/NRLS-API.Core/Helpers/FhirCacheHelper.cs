@@ -40,7 +40,7 @@ namespace NRLS_API.Core.Helpers
         {
             var basePath = DirectoryHelper.GetBaseDirectory();
 
-            var zip = Path.Combine(basePath, "Data\\definitions.xml.zip");
+            var zip = Path.Combine(basePath, "Data", "definitions.xml.zip");
 
             return new CachedResolver(new MultiResolver(new WebResolver(uri => new FhirClient("https://fhir.nhs.uk/STU3")), new ZipSource(zip)));
         }

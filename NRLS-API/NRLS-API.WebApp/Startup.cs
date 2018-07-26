@@ -143,14 +143,14 @@ namespace NRLS_API.WebApp
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")), RequestPath = "/Resources"
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")), RequestPath = "/nrls-ri/Resources"
             });
 
             //app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.RoutePrefix = "";
-                c.SwaggerEndpoint("/Resources/swagger.json", "NRLS Reference Implementation");
-                c.InjectStylesheet("/Resources/swagger-custom.css");
+                c.RoutePrefix = "nrls-ri";
+                c.SwaggerEndpoint("/nrls-ri/Resources/swagger.json", "NRLS Reference Implementation");
+                c.InjectStylesheet("/nrls-ri/Resources/swagger-custom.css");
                 c.DefaultModelsExpandDepth(-1);
                 c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream; 
             });

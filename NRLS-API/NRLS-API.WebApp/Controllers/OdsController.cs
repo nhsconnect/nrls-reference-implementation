@@ -7,7 +7,7 @@ using NRLS_API.Models.Core;
 namespace NRLS_API.WebApp.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("ods/fhir/Organization")]
+    [Route("nrls-ri/Organization")]
     public class OdsController : Controller
     {
         private readonly IOdsSearch _odsSearch;

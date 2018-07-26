@@ -1,6 +1,6 @@
 #!/bin/bash
  
-# Globals
+# Global vars
 MONGODB_DATA_PATH=${MONGODB_DATA_PATH:-"/data/db"}
 MONGODB_LOG_PATH=${MONGODB_LOG_PATH:-"/data/log"}
 MONGODB_DEFAULT_DATA_PATH=${MONGODB_DEFAULT_DATA_PATH:-"/data/defaultdata/"}

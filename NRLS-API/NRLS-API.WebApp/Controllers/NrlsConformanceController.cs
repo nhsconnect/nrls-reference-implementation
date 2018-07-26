@@ -5,7 +5,7 @@ using NRLS_API.Core.Interfaces.Services;
 namespace NRLS_API.WebApp.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("nrls/fhir/metadata")]
+    [Route("nrls-ri/metadata")]
     public class NrlsConformanceController : Controller
     {
         private readonly INrlsConformance _nrlsConformance;

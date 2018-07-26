@@ -1,17 +1,17 @@
 ﻿{
   "NRLSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/nrls/fhir",
-    "SecureServerUrl": "https://nrlsapiapp:5443/nrls/fhir",
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "https://nrlsapiapp:5443/nrls-ri",
     "Secure": false
   },
   "PDSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/pds/fhir",
-    "SecureServerUrl": "http://nrlsapiapp:5001/pds/fhir",
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "http://nrlsapiapp:5001/nrls-ri",
     "Secure": false
   },
   "ODSAPI": {
-    "ServerUrl": "http://nrlsapiapp:5001/ods/fhir",
-    "SecureServerUrl": "http://nrlsapiapp:5001/ods/fhir",
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "http://nrlsapiapp:5001/nrls-ri",
     "Secure": false
   },
   "DemonstratorApi": {

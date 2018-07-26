@@ -29,7 +29,7 @@
     }
   },
   "paths": {
-    "/nrls/fhir/DocumentReference": {
+    "/nrls-ri/DocumentReference": {
       "get": {
         "tags": [ "Nrls" ],
         "summary": "Searches for the requested resource type.\r\nOR\r\nGets a resource by the supplied _id search parameter.",
