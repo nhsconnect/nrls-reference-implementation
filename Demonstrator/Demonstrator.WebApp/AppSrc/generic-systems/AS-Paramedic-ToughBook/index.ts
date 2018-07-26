@@ -11,15 +11,14 @@ export class GsASParamedicToughBook extends BaseGenericSystem {
         this.data = model;
     }
 
-    tabSwitch() {
-        this.nrlsTabActive = !this.nrlsTabActive;
+    showHome() {
+        this.nrlsTabActive = false;
+        this.pageTitle = "Electronic Patient Record";
+    }
 
-        if (this.nrlsTabActive) {
-            this.pageTitle = "Electronic Patient Record : NRLS";
-        }
-        else {
-            this.pageTitle = "Electronic Patient Record";
-        }
+    showNrls() {
+        this.nrlsTabActive = true;
+        this.pageTitle = "Electronic Patient Record : NRLS";
     }
 
     private patientChanged(newValue: string, oldValue: string): void {

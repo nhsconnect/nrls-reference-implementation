@@ -17,14 +17,14 @@
         <div class="generic-system-wrapper yellow-tooltips gs-mht-care-coordinator">
 
             <div class="gs-header-banner">
-                <span class="pull-left">${data.genericSystem.name} Demo System</span> <a href="#close" click.delegate="return false" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a>
+                <span class="pull-left">${data.genericSystem.name} Demo System</span> <a href="#close" click.delegate="false" class="system-close" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-window-close"></i></a>
             </div>
 
             <div class="gs-header">
                 <ul class="gs-top-menu">
-                    <li><a href="#epr-home" click.delegate="return false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Home</a></li>
+                    <li><a href="#epr-home" click.delegate="false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Home</a></li>
                     <li><a href="#epr-search" class="grey-link" click.delegate="findPatient()">Search</a></li>
-                    <li><a href="#epr-help" click.delegate="return false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
+                    <li><a href="#epr-help" click.delegate="false" class="grey-link" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Help</a></li>
                     <li class="pull-right">User: <b>${data.personnel.name}</b></li>
                 </ul>
             </div>
@@ -40,12 +40,12 @@
 
             <div show.bind="!showPatientSearch" class="gs-sub-header">
                 <ul class="gs-records-menu">
-                    <li><a href="#epr-admin" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Admin</a></li>
-                    <li><a href="#epr-clinical" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
-                    <li><a href="#epr-physical-health" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Physical Health</a></li>
-                    <li class="active"><a href="#epr-mental-health" click.delegate="return false">Mental Health</a></li>
-                    <li><a href="#epr-allergies" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Allergies</a></li>
-                    <li><a href="#epr-medications" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Medication</a></li>
+                    <li><a href="#epr-admin" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Admin</a></li>
+                    <li><a href="#epr-clinical" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Clinical</a></li>
+                    <li><a href="#epr-physical-health" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Physical Health</a></li>
+                    <li class="active"><a href="#epr-mental-health" click.delegate="false">Mental Health</a></li>
+                    <li><a href="#epr-allergies" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Allergies</a></li>
+                    <li><a href="#epr-medications" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This tab is disabled in the Demo.">Medication</a></li>
                 </ul>
             </div>
 
@@ -58,11 +58,11 @@
                 <div class="row">
                     <div class="col-sm-12 gs-tab-panels">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation"><a href="#epr-episodes" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Episodes</a></li>
-                            <li role="presentation" class="active"><a href="#epr-care-plan" click.delegate="return false">Care Plan</a></li>
-                            <li role="presentation"><a href="#epr-teams" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Teams</a></li>
-                            <li role="presentation"><a href="#epr-encounters" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Encounters</a></li>
-                            <li role="presentation"><a href="#epr-treatments" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatments</a></li>
+                            <li role="presentation"><a href="#epr-episodes" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Episodes</a></li>
+                            <li role="presentation" class="active"><a href="#epr-care-plan" click.delegate="false">Care Plan</a></li>
+                            <li role="presentation"><a href="#epr-teams" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Teams</a></li>
+                            <li role="presentation"><a href="#epr-encounters" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Encounters</a></li>
+                            <li role="presentation"><a href="#epr-treatments" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatments</a></li>
                         </ul>
 
                         <div class="tab-content">

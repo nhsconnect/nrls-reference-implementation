@@ -20,18 +20,18 @@
         <div class="generic-system-wrapper yellow-tooltips gs-as-paramedic">
             <div class="gs-header">
                 <ul class="gs-top-menu">
-                    <li class="set"><a href="#epr-home" click.delegate="tabSwitch()"><span>Home</span></a></li>
-                    <li><a href="#epr-clincal-guidelines" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Clinical Guidelines</span></a></li>
-                    <li><a href="#epr-timings" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Timings</span></a></li>
-                    <li><a href="#epr-treatment" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Treatment</span></a></li>
-                    <li><a href="#epr-secondary-survey" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Secondary Survey</span></a></li>
-                    <li><a href="#epr-alert" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Alert</span></a></li>
+                    <li class="set"><a href="#epr-home" click.delegate="showHome()"><span>Home</span></a></li>
+                    <li><a href="#epr-clincal-guidelines" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Clinical Guidelines</span></a></li>
+                    <li><a href="#epr-timings" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Timings</span></a></li>
+                    <li><a href="#epr-treatment" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Treatment</span></a></li>
+                    <li><a href="#epr-secondary-survey" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Secondary Survey</span></a></li>
+                    <li><a href="#epr-alert" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Alert</span></a></li>
 
-                    <li class="icon-tab"><a href="#epr-off" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-power-off"></i></a></li>
-                    <li class="icon-tab"><a href="#epr-settings" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-cog"></i></a></li>
-                    <li class="icon-tab"><a href="#epr-battery" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-battery-half fa-rotate-270"></i></a></li>
-                    <li class="icon-tab"><a href="#epr-wifi" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-wifi"></i></a></li>
-                    <li class="icon-tab"><a href="#epr-health" click.delegate="return false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-heartbeat"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-off" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-power-off"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-settings" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-cog"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-battery" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-battery-half fa-rotate-270"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-wifi" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-wifi"></i></a></li>
+                    <li class="icon-tab"><a href="#epr-health" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><i class="fa fa-heartbeat"></i></a></li>
                 </ul>
             </div>
 
@@ -62,7 +62,7 @@
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatment</button>
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Safeguarding</button>
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Notes</button>
-                        <button class="btn btn-default btn-nrls" click.delegate="tabSwitch()">NRLS</button>
+                        <button class="btn btn-default btn-nrls" click.delegate="showNrls()">NRLS</button>
                     </div>
                 </div>
 
