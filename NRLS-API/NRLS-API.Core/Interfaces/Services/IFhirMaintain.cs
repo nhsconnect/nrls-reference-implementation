@@ -9,5 +9,7 @@ namespace NRLS_API.Core.Interfaces.Services
         SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource;
 
         SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource;
+
+        SystemTasks.Task<OperationOutcome> DeleteConditional<T>(FhirRequest request) where T : Resource;
     }
 }

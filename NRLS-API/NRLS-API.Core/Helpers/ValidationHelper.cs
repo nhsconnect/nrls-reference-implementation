@@ -146,9 +146,45 @@ namespace NRLS_API.Core.Helpers
             return (!string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(systemPrefix));
         }
 
+        public bool ValidTokenParameter(string parameterVal, string expectedSystemPrefix = null, bool allowOptionalSystemOrValue = true)
+        {
+            if(string.IsNullOrWhiteSpace(parameterVal))
+            {
+                return false;
+            }
+
+            var systemAndValue = parameterVal.Split('|');
+
+            if (allowOptionalSystemOrValue)
+            {
+
+                if(systemAndValue.Count() < 1 || systemAndValue.Count() > 2)
+                {
+                    return false;
+                }
+
+                if(!string.IsNullOrEmpty(expectedSystemPrefix) && !parameterVal.StartsWith(expectedSystemPrefix))
+                {
+                    return false;
+                }
+
+                if (systemAndValue.Count() > 1 && (string.IsNullOrWhiteSpace(systemAndValue.ElementAt(0)) || !Uri.IsWellFormedUriString(systemAndValue.ElementAt(0), UriKind.RelativeOrAbsolute)) && string.IsNullOrWhiteSpace(systemAndValue.ElementAt(1)))
+                {
+                    return false;
+                }
+            }
+
+            if (systemAndValue.Count() != 2 || string.IsNullOrWhiteSpace(systemAndValue.ElementAt(0)) || !Uri.IsWellFormedUriString(systemAndValue.ElementAt(0), UriKind.RelativeOrAbsolute) || string.IsNullOrWhiteSpace(systemAndValue.ElementAt(1)))
+            {
+                return false;
+            }
+
+            return string.IsNullOrEmpty(expectedSystemPrefix) || parameterVal.StartsWith($"{expectedSystemPrefix}|");
+        }
+
         public string GetTokenParameterId(string parameterVal, string systemPrefix)
         {
-            return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace(systemPrefix, "").Replace("|", "") : null ;
+            return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace($"{systemPrefix}|", "") : null ;
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

@@ -1,5 +1,6 @@
 ﻿using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Http;
+using NRLS_API.Models.Enums;
 using NRLS_API.Models.Extensions;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace NRLS_API.Models.Core
         public FhirRequest()
         {
             QueryParameters = new List<Tuple<string, string>>();
+            TokenParameters = new Dictionary<string, Tuple<string, string>>();
             AllowedParameters = new string[0];
         }
 
@@ -27,11 +29,17 @@ namespace NRLS_API.Models.Core
 
         public IEnumerable<Tuple<string, string>> QueryParameters { get; set; }
 
+        public IDictionary<string, Tuple<string, string>> TokenParameters { get; set; }
+
         public string[] AllowedParameters { get; set; }
 
         public string RequestingAsid { get; set; }
 
-        public string IdParameter => GetIdParameterValue();
+        public string IdParameter => GetIdParameter();
+
+        public string IdentifierParameter => GetIdentifierParameter();
+
+        public string SubjectParameter => GetSubjectParameter();
 
         public bool HasIdParameter => GetIdParameter() != null;
 
@@ -71,14 +79,29 @@ namespace NRLS_API.Models.Core
             return new Uri($"{scheme}://{host}{path}{queryString}");
         }
 
-        private string GetIdParameterValue()
+        private string GetIdParameter()
         {
-            return GetIdParameter()?.Item2;
+            return GetParameterValue(RequestParameters._Id);
         }
 
-        private Tuple<string, string> GetIdParameter()
+        private string GetIdentifierParameter()
         {
-            return QueryParameters.FirstOrDefault(x => x.Item1 == "_id");
+            return GetParameterValue(RequestParameters.Identifier);
+        }
+
+        private string GetSubjectParameter()
+        {
+            return GetParameterValue(RequestParameters.Subject);
+        }
+
+        private string GetParameterValue(RequestParameters param)
+        {
+            return GetParameter(param)?.Item2;
+        }
+
+        private Tuple<string, string> GetParameter(RequestParameters param)
+        {
+            return QueryParameters.FirstOrDefault(x => x.Item1 == param.ToString().ToLowerInvariant());
         }
 
     }

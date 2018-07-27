@@ -16,6 +16,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         string GetResourceReferenceId(ResourceReference reference, string systemUrl);
 
+        bool ValidTokenParameter(string parameterVal, string expectedSystemPrefix = null, bool allowOptionalSystemOrValue = true);
+
         bool ValidReferenceParameter(string parameterVal, string systemPrefix);
 
         string GetTokenParameterId(string parameterVal, string systemPrefix);

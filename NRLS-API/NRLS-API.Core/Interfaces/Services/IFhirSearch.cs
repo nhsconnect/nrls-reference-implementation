@@ -8,6 +8,8 @@ namespace NRLS_API.Core.Interfaces.Services
     {
         Task<Resource> Get<T>(FhirRequest request) where T : Resource;
 
+        Task<Resource> GetByMasterId<T>(FhirRequest request) where T : Resource;
+
         Task<Resource> Find<T>(FhirRequest request) where T : Resource;
     }
 }

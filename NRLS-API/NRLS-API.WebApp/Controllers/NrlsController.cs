@@ -112,15 +112,6 @@ namespace NRLS_API.WebApp.Controllers
             return Created($"{(_nrlsApiSettings.Secure ? "https" : "http")}{_nrlsApiSettings.BaseUrl}:{(_nrlsApiSettings.Secure ? _nrlsApiSettings.SecurePort : _nrlsApiSettings.DefaultPort)}{Request.Path}?_id={result.Id}", response);
         }
 
-        // PUT fhir/DocumentReference/5
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [ProducesResponseType(typeof(Resource), 200)]
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]Resource resource)
-        {
-            //not part of BETA : In BETA to update -> send a delete and then a create request
-            return NotFound();
-        }
 
         /// <summary>
         /// Deletes a record that was previously persisted into a datastore.

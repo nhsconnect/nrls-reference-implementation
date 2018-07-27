@@ -6,7 +6,6 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Models.Core;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Hl7.Fhir.Model.ModelInfo;
@@ -59,20 +58,22 @@ namespace NRLS_API.Core.Helpers
 
             foreach (var param in modelParams)
             {
-                var criteria = searchQuery.Parameters.FirstOrDefault(x => (!x.Item1.Contains(".") && x.Item1.Equals(param.Name)) || (x.Item1.Contains(".") && x.Item1.StartsWith(param.Name)));
+                var paramName = param.Name;
+
+                var criteria = searchQuery.Parameters.FirstOrDefault(x => (!x.Item1.Contains(".") && x.Item1.Equals(paramName)) || (x.Item1.Contains(".") && x.Item1.StartsWith(paramName)));
 
                 if (criteria == null)
                 {
                     continue;
                 }
 
-                var paramDef = profile?.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{param.Name}"));
+                var paramDef = profile?.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{paramName}"));
 
                 var paramVal = criteria.Item2;
 
                 if (param.Type.Equals(SearchParamType.Reference) && !string.IsNullOrEmpty(paramVal))
                 {
-                    filters.Add(builder.Eq($"{param.Name}.reference", paramVal));
+                    filters.Add(builder.Eq($"{paramName}.reference", paramVal));
                     continue;
                 }
 
@@ -91,7 +92,7 @@ namespace NRLS_API.Core.Helpers
                     {
                         valType = "code";
 
-                        var tokenCodingDef = profile.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{param.Name}.coding"));
+                        var tokenCodingDef = profile.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{paramName}.coding"));
 
                         if (tokenCodingDef == null)
                         {
@@ -117,10 +118,24 @@ namespace NRLS_API.Core.Helpers
                         }
                     }
 
+                    // NRLS Hack - NRLS allows masterIdentifier but not identifier document element
+                    // Could extend this to create an OR for masterIdentifier || identifier
+                    if (request.StrResourceType.Equals(ResourceType.DocumentReference.ToString()) && paramName.Equals("identifier"))
+                    {
+                        paramName = "masterIdentifier";
+                    }
+
 
                     if (sysVal.Length == 1 && isCodeOnly)
                     {
-                        filters.Add(builder.ElemMatch($"{param.Name}{arrayPath}", builder.Eq(valType, sysVal.ElementAt(0))));
+                        if (string.IsNullOrEmpty(arrayPath))
+                        {
+                            filters.Add(builder.Eq($"{paramName}.{valType}", sysVal.ElementAt(0)));
+                        }
+                        else
+                        {
+                            filters.Add(builder.ElemMatch($"{paramName}{arrayPath}", builder.Eq(valType, sysVal.ElementAt(0))));
+                        }
                         continue;
                     }
                     else if (sysVal.Length == 2)
@@ -130,19 +145,36 @@ namespace NRLS_API.Core.Helpers
 
                         if (!string.IsNullOrEmpty(sysVal.ElementAt(0)))
                         {
-                            sysValFilter = builder.Eq(sysType, sysVal.ElementAt(0));
+
+                            if (string.IsNullOrEmpty(arrayPath))
+                            {
+                                filters.Add(builder.Eq($"{paramName}.{sysType}", sysVal.ElementAt(0)));
+                            }
+                            else
+                            {
+                                sysValFilter = builder.Eq(sysType, sysVal.ElementAt(0));
+
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(sysVal.ElementAt(1)))
                         {
-                            sysValFilter = sysValFilter & builder.Eq(valType, sysVal.ElementAt(1));
+                            if (string.IsNullOrEmpty(arrayPath))
+                            {
+                                filters.Add(builder.Eq($"{paramName}.{valType}", sysVal.ElementAt(1)));
+                            }
+                            else
+                            {
+                                sysValFilter = sysValFilter & builder.Eq(valType, sysVal.ElementAt(1));
+                            }
                         }
 
-                        if(sysValFilter != null)
+                        if(!string.IsNullOrEmpty(arrayPath) && sysValFilter != null)
                         {
-                            filters.Add(builder.ElemMatch($"{param.Name}{arrayPath}", sysValFilter));
-                            continue;
+                            filters.Add(builder.ElemMatch($"{paramName}{arrayPath}", sysValFilter));
                         }
+
+                        continue;
                     }
                 }
             }

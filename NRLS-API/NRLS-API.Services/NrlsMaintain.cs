@@ -91,18 +91,42 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
+            request.ProfileUri = _resourceProfile;
 
             // NRLS Layers of validation before Fhir Delete Call
             var id = request.IdParameter;
+            var identifier = request.IdentifierParameter;
+            var subject = request.SubjectParameter;
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier) != null && _fhirValidation.ValidatePatientParameter(subject) != null)
             {
                 throw new HttpFhirException("Missing or Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
             }
 
+            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier) == null && _fhirValidation.ValidatePatientParameter(subject) != null)
+            {
+                throw new HttpFhirException("Missing or Invalid subject parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: subject"), HttpStatusCode.BadRequest);
+            }
+
+            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier)  != null && _fhirValidation.ValidatePatientParameter(subject) == null)
+            {
+                throw new HttpFhirException("Missing or Invalid identifier parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: identifier"), HttpStatusCode.BadRequest);
+            }
+
+
             request.Id = id;
 
-            var document = await _fhirSearch.Get<T>(request);
+            Resource document;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                document = await _fhirSearch.Get<T>(request);
+
+            }
+            else
+            {
+                document = await _fhirSearch.GetByMasterId<T>(request);
+            }
 
             var documentResponse = ParseRead(document, id);
 
@@ -132,7 +156,13 @@ namespace NRLS_API.Services
                 return documentResponse as OperationOutcome;
             }
 
-            return await _fhirMaintain.Delete<T>(request);
+            if (!string.IsNullOrEmpty(id))
+            {
+                return await _fhirMaintain.Delete<T>(request);
+
+            }
+
+            return await _fhirMaintain.DeleteConditional<T>(request);
         }
 
         private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)

@@ -41,7 +41,7 @@
             "name": "subject",
             "in": "query",
             "description": "Who/what is the subject of the document",
-            "required": true,
+            "required": false,
             "type": "string",
             "example": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
           },
@@ -138,6 +138,10 @@
                     }
                   ]
                 },
+                "masterIdentifier": {
+                  "system": "http://www.testsystem.com",
+                  "value": "testMasterId001"
+                },
                 "subject": {
                   "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
                 },
@@ -178,7 +182,7 @@
       },
       "delete": {
         "tags": [ "Nrls" ],
-        "summary": "Deletes a record that was previously persisted into a datastore.",
+        "summary": "Deletes a record that was previously persisted into a datastore. Use either _id on it's own or subject & identifier together.",
         "operationId": "NrlsFhirDocumentReferenceDelete",
         "consumes": [],
         "produces": [ "application/fhir+json", "application/fhir+xml" ],
@@ -187,9 +191,25 @@
             "name": "_id",
             "in": "query",
             "description": "The logical Id of the pointer",
-            "required": true,
+            "required": false,
             "type": "string",
             "example": "5ab13f41957d0ad5d93a1339"
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "description": "The Master Identifer of the pointer",
+            "required": false,
+            "type": "string",
+            "example": "http://www.testsystem.com|testMasterId001"
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Who/what is the subject of the document",
+            "required": false,
+            "type": "string",
+            "example": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
           },
           {
             "$ref": "#/parameters/authHeaderWrite"

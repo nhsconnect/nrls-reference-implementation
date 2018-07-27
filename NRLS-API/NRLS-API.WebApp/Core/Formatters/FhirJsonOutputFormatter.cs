@@ -44,7 +44,7 @@ namespace NRLS_API.WebApp.Core.Formatters
             }
 
             response.Headers.Remove(HttpResponseHeader.ContentType.ToString());
-            response.Headers.Add(HttpResponseHeader.ContentType.ToString(), $"{ContentType.XML_CONTENT_HEADER}; {Encoding.UTF8.WebName}");
+            response.Headers.Add(HttpResponseHeader.ContentType.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}");
 
             return response.WriteAsync(buffer.ToString(), Encoding.UTF8);
         }

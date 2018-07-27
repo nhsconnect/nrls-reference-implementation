@@ -170,6 +170,16 @@ namespace NRLS_API.Services
             return null;
         }
 
+        public OperationOutcome ValidateIdentifierParameter(string paramName, string parameterVal)
+        {
+            if (!_validationHelper.ValidTokenParameter(parameterVal, null, false))
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given parameter {paramName} does not confirm to the expected format - [system]|[value]");
+            }
+
+            return null;
+        }
+
         public OperationOutcome ValidatePatientParameter(string parameterVal)
         {
             if(!_validationHelper.ValidReferenceParameter(parameterVal, FhirConstants.SystemPDS))

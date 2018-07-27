@@ -14,6 +14,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         OperationOutcome ValidateCustodianParameter(string parameterVal);
 
+        OperationOutcome ValidateIdentifierParameter(string paramName, string parameterVal);
+
         string GetOrganizationReferenceId(ResourceReference reference);
     }
 }

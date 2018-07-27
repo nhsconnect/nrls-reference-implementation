@@ -66,6 +66,47 @@ namespace NRLS_API.Services
             }
         }
 
+        public async Task<Resource> GetByMasterId<T>(FhirRequest request) where T : Resource
+        {
+            ValidateResource(request.StrResourceType);
+
+            //validate request
+
+            try
+            {
+                //Add identifier on the fly as it is not a standard search parameter
+                request.AllowedParameters = request.AllowedParameters.Concat(new[] { "identifier" }).ToArray();
+
+                // IMPORTANT - this query currently does not filter for active/un-deleted pointers
+                var query = _fhirSearchHelper.BuildQuery(request);
+
+                //var options = new FindOptions<BsonDocument, BsonDocument>();
+                //options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
+
+                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(query).FirstOrDefaultAsync();
+
+                Resource document;
+
+                var documents = new List<DocumentReference>();
+
+                if (resource != null)
+                {
+                    document = await resource?.ToFhirAsync<T>();
+                    documents.Add(document as DocumentReference);
+                }
+
+                //Get now returns bundle as per updated spec
+                var bundle = ToBundle(request, documents);
+
+                return bundle;
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+
         public async Task<Resource> Find<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
