@@ -68,6 +68,13 @@
             "example": "http://snomed.info/sct|736253002"
           },
           {
+            "name": "_format",
+            "in": "query",
+            "description": "Set the content type of the returned results.",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "Authorization",
             "in": "header",
             "description": "A JWT Bearer Token",
@@ -108,6 +115,13 @@
         "parameters": [
           {
             "$ref": "#/parameters/authHeaderWrite"
+          },
+          {
+            "name": "_format",
+            "in": "query",
+            "description": "Set the content type of the returned results.",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "fromASID",
@@ -210,6 +224,13 @@
             "required": false,
             "type": "string",
             "example": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
+          },
+          {
+            "name": "_format",
+            "in": "query",
+            "description": "Set the content type of the returned results.",
+            "required": false,
+            "type": "string"
           },
           {
             "$ref": "#/parameters/authHeaderWrite"

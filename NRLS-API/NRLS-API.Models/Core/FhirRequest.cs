@@ -55,7 +55,7 @@ namespace NRLS_API.Models.Core
                 ResourceType = resourceType,
                 Resource = resource,
                 RequestUrl = CreateUrl(request.Scheme, request.Host.Value, request.Path, request.QueryString.Value),
-                QueryParameters = request.QueryString.Value.GetParameters(),
+                QueryParameters = request.QueryString.Value.GetParameters().Cleaned(),
                 AllowedParameters = resourceType.GetAllowed(),
                 RequestingAsid = requestingAsid
             };

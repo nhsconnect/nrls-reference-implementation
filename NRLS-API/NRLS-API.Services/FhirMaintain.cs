@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Helpers;
@@ -12,6 +13,7 @@ using NRLS_API.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using SystemTasks = System.Threading.Tasks;
 
 
@@ -64,9 +66,15 @@ namespace NRLS_API.Services
 
         public async SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource
         {
+            ObjectId id;
+            if (!ObjectId.TryParse(request.Id, out id))
+            {
+                throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
+            }
+
             var builder = Builders<BsonDocument>.Filter;
             var filters = new List<FilterDefinition<BsonDocument>>();
-            filters.Add(builder.Eq("_id", new ObjectId(request.Id)));
+            filters.Add(builder.Eq("_id", id));
 
             return await DeleteResource<T>(request, builder.And(filters));
         }

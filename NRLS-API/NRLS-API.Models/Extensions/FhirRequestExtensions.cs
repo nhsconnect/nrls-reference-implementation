@@ -21,5 +21,15 @@ namespace NRLS_API.Models.Extensions
 
             return QueryHelpers.ParseQuery(query).SelectMany(x => x.Value, (col, value) => new Tuple<string, string>(col.Key, value)).ToList();
         }
+
+        public static IEnumerable<Tuple<string, string>> Cleaned(this IEnumerable<Tuple<string, string>> parameters)
+        {
+            if (parameters == null)
+            {
+                return null;
+            }
+
+            return parameters.Where(x => !x.Item1.Equals("_format"));
+        }
     }
 }

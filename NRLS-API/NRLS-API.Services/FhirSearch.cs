@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
@@ -11,6 +13,7 @@ using NRLS_API.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NRLS_API.Services
@@ -31,13 +34,18 @@ namespace NRLS_API.Services
             ValidateResource(request.StrResourceType);
 
             //validate request
+            ObjectId id;
+            if (!ObjectId.TryParse(request.Id, out id))
+            {
+                throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
+            }
 
             try
             {
                 // IMPORTANT - this query currently does not filter for active/un-deleted pointers
                 var builder = Builders<BsonDocument>.Filter;
                 var filters = new List<FilterDefinition<BsonDocument>>();
-                filters.Add(builder.Eq("_id", new ObjectId(request.Id)));
+                filters.Add(builder.Eq("_id", id));
 
                 //var options = new FindOptions<BsonDocument, BsonDocument>();
                 //options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
