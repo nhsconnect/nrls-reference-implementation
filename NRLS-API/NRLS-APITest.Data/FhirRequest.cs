@@ -227,6 +227,28 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static FhirRequest Valid_Search_Summary
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    Id = "testid",
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    Resource = NrlsPointers.Valid,
+                    ResourceType = ResourceType.DocumentReference,
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),
+                        new Tuple<string, string>("_summary", "count")
+                    },
+                    AllowedParameters = new string[] { "_summary", "subject" }
+                };
+            }
+        }
+
         public static FhirRequest Valid_Search_No_Params
         {
             get
@@ -317,6 +339,26 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", ""),
+                        new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
+                    }
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Search_IncorrectSummary
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    Id = "testid",
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    Resource = NrlsPointers.Valid,
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("_summary", "notcount"),
                         new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
                     }
                 };

@@ -353,5 +353,25 @@ namespace NRLS_APITest.Services
 
             Assert.IsType<OperationOutcome>(validParam);
         }
+
+        [Fact]
+        public void ValidateSummaryParameter_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var validParam = validationService.ValidSummaryParameter("count");
+
+            Assert.Null(validParam);
+        }
+
+        [Fact]
+        public void ValidateSummaryParameter_Invalid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var validParam = validationService.ValidSummaryParameter("notcount");
+
+            Assert.IsType<OperationOutcome>(validParam);
+        }
     }
 }

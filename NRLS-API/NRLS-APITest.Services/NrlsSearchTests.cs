@@ -28,6 +28,8 @@ namespace NRLS_APITest.Services
             var validationMock = new Mock<IFhirValidation>();
             validationMock.Setup(op => op.ValidatePatientParameter(It.IsAny<string>())).Returns(delegate { return null; });
             validationMock.Setup(op => op.ValidateCustodianParameter(It.IsAny<string>())).Returns(delegate { return null; });
+            validationMock.Setup(op => op.ValidSummaryParameter(It.Is<string>(p => p == "notcount"))).Returns(delegate { return new OperationOutcome(); });
+            validationMock.Setup(op => op.ValidSummaryParameter(It.Is<string>(p => p == "count"))).Returns(delegate { return null; });
 
             _fhirValidation = validationMock.Object;
 
@@ -194,6 +196,30 @@ namespace NRLS_APITest.Services
 
         //TODO: add patient search exception
         //TODO: add custodian search exception
+
+
+        [Fact]
+        public async void Find_Search_Valid_Summary()
+        {
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _fhirValidation);
+
+            var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Search_Summary) as Bundle;
+
+            Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
+        }
+
+        [Fact]
+        public void Find_Search_Invalid_Summary()
+        {
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _fhirValidation);
+
+
+            Assert.ThrowsAsync<HttpFhirException>(async () => 
+            {
+                var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Search_IncorrectSummary);
+            });
+
+        }
 
     }
 }

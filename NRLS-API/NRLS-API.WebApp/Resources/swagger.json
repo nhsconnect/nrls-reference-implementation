@@ -68,6 +68,13 @@
             "example": "http://snomed.info/sct|736253002"
           },
           {
+            "name": "_summary",
+            "in": "query",
+            "description": "Total number of matching results - Only valid value is count",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "_format",
             "in": "query",
             "description": "Set the content type of the returned results.",

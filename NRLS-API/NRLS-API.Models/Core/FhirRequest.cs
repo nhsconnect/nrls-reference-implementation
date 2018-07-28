@@ -47,6 +47,8 @@ namespace NRLS_API.Models.Core
 
         public string AuditId { get; set; }
 
+        public bool IsSummary { get; set; }
+
         public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)
         {
             return new FhirRequest

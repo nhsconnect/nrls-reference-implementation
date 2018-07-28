@@ -10,6 +10,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         OperationOutcome ValidTypeParameter(string type);
 
+        OperationOutcome ValidSummaryParameter(string summary);
+
         OperationOutcome ValidatePatientParameter(string parameterVal);
 
         OperationOutcome ValidateCustodianParameter(string parameterVal);

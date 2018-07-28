@@ -119,7 +119,22 @@ namespace NRLS_API.Services
                 }
             }
 
+            var summary = request.QueryParameters.FirstOrDefault(x => x.Item1 == "_summary");
+
+            if (summary != null)
+            {
+                var validSummary = _fhirValidation.ValidSummaryParameter(summary.Item2);
+
+                if (validSummary != null)
+                {
+                    throw new HttpFhirException("Missing or Invalid type parameter", validSummary, HttpStatusCode.BadRequest);
+                }
+
+                request.IsSummary = true;
+            }
+
             return await _fhirSearch.Find<T>(request);
-        }
+
+         }
     }
 }

@@ -159,18 +159,21 @@ namespace NRLS_API.Services
                         Relation = "_self",
                         Url = request.RequestUrl.AbsoluteUri
                     }
-                },
-                Entry = resources.Select(r => new Bundle.EntryComponent
-                        {
-                            Search = new Bundle.SearchComponent
-                            {
-                                Mode = Bundle.SearchEntryMode.Match
-                            },
-                            FullUrl = $"{request.RequestUrl.Scheme}://{request.RequestUrl.Host}/fhir/{request.ResourceType}/{r.Id}",
-                            Resource = r
-                        }).ToList()
-
+                }
             };
+
+            if (!request.IsSummary)
+            {
+                bundle.Entry = resources.Select(r => new Bundle.EntryComponent
+                {
+                    Search = new Bundle.SearchComponent
+                    {
+                        Mode = Bundle.SearchEntryMode.Match
+                    },
+                    FullUrl = $"{request.RequestUrl.Scheme}://{request.RequestUrl.Host}/fhir/{request.ResourceType}/{r.Id}",
+                    Resource = r
+                }).ToList();
+            }
 
             return bundle;
         }

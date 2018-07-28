@@ -173,6 +173,36 @@ namespace NRLS_APITest.Services
                                         Definition = "http://hl7.org/fhir/search",
                                         Type = SearchParamType.Token,
                                         Documentation = "Clinical type the DocumentReference refers too"
+                                    },
+                                    new CapabilityStatement.SearchParamComponent
+                                    {
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
+                                                Value = new FhirString("MAY")
+                                            }
+                                        },
+                                        Name = "_summary",
+                                        Definition = "http://hl7.org/fhir/search",
+                                        Type = SearchParamType.String,
+                                        Documentation = "Type of summary to return"
+                                    },
+                                    new CapabilityStatement.SearchParamComponent
+                                    {
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
+                                                Value = new FhirString("MAY")
+                                            }
+                                        },
+                                        Name = "_format",
+                                        Definition = "http://hl7.org/fhir/search",
+                                        Type = SearchParamType.String,
+                                        Documentation = "Content Type of returned result"
                                     }
                                 }
                             }

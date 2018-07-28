@@ -153,6 +153,19 @@ namespace NRLS_API.Services
             return null;
         }
 
+        public OperationOutcome ValidSummaryParameter(string summary)
+        {
+
+            var allowedSummaries = new[] { "count" };
+
+            if (string.IsNullOrWhiteSpace(summary) || !allowedSummaries.Contains(summary.ToLowerInvariant()))
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given summary value is not from the allowed summary types.");
+            }
+
+            return null;
+        }
+
         public OperationOutcome ValidatePatientReference(ResourceReference reference)
         {
             if (!_validationHelper.ValidReference(reference, FhirConstants.SystemPDS))
