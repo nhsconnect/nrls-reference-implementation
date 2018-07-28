@@ -57,6 +57,26 @@ namespace NRLS_APITest.Core.Helpers
             Assert.Equal(FilterDefinition<BsonDocument>.Empty, request);
         }
 
+        [Fact]
+        public void ValidDeleteParams_Returns_MongoQuery()
+        {
+            var searchHelper = new FhirSearchHelper(_fhirCacheHelper);
+
+            var request = searchHelper.BuildQuery(FhirRequests.Valid_ConditionalDelete);
+
+            Assert.NotEqual(FilterDefinition<BsonDocument>.Empty, request);
+        }
+
+        [Fact]
+        public void InvalidDeleteParams_Returns_EmptyQuery()
+        {
+            var searchHelper = new FhirSearchHelper(_fhirCacheHelper);
+
+            var request = searchHelper.BuildQuery(FhirRequests.Invalid_ConditionalDelete_NoSearchValues);
+
+            Assert.Equal(FilterDefinition<BsonDocument>.Empty, request);
+        }
+
     }
 
 }

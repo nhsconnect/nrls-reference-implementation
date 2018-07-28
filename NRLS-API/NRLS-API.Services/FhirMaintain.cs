@@ -89,12 +89,12 @@ namespace NRLS_API.Services
             try
             {
                 // IMPORTANT - In reality the NRLS will only soft delete pointers but not actually delete them like we are doing here
-                var deleted = await _context.Resource(request.StrResourceType).DeleteOneAsync(filters);
+                var deleted =  await _context.Resource(request.StrResourceType).DeleteOneAsync(filters, null, default(System.Threading.CancellationToken));
 
                 OperationOutcome outcome;
                 if (deleted.IsAcknowledged && deleted.DeletedCount > 0)
                 {
-                    outcome = OperationOutcomeFactory.CreateDelete(request.RequestUrl.AbsoluteUri);
+                    outcome = OperationOutcomeFactory.CreateDelete(request.RequestUrl.AbsoluteUri, request.AuditId);
                 }
                 else
                 {

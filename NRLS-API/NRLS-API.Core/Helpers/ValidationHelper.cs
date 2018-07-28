@@ -163,15 +163,17 @@ namespace NRLS_API.Core.Helpers
                     return false;
                 }
 
-                if(!string.IsNullOrEmpty(expectedSystemPrefix) && !parameterVal.StartsWith(expectedSystemPrefix))
+                if(!string.IsNullOrEmpty(expectedSystemPrefix) && !parameterVal.StartsWith($"{expectedSystemPrefix}|"))
                 {
                     return false;
                 }
 
-                if (systemAndValue.Count() > 1 && (string.IsNullOrWhiteSpace(systemAndValue.ElementAt(0)) || !Uri.IsWellFormedUriString(systemAndValue.ElementAt(0), UriKind.RelativeOrAbsolute)) && string.IsNullOrWhiteSpace(systemAndValue.ElementAt(1)))
+                if (systemAndValue.Count() > 1 && ((!string.IsNullOrWhiteSpace(systemAndValue.ElementAt(0)) && !Uri.IsWellFormedUriString(systemAndValue.ElementAt(0), UriKind.RelativeOrAbsolute))))
                 {
                     return false;
                 }
+
+                return true;
             }
 
             if (systemAndValue.Count() != 2 || string.IsNullOrWhiteSpace(systemAndValue.ElementAt(0)) || !Uri.IsWellFormedUriString(systemAndValue.ElementAt(0), UriKind.RelativeOrAbsolute) || string.IsNullOrWhiteSpace(systemAndValue.ElementAt(1)))

@@ -41,11 +41,13 @@ namespace NRLS_APITest.Services
             searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => searchOrgBundle as Resource));
             searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => emptySearchBundle as Resource));
             searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
+            searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
 
             var maintMock = new Mock<IFhirMaintain>();
             maintMock.Setup(op => op.Create<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => NrlsPointers.Valid as Resource));
             maintMock.Setup(op => op.Delete<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => OperationOutcomes.Ok));
             maintMock.Setup(op => op.Delete<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => OperationOutcomes.Error));
+            maintMock.Setup(op => op.DeleteConditional<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => OperationOutcomes.Ok));
 
             var validationMock = new Mock<IFhirValidation>();
             validationMock.Setup(op => op.ValidPointer(It.Is<DocumentReference>(pointer => pointer.Id == "5ab13f41957d0ad5d93a1339"))).Returns(OperationOutcomes.Ok);
@@ -53,6 +55,12 @@ namespace NRLS_APITest.Services
             validationMock.Setup(op => op.GetOrganizationReferenceId(It.Is<ResourceReference>(reference => reference.Reference == "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"))).Returns("TestOrgCode");
             validationMock.Setup(op => op.GetOrganizationReferenceId(It.Is<ResourceReference>(reference => reference.Reference == "https://directory.spineservices.nhs.uk/STU3/Organization/error"))).Returns("TestOrgCode2");
             validationMock.Setup(op => op.GetOrganizationReferenceId(It.IsAny<ResourceReference>())).Returns("TestOrgCode");
+
+            validationMock.Setup(op => op.ValidateIdentifierParameter(It.IsAny<string>(), It.IsAny<string>())).Returns(OperationOutcomes.Error);
+            validationMock.Setup(op => op.ValidateIdentifierParameter(It.IsAny<string>(), It.Is<string>(p => p == "testsystem|testvalue"))).Returns(delegate { return null; });
+
+            validationMock.Setup(op => op.ValidatePatientParameter(It.IsAny<string>())).Returns(OperationOutcomes.Error);
+            validationMock.Setup(op => op.ValidatePatientParameter(It.Is<string>(p => p == "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"))).Returns(delegate { return null; });
 
             var clientMapCache = new ClientAsidMap
             {
@@ -165,6 +173,47 @@ namespace NRLS_APITest.Services
             Assert.IsType<OperationOutcome>(response);
 
             Assert.False(response.Success);
+        }
+
+        [Fact]
+        public async void ConditionalDelete_Valid()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            var response = await service.Delete<DocumentReference>(FhirRequests.Valid_ConditionalDelete);
+
+            Assert.IsType<OperationOutcome>(response);
+
+            Assert.True(response.Success);
+        }
+
+        [Fact]
+        public void ConditionalDelete_Invalid_Subject()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            Assert.ThrowsAsync<HttpFhirException>(async delegate
+            {
+                await SystemTasks.Task.Run(async () => {
+                    var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete_NoSubject);
+                });
+
+            });
+        }
+
+        [Fact]
+        public void ConditionalDelete_Invalid_Identifier()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+
+            Assert.ThrowsAsync<HttpFhirException>(async delegate
+            {
+                await SystemTasks.Task.Run(async () => {
+                    var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete_IncompleteIdentifier);
+                });
+
+            });
         }
     }
 }

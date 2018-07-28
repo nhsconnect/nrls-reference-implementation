@@ -91,7 +91,9 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", "testId")
-                    }
+                    },
+                    Id = "5b5c5bec7f1c649fdea426a1",
+                    AuditId = "91370360-d667-4bc8-bebe-f223560ff90e"
                 };
             }
         }
@@ -122,6 +124,83 @@ namespace NRLS_APITest.Data
                     RequestingAsid = "000",
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Valid_ConditionalDelete
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", "testsystem|testvalue"),
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207")
+                    },
+                    AllowedParameters = new string[] { "custodian", "subject", "identifier" }
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_ConditionalDelete_NoSearchValues
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", ""),
+                        new Tuple<string, string>("subject", "")
+                    },
+                    AllowedParameters = new string[] { "custodian", "subject", "identifier" }
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_ConditionalDelete_NoSubject
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", "testsystem|testvalue")
+                    }
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_ConditionalDelete_IncompleteIdentifier
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", "|testvalue"),
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207")
+                    }
                 };
             }
         }

@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using NRLS_API.Core.Factories;
 using NRLS_APITest.Comparer;
+using NRLS_APITest.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,27 +14,9 @@ namespace NRLS_APITest.Core.Factories
         [Fact]
         public void CreateDelete_Is_Valid()
         {
-            var expected = new OperationOutcome()
-            {
-                //Meta = new Meta
-                //{
-                //    Profile = new List<string>{
-                //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
-                //    }
-                //},
-                Issue = new List<OperationOutcome.IssueComponent>
-                {
-                    new OperationOutcome.IssueComponent
-                    {
-                        Severity = OperationOutcome.IssueSeverity.Information,
-                        Code = OperationOutcome.IssueType.Informational,
-                        Diagnostics = "Successfully removed resource DocumentReference: https://testurl.com/url",
-                        Details = null
-                    }
-                }
-            };
+            var expected = OperationOutcomes.Deleted;
 
-            var actual = OperationOutcomeFactory.CreateDelete("https://testurl.com/url");
+            var actual = OperationOutcomeFactory.CreateDelete("https://testdomain/testurl", "91370360-d667-4bc8-bebe-f223560ff90e");
 
             Assert.Equal(expected, actual, Comparers.ModelComparer<OperationOutcome>());
         }

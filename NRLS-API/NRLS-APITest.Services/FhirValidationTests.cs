@@ -28,6 +28,9 @@ namespace NRLS_APITest.Services
             mock.Setup(op => op.ValidNhsNumber(It.Is<string>(q => string.IsNullOrEmpty(q)))).Returns(false);
             mock.Setup(op => op.ValidNhsNumber(It.Is<string>(q => !string.IsNullOrEmpty(q)))).Returns(true);
 
+            mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "valid|valid"), null, false)).Returns(true);
+            mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "invalid|invalid"), null, false)).Returns(false);
+
             _iValidationHelper = mock.Object;
         }
 
@@ -329,6 +332,26 @@ namespace NRLS_APITest.Services
             var validPoiner = validationService.ValidateContent(content);
 
             Assert.IsType<OperationOutcome>(validPoiner);
+        }
+
+        [Fact]
+        public void ValidateIdentifierParameter_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var validParam = validationService.ValidateIdentifierParameter("identifier", "valid|valid");
+
+            Assert.Null(validParam);
+        }
+
+        [Fact]
+        public void ValidateIdentifierParameter_Invalid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var validParam = validationService.ValidateIdentifierParameter("identifier", "invalid|invalid");
+
+            Assert.IsType<OperationOutcome>(validParam);
         }
     }
 }

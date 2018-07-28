@@ -160,11 +160,16 @@ namespace NRLS_API.Core.Factories
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully created resource DocumentReference", details);
         }
 
-        public static OperationOutcome CreateDelete(string url)
+        public static OperationOutcome CreateDelete(string url, string text)
         {
-            var details = CreateDetails("RESOURCE_DELETED", "Resource removed", null, Guid.NewGuid().ToString());
+            if (string.IsNullOrEmpty(text))
+            {
+                text = Guid.NewGuid().ToString();
+            }
 
-            return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully removed resource DocumentReference: {url}", null);
+            var details = CreateDetails("RESOURCE_DELETED", "Resource removed", null, text);
+
+            return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully removed resource DocumentReference: {url}", details);
         }
 
         public static CodeableConcept CreateDetails(string code, string display, string system = null, string text = null)

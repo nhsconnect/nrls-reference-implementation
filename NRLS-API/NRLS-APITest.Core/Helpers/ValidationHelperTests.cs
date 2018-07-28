@@ -471,5 +471,140 @@ namespace NRLS_APITest.Core.Helpers
             Assert.False(actual);
         }
 
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalVal_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("tokenVal", null);
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalExpSys_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal|", "sysVal");
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalEmpty_Invalid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("", null);
+
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalNull_Invalid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter(null, null);
+
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalExpSys_Invalid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal", "AltSysVal");
+
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalValPipe_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("|tokenVal", null);
+
+
+            Assert.True(actual);
+        }
+
+
+        [Fact]
+        public void Validation_ValidTokenParameter_OptionalSysPipe_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal|", null);
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_SysVal_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal|tokenVal", null, false);
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_SysValExp_Valid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal|tokenVal", "sysVal", false);
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_SysVal_Invalid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("|tokenVal", null, false);
+
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidTokenParameter_SysValExp_Invalid()
+        {
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidTokenParameter("sysVal|tokenVal", "AltSysVal", false);
+
+
+            Assert.False(actual);
+        }
+
+
+
     }
 }
