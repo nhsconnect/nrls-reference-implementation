@@ -33,6 +33,7 @@ const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() |
 // basic configuration:
 const title = 'NRLS Demonstrator';
 const appVersion = '0.0.1-Beta';
+const gaTrackId = 'UA-38028819-4';
 const baseUrl = '/';
 const rootDir = path.resolve();
 const srcDir = path.resolve('AppSrc');
@@ -117,7 +118,8 @@ let config = generateConfig(
     generateIndexHtml({
         minify: ENV === 'production', overrideOptions: {
             updatedAt: getUpdatedStamp(),
-            appVersion: appVersion
+            appVersion: appVersion,
+            gaTrackId: gaTrackId
         }
     }),
   

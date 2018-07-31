@@ -54,6 +54,7 @@
     <None Remove="AppSrc\core\models\IPersonnel.ts" />
     <None Remove="AppSrc\core\models\IPointer.ts" />
     <None Remove="AppSrc\core\models\MedicalRecord.ts" />
+    <None Remove="AppSrc\core\services\AnalyticsService.ts" />
     <None Remove="AppSrc\core\services\BenefitsService.ts" />
     <None Remove="AppSrc\core\services\ConfigService.ts" />
     <None Remove="AppSrc\core\services\EprService.ts" />
@@ -145,6 +146,7 @@
     <TypeScriptCompile Include="AppSrc\core\interfaces\IPersonnel.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IActorOrganisation.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\MedicalRecord.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\AnalyticsService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ConfigService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\BenefitsService.ts" />

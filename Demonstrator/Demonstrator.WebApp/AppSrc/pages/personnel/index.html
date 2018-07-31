@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-sm-7">
                 <div show.bind="personnel.cModule" class="margin-bottom-xlrg">
-                    <scenario-modal cmodule.one-way="personnel.cModule" title.one-way="personnel.title"></scenario-modal>
+                    <scenario-modal cmodule.one-way="personnel.cModule" title.one-way="personnel.title" record-view.call="recordScenarioView()"></scenario-modal>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <p if.bind="!hasBenefits">You can read more about NRLS Benefits on the <a route-href="route: about;">About Page</a>.</p>
         
         <div if.bind="hasBenefits" class="margin-bottom-lrg">
-            <benefit-modal benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId" benefitforname.one-way="benefitsForName"></benefit-modal>
+            <benefit-modal benefitfor.one-way="benefitsFor" benefitforid.one-way="benefitsForId" benefitforname.one-way="benefitsForName" record-view.call="recordBenefitView()"></benefit-modal>
         </div>
 
         <h4 class="margin-top-lrg">What does the NRLS look like?</h4>

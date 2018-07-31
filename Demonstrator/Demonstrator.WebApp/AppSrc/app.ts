@@ -4,8 +4,9 @@ import { EventAggregator } from 'aurelia-event-aggregator';
 import { DialogRequested } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
+import { AnalyticsSvc } from './core/services/AnalyticsService';
 
-@inject(EventAggregator)
+@inject(EventAggregator, AnalyticsSvc)
 export class App {
     router: Router;
     errorDialog: IDialog;
@@ -14,7 +15,7 @@ export class App {
     appVersion?: string;
     baseUrl?: string;
 
-    constructor(private ea: EventAggregator) {
+    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc) {
         ea.subscribe(DialogRequested, msg => {
 
             if (msg && msg.Severity != 'Information') {
@@ -40,7 +41,9 @@ export class App {
 
         config.mapUnknownRoutes(<RouteConfig>notFoundRoute);
 
-        config.addPipelineStep('postcomplete', PostCompleteStep);
+        config.addPipelineStep('preActivate', StartAnalyticsStep);
+        config.addPipelineStep('postRender', EndAnalyticsStep);
+        config.addPipelineStep('postRender', ScrollPageStep);
 
         config.map([
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
@@ -52,8 +55,8 @@ export class App {
 
             { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
 
-            { route: 'actor-organisation/:routeParamId/:routeParamTitle?', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona' },
-            { route: 'personnel/:routeParamId/:routeParamTitle?', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me' },
+            { route: 'actor-organisation/:routeParamId/:routeParamTitle?', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona', settings: { dynamicTitle: true } },
+            { route: 'personnel/:routeParamId/:routeParamTitle?', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me', settings: { dynamicTitle: true } },
 
             { route: 'privacy-policy', name: 'privacy-policy', moduleId: './pages/privacy-policy/index', nav: false, title: 'Privacy Policy' },
             { route: 'cookie-policy', name: 'cookie-policy', moduleId: './pages/cookie-policy/index', nav: false, title: 'Cookie Policy' },
@@ -74,10 +77,71 @@ export class App {
 
     showContactDialog() {
         this.canShowContact = !this.canShowContact;
+
+        if (this.canShowContact === true) {
+            this.analyticsSvc.contactsModal(window.location.pathname);
+        }
+    }
+
+}
+
+class StartAnalyticsStep {
+    run(instruction: NavigationInstruction, next: Next) {
+
+        window['pageStartTime'] = window['pageInit'] || Date.now();
+
+        return next();
     }
 }
 
-class PostCompleteStep {
+@inject(AnalyticsSvc)
+class EndAnalyticsStep {
+
+    constructor(private gaSvc: AnalyticsSvc) {
+
+    }
+
+    run(instruction: NavigationInstruction, next: Next) {
+
+        window['pageEndTime'] = Date.now();
+
+        let pageLoadTime: number | undefined = (window['pageEndTime'] && window['pageStartTime']) ? (window['pageEndTime'] - window['pageStartTime']) / 1000 : undefined;
+
+        let pageTitle = document.title;
+
+        if (instruction.router.currentInstruction.config.settings.dynamicTitle === true) {
+            pageTitle = document.title = this.updateTitle(pageTitle, instruction.router.currentInstruction.params.routeParamTitle.replace("-", " "));
+        }
+
+        this.gaSvc.trackPage(window.location.pathname, pageTitle, pageLoadTime);
+        window['pageInit'] = undefined;
+
+        return next();
+    }
+
+    updateTitle(title: string, addition: string): string {
+
+        if (title) {
+            let titleBreak = title.split("-");
+
+            if (titleBreak.length > 0) {
+
+                if (addition) {
+                    titleBreak.splice(1, 0, addition);
+                }
+
+                return titleBreak.join(" - ");
+                
+            } else if (addition) {
+                return addition;
+            }
+        }
+
+        return "";
+    }
+}
+
+class ScrollPageStep {
 
     run(instruction: NavigationInstruction, next: Next) {
 

@@ -13,6 +13,10 @@
             appVersion: '<%- htmlWebpackPlugin.options.appVersion %>',
             baseUrl: '<%- htmlWebpackPlugin.options.metadata.baseUrl %>'
         };
+
+        var pageInit = Date.now();
+        var pageStartTime = undefined;
+        var pageEndTime = undefined;
     </script>
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="30398f35-a144-4edd-a779-05481f9da7b3" type="text/javascript" async></script>
     <!-- imported CSS are concatenated and added automatically -->
@@ -24,7 +28,11 @@
     </div>
 
     <script type="text/plain" data-cookieconsent="statistics">
-        <!-- add analytics scripts here -->
+        var gaLoaderScript = document.createElement('script');
+        gaLoaderScript.src = '//www.google-analytics.com/ga.js';
+        document.getElementsByTagName('head')[0].appendChild(gaLoaderScript);
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', '<%- htmlWebpackPlugin.options.gaTrackId %>', 'auto');
     </script>
 </body>
 </html>

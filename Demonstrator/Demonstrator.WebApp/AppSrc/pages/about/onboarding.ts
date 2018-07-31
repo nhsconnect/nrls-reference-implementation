@@ -1,15 +1,16 @@
 import { IBreadcrumb } from "../../core/interfaces/IBreadcrumb";
 import { ConfigSvc } from "../../core/services/ConfigService";
 import { inject } from "aurelia-framework";
+import { AnalyticsSvc } from "../../core/services/AnalyticsService";
 
-@inject(ConfigSvc)
+@inject(ConfigSvc, AnalyticsSvc)
 export class AboutOnboarding {
     heading: string = 'Onboarding';
     breadcrumb: Array<IBreadcrumb> = [];
     dpiaLink: string;
     tomLink: string;
 
-    constructor(private configSvc: ConfigSvc) { }
+    constructor(private configSvc: ConfigSvc, private analyticsSvc: AnalyticsSvc) { }
 
     created() {
         this.setBreadcrumb();
@@ -21,6 +22,12 @@ export class AboutOnboarding {
         if (this.configSvc.config.TOMLink) {
             this.tomLink = this.configSvc.config.TOMLink;
         }
+    }
+
+    private fileDownloadTrack(file: string) {
+        this.analyticsSvc.downloads(file);
+
+        return true;
     }
 
     private setBreadcrumb(): void {

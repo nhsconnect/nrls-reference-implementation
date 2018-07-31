@@ -7,6 +7,7 @@ export class BenefitModalCustomElement {
     @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitforid: string;
     @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitfor: string;
     @bindable({ defaultBindingMode: bindingMode.oneWay }) benefitforname: string;
+    @bindable recordView: any;
     navigateToAbout: boolean = false;
 
     constructor(private router: Router) { }
@@ -18,6 +19,11 @@ export class BenefitModalCustomElement {
                 this.router.navigateToRoute('about-benefits');
             }
         });
+    }
+
+    startBenefitModal() {
+        this.loadBenefitModal();
+        this.recordView();
     }
 
     loadBenefitModal() {

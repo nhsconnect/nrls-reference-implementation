@@ -12,7 +12,7 @@
         <h4 class="margin-top-lrg">DPIA <span>(Data Privacy Impact Assessment)</span></h4>
         <div >
             <p if.bind="dpiaLink">
-                Download the current version of the <a href.bind="dpiaLink" target="_blank">NRLS DPIA</a>.
+                Download the current version of the <a href.bind="dpiaLink" target="_blank" click.delegate="fileDownloadTrack(dpiaLink)">NRLS DPIA</a>.
             </p>
 
             <p><em>Notable information contained within the DPIA are as follows:</em></p>
@@ -40,7 +40,7 @@
             <li>Phase 2: End User Approval</li>
         </ul>
         <p if.bind="tomLink">
-            Download the current version of the <a href.bind="tomLink" target="_blank">NRLS TOM</a>.
+            Download the current version of the <a href.bind="tomLink" target="_blank" click.delegate="fileDownloadTrack(tomLink)">NRLS TOM</a>.
         </p>
 
     </section>
