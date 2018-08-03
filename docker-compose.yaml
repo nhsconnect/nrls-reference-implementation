@@ -4,7 +4,7 @@ services:
     container_name: nrlsdemoapp
     image: nrlsdemo
     ports:
-      - "8130:5000"
+      - "80:5000"
     networks:
       - nrlsdemo-network
 
@@ -12,7 +12,7 @@ services:
     container_name: nrlsapiapp
     image: nrlsapi
     ports:
-      - "8101:5001"
+      - "81:5001"
     networks:
       - nrlsdemo-network
 
