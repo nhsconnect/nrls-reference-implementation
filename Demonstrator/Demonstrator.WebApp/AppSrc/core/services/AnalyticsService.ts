@@ -8,8 +8,6 @@
 
     trackPage(path: string, title: string, loadTime?: number) {
 
-        console.log("page: " + path, "title: " + title, "loaded: " + loadTime);
-
         if (!this._ga) {
             return false;
         }
@@ -43,7 +41,7 @@
     }
 
     trackEvent(category: string, action: string, label: string, value: string) {
-        console.log('send', 'event', category, action, label, value);
+
         if (!this._ga) {
             return false;
         }
