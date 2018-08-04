@@ -36,6 +36,11 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
+            if(pointer.MasterIdentifier != null && !_validationHelper.ValidIdentifier(pointer.MasterIdentifier))
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("masterIdentifier");
+            }
+
             //status
             if(pointer.Status == null)
             {
@@ -238,6 +243,11 @@ namespace NRLS_API.Services
             return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemODS);
         }
 
+        public string GetSubjectReferenceId(ResourceReference reference)
+        {
+            return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemPDS);
+        }
+
         public OperationOutcome ValidateOrganisationReference(ResourceReference reference, string type)
         {
             if (!_validationHelper.ValidReference(reference, FhirConstants.SystemODS))
@@ -245,7 +255,7 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemODS}/[ODS Code]");
             }
 
-            var orgCode = reference.Reference.Replace(FhirConstants.SystemODS, "");
+            var orgCode = GetOrganizationReferenceId(reference);
 
             if (string.IsNullOrWhiteSpace(orgCode))
             {

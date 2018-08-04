@@ -87,6 +87,11 @@ namespace NRLS_API.Core.Helpers
             return reference != null && !string.IsNullOrEmpty(reference.Reference) && !string.IsNullOrEmpty(startsWith) && reference.Reference.StartsWith(startsWith);
         }
 
+        public bool ValidIdentifier(Identifier identifier)
+        {
+            return identifier != null && !string.IsNullOrWhiteSpace(identifier.System) && Uri.IsWellFormedUriString(identifier.System, UriKind.RelativeOrAbsolute) && !string.IsNullOrWhiteSpace(identifier.Value);
+        }
+
         public bool ValidNhsNumber(string nhsNumber)
         {
             if (string.IsNullOrEmpty(nhsNumber))

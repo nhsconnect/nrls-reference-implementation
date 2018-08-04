@@ -19,6 +19,7 @@ namespace NRLS_APITest.Services
         public FhirValidationTests()
         {
             var mock = new Mock<IValidationHelper>();
+            //mock.Setup(op => op.ValidReference(It.Is<ResourceReference>(r => r.Reference == "https://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(false);
             mock.Setup(op => op.ValidReference(It.IsAny<ResourceReference>(), It.IsAny<string>())).Returns(true);
             mock.Setup(op => op.ValidReferenceParameter(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code == null), It.IsAny<string>(), false, true, true, true, It.IsAny<string>())).Returns(false);
@@ -30,6 +31,15 @@ namespace NRLS_APITest.Services
 
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "valid|valid"), null, false)).Returns(true);
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "invalid|invalid"), null, false)).Returns(false);
+
+            mock.Setup(op => op.ValidIdentifier(It.IsAny<Identifier>())).Returns(true);
+            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.System)))).Returns(false);
+            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.Value)))).Returns(false);
+
+            mock.Setup(op => op.GetResourceReferenceId(It.IsAny<ResourceReference>(), It.IsAny<string>())).Returns("resourceRefId");
+            mock.Setup(op => op.GetResourceReferenceId(It.Is<ResourceReference>(r => r.Reference == "InvalidAuthorhttps://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(delegate { return null; });
+            mock.Setup(op => op.GetResourceReferenceId(It.Is<ResourceReference>(r => r.Reference == "InvalidCustodianhttps://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(delegate { return null; });
+
 
             _iValidationHelper = mock.Object;
         }
@@ -58,6 +68,48 @@ namespace NRLS_APITest.Services
             var expected = OperationOutcomes.Ok;
 
             Assert.Equal(expected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Valid_with_MasterId()
+        {
+
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Valid_With_MasterId;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var expected = OperationOutcomes.Ok;
+
+            Assert.Equal(expected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_MasterId_System()
+        {
+
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Invalid_MasterId_System;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_MasterId_Value()
+        {
+
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Invalid_MasterId_Value;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
         }
 
         [Fact]

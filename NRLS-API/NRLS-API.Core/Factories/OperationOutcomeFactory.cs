@@ -148,6 +148,14 @@ namespace NRLS_API.Core.Factories
             return CreateError("Invalid Request Message", details, OperationOutcome.IssueType.Value);
         }
 
+        public static OperationOutcome CreateDuplicateRequest(Identifier masterIdentifier)
+        {
+
+            var details = CreateDetails("DUPLICATE_REJECTED", "Duplicate DocumentReference");
+
+            return CreateError($"Duplicate masterIdentifier value: {masterIdentifier.Value} system: {masterIdentifier.System}", details, OperationOutcome.IssueType.Duplicate);
+        }
+
         public static OperationOutcome CreateOk()
         {
             return Base();

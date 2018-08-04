@@ -1,4 +1,5 @@
 ﻿using Hl7.Fhir.Model;
+using NRLS_API.Models.Core;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
@@ -19,5 +20,7 @@ namespace NRLS_API.Core.Interfaces.Services
         OperationOutcome ValidateIdentifierParameter(string paramName, string parameterVal);
 
         string GetOrganizationReferenceId(ResourceReference reference);
+
+        string GetSubjectReferenceId(ResourceReference reference);
     }
 }

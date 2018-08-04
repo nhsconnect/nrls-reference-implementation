@@ -41,6 +41,7 @@ namespace NRLS_APITest.Services
             searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => searchOrgBundle as Resource));
             searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => emptySearchBundle as Resource));
             searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
+            //searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.Is<FhirRequest>(request => (request.Resource as DocumentReference).MasterIdentifier.Value == "testValueForMaintTest"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
             searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
 
             var maintMock = new Mock<IFhirMaintain>();
@@ -132,6 +133,17 @@ namespace NRLS_APITest.Services
 
 
             var response = await service.Create<DocumentReference>(FhirRequests.Invalid_Custodian);
+
+            Assert.IsType<OperationOutcome>(response);
+        }
+
+        [Fact]
+        public async void Create_Invalid_MasterIdentifier()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+
+            var response = await service.Create<DocumentReference>(FhirRequests.Valid_Create_MasterId);
 
             Assert.IsType<OperationOutcome>(response);
         }

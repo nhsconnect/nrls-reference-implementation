@@ -4,6 +4,7 @@ using NRLS_APITest.Comparer;
 using NRLS_APITest.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -20,6 +21,31 @@ namespace NRLS_APITest.Core.Factories
 
             Assert.Equal(expected, actual, Comparers.ModelComparer<OperationOutcome>());
         }
+
+        [Fact]
+        public void CreateDuplicate_Is_Valid()
+        {
+            var identifier = new Identifier("testsystem", "testvalue");
+            var actual = OperationOutcomeFactory.CreateDuplicateRequest(identifier);
+
+            Assert.IsType<OperationOutcome>(actual);
+
+            Assert.NotNull(actual.Issue);
+            Assert.NotEmpty(actual.Issue);
+
+            Assert.Equal("Duplicate masterIdentifier value: testvalue system: testsystem", actual.Issue.First().Diagnostics);
+            Assert.Equal(OperationOutcome.IssueType.Duplicate.ToString(), actual.Issue.First().Code.ToString());
+            Assert.Equal(OperationOutcome.IssueSeverity.Error.ToString(), actual.Issue.First().Severity.ToString());
+
+            Assert.NotNull(actual.Issue.First().Details);
+            Assert.NotNull(actual.Issue.First().Details.Coding);
+            Assert.NotEmpty(actual.Issue.First().Details.Coding);
+
+            Assert.Equal("DUPLICATE_REJECTED", actual.Issue.First().Details.Coding.First().Code);
+            Assert.Equal("Duplicate DocumentReference", actual.Issue.First().Details.Coding.First().Display);
+        }
+
+        //more tests required
 
         [Fact]
         public void CreateOrganizationNotFound_Is_Valid()

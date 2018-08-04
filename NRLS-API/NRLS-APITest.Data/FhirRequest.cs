@@ -21,6 +21,21 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static FhirRequest Valid_Create_MasterId
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    Resource = NrlsPointers.Valid_With_MasterId_Alt,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        
+
         public static FhirRequest Valid_Create_Alt
         {
             get

@@ -229,6 +229,7 @@ namespace NRLS_APITest.Core.Helpers
             Assert.False(actual);
         }
 
+
         [Fact]
         public void Validation_GetResourceReferenceId_HandlesNull()
         {
@@ -302,6 +303,66 @@ namespace NRLS_APITest.Core.Helpers
 
 
             Assert.Equal("testsystem/id", actual);
+        }
+
+        [Fact]
+        public void Validation_ValidIdentifier_Valid()
+        {
+            var identifier = new Identifier
+            {
+                System = "testsystem.com",
+                Value = "testValue"
+            };
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidIdentifier(identifier);
+
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidIdentifier_HandlesNull()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidIdentifier(null);
+
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidIdentifier_Invalid_System()
+        {
+            var identifier = new Identifier
+            {
+                System = null,
+                Value = "testValue"
+            };
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidIdentifier(identifier);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Validation_ValidIdentifier_Invalid_Value()
+        {
+            var identifier = new Identifier
+            {
+                System = "testsystem.com",
+                Value = null
+            };
+
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.ValidIdentifier(identifier);
+
+            Assert.False(actual);
         }
 
         [Fact]

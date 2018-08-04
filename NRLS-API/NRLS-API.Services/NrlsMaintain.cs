@@ -46,8 +46,21 @@ namespace NRLS_API.Services
             }
 
 
-            //Now we need to do some additional validation on ODS codes
-            //We need to use an external source (in reality yes but we are just going to do an internal query to fake ods search)
+            //Now we need to do some additional validation on ODS codes && Master Ids
+            //We need to use an external source (in reality yes but we are just going to do an internal query to fake ods & pointer search)
+
+            if(document.MasterIdentifier != null)
+            {
+                var nhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
+                var masterIdentifierRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, document.MasterIdentifier, nhsNumber);
+                var miPointers = await _fhirSearch.GetByMasterId<DocumentReference>(masterIdentifierRequest) as Bundle;
+
+                if (miPointers.Entry.Count > 0)
+                {
+                    return OperationOutcomeFactory.CreateDuplicateRequest(document.MasterIdentifier);
+                }
+            }
+
 
             var custodianOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
 

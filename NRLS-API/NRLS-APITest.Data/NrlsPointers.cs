@@ -60,6 +60,46 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference Valid_With_MasterId
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.MasterIdentifier = new Identifier("testSystem.com", "testValue");
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_With_MasterId_Alt
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.MasterIdentifier = new Identifier("testSystem.com", "testValueForMaintTest");
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Invalid_MasterId_Value
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.MasterIdentifier = new Identifier("testSystem.com", null);
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Invalid_MasterId_System
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.MasterIdentifier = new Identifier(null, "testValue");
+                return pointer;
+            }
+        }
+
         public static DocumentReference Invalid_Status
         {
             get
@@ -131,7 +171,7 @@ namespace NRLS_APITest.Data
             get
             {
                 var pointer = Valid;
-                pointer.Author.First().Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/";
+                pointer.Author.First().Reference = "InvalidAuthorhttps://directory.spineservices.nhs.uk/STU3/Organization/";
 
                 return pointer;
             }
@@ -166,7 +206,7 @@ namespace NRLS_APITest.Data
             get
             {
                 var pointer = Valid;
-                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/";
+                pointer.Custodian.Reference = "InvalidCustodianhttps://directory.spineservices.nhs.uk/STU3/Organization/";
 
                 return pointer;
             }
