@@ -2,23 +2,23 @@ version: '2'
 services:
   nrlsdemoapp:
     container_name: nrlsdemoapp
-    image: nrlsdemo
+    image: "${REGISTRY_PREFIX}nrlsdemo${IMAGE_TAG}"
     ports:
-      - "80:5000"
+      - "8130:5000"
     networks:
       - nrlsdemo-network
 
   nrlsapiapp:
     container_name: nrlsapiapp
-    image: nrlsapi
+    image: "${REGISTRY_PREFIX}nrlsapi${IMAGE_TAG}"
     ports:
-      - "81:5001"
+      - "8101:5001"
     networks:
       - nrlsdemo-network
 
   nrlsmongodb:
     container_name: nrlsmongodb
-    image: nrlsmongodb
+    image: "${REGISTRY_PREFIX}nrlsmongodb${IMAGE_TAG}"
     networks:
       - nrlsdemo-network
 
