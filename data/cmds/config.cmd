@@ -3,7 +3,6 @@ SET MONGO_SVC_NAME=MongoDB36
 SET MONGO_DATA_PATH=C:\Data\Mongo\db\
 SET MONGO_LOG_PATH=C:\Data\Mongo\log\mongod.log
 SET PASSWORD_LOCK_FILE=%MONGO_DATA_PATH%.mongodb_password_set
-SET MONGO_SVC_NAME=MongoDB36
 
 REM Admin User
 SET MONGODB_ADMIN_USER=admin
