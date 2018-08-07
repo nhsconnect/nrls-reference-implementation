@@ -38,18 +38,11 @@ namespace NRLS_API.Services
 
             try
             {
-                //At present NRLS spec states updates are performed by delete and create so version will always be 1
-                request.Resource.VersionId = "1";
-
-                request.Resource.Meta = request.Resource.Meta ?? new Meta();
-                request.Resource.Meta.LastUpdated = DateTime.UtcNow;
-                request.Resource.Meta.VersionId = "1";
-
                 var pointerJson = new FhirJsonSerializer().SerializeToString(request.Resource);
 
                 var document = BsonSerializer.Deserialize<BsonDocument>(pointerJson);
 
-                _context.Resource(request.StrResourceType).InsertOne(document);
+                await _context.Resource(request.StrResourceType).InsertOneAsync(document);
 
                 BsonElement documentId;
                 var hasId = document.TryGetElement("_id", out documentId);
