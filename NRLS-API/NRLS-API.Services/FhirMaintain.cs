@@ -57,38 +57,6 @@ namespace NRLS_API.Services
             }
         }
 
-        //public async SystemTasks.Task<(Resource created, bool updated)> CreateWithUpdateTransaction<T>(FhirRequest request, FhirRequest updateRequest, UpdateDefinition<BsonDocument> updates) where T : Resource
-        //{
-        //    var result = await _context.StartTransactionWithRetry(async (IClientSessionHandle session, Action<IClientSessionHandle> commitTransaction) =>
-        //    {
-        //        Resource created = null;
-        //        bool updated = false;
-
-        //        session.StartTransaction(new TransactionOptions(readConcern: ReadConcern.Snapshot, writeConcern: WriteConcern.WMajority));
-
-        //        try
-        //        {
-        //            created = await Create<T>(request);
-        //            updated = await Update<T>(updateRequest, updates);
-        //        }
-        //        catch
-        //        {
-        //            session.AbortTransaction();
-        //            throw new HttpFhirException("Error Updating DocumentReference", OperationOutcomeFactory.CreateInternalError($"There has been an internal error when attempting to persist the DocumentReference. Please contact the national helpdesk quoting - {Guid.NewGuid()}"));
-        //        }
-
-        //        if(created == null || !updated)
-        //        {
-        //            session.AbortTransaction();
-        //            return (created: created, updated: updated);
-        //        }
-
-        //        commitTransaction(session);
-        //        return (created: created, updated: updated);
-        //    });
-
-        //    return result;
-        //}
 
         public async SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource
         {
