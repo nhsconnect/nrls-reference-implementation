@@ -1,4 +1,6 @@
 ﻿import { Aurelia } from 'aurelia-framework';
+import { ConfigSvc } from "./core/services/ConfigService";
+import { Container } from 'aurelia-dependency-injection';
 
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import 'font-awesome/css/font-awesome.css';
@@ -11,9 +13,14 @@ import * as Bluebird from 'bluebird';
 Bluebird.config({ warnings: false });
 
 export async function configure(aurelia: Aurelia) {
+
+    let configSvc = Container.instance.get(ConfigSvc);
+    
+    let debugLevel = configSvc && configSvc.config && configSvc.config.ENV !== "production" ? undefined : 'none';
+
     aurelia.use
         .standardConfiguration()
-        .developmentLogging()
+        .developmentLogging(debugLevel)
         .plugin('core/helpers/converters/index')
         .plugin('core/helpers/loaders/index')
         .plugin('core/includes')
