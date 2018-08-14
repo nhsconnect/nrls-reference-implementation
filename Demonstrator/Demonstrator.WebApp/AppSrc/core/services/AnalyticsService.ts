@@ -1,22 +1,26 @@
 ﻿export class AnalyticsSvc {
 
-    _ga: any;
+    _ga: boolean = false;
+    canTrack: boolean = false;
 
     constructor() {
-        this._ga = window['ga'];
+
     }
 
-    trackPage(path: string, title: string, loadTime?: number) {
-
-        if (!this._ga) {
+    trackPage(titleSlice?: string, altPath?: string) {
+        if (!this.canTrack || !this._ga) {
             return false;
         }
 
-        this._ga('set', { page: path, title: title, anonymizeIp: true });
-        this._ga('send', 'pageview');
+        let pageTitle = this.getPageTitle(titleSlice);
+        let pageLoadTime = this.getLoadTime();
+        let pagePath = altPath || window.location.pathname;
 
-        if (loadTime) {
-            this._ga('send', 'timing', 'Page Load Time', 'load', loadTime);
+        window['ga']('set', { page: pagePath, title: pageTitle, anonymizeIp: true });
+        window['ga']('send', 'pageview');
+
+        if (pageLoadTime) {
+            window['ga']('send', 'timing', 'Page Load Time', 'load', pageLoadTime);
         }
     }
 
@@ -41,13 +45,83 @@
     }
 
     trackEvent(category: string, action: string, label: string, value: string) {
-
-        if (!this._ga) {
+        if (!this.canTrack || !this._ga) {
             return false;
         }
 
-        this._ga('set', { anonymizeIp: true });
-        this._ga('send', 'event', category, action, label, value);
+        window['ga']('set', { anonymizeIp: true });
+        window['ga']('send', 'event', category, action, label, value);
+    }
+
+    start(canStart: boolean, callback: () => void) {
+        this.canTrack = canStart;
+
+        if (this.canTrack && !this._ga) {
+            
+            this._ga = true;
+        }
+
+        if (typeof callback === "function") {
+            callback();
+        }
+    }
+
+    stop(callback: () => void) {
+        this.canTrack = false;
+
+        if (typeof callback === "function") {
+            callback();
+        }
+    }
+
+    private getPageTitle(titleSlice?: string) {
+        let pageTitle = document.title;
+
+        if (titleSlice) {
+            pageTitle = document.title = this.updateTitleSlices(pageTitle, titleSlice.replace("-", " "));
+        }
+
+        return pageTitle;
+    }
+
+    private updateTitleSlices(title: string, addition: string): string {
+
+        if (title) {
+            let titleBreak = title.split("-");
+
+            if (titleBreak.length > 0) {
+
+                if (addition) {
+                    titleBreak.splice(1, 0, addition);
+                }
+
+                return titleBreak.join(" - ");
+
+            } else if (addition) {
+                return addition;
+            }
+        }
+
+        return "";
+    }
+
+    startLoadTime() {
+        window['pageStartTime'] = window['pageInit'] || Date.now();
+    }
+
+    stopLoadTime() {
+        window['pageEndTime'] = Date.now();
+    }
+
+    private getLoadTime() {
+
+        let pageLoadTime: number | undefined = (window['pageEndTime'] && window['pageStartTime']) ? (window['pageEndTime'] - window['pageStartTime']) / 1000 : undefined;
+
+        return pageLoadTime;
+    }
+
+    clearInitTime() {
+        window['pageInit'] = undefined;
     }
 
 }

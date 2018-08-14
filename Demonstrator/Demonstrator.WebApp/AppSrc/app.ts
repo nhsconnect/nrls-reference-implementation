@@ -1,21 +1,23 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { DialogRequested } from './core/helpers/EventMessages';
+import { DialogRequested, CookieCanTrack } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
 import { AnalyticsSvc } from './core/services/AnalyticsService';
+import { DemonstratorConfig } from './core/models/DemonstratorConfig';
+import { CookieSvc } from './core/services/CookieService';
 
-@inject(EventAggregator, AnalyticsSvc)
+@inject(EventAggregator, AnalyticsSvc, CookieSvc)
 export class App {
     router: Router;
     errorDialog: IDialog;
     canShowContact: boolean = false;
-    updatedAt?: string;
-    appVersion?: string;
-    baseUrl?: string;
+    handleAcceptTrack: any;
 
-    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc) {
+    appConfig: IDemonstratorConfig;
+
+    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc, private cookieSvc: CookieSvc) {
         ea.subscribe(DialogRequested, msg => {
 
             if (msg && msg.Severity != 'Information') {
@@ -23,11 +25,45 @@ export class App {
             }
         });
 
-        let demonstratorConfig = (window['demonstratorConfig'] || { updatedAt: '', appVersion: '', baseUrl: '' }) as IDemonstratorConfig;
+        ea.subscribe(CookieCanTrack, cct => {
 
-        this.updatedAt = demonstratorConfig.updatedAt;
-        this.appVersion = demonstratorConfig.appVersion;
-        this.baseUrl = demonstratorConfig.baseUrl;
+            if (cct.allowed) {
+                this.analyticsSvc.start(cct.allowed, () =>
+                {
+                    this.cookieSvc.runScripts();
+                    this.setPageTrack();
+                });
+            } else {
+                this.analyticsSvc.stop(() => {
+                    this.cookieSvc.runScripts();
+                });
+            }
+        });
+
+        this.handleAcceptTrack = e => {
+            this.ea.publish(new CookieCanTrack(this.cookieSvc.canTrack));
+        };
+
+        this.appConfig = (window['demonstratorConfig'] || new DemonstratorConfig());
+    }
+
+    attached() {
+        this.cookieSvc.start(this.appConfig.cookieBotId);
+
+        window.addEventListener('CookiebotOnAccept', this.handleAcceptTrack);
+        window.addEventListener('CookiebotOnDecline', this.handleAcceptTrack); 
+    }
+
+    detached() {
+        window.removeEventListener('CookiebotOnAccept', this.handleAcceptTrack);
+        window.removeEventListener('CookiebotOnDecline', this.handleAcceptTrack);
+    }
+
+    setPageTrack() {
+
+        let pageTitleSlice = this.router.currentInstruction.config.settings.dynamicTitle ? this.router.currentInstruction.params.routeParamTitle : undefined;
+
+        this.analyticsSvc.trackPage(pageTitleSlice);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -35,7 +71,7 @@ export class App {
         config.title = 'NRLS Interactive Guide';
         config.options.hashChange = false;
         config.options.pushState = true;
-        config.options.route = this.baseUrl;
+        config.options.route = this.appConfig.baseUrl;
 
         var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
 
@@ -85,10 +121,14 @@ export class App {
 
 }
 
+@inject(AnalyticsSvc)
 class StartAnalyticsStep {
+
+    constructor(private gaSvc: AnalyticsSvc) {}
+
     run(instruction: NavigationInstruction, next: Next) {
 
-        window['pageStartTime'] = window['pageInit'] || Date.now();
+        this.gaSvc.startLoadTime();
 
         return next();
     }
@@ -97,48 +137,21 @@ class StartAnalyticsStep {
 @inject(AnalyticsSvc)
 class EndAnalyticsStep {
 
-    constructor(private gaSvc: AnalyticsSvc) {
+    constructor(private gaSvc: AnalyticsSvc) {}
 
-    }
+    run(inst: NavigationInstruction, next: Next) {
 
-    run(instruction: NavigationInstruction, next: Next) {
+        this.gaSvc.stopLoadTime();
 
-        window['pageEndTime'] = Date.now();
+        let pageTitleSlice = inst.router.currentInstruction.config.settings.dynamicTitle ? inst.router.currentInstruction.params.routeParamTitle : undefined;
 
-        let pageLoadTime: number | undefined = (window['pageEndTime'] && window['pageStartTime']) ? (window['pageEndTime'] - window['pageStartTime']) / 1000 : undefined;
+        this.gaSvc.trackPage(pageTitleSlice);
 
-        let pageTitle = document.title;
-
-        if (instruction.router.currentInstruction.config.settings.dynamicTitle === true) {
-            pageTitle = document.title = this.updateTitle(pageTitle, instruction.router.currentInstruction.params.routeParamTitle.replace("-", " "));
-        }
-
-        this.gaSvc.trackPage(window.location.pathname, pageTitle, pageLoadTime);
-        window['pageInit'] = undefined;
+        this.gaSvc.clearInitTime();
 
         return next();
     }
 
-    updateTitle(title: string, addition: string): string {
-
-        if (title) {
-            let titleBreak = title.split("-");
-
-            if (titleBreak.length > 0) {
-
-                if (addition) {
-                    titleBreak.splice(1, 0, addition);
-                }
-
-                return titleBreak.join(" - ");
-                
-            } else if (addition) {
-                return addition;
-            }
-        }
-
-        return "";
-    }
 }
 
 class ScrollPageStep {
