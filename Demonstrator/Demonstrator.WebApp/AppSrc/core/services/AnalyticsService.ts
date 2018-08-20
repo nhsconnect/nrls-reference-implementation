@@ -1,6 +1,5 @@
 ﻿export class AnalyticsSvc {
 
-    _ga: boolean = false;
     canTrack: boolean = false;
 
     constructor() {
@@ -8,7 +7,7 @@
     }
 
     trackPage(titleSlice?: string, altPath?: string) {
-        if (!this.canTrack || !this._ga) {
+        if (!this.canTrack) {
             return false;
         }
 
@@ -45,7 +44,7 @@
     }
 
     trackEvent(category: string, action: string, label: string, value: string) {
-        if (!this.canTrack || !this._ga) {
+        if (!this.canTrack) {
             return false;
         }
 
@@ -55,11 +54,6 @@
 
     start(canStart: boolean, callback: () => void) {
         this.canTrack = canStart;
-
-        if (this.canTrack && !this._ga) {
-            
-            this._ga = true;
-        }
 
         if (typeof callback === "function") {
             callback();

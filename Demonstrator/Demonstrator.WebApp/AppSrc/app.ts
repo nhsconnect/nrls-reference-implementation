@@ -26,7 +26,6 @@ export class App {
         });
 
         ea.subscribe(CookieCanTrack, cct => {
-
             if (cct.allowed) {
                 this.analyticsSvc.start(cct.allowed, () =>
                 {
@@ -52,11 +51,17 @@ export class App {
 
         window.addEventListener('CookiebotOnAccept', this.handleAcceptTrack);
         window.addEventListener('CookiebotOnDecline', this.handleAcceptTrack); 
+
+        window['CookiebotCallback_OnDecline'] = () => {
+            this.handleAcceptTrack();
+        }
     }
 
     detached() {
         window.removeEventListener('CookiebotOnAccept', this.handleAcceptTrack);
         window.removeEventListener('CookiebotOnDecline', this.handleAcceptTrack);
+
+        window['CookiebotCallback_OnDecline'] = undefined;
     }
 
     setPageTrack() {
