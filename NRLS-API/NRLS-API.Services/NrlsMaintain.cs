@@ -89,7 +89,7 @@ namespace NRLS_API.Services
 
             if (authors.Entry.Count == 0)
             {
-                return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
+                return OperationOutcomeFactory.CreateOrganizationNotFound(authorOrgCode);
             }
 
             return null;
