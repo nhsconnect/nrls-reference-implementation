@@ -1,11 +1,6 @@
 ﻿using Hl7.Fhir.Model;
 using NRLS_API.Core.Factories;
-using NRLS_APITest.Comparer;
-using NRLS_APITest.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace NRLS_APITest.Core.Factories
@@ -15,11 +10,31 @@ namespace NRLS_APITest.Core.Factories
         [Fact]
         public void CreateDelete_Is_Valid()
         {
-            var expected = OperationOutcomes.Deleted;
-
             var actual = OperationOutcomeFactory.CreateDelete("https://testdomain/testurl", "91370360-d667-4bc8-bebe-f223560ff90e");
 
-            Assert.Equal(expected, actual, Comparers.ModelComparer<OperationOutcome>());
+            Assert.IsType<OperationOutcome>(actual);
+
+            //Assert.NotNull(actual.Meta);
+            //Assert.NotNull(actual.Meta.Profile);
+            //Assert.NotEmpty(actual.Meta.Profile);
+            //Assert.Contains("https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0", actual.Meta.Profile);
+
+            Assert.NotNull(actual.Issue);
+            Assert.NotEmpty(actual.Issue);
+
+            Assert.Equal("Successfully removed resource DocumentReference: https://testdomain/testurl", actual.Issue.First().Diagnostics);
+            Assert.Equal(OperationOutcome.IssueType.Informational.ToString(), actual.Issue.First().Code.ToString());
+            Assert.Equal(OperationOutcome.IssueSeverity.Information.ToString(), actual.Issue.First().Severity.ToString());
+
+            Assert.NotNull(actual.Issue.First().Details);
+            Assert.NotNull(actual.Issue.First().Details.Coding);
+            Assert.NotEmpty(actual.Issue.First().Details.Coding);
+
+            Assert.Equal("91370360-d667-4bc8-bebe-f223560ff90e", actual.Issue.First().Details.Text);
+
+            Assert.Equal("RESOURCE_DELETED", actual.Issue.First().Details.Coding.First().Code);
+            Assert.Equal("Resource removed", actual.Issue.First().Details.Coding.First().Display);
+
         }
 
         [Fact]
@@ -29,6 +44,11 @@ namespace NRLS_APITest.Core.Factories
             var actual = OperationOutcomeFactory.CreateDuplicateRequest(identifier);
 
             Assert.IsType<OperationOutcome>(actual);
+
+            //Assert.NotNull(actual.Meta);
+            //Assert.NotNull(actual.Meta.Profile);
+            //Assert.NotEmpty(actual.Meta.Profile);
+            //Assert.Contains("https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0", actual.Meta.Profile);
 
             Assert.NotNull(actual.Issue);
             Assert.NotEmpty(actual.Issue);
@@ -51,41 +71,96 @@ namespace NRLS_APITest.Core.Factories
         public void CreateOrganizationNotFound_Is_Valid()
         {
 
-            var expected = new OperationOutcome()
-            {
-                //Meta = new Meta
-                //{
-                //    Profile = new List<string>{
-                //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
-                //    }
-                //},
-                Issue = new List<OperationOutcome.IssueComponent>
-                {
-                    new OperationOutcome.IssueComponent
-                    {
-                        Severity = OperationOutcome.IssueSeverity.Error,
-                        Code = OperationOutcome.IssueType.NotFound,
-                        Diagnostics = "The ODS code in the custodian and/or author element is not resolvable – testid.",
-                        Details = new CodeableConcept
-                        {
-                            Text = null,
-                            Coding = new List<Coding>
-                            {
-                                new Coding
-                                {
-                                    System = "https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0",
-                                    Code = "ORGANISATION_NOT_FOUND",
-                                    Display = "Organisation record not found"
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
             var actual = OperationOutcomeFactory.CreateOrganizationNotFound("testid");
 
-            Assert.Equal(expected, actual, Comparers.ModelComparer<OperationOutcome>());
+            //Base checks for all OperactionOutcomes
+            Assert.IsType<OperationOutcome>(actual);
+
+            //Assert.NotNull(actual.Meta);
+            //Assert.NotNull(actual.Meta.Profile);
+            //Assert.NotEmpty(actual.Meta.Profile);
+            //Assert.Contains("https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0", actual.Meta.Profile);
+
+            Assert.NotNull(actual.Issue);
+            Assert.NotEmpty(actual.Issue);
+
+            Assert.NotNull(actual.Issue.First().Details);
+            Assert.NotNull(actual.Issue.First().Details.Coding);
+            Assert.NotEmpty(actual.Issue.First().Details.Coding);
+
+
+            //Specific OperationOutcome checks
+            Assert.Equal("The ODS code in the custodian and/or author element is not resolvable – testid.", actual.Issue.First().Diagnostics);
+            Assert.Equal(OperationOutcome.IssueType.NotFound.ToString(), actual.Issue.First().Code.ToString());
+            Assert.Equal(OperationOutcome.IssueSeverity.Error.ToString(), actual.Issue.First().Severity.ToString());
+
+            Assert.Equal("ORGANISATION_NOT_FOUND", actual.Issue.First().Details.Coding.First().Code);
+            Assert.Equal("Organisation record not found", actual.Issue.First().Details.Coding.First().Display);
+            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
+        }
+
+        [Fact]
+        public void CreateInternalError_Is_Valid()
+        {
+
+            var actual = OperationOutcomeFactory.CreateInternalError("internal error");
+
+            //Base checks for all OperactionOutcomes
+            Assert.IsType<OperationOutcome>(actual);
+
+            //Assert.NotNull(actual.Meta);
+            //Assert.NotNull(actual.Meta.Profile);
+            //Assert.NotEmpty(actual.Meta.Profile);
+            //Assert.Contains("https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0", actual.Meta.Profile);
+
+            Assert.NotNull(actual.Issue);
+            Assert.NotEmpty(actual.Issue);
+
+            Assert.NotNull(actual.Issue.First().Details);
+            Assert.NotNull(actual.Issue.First().Details.Coding);
+            Assert.NotEmpty(actual.Issue.First().Details.Coding);
+
+
+            //Specific OperationOutcome checks
+            Assert.Equal("internal error", actual.Issue.First().Diagnostics);
+            Assert.Equal(OperationOutcome.IssueType.Invalid.ToString(), actual.Issue.First().Code.ToString());
+            Assert.Equal(OperationOutcome.IssueSeverity.Error.ToString(), actual.Issue.First().Severity.ToString());
+
+            Assert.Equal("INTERNAL_SERVER_ERROR", actual.Issue.First().Details.Coding.First().Code);
+            Assert.Equal("Unexpected internal server error", actual.Issue.First().Details.Coding.First().Display);
+            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
+        }
+
+        [Fact]
+        public void CreateInternalError_WithoutDiags_Is_Valid()
+        {
+
+            var actual = OperationOutcomeFactory.CreateInternalError(null);
+
+            //Base checks for all OperactionOutcomes
+            Assert.IsType<OperationOutcome>(actual);
+
+            //Assert.NotNull(actual.Meta);
+            //Assert.NotNull(actual.Meta.Profile);
+            //Assert.NotEmpty(actual.Meta.Profile);
+            //Assert.Contains("https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0", actual.Meta.Profile);
+
+            Assert.NotNull(actual.Issue);
+            Assert.NotEmpty(actual.Issue);
+
+            Assert.NotNull(actual.Issue.First().Details);
+            Assert.NotNull(actual.Issue.First().Details.Coding);
+            Assert.NotEmpty(actual.Issue.First().Details.Coding);
+
+
+            //Specific OperationOutcome checks
+            Assert.Null(actual.Issue.First().Diagnostics);
+            Assert.Equal(OperationOutcome.IssueType.Invalid.ToString(), actual.Issue.First().Code.ToString());
+            Assert.Equal(OperationOutcome.IssueSeverity.Error.ToString(), actual.Issue.First().Severity.ToString());
+
+            Assert.Equal("INTERNAL_SERVER_ERROR", actual.Issue.First().Details.Coding.First().Code);
+            Assert.Equal("Unexpected internal server error", actual.Issue.First().Details.Coding.First().Display);
+            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
         }
     }
 }

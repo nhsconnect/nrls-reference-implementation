@@ -60,6 +60,92 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference Valid_With_Alt_Custodian
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV99";
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_With_Alt2_Custodian
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV88";
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_AltCustodian_With_MasterId_and_RelatesTo
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV99";
+                pointer.MasterIdentifier = new Identifier("urn:ietf:rfc:4151", "urn:tag:humber.nhs.uk,2004:cdc:600009612675​");
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Replaces,
+                        Target = new ResourceReference
+                        {
+                            Identifier = new Identifier("urn:ietf:rfc:4151", "urn:tag:humber.nhs.uk,2004:cdc:600009612669​")
+                        }
+                    }
+                };
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_AltCust_With_MasterId_and_RelatesTo_BadStatus
+        {
+            get
+            {
+                var pointer = Valid_AltCustodian_With_MasterId_and_RelatesTo;
+                pointer.Status = DocumentReferenceStatus.EnteredInError;
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_AltCust2_With_MasterId_and_RelatesTo
+        {
+            get
+            {
+                var pointer = Valid_AltCustodian_With_MasterId_and_RelatesTo;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV88";
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_AltCust_With_MasterId_and_Bad_RelatesTo
+        {
+            get
+            {
+                var pointer = Valid_AltCustodian_With_MasterId_and_RelatesTo;
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Target = new ResourceReference
+                        {
+                            Reference = "urn:ietf:rfc:4151|urn:tag:humber.nhs.uk,2004:cdc:600009612669​"
+                        }
+                    }
+                };
+
+                return pointer;
+            }
+        }
+
         public static DocumentReference Valid_With_MasterId
         {
             get
@@ -244,7 +330,68 @@ namespace NRLS_APITest.Data
                 return pointer;
             }
         }
-     
 
+        public static DocumentReference Invalid_RelatesTo_Code
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Signs,
+                        Target = new ResourceReference
+                        {
+                            Identifier = new Identifier("system", "value")
+                        }
+                    }
+                };
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Missing_RelatesTo_System
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Replaces,
+                        Target = new ResourceReference
+                        {
+                            Identifier = new Identifier(null, "value")
+                        }
+                    }
+                };
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Missing_RelatesTo_Value
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Replaces,
+                        Target = new ResourceReference
+                        {
+                            Identifier = new Identifier("system", null)
+                        }
+                    }
+                };
+
+                return pointer;
+            }
+        }
     }
 }

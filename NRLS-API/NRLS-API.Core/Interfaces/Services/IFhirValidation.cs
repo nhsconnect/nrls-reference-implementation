@@ -1,5 +1,6 @@
 ﻿using Hl7.Fhir.Model;
 using NRLS_API.Models.Core;
+using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
@@ -22,5 +23,7 @@ namespace NRLS_API.Core.Interfaces.Services
         string GetOrganizationReferenceId(ResourceReference reference);
 
         string GetSubjectReferenceId(ResourceReference reference);
+
+        DocumentReference.RelatesToComponent GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo);
     }
 }

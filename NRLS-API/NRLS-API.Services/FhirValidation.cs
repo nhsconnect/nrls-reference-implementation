@@ -119,6 +119,15 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidResource("indexed");
             }
 
+            //relatesTo
+            //Only require basic checks here
+            //Additional checks are carried out in NrlsMaintain.ValidateConditionalUpdate
+            var relatesTo = GetValidRelatesTo(pointer.RelatesTo);
+            if (pointer.RelatesTo != null && pointer.RelatesTo.Count > 0 && relatesTo == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
             //attachment
             if (pointer.Content != null)
             {
@@ -246,6 +255,18 @@ namespace NRLS_API.Services
         public string GetSubjectReferenceId(ResourceReference reference)
         {
             return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemPDS);
+        }
+
+        public DocumentReference.RelatesToComponent GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo)
+        {
+            if(relatesTo == null)
+            {
+                return null;
+            }
+
+            return relatesTo.FirstOrDefault(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces) && r.Target != null && r.Target.Identifier != null 
+                                            && !string.IsNullOrWhiteSpace(r.Target.Identifier.System) && !string.IsNullOrWhiteSpace(r.Target.Identifier.Value));
+
         }
 
         public OperationOutcome ValidateOrganisationReference(ResourceReference reference, string type)

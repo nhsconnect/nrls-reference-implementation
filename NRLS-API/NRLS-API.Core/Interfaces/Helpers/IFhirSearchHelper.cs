@@ -9,6 +9,8 @@ namespace NRLS_API.Core.Interfaces.Helpers
     {
         Resource GetResourceProfile(string profileUrl);
 
+        FilterDefinition<BsonDocument> BuildIdQuery(string _id);
+
         FilterDefinition<BsonDocument> BuildQuery(FhirRequest request);
     }
 }

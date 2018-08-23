@@ -34,9 +34,9 @@ namespace NRLS_API.Core.Factories
         public static OperationOutcome CreateInternalError(string diagnostics)
         {
 
-            var details = CreateDetails("INTERNAL_SERVER_ERROR", "Internal Server Error");
+            var details = CreateDetails("INTERNAL_SERVER_ERROR", "Unexpected internal server error");
 
-            return Create(OperationOutcome.IssueSeverity.Fatal, OperationOutcome.IssueType.Exception, diagnostics, details);
+            return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, diagnostics, details);
         }
 
         public static OperationOutcome CreateAccessDenied()

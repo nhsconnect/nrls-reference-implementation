@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
+using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Resources;
@@ -75,6 +76,28 @@ namespace NRLS_APITest.Core.Helpers
             var request = searchHelper.BuildQuery(FhirRequests.Invalid_ConditionalDelete_NoSearchValues);
 
             Assert.Equal(FilterDefinition<BsonDocument>.Empty, request);
+        }
+
+        [Fact]
+        public void Valid_Id_Returns_ObjectId()
+        {
+            var searchHelper = new FhirSearchHelper(_fhirCacheHelper);
+
+            var filter = searchHelper.BuildIdQuery("5b7bcc664af1d03816095dac");
+
+            Assert.IsAssignableFrom<FilterDefinition<BsonDocument>>(filter);
+        }
+
+        [Fact]
+        public void Invalid_Id_Throws_Exception()
+        {
+            var searchHelper = new FhirSearchHelper(_fhirCacheHelper);
+
+
+            Assert.Throws<HttpFhirException>(() =>
+            {
+                var filter = searchHelper.BuildIdQuery("badId");
+            });
         }
 
     }

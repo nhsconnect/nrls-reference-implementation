@@ -62,6 +62,19 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static FhirRequest Invalid_Create_NoDocument
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    Resource = null,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
         public static FhirRequest Invalid_Custodian
         {
             get
@@ -100,7 +113,7 @@ namespace NRLS_APITest.Data
             {
                 return new FhirRequest
                 {
-                    RequestingAsid = "000",
+                    RequestingAsid = "003",
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     ResourceType = ResourceType.DocumentReference,
                     QueryParameters = new List<Tuple<string, string>>
@@ -143,13 +156,27 @@ namespace NRLS_APITest.Data
             }
         }
 
-        public static FhirRequest Valid_ConditionalDelete
+        public static FhirRequest Invalid_Delete_NotFound
         {
             get
             {
                 return new FhirRequest
                 {
                     RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ResourceType = ResourceType.DocumentReference,
+                    Id = "5b5c5bec7f1c649fdea426a1"
+                };
+            }
+        }
+
+        public static FhirRequest Valid_ConditionalDelete
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "003",
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
                     ResourceType = ResourceType.DocumentReference,
@@ -216,6 +243,26 @@ namespace NRLS_APITest.Data
                         new Tuple<string, string>("identifier", "|testvalue"),
                         new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207")
                     }
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_ConditionalDelete
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "001",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ProfileUri = "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1",
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", "testsystem|testvalue"),
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207")
+                    },
+                    AllowedParameters = new string[] { "custodian", "subject", "identifier" }
                 };
             }
         }
@@ -376,6 +423,71 @@ namespace NRLS_APITest.Data
                         new Tuple<string, string>("_summary", "notcount"),
                         new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
                     }
+                };
+            }
+        }
+
+        public static FhirRequest Valid_Update
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_MasterId_and_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Valid_Update_Alt
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "001",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_MasterId_and_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Valid_Update_Alt2
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "002",
+                    Resource = NrlsPointers.Valid_AltCust2_With_MasterId_and_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Update_Bad_Status
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "003",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_MasterId_and_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Update_Bad_RelatesTo
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "000",
+                    Resource = NrlsPointers.Valid_AltCust_With_MasterId_and_Bad_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
                 };
             }
         }

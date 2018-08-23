@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -93,13 +94,33 @@ namespace NRLS_API.WebApp.Controllers
                 throw new HttpFhirException("Invalid Fhir Request", (OperationOutcome) resource, HttpStatusCode.BadRequest);
             }
 
+            Resource result = null;
+
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request, RequestingAsid());
 
-            var result = await _nrlsMaintain.Create<DocumentReference>(request);
+            var createIssue = await _nrlsMaintain.ValidateCreate<DocumentReference>(request);
 
-            if (result == null)
+            if (createIssue != null)
             {
-                return BadRequest(OperationOutcomeFactory.CreateInvalidResource("Unknown"));
+                return BadRequest(createIssue);
+            }
+
+            //If we have a valid document that needs to be Superseded, try update on that
+            var validUpdateDocument = await _nrlsMaintain.ValidateConditionalUpdate(request);
+
+            if (validUpdateDocument != null)
+            {
+                if (validUpdateDocument.ResourceType == ResourceType.OperationOutcome)
+                {
+                    return BadRequest(validUpdateDocument);
+                }
+
+                result = await _nrlsMaintain.SupersedeWithoutValidation<DocumentReference>(request, validUpdateDocument.Id, validUpdateDocument.VersionId);
+            }
+            else
+            {
+                //just try and create new document
+                result = await _nrlsMaintain.CreateWithoutValidation<DocumentReference>(request);
             }
 
             if (result.ResourceType == ResourceType.OperationOutcome)
@@ -143,5 +164,7 @@ namespace NRLS_API.WebApp.Controllers
 
             return null;
         }
+
+
     }
 }

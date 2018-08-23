@@ -63,6 +63,16 @@ namespace NRLS_API.Models.Core
             };
         }
 
+        public static FhirRequest Create(string id, ResourceType resourceType)
+        {
+            return new FhirRequest
+            {
+                Id = id,
+                ResourceType = resourceType,
+                AllowedParameters = resourceType.GetAllowed()
+            };
+        }
+
         public static FhirRequest Copy(FhirRequest request, ResourceType resourceType, Resource resource, IEnumerable<Tuple<string, string>> queryParameters, string profileUrl = null)
         {
             return new FhirRequest

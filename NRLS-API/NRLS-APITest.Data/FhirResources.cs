@@ -93,6 +93,89 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference.RelatesToComponent Valid_Single_RelatesTo
+        {
+            get
+            {
+                var validRelatesTo = new DocumentReference.RelatesToComponent
+                {
+                    Code = DocumentRelationshipType.Replaces,
+                    Target = new ResourceReference
+                    {
+                        Identifier = new Identifier("urn:ietf:rfc:4151", "urn:tag:humber.nhs.uk,2004:cdc:600009612669")
+                    }
+                };
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_NoCode
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Code = null;
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadCode
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Code = DocumentRelationshipType.Signs;
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_NoTarget
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Target = null;
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadTarget
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Target.Identifier = null;
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadTargetValue
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Target.Identifier.Value = null;
+
+                return validRelatesTo;
+            }
+        }
+
+        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadTargetSystem
+        {
+            get
+            {
+                var validRelatesTo = Valid_Single_RelatesTo;
+                validRelatesTo.Target.Identifier.System = null;
+
+                return validRelatesTo;
+            }
+        }
+
         public static ValueSet ValueSet_NrlsType
         {
             get

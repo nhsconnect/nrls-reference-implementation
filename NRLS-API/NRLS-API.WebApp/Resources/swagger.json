@@ -1,9 +1,9 @@
 ﻿{
   "swagger": "2.0",
   "info": {
-    "version": "v1",
+    "version": "v0.1.1",
     "title": "NRLS API Reference Implementation",
-    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
+    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.1-beta &nbsp;</small>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
       "name": "NRLS Team",
       "email": "nrls@nhs.net"
@@ -175,6 +175,17 @@
                 "custodian": {
                   "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/MHT01"
                 },
+                "relatesTo": [
+                  {
+                    "code": "replaces",
+                    "target": {
+                      "identifier": {
+                        "system": "http://www.testsystem.com",
+                        "value": "testMasterId001"
+                      }
+                    }
+                  }
+                ],
                 "content": [
                   {
                     "attachment": {

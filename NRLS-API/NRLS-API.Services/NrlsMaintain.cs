@@ -1,12 +1,16 @@
 ﻿using Hl7.Fhir.Model;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using SystemTasks = System.Threading.Tasks;
@@ -28,7 +32,7 @@ namespace NRLS_API.Services
             _fhirValidation = fhirValidation;
         }
 
-        public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<OperationOutcome> ValidateCreate<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
@@ -88,7 +92,110 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateOrganizationNotFound(custodianOrgCode);
             }
 
-            return await _fhirMaintain.Create<T>(request);
+            return null;
+        }
+
+        public async SystemTasks.Task<Resource> ValidateConditionalUpdate(FhirRequest request)
+        {
+            if (!request.Resource.ResourceType.Equals(ResourceType.DocumentReference))
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            var document = request.Resource as DocumentReference;
+
+            if (document.RelatesTo == null || document.RelatesTo.Count == 0)
+            {
+                return null;
+            }
+
+            var relatesTo = _fhirValidation.GetValidRelatesTo(document.RelatesTo);
+
+            if (relatesTo == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            //Subject already validated during ValidateCreate
+            //relatesTo Identifier already validated during ValidateCreate => validPointer
+            var subjectNhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
+            var pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.Target.Identifier, subjectNhsNumber);
+            var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest) as Bundle;
+
+            if (pointers.Entry.Count != 1)
+            {
+                //Cant find related document
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            //Custodian already validated against incoming ASID during ValidateCreate
+            var custodianOdsCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
+
+            var oldDocument = pointers.Entry.First().Resource as DocumentReference;
+
+            if (oldDocument.Custodian == null || string.IsNullOrEmpty(oldDocument.Custodian.Reference) || oldDocument.Custodian.Reference != $"{FhirConstants.SystemODS}{custodianOdsCode}")
+            {
+                //related document does not have same custodian
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            if(oldDocument.Status != DocumentReferenceStatus.Current)
+            {
+                //Only allowed to transition to superseded from current
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            return oldDocument;
+        }
+
+        public async SystemTasks.Task<Resource> CreateWithoutValidation<T>(FhirRequest request) where T : Resource
+        {
+
+            SetMetaValues(request, null);
+
+            var response = await _fhirMaintain.Create<T>(request);
+
+            if (response == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("Unknown");
+            }
+
+            return response;
+        }
+
+        public async SystemTasks.Task<Resource> SupersedeWithoutValidation<T>(FhirRequest request, string oldDocumentId, string oldVersion) where T : Resource
+        {
+            UpdateDefinition<BsonDocument> updates = null;
+            FhirRequest updateRequest = null;
+
+            SetMetaValues(request, oldVersion);
+            BuildUpdate(oldDocumentId, out updates, out updateRequest);
+
+            Resource created;
+            bool updated;
+
+            try
+            {
+                (created, updated) = await _fhirMaintain.CreateWithUpdate<T>(request, updateRequest, updates);
+            }
+            catch
+            {
+                throw new HttpFhirException("Error Updating DocumentReference", OperationOutcomeFactory.CreateInternalError($"There has been an internal error when attempting to persist the DocumentReference. Please contact the national helpdesk quoting - {Guid.NewGuid()}"));
+            }
+
+            var response = created;
+
+            if (response == null)
+            {
+                response = OperationOutcomeFactory.CreateInvalidResource("Unknown");
+            }
+
+            if (!updated)
+            {
+                response = OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+            }
+
+            return response;
         }
 
 
@@ -134,7 +241,6 @@ namespace NRLS_API.Services
             if (!string.IsNullOrEmpty(id))
             {
                 document = await _fhirSearch.Get<T>(request);
-
             }
             else
             {
@@ -169,13 +275,62 @@ namespace NRLS_API.Services
                 return documentResponse as OperationOutcome;
             }
 
+            bool deleted;
+
             if (!string.IsNullOrEmpty(id))
             {
-                return await _fhirMaintain.Delete<T>(request);
+                deleted = await _fhirMaintain.Delete<T>(request);
 
             }
+            else
+            {
+                //Add identifier on the fly as it is not a standard search parameter
+                request.AllowedParameters = request.AllowedParameters.Concat(new[] { "identifier" }).ToArray();
 
-            return await _fhirMaintain.DeleteConditional<T>(request);
+                deleted = await _fhirMaintain.DeleteConditional<T>(request);
+            }
+
+            if (!deleted)
+            {
+                return OperationOutcomeFactory.CreateNotFound(request.Id);
+            }
+
+            return OperationOutcomeFactory.CreateDelete(request.RequestUrl?.AbsoluteUri, request.AuditId);
+
+        }
+
+        public FhirRequest SetMetaValues(FhirRequest request, string oldVersion)
+        {
+
+            int version = 0;
+            int newVersion = 1;
+            var validVersion = int.TryParse(oldVersion, out version);
+
+            if (validVersion)
+            {
+                newVersion = version + 1;
+            }
+
+            if(!string.IsNullOrEmpty(oldVersion) && !validVersion)
+            {
+                throw new HttpFhirException("Bad update values", OperationOutcomeFactory.CreateInvalidResource("relatesTo"), HttpStatusCode.BadRequest);
+            }
+
+            //At present NRLS spec states updates are performed by delete and create so version will always be 1
+            request.Resource.Meta = request.Resource.Meta ?? new Meta();
+            request.Resource.Meta.LastUpdated = DateTime.UtcNow;
+            request.Resource.Meta.VersionId = $"{newVersion}";
+            request.Resource.Meta.Profile = new List<string> { _resourceProfile };
+
+            return request;
+        }
+
+        private void BuildUpdate(string oldDocuemtnId, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
+        {
+            updates = new UpdateDefinitionBuilder<BsonDocument>()
+                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant());
+
+            updateRequest = FhirRequest.Create(oldDocuemtnId, ResourceType.DocumentReference);
         }
 
         private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)

@@ -11,9 +11,6 @@ using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using SystemTasks = System.Threading.Tasks;
 
 
@@ -57,34 +54,75 @@ namespace NRLS_API.Services
             }
         }
 
-
-        public async SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<(Resource created, bool updated)> CreateWithUpdate<T>(FhirRequest request, FhirRequest updateRequest, UpdateDefinition<BsonDocument> updates) where T : Resource
         {
-            ObjectId id;
-            if (!ObjectId.TryParse(request.Id, out id))
+ 
+            Resource created = null;
+            bool updated = false;
+
+            //Can only do transactional style rollbacks in MongoDB 4.0 with replication
+            try
             {
-                throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
+                created = await Create<T>(request);
+
+                if (created != null)
+                {
+                    updated = await Update<T>(updateRequest, updates);
+
+                    //If update failed revert create
+                    if (!updated)
+                    {
+                        var deleteRequest = FhirRequest.Create(created.Id, created.ResourceType);
+                        await Delete<T>(deleteRequest);
+
+                        created = null;
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
             }
 
-            var builder = Builders<BsonDocument>.Filter;
-            var filters = new List<FilterDefinition<BsonDocument>>();
-            filters.Add(builder.Eq("_id", id));
-
-            return await DeleteResource<T>(request, builder.And(filters));
+            return (created: created, updated: updated);
         }
 
-        public async SystemTasks.Task<OperationOutcome> DeleteConditional<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<bool> Update<T>(FhirRequest request, UpdateDefinition<BsonDocument> updates) where T : Resource
         {
-            //Add identifier on the fly as it is not a standard search parameter
-            request.AllowedParameters = request.AllowedParameters.Concat(new[] { "identifier" }).ToArray();
+            var filter = _fhirSearchHelper.BuildIdQuery(request.Id);
 
+            try
+            {
+                var previous = await _context.Resource(request.StrResourceType).UpdateOneAsync(filter, updates);
+
+                return await SystemTasks.Task.Run(() => previous.IsAcknowledged && previous.ModifiedCount > 0);
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+
+        }
+
+        public async SystemTasks.Task<bool> Delete<T>(FhirRequest request) where T : Resource
+        {
+            var filter = _fhirSearchHelper.BuildIdQuery(request.Id);
+
+            return await DeleteResource<T>(request, filter);
+        }
+
+        public async SystemTasks.Task<bool> DeleteConditional<T>(FhirRequest request) where T : Resource
+        {
             // IMPORTANT - this query currently does not filter for active/un-deleted pointers
             var filters = _fhirSearchHelper.BuildQuery(request);
 
             return await DeleteResource<T>(request, filters);
-        }
+        }       
 
-        private async SystemTasks.Task<OperationOutcome> DeleteResource<T>(FhirRequest request, FilterDefinition<BsonDocument> filters) where T : Resource
+        private async SystemTasks.Task<bool> DeleteResource<T>(FhirRequest request, FilterDefinition<BsonDocument> filters) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
@@ -93,17 +131,7 @@ namespace NRLS_API.Services
                 // IMPORTANT - In reality the NRLS will only soft delete pointers but not actually delete them like we are doing here
                 var deleted =  await _context.Resource(request.StrResourceType).DeleteOneAsync(filters, null, default(System.Threading.CancellationToken));
 
-                OperationOutcome outcome;
-                if (deleted.IsAcknowledged && deleted.DeletedCount > 0)
-                {
-                    outcome = OperationOutcomeFactory.CreateDelete(request.RequestUrl.AbsoluteUri, request.AuditId);
-                }
-                else
-                {
-                    outcome = OperationOutcomeFactory.CreateNotFound(request.Id);
-                }
-
-                return await SystemTasks.Task.Run(() => outcome);
+                return await SystemTasks.Task.Run(() => (deleted.IsAcknowledged && deleted.DeletedCount > 0));
 
             }
             catch (Exception ex)

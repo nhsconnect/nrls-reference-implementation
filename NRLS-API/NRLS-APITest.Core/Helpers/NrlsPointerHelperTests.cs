@@ -49,13 +49,15 @@ namespace NRLS_APITest.Core.Helpers
 
             var request = NrlsPointerHelper.CreateMasterIdentifierSearch(FhirRequests.Valid_Create, masterIdentifier, "nhsNumber");
 
-            var expected = new List<Tuple<string, string>>
+            var expectedParams = new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("identifier", "validSystem|validValue"),
                 new Tuple<string, string>("subject", $"{FhirConstants.SystemPDS}nhsNumber")
             };
 
-            Assert.Equal(expected, request.QueryParameters, Comparers.ModelComparer<IEnumerable<Tuple<string, string>>>());
+            Assert.Equal(expectedParams, request.QueryParameters, Comparers.ModelComparer<IEnumerable<Tuple<string, string>>>());
+
+            Assert.Contains("identifier", request.AllowedParameters);
         }
     }
 

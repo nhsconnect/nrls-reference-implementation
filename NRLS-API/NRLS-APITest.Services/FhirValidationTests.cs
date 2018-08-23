@@ -268,6 +268,45 @@ namespace NRLS_APITest.Services
             Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
         }
 
+        [Fact]
+        public void ValidPointer_Invalid_RelatesTo_Code()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Invalid_RelatesTo_Code;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_RelatesTo_System()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Missing_RelatesTo_System;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_RelatesTo_Value()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.Missing_RelatesTo_Value;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
 
         //[Fact]
         //public void ValidatePatientReference_Valid()
@@ -424,6 +463,133 @@ namespace NRLS_APITest.Services
             var validParam = validationService.ValidSummaryParameter("notcount");
 
             Assert.IsType<OperationOutcome>(validParam);
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Valid_Single_RelatesTo
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.IsType<DocumentReference.RelatesToComponent>(actual);
+
+            Assert.NotNull(actual.Target);
+            Assert.NotNull(actual.Target.Identifier);
+
+            Assert.Equal("urn:ietf:rfc:4151", actual.Target.Identifier.System);
+            Assert.Equal("urn:tag:humber.nhs.uk,2004:cdc:600009612669", actual.Target.Identifier.Value);
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Handles_Null()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var actual = validationService.GetValidRelatesTo(null);
+
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_NoCode()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_NoCode
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_BadCode()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_BadCode
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_NoTarget()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_NoTarget
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_BadTarget()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_BadTarget
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_BadTargetValue()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_BadTargetValue
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidRelatesTo_Invalid_BadTargetSystem()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var relatesToList = new List<DocumentReference.RelatesToComponent>
+            {
+                FhirResources.Invalid_Single_RelatesTo_BadTargetSystem
+            };
+
+            var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual);
+
         }
     }
 }

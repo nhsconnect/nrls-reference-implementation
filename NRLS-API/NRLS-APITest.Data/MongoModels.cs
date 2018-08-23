@@ -19,5 +19,21 @@ namespace NRLS_APITest.Data
                 return new MockDeleteResult(0, false);
             }
         }
+
+        public static MockDUpdateResult Valid_Update
+        {
+            get
+            {
+                return new MockDUpdateResult(1, true);
+            }
+        }
+
+        public static MockDUpdateResult Invalid_Update
+        {
+            get
+            {
+                return new MockDUpdateResult(0, false);
+            }
+        }
     }
 }

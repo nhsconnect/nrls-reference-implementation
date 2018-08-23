@@ -16,7 +16,7 @@ namespace NRLS_API.Models.Extensions
         {
             if (string.IsNullOrEmpty(query))
             {
-                return null;
+                return new List<Tuple<string, string>>();
             }
 
             return QueryHelpers.ParseQuery(query).SelectMany(x => x.Value, (col, value) => new Tuple<string, string>(col.Key, value)).ToList();

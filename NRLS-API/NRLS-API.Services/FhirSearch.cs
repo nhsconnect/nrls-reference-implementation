@@ -33,24 +33,14 @@ namespace NRLS_API.Services
         {
             ValidateResource(request.StrResourceType);
 
-            //validate request
-            ObjectId id;
-            if (!ObjectId.TryParse(request.Id, out id))
-            {
-                throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
-            }
+            var filter = _fhirSearchHelper.BuildIdQuery(request.Id);
 
             try
             {
-                // IMPORTANT - this query currently does not filter for active/un-deleted pointers
-                var builder = Builders<BsonDocument>.Filter;
-                var filters = new List<FilterDefinition<BsonDocument>>();
-                filters.Add(builder.Eq("_id", id));
-
                 //var options = new FindOptions<BsonDocument, BsonDocument>();
                 //options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
 
-                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(builder.And(filters)).FirstOrDefaultAsync();
+                var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(filter).FirstOrDefaultAsync();
 
                 Resource document;
 

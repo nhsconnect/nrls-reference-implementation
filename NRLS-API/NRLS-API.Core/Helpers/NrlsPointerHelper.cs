@@ -3,6 +3,7 @@ using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NRLS_API.Core.Helpers
 {
@@ -35,7 +36,10 @@ namespace NRLS_API.Core.Helpers
                     new Tuple<string, string>("subject", $"{FhirConstants.SystemPDS}{nhsNumber}")
                 };
 
-                return FhirRequest.Copy(request, ResourceType.DocumentReference, null, queryParameters, request.ProfileUri);
+                var searchRequest = FhirRequest.Copy(request, ResourceType.DocumentReference, null, queryParameters, request.ProfileUri);
+                searchRequest.AllowedParameters = request.AllowedParameters.Concat(new[] { "identifier" }).ToArray();
+
+                return searchRequest;
             }
 
             return null;

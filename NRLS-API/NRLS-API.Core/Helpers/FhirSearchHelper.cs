@@ -26,6 +26,22 @@ namespace NRLS_API.Core.Helpers
             return _fhirCacheHelper.GetResourceProfile(profileUrl);
         }
 
+        public FilterDefinition<BsonDocument> BuildIdQuery(string _id)
+        {
+            //validate request
+            ObjectId id;
+            if (!ObjectId.TryParse(_id, out id))
+            {
+                throw new HttpFhirException("Invalid _id parameter");
+            }
+
+            var builder = Builders<BsonDocument>.Filter;
+            var filters = new List<FilterDefinition<BsonDocument>>();
+            filters.Add(builder.Eq("_id", id));
+
+            return builder.And(filters);
+        }
+
         public FilterDefinition<BsonDocument> BuildQuery(FhirRequest request)
         {
             var builder = Builders<BsonDocument>.Filter;
