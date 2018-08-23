@@ -65,12 +65,46 @@ namespace NRLS_API.Services
                                             new Extension
                                             {
                                                 Url = "required",
+                                                Value = new FhirString("_id")
+                                            }
+                                        }
+                                    },
+                                    new Extension
+                                    {
+                                        Url = "http://hl7.org/fhir/StructureDefinition/conformance-search-parameter-combination",
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "required",
                                                 Value = new FhirString("subject")
                                             },
                                             new Extension
                                             {
                                                 Url = "optional",
                                                 Value = new FhirString("custodian")
+                                            },
+                                            new Extension
+                                            {
+                                                Url = "optional",
+                                                Value = new FhirString("type")
+                                            }
+                                        }
+                                    },
+                                    new Extension
+                                    {
+                                        Url = "http://hl7.org/fhir/StructureDefinition/conformance-search-parameter-combination",
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "required",
+                                                Value = new FhirString("subject")
+                                            },
+                                            new Extension
+                                            {
+                                                Url = "required",
+                                                Value = new FhirString("_summary")
                                             }
                                         }
                                     }
@@ -117,7 +151,7 @@ namespace NRLS_API.Services
                                             new Extension
                                             {
                                                 Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
-                                                Value = new FhirString("MUST")
+                                                Value = new FhirString("SHOULD")
                                             }
                                         },
                                         Name = "subject",
@@ -132,7 +166,7 @@ namespace NRLS_API.Services
                                             new Extension
                                             {
                                                 Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
-                                                Value = new FhirString("SHOULD")
+                                                Value = new FhirString("MAY")
                                             }
                                         },
                                         Name = "custodian",
@@ -147,7 +181,7 @@ namespace NRLS_API.Services
                                             new Extension
                                             {
                                                 Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
-                                                Value = new FhirString("MAY")
+                                                Value = new FhirString("SHOULD")
                                             }
                                         },
                                         Name = "_id",
