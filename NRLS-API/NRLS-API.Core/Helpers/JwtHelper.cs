@@ -91,18 +91,19 @@ namespace NRLS_API.Core.Helpers
                 return new Response("The mandatory claim iat from the JWT associated with the Authorisation header is missing");
             }
 
-            var issuedDt = EpochTime.DateTime(iatVal);
-            var expireDt = EpochTime.DateTime(expVal);
+            //Temporarily turn off as NRLS API does not validate these
+            //var issuedDt = EpochTime.DateTime(iatVal);
+            //var expireDt = EpochTime.DateTime(expVal);
 
-            if (issuedDt.AddMinutes(5) != expireDt )
-            {
-                return new Response($"exp {exp.Value} must be 5 minutes greater than iat {iat.Value}");
-            }
+            //if (issuedDt.AddMinutes(5) != expireDt )
+            //{
+            //    return new Response($"exp {exp.Value} must be 5 minutes greater than iat {iat.Value}");
+            //}
 
-            if (issuedDt > now || expireDt < now)
-            {
-                return new Response($"iat {iat.Value} must be in the past or now and exp {exp.Value} must be in the future or now");
-            }
+            //if (issuedDt > now || expireDt < now)
+            //{
+            //    return new Response($"iat {iat.Value} must be in the past or now and exp {exp.Value} must be in the future or now");
+            //}
 
             var resForReq = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtReasonForRequest));
 
