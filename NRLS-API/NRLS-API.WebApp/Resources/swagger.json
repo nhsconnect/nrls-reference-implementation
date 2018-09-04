@@ -9,7 +9,7 @@
       "email": "nrls@nhs.net"
     }
   },
-  "schemes": ["http"],
+  "schemes": ["https"],
   "parameters": {
     "authHeaderWrite": {
       "name": "Authorization",
