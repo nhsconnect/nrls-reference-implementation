@@ -156,6 +156,7 @@ namespace Demonstrator.Services.Service.Flows
                 if(pointerMap != null && !string.IsNullOrEmpty(pointerMap.NrlsPointerId))
                 {
                     var pointerRequest = NrlsPointerRequest.Delete(pointerMap.NrlsPointerId, request.Asid, request.OrgCode);
+
                     var outcome = await _documentReferenceServices.DeletePointer(pointerRequest);
 
                     deletedPointer = (outcome != null && outcome.Success);
