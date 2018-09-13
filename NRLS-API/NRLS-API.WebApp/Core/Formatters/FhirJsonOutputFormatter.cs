@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Net;
 using System.Text;
 using SystemTask = System.Threading.Tasks;
 
@@ -17,6 +16,9 @@ namespace NRLS_API.WebApp.Core.Formatters
         {
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/fhir+json"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/json+fhir")); // DSTU2 support as per NRLS spec
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/json"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("text/json"));
+
             SupportedEncodings.Clear();
             SupportedEncodings.Add(Encoding.UTF8);
         }
@@ -43,8 +45,8 @@ namespace NRLS_API.WebApp.Core.Formatters
                 buffer.Append(resource);
             }
 
-            response.Headers.Remove(HttpResponseHeader.ContentType.ToString());
-            response.Headers.Add(HttpResponseHeader.ContentType.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}");
+            response.Headers.Remove(HeaderNames.ContentType);
+            response.Headers.Add(HeaderNames.ContentType, $"{ContentType.JSON_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}");
 
             return response.WriteAsync(buffer.ToString(), Encoding.UTF8);
         }

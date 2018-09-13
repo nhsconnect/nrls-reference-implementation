@@ -3,7 +3,9 @@ using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Validation;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
+using NRLS_API.Core.Resources;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -62,6 +64,7 @@ namespace NRLS_API.Core.Helpers
 
             // TODO : parse and validate code from valueset
             // only available code is 736253002
+            // not currently checking display but this should be validated
             if (validateFromSet && !string.IsNullOrWhiteSpace(valueSet))
             {
                 var values = GetCodableConceptValueSet(valueSet);
@@ -79,7 +82,7 @@ namespace NRLS_API.Core.Helpers
                 return reference?.Reference;
             }
 
-            return reference?.Reference?.Replace(systemUrl, "");
+            return reference?.Reference?.Replace(systemUrl, "").Trim();
         }
 
         public bool ValidReference(ResourceReference reference, string startsWith)
@@ -87,9 +90,24 @@ namespace NRLS_API.Core.Helpers
             return reference != null && !string.IsNullOrEmpty(reference.Reference) && !string.IsNullOrEmpty(startsWith) && reference.Reference.StartsWith(startsWith);
         }
 
-        public bool ValidIdentifier(Identifier identifier)
+        public (bool valid, string issue) ValidIdentifier(Identifier identifier, string name)
         {
-            return identifier != null && !string.IsNullOrWhiteSpace(identifier.System) && Uri.IsWellFormedUriString(identifier.System, UriKind.RelativeOrAbsolute) && !string.IsNullOrWhiteSpace(identifier.Value);
+            if (identifier != null)
+            {
+                if (string.IsNullOrWhiteSpace(identifier.System) || !Uri.IsWellFormedUriString(identifier.System, UriKind.RelativeOrAbsolute))
+                {
+                    return (false, $"{name}.system");
+                }
+
+                if(string.IsNullOrWhiteSpace(identifier.Value))
+                {
+                    return (false, $"{name}.value");
+                }
+
+                return (true, null);
+            }
+
+            return (false, $"{name}");
         }
 
         public bool ValidNhsNumber(string nhsNumber)
@@ -192,6 +210,16 @@ namespace NRLS_API.Core.Helpers
         public string GetTokenParameterId(string parameterVal, string systemPrefix)
         {
             return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace($"{systemPrefix}|", "") : null ;
+        }
+
+        public string GetOrganisationParameterIdentifierId(string parameterVal)
+        {
+            return !string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith($"{FhirConstants.SystemOrgCode}|") ? parameterVal.Replace($"{FhirConstants.SystemOrgCode}|", "") : null;
+        }
+
+        public string GetOrganisationParameterId(string parameterVal)
+        {
+            return !string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(FhirConstants.SystemODS) ? parameterVal.Replace(FhirConstants.SystemODS, "") : null;
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

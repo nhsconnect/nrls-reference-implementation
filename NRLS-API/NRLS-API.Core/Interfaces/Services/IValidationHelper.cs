@@ -14,13 +14,17 @@ namespace NRLS_API.Core.Interfaces.Services
 
         bool ValidReference(ResourceReference reference, string startsWith);
 
-        bool ValidIdentifier(Identifier identifier);
+        (bool valid, string issue) ValidIdentifier(Identifier identifier, string name);
 
         string GetResourceReferenceId(ResourceReference reference, string systemUrl);
 
         bool ValidTokenParameter(string parameterVal, string expectedSystemPrefix = null, bool allowOptionalSystemOrValue = true);
 
         bool ValidReferenceParameter(string parameterVal, string systemPrefix);
+
+        string GetOrganisationParameterIdentifierId(string parameterVal);
+
+        string GetOrganisationParameterId(string parameterVal);
 
         string GetTokenParameterId(string parameterVal, string systemPrefix);
 

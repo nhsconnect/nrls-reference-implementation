@@ -9,6 +9,7 @@ using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Linq;
 using System.Net;
@@ -104,7 +105,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
             var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
 
-            command.Headers.Add(HttpRequestHeader.Authorization.ToString(), $"Bearer {jwt}");
+            command.Headers.Add(HeaderNames.Authorization, $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
             command.Headers.Add(FhirConstants.HeaderToAsid, _spineSettings.SpineAsid);
 

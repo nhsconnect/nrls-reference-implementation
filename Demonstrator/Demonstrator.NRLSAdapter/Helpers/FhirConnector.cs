@@ -2,6 +2,7 @@
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,13 +120,13 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 Method = request.Method,
                 Headers =
                     {
-                        { HttpRequestHeader.Accept.ToString(), $"{ContentType.JSON_CONTENT_HEADER}"},
-                        { HttpRequestHeader.AcceptEncoding.ToString(), "gzip, deflate" },
-                        { HttpRequestHeader.AcceptLanguage.ToString(), "en-GB,en" },
-                        { HttpRequestHeader.CacheControl.ToString(), "no-cache" },
-                        { HttpRequestHeader.Connection.ToString(), "Keep-Alive" },
-                        { HttpRequestHeader.ContentType.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}"},
-                        { HttpRequestHeader.Host.ToString(), $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
+                        { HeaderNames.Accept, $"{ContentType.JSON_CONTENT_HEADER}"},
+                        { HeaderNames.AcceptEncoding, "gzip, deflate" },
+                        { HeaderNames.AcceptLanguage, "en-GB,en" },
+                        { HeaderNames.CacheControl, "no-cache" },
+                        { HeaderNames.Connection, "Keep-Alive" },
+                        { HeaderNames.ContentType, $"{ContentType.JSON_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}"},
+                        { HeaderNames.Host, $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
                     }
             };
 

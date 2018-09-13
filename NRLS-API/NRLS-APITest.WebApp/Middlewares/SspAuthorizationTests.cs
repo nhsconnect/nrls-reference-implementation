@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Moq;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
@@ -74,7 +75,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderToAsid, "999" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.ReadInteractionId }
@@ -122,7 +123,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("POST");  //Using post returns false from jwt check
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderToAsid, "999" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.CreateInteractionId }
@@ -147,7 +148,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Removed fromASID Header 
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderToAsid, "999" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.ReadInteractionId }
             });
@@ -171,7 +172,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Using an invalid value for fromASID header
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "001" },
                 { FhirConstants.HeaderToAsid, "999" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.ReadInteractionId }
@@ -196,7 +197,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Removed toASID Header 
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.ReadInteractionId }
             });
@@ -220,7 +221,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Used invalid value for toASID Header 
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderToAsid, "888" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.ReadInteractionId }
@@ -245,7 +246,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Removed SspInterationId Header 
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderToAsid, "999" }
             });
@@ -269,7 +270,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.Method).Returns("GET");
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() // Used invalid value for the SspInterationId header
             {
-                { HttpRequestHeader.Authorization.ToString(), "we-are-not-validating-jwt-here" },
+                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderFromAsid, "000" },
                 { FhirConstants.HeaderToAsid, "999" },
                 { FhirConstants.HeaderSspInterationId, FhirConstants.SearchInteractionId }

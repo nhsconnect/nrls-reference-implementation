@@ -96,7 +96,7 @@ namespace NRLS_APITest.Core.Factories
 
             Assert.Equal("ORGANISATION_NOT_FOUND", actual.Issue.First().Details.Coding.First().Code);
             Assert.Equal("Organisation record not found", actual.Issue.First().Details.Coding.First().Display);
-            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
+            Assert.Equal("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1", actual.Issue.First().Details.Coding.First().System);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace NRLS_APITest.Core.Factories
 
             Assert.Equal("INTERNAL_SERVER_ERROR", actual.Issue.First().Details.Coding.First().Code);
             Assert.Equal("Unexpected internal server error", actual.Issue.First().Details.Coding.First().Display);
-            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
+            Assert.Equal("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1", actual.Issue.First().Details.Coding.First().System);
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace NRLS_APITest.Core.Factories
 
             Assert.Equal("INTERNAL_SERVER_ERROR", actual.Issue.First().Details.Coding.First().Code);
             Assert.Equal("Unexpected internal server error", actual.Issue.First().Details.Coding.First().Display);
-            Assert.Equal("https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0", actual.Issue.First().Details.Coding.First().System);
+            Assert.Equal("https://fhir.nhs.uk/STU3/CodeSystem/Spine-ErrorOrWarningCode-1", actual.Issue.First().Details.Coding.First().System);
         }
     }
 }

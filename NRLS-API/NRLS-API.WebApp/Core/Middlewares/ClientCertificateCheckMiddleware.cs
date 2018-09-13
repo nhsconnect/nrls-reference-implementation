@@ -35,16 +35,16 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             //Fake SSP Interaction/ASID datastore
 
-            if (_nrlsApiSetting.Secure)
+            if (_nrlsApiSetting.Secure && context.Request.IsHttps)
             {
                 var clientAsidMap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
                 var clientCertificate = context.Connection.ClientCertificate;
 
-                using (var store = new X509Store(StoreName.TrustedPeople, StoreLocation.CurrentUser))
+                using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
                 {
                     //Get ASID
                     var fromAsid = GetHeaderValue(context.Request.Headers, FhirConstants.HeaderFromAsid);
-                    if (string.IsNullOrEmpty(fromAsid))
+                    if (string.IsNullOrEmpty(fromAsid) || clientCertificate == null)
                     {
                         SetError();
                     }
@@ -52,7 +52,8 @@ namespace NRLS_API.WebApp.Core.Middlewares
                     //Check Certificate
                     store.Open(OpenFlags.ReadOnly);
 
-                    if (!store.Certificates.Contains(clientCertificate))
+                    var clientCertificates = store.Certificates.Find(X509FindType.FindByThumbprint, clientCertificate.Thumbprint, false);
+                    if (clientCertificates.Count < 1)
                     {
                         SetError();
                     }
@@ -64,7 +65,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
                     {
                         var client = clientmap.ClientAsids.FirstOrDefault(x => x.Key == fromAsid);
 
-                        if (client.Value != null && client.Value.Thumbprint != clientCertificate.Thumbprint)
+                        if (client.Value != null && client.Value.Thumbprint.ToLowerInvariant() != clientCertificate.Thumbprint.ToLowerInvariant())
                         {
                             SetError();
                         }

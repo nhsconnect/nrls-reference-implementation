@@ -87,7 +87,10 @@ namespace NRLS_APITest.Services
             validationMock.Setup(op => op.ValidatePatientParameter(It.IsAny<string>())).Returns(OperationOutcomes.Error);
             validationMock.Setup(op => op.ValidatePatientParameter(It.Is<string>(p => p == "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"))).Returns(delegate { return null; });
 
-            validationMock.Setup(op => op.GetValidRelatesTo(It.Is<IList<DocumentReference.RelatesToComponent>>(r => r.FirstOrDefault(w => w.Target != null && w.Target.Identifier != null && w.Target.Identifier.Value == "urn:tag:humber.nhs.uk,2004:cdc:600009612669​") != null))).Returns(FhirResources.Valid_Single_RelatesTo);
+            validationMock.Setup(op => op.GetValidRelatesTo(It.Is<IList<DocumentReference.RelatesToComponent>>(r => r.FirstOrDefault(w => w.Target != null && w.Target.Identifier != null && w.Target.Identifier.Value == "urn:tag:humber.nhs.uk,2004:cdc:600009612669​") != null))).Returns((FhirResources.Valid_Single_RelatesTo, "relatesTo"));
+
+            validationMock.Setup(op => op.GetValidStatus(It.IsAny<DocumentReferenceStatus>())).Returns(delegate { return null; });
+            validationMock.Setup(op => op.GetValidStatus(It.Is<DocumentReferenceStatus>(x => x == DocumentReferenceStatus.Current))).Returns(DocumentReferenceStatus.Current);
 
             validationMock.Setup(op => op.GetSubjectReferenceId(It.IsAny<ResourceReference>())).Returns("2686033207");
 

@@ -111,21 +111,21 @@ namespace NRLS_API.Services
 
             var relatesTo = _fhirValidation.GetValidRelatesTo(document.RelatesTo);
 
-            if (relatesTo == null)
+            if (relatesTo.element == null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+                return OperationOutcomeFactory.CreateInvalidResource(relatesTo.issue);
             }
 
             //Subject already validated during ValidateCreate
             //relatesTo Identifier already validated during ValidateCreate => validPointer
             var subjectNhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
-            var pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.Target.Identifier, subjectNhsNumber);
+            var pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.element.Target.Identifier, subjectNhsNumber);
             var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest) as Bundle;
 
             if (pointers.Entry.Count != 1)
             {
                 //Cant find related document
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target");
             }
 
             //Custodian already validated against incoming ASID during ValidateCreate
@@ -136,13 +136,13 @@ namespace NRLS_API.Services
             if (oldDocument.Custodian == null || string.IsNullOrEmpty(oldDocument.Custodian.Reference) || oldDocument.Custodian.Reference != $"{FhirConstants.SystemODS}{custodianOdsCode}")
             {
                 //related document does not have same custodian
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target");
             }
 
             if(oldDocument.Status != DocumentReferenceStatus.Current)
             {
                 //Only allowed to transition to superseded from current
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.code");
             }
 
             return oldDocument;
@@ -240,6 +240,13 @@ namespace NRLS_API.Services
 
             if (!string.IsNullOrEmpty(id))
             {
+                ObjectId mongoId;
+
+                if (!ObjectId.TryParse(id, out mongoId))
+                {
+                    throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {id}"), HttpStatusCode.BadRequest);
+                }
+
                 document = await _fhirSearch.Get<T>(request);
             }
             else

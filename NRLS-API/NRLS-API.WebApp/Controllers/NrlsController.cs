@@ -45,7 +45,7 @@ namespace NRLS_API.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Search()
         {
-            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, null);
+            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
             var result = await _nrlsSearch.Find<DocumentReference>(request);
 
@@ -130,7 +130,12 @@ namespace NRLS_API.WebApp.Controllers
 
             var response = OperationOutcomeFactory.CreateSuccess();
 
-            return Created($"{(_nrlsApiSettings.Secure ? "https" : "http")}{_nrlsApiSettings.BaseUrl}:{(_nrlsApiSettings.Secure ? _nrlsApiSettings.SecurePort : _nrlsApiSettings.DefaultPort)}{Request.Path}?_id={result.Id}", response);
+            var newResource = $"{_nrlsApiSettings.ResourceLocation}/{ResourceType.DocumentReference}?_id={result.Id}";
+
+            //Temp required header for NRLS API tests
+            Request.HttpContext.Response.Headers.Add("Content-Location", newResource);
+			
+			return Created(newResource, response);
         }
 
 

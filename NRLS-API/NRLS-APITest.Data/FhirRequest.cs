@@ -101,8 +101,9 @@ namespace NRLS_APITest.Data
                     ResourceType = ResourceType.DocumentReference,
                     QueryParameters = new List<Tuple<string, string>>
                     {
-                        new Tuple<string, string>("_id", "testId")
-                    }
+                        new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
+                    },
+                    AllowedParameters = new string[] { "_id" }
                 };
             }
         }
@@ -118,7 +119,7 @@ namespace NRLS_APITest.Data
                     ResourceType = ResourceType.DocumentReference,
                     QueryParameters = new List<Tuple<string, string>>
                     {
-                        new Tuple<string, string>("_id", "testId")
+                        new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
                     },
                     Id = "5b5c5bec7f1c649fdea426a1",
                     AuditId = "91370360-d667-4bc8-bebe-f223560ff90e"
@@ -137,8 +138,9 @@ namespace NRLS_APITest.Data
                     ResourceType = ResourceType.DocumentReference,
                     QueryParameters = new List<Tuple<string, string>>
                     {
-                        new Tuple<string, string>("_id", "testId")
-                    }
+                        new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
+                    },
+                    Id = "5b5c5bec7f1c649fdea426a1"
                 };
             }
         }
@@ -282,7 +284,7 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),
-                        new Tuple<string, string>("custodian", "https://directory.spineservices.nhs.uk/STU3/Organization/odscode")
+                        new Tuple<string, string>("custodian", "https://directory.spineservices.nhs.uk/STU3/Organization/TestOrgCode")
                     },
                     AllowedParameters = new string[] { "custodian", "subject" }
                 };
@@ -381,7 +383,7 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", "testId"),
-                        new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
                     }
                 };
             }
@@ -401,7 +403,7 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", ""),
-                        new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
+                        new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
                     }
                 };
             }

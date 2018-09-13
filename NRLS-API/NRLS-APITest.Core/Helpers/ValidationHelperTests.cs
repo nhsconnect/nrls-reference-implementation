@@ -316,10 +316,10 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
 
-            Assert.True(actual);
+            Assert.True(actual.valid);
         }
 
         [Fact]
@@ -327,10 +327,10 @@ namespace NRLS_APITest.Core.Helpers
         {
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(null);
+            var actual = helper.ValidIdentifier(null, "masterIdentifier");
 
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]
@@ -344,9 +344,9 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]
@@ -360,9 +360,9 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]
@@ -665,7 +665,85 @@ namespace NRLS_APITest.Core.Helpers
             Assert.False(actual);
         }
 
+        [Fact]
+        public void Validation_GetOrganisationParameterIdentifierId_Valid()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
 
+            var actual = helper.GetOrganisationParameterIdentifierId($"{FhirConstants.SystemOrgCode}|testorgCode");
+
+            Assert.Equal("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterIdentifierId_Invalid_BadUri()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterIdentifierId($"{FhirConstants.SystemOrgCode}testorgCode");
+
+            Assert.NotEqual("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterIdentifierId_InvalidNoUrl()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterIdentifierId($"testorgCode");
+
+            Assert.NotEqual("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterIdentifierId_ValidNoCode()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterIdentifierId($"{FhirConstants.SystemOrgCode}|");
+
+            Assert.Equal(string.Empty, actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterId_Valid()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterId($"{FhirConstants.SystemODS}testorgCode");
+
+            Assert.Equal("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterId_Invalid_BadUri()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterId($"blassurltestorgCode");
+
+            Assert.NotEqual("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterId_InvalidNoUrl()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterId($"testorgCode");
+
+            Assert.NotEqual("testorgCode", actual);
+        }
+
+        [Fact]
+        public void Validation_GetOrganisationParameterId_ValidNoCode()
+        {
+            var helper = new ValidationHelper(_fhirCacheHelper);
+
+            var actual = helper.GetOrganisationParameterId($"{FhirConstants.SystemODS}");
+
+            Assert.Equal(string.Empty, actual);
+        }
 
     }
 }

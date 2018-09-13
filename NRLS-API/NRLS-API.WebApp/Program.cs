@@ -56,7 +56,7 @@ namespace NRLS_API.WebApp
                     // listen for HTTPS
                     if (apiSettings.Secure)
                     {
-                        var certificate = ServerCertificate(int.Parse(apiSettings.SecurePort));
+                        var certificate = ServerCertificate();
 
                         if(certificate != null)
                         {
@@ -79,7 +79,7 @@ namespace NRLS_API.WebApp
                 .Build();
         }
 
-        private static X509Certificate2 ServerCertificate(int securePort)
+        private static X509Certificate2 ServerCertificate()
         {
             using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
             {
@@ -103,7 +103,8 @@ namespace NRLS_API.WebApp
                 //Just validate that we recognise
                 //Update to ensure we grab certs in a cross platform way
                 //Asid match will be done in middleware
-                if(!store.Certificates.Contains(cert) || error != SslPolicyErrors.None)
+                var clientCertificates = store.Certificates.Find(X509FindType.FindByThumbprint, cert.Thumbprint, false);
+                if (clientCertificates.Count < 1) // || error != SslPolicyErrors.None
                 {
                     throw new HttpFhirException("Invalid Client Request Exception", OperationOutcomeFactory.CreateAccessDenied(), HttpStatusCode.Unauthorized);
                 }
