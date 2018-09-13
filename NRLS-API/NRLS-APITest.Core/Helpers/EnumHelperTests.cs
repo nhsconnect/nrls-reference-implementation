@@ -1,4 +1,5 @@
-﻿using NRLS_API.Core.Helpers;
+﻿using NRLS_API.Core.Exceptions;
+using NRLS_API.Core.Helpers;
 using Xunit;
 
 namespace NRLS_APITest.Core.Helpers
@@ -15,6 +16,20 @@ namespace NRLS_APITest.Core.Helpers
         public void Enum_Check_Invalid()
         {
             Assert.False(EnumHelpers.IsValidName<TestEnums>("EnumC"));
+        }
+
+        [Fact]
+        public void Enum_GetName_Valid()
+        {
+            Assert.IsType<TestEnums>(EnumHelpers.GetEnum<TestEnums>("EnumB"));
+        }
+
+        [Fact]
+        public void Enum_GetName_Invalid()
+        {
+            Assert.Throws<InvalidEnumException>(() => {
+                var test = EnumHelpers.GetEnum<TestEnums>("EnumC");
+            });
         }
     }
 

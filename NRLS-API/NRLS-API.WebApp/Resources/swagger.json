@@ -3,7 +3,7 @@
   "info": {
     "version": "v0.1.1",
     "title": "NRLS API Reference Implementation",
-    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.1-beta &nbsp;</small>.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
+    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.1-beta &nbsp;</small>.<br /><br /><br /><b>Default Data</b> - You can view examples of default data and what possible parameter values that can be used in this demonstration within the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/7.-Data\" target=\"_blank\">Data section</a> of the repository Wiki.<br /><br /><b>HTTP Header values</b> - Head over to the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/6.-Security\" target=\"_blank\">Security section</a> of the repository Wiki to understand what values can be used in this demonstration.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
       "name": "NRLS Team",
       "email": "nrls@nhs.net"
@@ -33,7 +33,7 @@
       "get": {
         "tags": [ "Nrls" ],
         "summary": "Searches for the requested resource type.\r\nOR\r\nGets a resource by the supplied _id search parameter.",
-        "operationId": "NrlsFhirDocumentReferenceGet",
+        "operationId": "searchPointers",
         "consumes": [],
         "produces": [ "application/fhir+json", "application/fhir+xml" ],
         "parameters": [
@@ -116,7 +116,7 @@
       "post": {
         "tags": [ "Nrls" ],
         "summary": "Creates and Persists a new record of the requested resource type into a datastore.",
-        "operationId": "NrlsFhirDocumentReferencePost",
+        "operationId": "createPointer",
         "consumes": [ "application/fhir+json", "application/fhir+xml" ],
         "produces": [ "application/fhir+json", "application/fhir+xml" ],
         "parameters": [
@@ -209,13 +209,16 @@
           },
           "401": {
             "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
+          },
+          "500": {
+            "description": "Internal server error: Returns the FHIR Resource of type OperationOutcome"
           }
         }
       },
       "delete": {
         "tags": [ "Nrls" ],
         "summary": "Deletes a record that was previously persisted into a datastore. Use either _id on it's own or subject & identifier together.",
-        "operationId": "NrlsFhirDocumentReferenceDelete",
+        "operationId": "deletePointer",
         "consumes": [],
         "produces": [ "application/fhir+json", "application/fhir+xml" ],
         "parameters": [
