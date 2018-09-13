@@ -32,9 +32,9 @@ namespace NRLS_APITest.Services
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "valid|valid"), null, false)).Returns(true);
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "invalid|invalid"), null, false)).Returns(false);
 
-            mock.Setup(op => op.ValidIdentifier(It.IsAny<Identifier>())).Returns(true);
-            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.System)))).Returns(false);
-            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.Value)))).Returns(false);
+            mock.Setup(op => op.ValidIdentifier(It.IsAny<Identifier>(), It.IsAny<string>())).Returns((true, null));
+            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.System)), It.IsAny<string>())).Returns((false, "test"));
+            mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.Value)), It.IsAny<string>())).Returns((false, "test"));
 
             mock.Setup(op => op.GetResourceReferenceId(It.IsAny<ResourceReference>(), It.IsAny<string>())).Returns("resourceRefId");
             mock.Setup(op => op.GetResourceReferenceId(It.Is<ResourceReference>(r => r.Reference == "InvalidAuthorhttps://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(delegate { return null; });
@@ -65,9 +65,8 @@ namespace NRLS_APITest.Services
 
             var validPoiner = validationService.ValidPointer(pointer);
 
-            var expected = OperationOutcomes.Ok;
-
-            Assert.Equal(expected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+            Assert.IsType<OperationOutcome>(validPoiner);
+            Assert.True(validPoiner.Success);
         }
 
         [Fact]
@@ -79,9 +78,8 @@ namespace NRLS_APITest.Services
 
             var validPoiner = validationService.ValidPointer(pointer);
 
-            var expected = OperationOutcomes.Ok;
-
-            Assert.Equal(expected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+            Assert.IsType<OperationOutcome>(validPoiner);
+            Assert.True(validPoiner.Success);
         }
 
         [Fact]
@@ -342,6 +340,28 @@ namespace NRLS_APITest.Services
             Assert.NotNull(validPoiner);
         }
 
+        [Fact]
+        public void ValidateCustodianIdentifierParameter_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var reference = "https://fhir.nhs.uk/Id/ods-organization-code|test";
+            var validPoiner = validationService.ValidateCustodianIdentifierParameter(reference);
+
+            Assert.Null(validPoiner);
+        }
+
+        [Fact]
+        public void ValidateCustodianIdentifierParameter_Invalid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var reference = "https://fhir.nhs.uk/Id/ods-organization-code|";
+            var validPoiner = validationService.ValidateCustodianIdentifierParameter(reference);
+
+            Assert.NotNull(validPoiner);
+        }
+
         //[Fact]
         //public void ValidateOrganisationReference_Valid()
         //{
@@ -479,11 +499,11 @@ namespace NRLS_APITest.Services
 
             Assert.IsType<DocumentReference.RelatesToComponent>(actual);
 
-            Assert.NotNull(actual.Target);
-            Assert.NotNull(actual.Target.Identifier);
+            Assert.NotNull(actual.element.Target);
+            Assert.NotNull(actual.element.Target.Identifier);
 
-            Assert.Equal("urn:ietf:rfc:4151", actual.Target.Identifier.System);
-            Assert.Equal("urn:tag:humber.nhs.uk,2004:cdc:600009612669", actual.Target.Identifier.Value);
+            Assert.Equal("urn:ietf:rfc:4151", actual.element.Target.Identifier.System);
+            Assert.Equal("urn:tag:humber.nhs.uk,2004:cdc:600009612669", actual.element.Target.Identifier.Value);
         }
 
         [Fact]
@@ -493,7 +513,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(null);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
         }
 
         [Fact]
@@ -508,7 +528,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
 
         }
 
@@ -524,7 +544,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
 
         }
 
@@ -540,7 +560,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
 
         }
 
@@ -556,7 +576,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
 
         }
 
@@ -572,7 +592,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.Null(actual);
+            Assert.Null(actual.element);
 
         }
 
@@ -587,6 +607,40 @@ namespace NRLS_APITest.Services
             };
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
+
+            Assert.Null(actual.element);
+
+        }
+
+        [Fact]
+        public void GetValidStatus_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var actual = validationService.GetValidStatus(DocumentReferenceStatus.Current);
+
+            Assert.NotNull(actual);
+
+            Assert.Equal(DocumentReferenceStatus.Current, actual);
+        }
+
+        [Fact]
+        public void GetValidStatus_Handles_Null()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var actual = validationService.GetValidStatus(null);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetValidStatus_Handles_EnteredInError()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var actual = validationService.GetValidStatus(DocumentReferenceStatus.EnteredInError);
 
             Assert.Null(actual);
 

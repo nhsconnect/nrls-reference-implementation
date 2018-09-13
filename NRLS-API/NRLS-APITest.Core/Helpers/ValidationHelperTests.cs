@@ -316,10 +316,10 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
 
-            Assert.True(actual);
+            Assert.True(actual.valid);
         }
 
         [Fact]
@@ -327,10 +327,10 @@ namespace NRLS_APITest.Core.Helpers
         {
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(null);
+            var actual = helper.ValidIdentifier(null, "masterIdentifier");
 
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]
@@ -344,9 +344,9 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]
@@ -360,9 +360,9 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidIdentifier(identifier);
+            var actual = helper.ValidIdentifier(identifier, "masterIdentifier");
 
-            Assert.False(actual);
+            Assert.False(actual.valid);
         }
 
         [Fact]

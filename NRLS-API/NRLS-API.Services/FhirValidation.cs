@@ -4,6 +4,7 @@ using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,19 +37,21 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
-            if(pointer.MasterIdentifier != null && !_validationHelper.ValidIdentifier(pointer.MasterIdentifier))
+            //master identifier
+            if(pointer.MasterIdentifier != null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource("masterIdentifier");
+                var masterIdentifierCheck =  _validationHelper.ValidIdentifier(pointer.MasterIdentifier, "masterIdentifier");
+
+                if(!masterIdentifierCheck.valid)
+                {
+                    return OperationOutcomeFactory.CreateInvalidResource(masterIdentifierCheck.issue, "If the masterIdentifier is supplied then the value and system properties are mandatory");
+                }
             }
 
             //status
-            if(pointer.Status == null)
+            if (!GetValidStatus(pointer.Status).HasValue)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-            else if (!pointer.Status.HasValue || !EnumHelpers.IsValidName<DocumentReferenceStatus>(pointer.Status.ToString()))
-            {
-                return OperationOutcomeFactory.CreateInvalidResource("status");
+                return OperationOutcomeFactory.CreateInvalidResource("status", "The status of a new DocumentReference can only be \"current\"");
             }
 
             //type
@@ -110,11 +113,12 @@ namespace NRLS_API.Services
             }
 
             //indexed
+            DateTime validIndexed;
             if (pointer.Indexed == null)
             {
                 return OperationOutcomeFactory.CreateInvalidResource(null);
             }
-            else if (!pointer.Indexed.HasValue || !FhirDateTime.IsValidValue(pointer.Indexed.Value.ToString(DateTimeFormat)))
+            else if (!pointer.Indexed.HasValue || !FhirDateTime.IsValidValue(pointer.Indexed.Value.ToString(DateTimeFormat)) || !DateTime.TryParse(pointer.Indexed.Value.ToString(DateTimeFormat), out validIndexed))
             {
                 return OperationOutcomeFactory.CreateInvalidResource("indexed");
             }
@@ -123,9 +127,9 @@ namespace NRLS_API.Services
             //Only require basic checks here
             //Additional checks are carried out in NrlsMaintain.ValidateConditionalUpdate
             var relatesTo = GetValidRelatesTo(pointer.RelatesTo);
-            if (pointer.RelatesTo != null && pointer.RelatesTo.Count > 0 && relatesTo == null)
+            if (pointer.RelatesTo != null && pointer.RelatesTo.Count > 0 && relatesTo.element == null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo");
+                return OperationOutcomeFactory.CreateInvalidResource(relatesTo.issue);
             }
 
             //attachment
@@ -174,7 +178,7 @@ namespace NRLS_API.Services
 
             if (string.IsNullOrWhiteSpace(summary) || !allowedSummaries.Contains(summary.ToLowerInvariant()))
             {
-                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given summary value is not from the allowed summary types.");
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"Unsupported search parameter - _summary={summary}");
             }
 
             return null;
@@ -184,7 +188,7 @@ namespace NRLS_API.Services
         {
             if (!_validationHelper.ValidReference(reference, FhirConstants.SystemPDS))
             {
-                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemPDS}[NHS Number]");
+                return OperationOutcomeFactory.CreateInvalidResource("subject");
             }
 
             var nhsNumber = reference.Reference.Replace(FhirConstants.SystemPDS, "");
@@ -247,6 +251,40 @@ namespace NRLS_API.Services
             return null;
         }
 
+        //Temp method to check custodian.identifier
+        public OperationOutcome ValidateCustodianIdentifierParameter(string parameterVal)
+        {
+            var valid = true;
+            if (!_validationHelper.ValidReferenceParameter(parameterVal, FhirConstants.SystemOrgCode))
+            {
+                valid = false;
+            }
+
+            var orgCode = GetOrganizationParameterId(parameterVal);
+
+            if (string.IsNullOrWhiteSpace(orgCode))
+            {
+                valid = false;
+            }
+
+            if (!valid)
+            {
+                return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given resource URL does not conform to the expected format - {FhirConstants.SystemOrgCode}|[ODS Code]");
+            }
+
+            return null;
+        }
+
+        public string GetOrganizationParameterId(string parameterVal)
+        {
+            return _validationHelper.GetOrganisationParameterId(parameterVal);
+        }
+
+        public string GetOrganizationParameterIdentifierId(string parameterVal)
+        {
+            return _validationHelper.GetOrganisationParameterIdentifierId(parameterVal);
+        }
+
         public string GetOrganizationReferenceId(ResourceReference reference)
         {
             return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemODS);
@@ -257,16 +295,52 @@ namespace NRLS_API.Services
             return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemPDS);
         }
 
-        public DocumentReference.RelatesToComponent GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo)
+        public (DocumentReference.RelatesToComponent element, string issue) GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesToElm)
         {
-            if(relatesTo == null)
+            if(relatesToElm == null)
             {
-                return null;
+                return (null, "relatesTo");
             }
 
-            return relatesTo.FirstOrDefault(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces) && r.Target != null && r.Target.Identifier != null 
-                                            && !string.IsNullOrWhiteSpace(r.Target.Identifier.System) && !string.IsNullOrWhiteSpace(r.Target.Identifier.Value));
+            var relatesTo = relatesToElm.Where(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces)).FirstOrDefault();
 
+            if(relatesTo == null)
+            {
+                return (null, "relatesTo.code");
+            }
+
+            if (relatesTo.Target == null)
+            {
+                return (null, "relatesTo.target");
+            }
+
+            if (relatesTo.Target.Identifier == null)
+            {
+                return (null, "relatesTo.target.identifier");
+            }
+
+            if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.System))
+            {
+                return (null, "relatesTo.target.identifier.system");
+            }
+
+            if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.Value))
+            {
+                return (null, "relatesTo.target.identifier.value");
+            }
+
+            return (relatesTo, "relatesTo");
+
+        }
+
+        public DocumentReferenceStatus? GetValidStatus(DocumentReferenceStatus? status)
+        {
+            if(status.HasValue && status == DocumentReferenceStatus.Current)
+            {
+                return status.Value;
+            }
+
+            return null;
         }
 
         public OperationOutcome ValidateOrganisationReference(ResourceReference reference, string type)
@@ -319,7 +393,8 @@ namespace NRLS_API.Services
 
                 //attachment.creation can be empty
                 var creation = content.Attachment.Creation;
-                if (!string.IsNullOrEmpty(creation) && !FhirDateTime.IsValidValue(creation))
+                DateTime validCreation;
+                if (!string.IsNullOrEmpty(creation) && (!FhirDateTime.IsValidValue(creation) || !DateTime.TryParse(creation, out validCreation)))
                 {
                     return OperationOutcomeFactory.CreateInvalidResource("creation", $"The attachment creation date value is not a valid dateTime type: {creation}.");
                 }

@@ -4,7 +4,7 @@
     "$oid": "5ab13f41957d0ad5d93a1339"
   },
   "meta": {
-    "verionsId": "1",
+    "versionId": "1",
     "profile": [
       "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
     ]
@@ -48,7 +48,7 @@
     "$oid": "5ab13f4a957d0ad5d93a133a"
   },
   "meta": {
-    "verionsId": "1",
+    "versionId": "1",
     "profile": [
       "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
     ]
@@ -92,7 +92,7 @@
     "$oid": "5aba0f464f02ced4c7eb16c4"
   },
   "meta": {
-    "verionsId": "1",
+    "versionId": "1",
     "profile": [
       "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
     ]

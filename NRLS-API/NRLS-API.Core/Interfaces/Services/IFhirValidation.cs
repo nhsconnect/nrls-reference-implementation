@@ -18,12 +18,20 @@ namespace NRLS_API.Core.Interfaces.Services
 
         OperationOutcome ValidateCustodianParameter(string parameterVal);
 
+        OperationOutcome ValidateCustodianIdentifierParameter(string parameterVal);
+
         OperationOutcome ValidateIdentifierParameter(string paramName, string parameterVal);
+
+        string GetOrganizationParameterId(string parameterVal);
+
+        string GetOrganizationParameterIdentifierId(string parameterVal);
 
         string GetOrganizationReferenceId(ResourceReference reference);
 
         string GetSubjectReferenceId(ResourceReference reference);
 
-        DocumentReference.RelatesToComponent GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo);
+        (DocumentReference.RelatesToComponent element, string issue) GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo);
+
+        DocumentReferenceStatus? GetValidStatus(DocumentReferenceStatus? status);
     }
 }
