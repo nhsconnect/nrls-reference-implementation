@@ -21,6 +21,12 @@ export class GsASParamedicToughBook extends BaseGenericSystem {
         this.pageTitle = "Electronic Patient Record : NRLS";
     }
 
+    startView() {
+        this.toggleInstructions();
+
+        this.trackView(this.data.genericSystem.fModule, this.data.personnel.name);
+    }
+
     private patientChanged(newValue: string, oldValue: string): void {
 
         if (!newValue) {

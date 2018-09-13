@@ -4,8 +4,9 @@ import { IPatientNumber } from "../core/interfaces/IPatientNumber";
 import { IPatient } from '../core/interfaces/IPatient';
 import { ValidationControllerFactory, validateTrigger } from 'aurelia-validation';
 import { EprSvc } from '../core/services/EprService';
+import { AnalyticsSvc } from '../core/services/AnalyticsService';
 
-@inject(PatientSvc, EprSvc, ValidationControllerFactory)
+@inject(PatientSvc, EprSvc, ValidationControllerFactory, AnalyticsSvc)
 export class BaseGenericSystem {
 
     vdController: any;
@@ -23,7 +24,7 @@ export class BaseGenericSystem {
 
     systemMessage?: string = "Unknown";
 
-    constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory) {
+    constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory, private analyticsSvc: AnalyticsSvc) {
         this.vdController = validationControllerFactory.createForCurrentScope();
         this.vdController.validateTrigger = validateTrigger.manual;
     }
@@ -51,6 +52,10 @@ export class BaseGenericSystem {
 
     findPatient() {
         this.patient = undefined;
+    }
+
+    trackView(system: string, whos: string) {
+        this.analyticsSvc.genericSystems(system, whos);
     }
 
     protected setSystemMessage(msg?: string) {

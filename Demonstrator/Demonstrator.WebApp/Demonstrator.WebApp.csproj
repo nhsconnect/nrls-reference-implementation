@@ -33,6 +33,7 @@
     <None Remove="AppSrc\core\interfaces\IWebAppConfig.ts" />
     <None Remove="AppSrc\core\models\Base.ts" />
     <None Remove="AppSrc\core\models\CrisisPlan.ts" />
+    <None Remove="AppSrc\core\models\DemonstratorConfig.ts" />
     <None Remove="AppSrc\core\models\enums\ActorTypes.ts" />
     <None Remove="AppSrc\core\interfaces\fhir\IAddress.ts" />
     <None Remove="AppSrc\core\interfaces\fhir\IAssigner.ts" />
@@ -54,8 +55,10 @@
     <None Remove="AppSrc\core\models\IPersonnel.ts" />
     <None Remove="AppSrc\core\models\IPointer.ts" />
     <None Remove="AppSrc\core\models\MedicalRecord.ts" />
+    <None Remove="AppSrc\core\services\AnalyticsService.ts" />
     <None Remove="AppSrc\core\services\BenefitsService.ts" />
     <None Remove="AppSrc\core\services\ConfigService.ts" />
+    <None Remove="AppSrc\core\services\CookieService.ts" />
     <None Remove="AppSrc\core\services\EprService.ts" />
     <None Remove="AppSrc\core\services\GenericSystemService.ts" />
     <None Remove="AppSrc\core\services\PatientService.ts" />
@@ -121,6 +124,7 @@
     <TypeScriptCompile Include="AppSrc\core\interfaces\IRequest.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IWebAppConfig.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\Base.ts" />
+    <TypeScriptCompile Include="AppSrc\core\models\DemonstratorConfig.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\CrisisPlan.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IDialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\enums\ActorTypes.ts" />
@@ -145,6 +149,8 @@
     <TypeScriptCompile Include="AppSrc\core\interfaces\IPersonnel.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IActorOrganisation.ts" />
     <TypeScriptCompile Include="AppSrc\core\models\MedicalRecord.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\CookieService.ts" />
+    <TypeScriptCompile Include="AppSrc\core\services\AnalyticsService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ConfigService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\BenefitsService.ts" />

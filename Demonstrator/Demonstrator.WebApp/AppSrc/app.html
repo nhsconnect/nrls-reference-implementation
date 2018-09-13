@@ -6,7 +6,7 @@
     <div show.bind="!hideBanner" class="app-warning-banner bg-warning navbar-fixed-top">
         <p class="no-margin"><strong>This guide is for demonstration purposes only and does not interact with live systems. Images and Systems viewed may not represent live systems. <button title="Close warning banner" href="#close" class="btn btn-default" click.delegate="hideBanner=true" aria-label="Close"><i class="fa fa-close"></i></button></strong></p>
     </div>
-    <nav-bar router.bind="router" has-banner.one-way="!hideBanner" base-url.bind="baseUrl"></nav-bar>
+    <nav-bar router.bind="router" has-banner.one-way="!hideBanner" base-url.bind="appConfig.baseUrl"></nav-bar>
 
     <div id="SkipContent" class="page-host text-left ${hideBanner !== true ? 'has-banner' : ''}">
         <div class="container">
@@ -15,7 +15,8 @@
         <router-view></router-view>
     </div>
 
-    <footer-bar show-contact.call="showContactDialog()" updated-at.bind="updatedAt" app-version.bind="appVersion"></footer-bar>
+    <footer-bar show-contact.call="showContactDialog()" updated-at.bind="appConfig.updatedAt" app-version.bind="appConfig.appVersion"></footer-bar>
     <error-modal if.bind="errorDialog" dialog.two-way="errorDialog"></error-modal>
     <contact-modal can-show-contact.two-way="canShowContact"></contact-modal>
+
 </template>

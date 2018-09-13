@@ -1,20 +1,23 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { DialogRequested } from './core/helpers/EventMessages';
+import { DialogRequested, CookieCanTrack } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
+import { AnalyticsSvc } from './core/services/AnalyticsService';
+import { DemonstratorConfig } from './core/models/DemonstratorConfig';
+import { CookieSvc } from './core/services/CookieService';
 
-@inject(EventAggregator)
+@inject(EventAggregator, AnalyticsSvc, CookieSvc)
 export class App {
     router: Router;
     errorDialog: IDialog;
     canShowContact: boolean = false;
-    updatedAt?: string;
-    appVersion?: string;
-    baseUrl?: string;
+    handleAcceptTrack: any;
 
-    constructor(private ea: EventAggregator) {
+    appConfig: IDemonstratorConfig;
+
+    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc, private cookieSvc: CookieSvc) {
         ea.subscribe(DialogRequested, msg => {
 
             if (msg && msg.Severity != 'Information') {
@@ -22,11 +25,50 @@ export class App {
             }
         });
 
-        let demonstratorConfig = (window['demonstratorConfig'] || { updatedAt: '', appVersion: '', baseUrl: '' }) as IDemonstratorConfig;
+        ea.subscribe(CookieCanTrack, cct => {
+            if (cct.allowed) {
+                this.analyticsSvc.start(cct.allowed, () =>
+                {
+                    this.cookieSvc.runScripts();
+                    this.setPageTrack();
+                });
+            } else {
+                this.analyticsSvc.stop(() => {
+                    this.cookieSvc.runScripts();
+                });
+            }
+        });
 
-        this.updatedAt = demonstratorConfig.updatedAt;
-        this.appVersion = demonstratorConfig.appVersion;
-        this.baseUrl = demonstratorConfig.baseUrl;
+        this.handleAcceptTrack = e => {
+            this.ea.publish(new CookieCanTrack(this.cookieSvc.canTrack));
+        };
+
+        this.appConfig = (window['demonstratorConfig'] || new DemonstratorConfig());
+    }
+
+    attached() {
+        this.cookieSvc.start(this.appConfig.cookieBotId);
+
+        window.addEventListener('CookiebotOnAccept', this.handleAcceptTrack);
+        window.addEventListener('CookiebotOnDecline', this.handleAcceptTrack); 
+
+        window['CookiebotCallback_OnDecline'] = () => {
+            this.handleAcceptTrack();
+        }
+    }
+
+    detached() {
+        window.removeEventListener('CookiebotOnAccept', this.handleAcceptTrack);
+        window.removeEventListener('CookiebotOnDecline', this.handleAcceptTrack);
+
+        window['CookiebotCallback_OnDecline'] = undefined;
+    }
+
+    setPageTrack() {
+
+        let pageTitleSlice = this.router.currentInstruction.config.settings.dynamicTitle ? this.router.currentInstruction.params.routeParamTitle : undefined;
+
+        this.analyticsSvc.trackPage(pageTitleSlice);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -34,13 +76,15 @@ export class App {
         config.title = 'NRLS Interactive Guide';
         config.options.hashChange = false;
         config.options.pushState = true;
-        config.options.route = this.baseUrl;
+        config.options.route = this.appConfig.baseUrl;
 
         var notFoundRoute = { route: 'error/404', moduleId: './pages/error/index', title: 'Not Found', settings: { message: "Sorry, resource not found.", auth: false } };
 
         config.mapUnknownRoutes(<RouteConfig>notFoundRoute);
 
-        config.addPipelineStep('postcomplete', PostCompleteStep);
+        config.addPipelineStep('preActivate', StartAnalyticsStep);
+        config.addPipelineStep('postRender', EndAnalyticsStep);
+        config.addPipelineStep('postRender', ScrollPageStep);
 
         config.map([
             { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
@@ -52,8 +96,8 @@ export class App {
 
             { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
 
-            { route: 'actor-organisation/:routeParamId/:routeParamTitle?', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona' },
-            { route: 'personnel/:routeParamId/:routeParamTitle?', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me' },
+            { route: 'actor-organisation/:routeParamId/:routeParamTitle?', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona', settings: { dynamicTitle: true } },
+            { route: 'personnel/:routeParamId/:routeParamTitle?', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me', settings: { dynamicTitle: true } },
 
             { route: 'privacy-policy', name: 'privacy-policy', moduleId: './pages/privacy-policy/index', nav: false, title: 'Privacy Policy' },
             { route: 'cookie-policy', name: 'cookie-policy', moduleId: './pages/cookie-policy/index', nav: false, title: 'Cookie Policy' },
@@ -74,10 +118,48 @@ export class App {
 
     showContactDialog() {
         this.canShowContact = !this.canShowContact;
+
+        if (this.canShowContact === true) {
+            this.analyticsSvc.contactsModal(window.location.pathname);
+        }
+    }
+
+}
+
+@inject(AnalyticsSvc)
+class StartAnalyticsStep {
+
+    constructor(private gaSvc: AnalyticsSvc) {}
+
+    run(instruction: NavigationInstruction, next: Next) {
+
+        this.gaSvc.startLoadTime();
+
+        return next();
     }
 }
 
-class PostCompleteStep {
+@inject(AnalyticsSvc)
+class EndAnalyticsStep {
+
+    constructor(private gaSvc: AnalyticsSvc) {}
+
+    run(inst: NavigationInstruction, next: Next) {
+
+        this.gaSvc.stopLoadTime();
+
+        let pageTitleSlice = inst.router.currentInstruction.config.settings.dynamicTitle ? inst.router.currentInstruction.params.routeParamTitle : undefined;
+
+        this.gaSvc.trackPage(pageTitleSlice);
+
+        this.gaSvc.clearInitTime();
+
+        return next();
+    }
+
+}
+
+class ScrollPageStep {
 
     run(instruction: NavigationInstruction, next: Next) {
 

@@ -21,6 +21,12 @@ export class GsASClinician extends BaseGenericSystem {
         this.callArrive = moment().add(7, "minutes").toDate();
     }
 
+    startView() {
+        this.toggleInstructions();
+
+        this.trackView(this.data.genericSystem.fModule, this.data.personnel.name);
+    }
+
     private patientChanged(newValue: string, oldValue: string): void {
 
         if (!newValue) {

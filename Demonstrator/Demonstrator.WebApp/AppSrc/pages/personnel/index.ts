@@ -8,8 +8,9 @@ import { ActorTypes }           from '../../core/models/enums/ActorTypes';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 import { IBreadcrumb } from '../../core/interfaces/IBreadcrumb';
 import { BenefitsSvc } from '../../core/services/BenefitsService';
+import { AnalyticsSvc } from '../../core/services/AnalyticsService';
 
-@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc, BenefitsSvc)
+@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc, BenefitsSvc, AnalyticsSvc)
 export class Personnel {
     heading: string = 'Personnel';
     personnel: IPersonnel;
@@ -27,7 +28,7 @@ export class Personnel {
     systemModelCount: number = 0; // should be 3
 
     constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc,
-        private genericSystemSvc: GenericSystemSvc, private benefitsSvc: BenefitsSvc) { }
+        private genericSystemSvc: GenericSystemSvc, private benefitsSvc: BenefitsSvc, private analyticsSvc: AnalyticsSvc) { }
 
     activate(params) {
         this.personnelId = params.routeParamId;
@@ -79,6 +80,16 @@ export class Personnel {
 
             this.hasBenefits = true;
         });
+    }
+
+    private recordScenarioView() {
+
+        this.analyticsSvc.scenarioContext(`${this.personnel.name} (Module: ${this.personnel.cModule})`);
+    }
+
+    private recordBenefitView() {
+
+        this.analyticsSvc.benefitsButton(`${this.personnel.name} (Actual: ${this.benefitsForName})`);
     }
 
     private getSystems() {

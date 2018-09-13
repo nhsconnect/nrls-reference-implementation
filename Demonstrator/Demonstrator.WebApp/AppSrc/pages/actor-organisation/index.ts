@@ -3,8 +3,9 @@ import { bindable, inject } from 'aurelia-framework';
 import { IPersonnel }           from '../../core/interfaces/IPersonnel';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 import { IBreadcrumb } from '../../core/interfaces/IBreadcrumb';
+import { AnalyticsSvc } from '../../core/services/AnalyticsService';
 
-@inject(ActorOrganisationSvc)
+@inject(ActorOrganisationSvc, AnalyticsSvc)
 export class ActorOrganisationPersonnel {
     heading: string = 'Organisation';
     organisation: IActorOrganisation;
@@ -15,7 +16,7 @@ export class ActorOrganisationPersonnel {
     breadcrumb: Array<IBreadcrumb> = [];
     benefitsForName: string;
 
-    constructor(private actorOrgSvc: ActorOrganisationSvc) {
+    constructor(private actorOrgSvc: ActorOrganisationSvc, private analyticsSvc: AnalyticsSvc) {
         
     }
 
@@ -48,6 +49,11 @@ export class ActorOrganisationPersonnel {
     private setBreadcrumb() : void {
         this.breadcrumb.push(<IBreadcrumb>{ title: 'Home', route: 'welcome', isBack: true });
         this.breadcrumb.push(<IBreadcrumb>{ title: 'Choose a Persona', isActive: true });
+    }
+
+    private recordBenefitView() {
+
+        this.analyticsSvc.benefitsButton(this.organisation.name);
     }
 
 }

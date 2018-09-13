@@ -33,6 +33,13 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
         });
     }
 
+    startView() {
+        this.toggleInstructions();
+
+        console.log(this.data);
+        this.trackView("GsMHTCareCoordinatorEPR", "");
+    }
+
 
     savePlan() {
 
