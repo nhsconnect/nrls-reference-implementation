@@ -17,6 +17,9 @@ namespace NRLS_API.WebApp.Core.Formatters
         {
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/fhir+xml"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml+fhir")); // DSTU2 support as per NRLS spec
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("text/xml"));
+
             SupportedEncodings.Clear();
             SupportedEncodings.Add(Encoding.UTF8);
         }
@@ -43,8 +46,8 @@ namespace NRLS_API.WebApp.Core.Formatters
                 buffer.Append(resource);
             }
 
-            response.Headers.Remove(HttpResponseHeader.ContentType.ToString());
-            response.Headers.Add(HttpResponseHeader.ContentType.ToString(), $"{ContentType.XML_CONTENT_HEADER}; {Encoding.UTF8.WebName}");
+            response.Headers.Remove(HeaderNames.ContentType);
+            response.Headers.Add(HeaderNames.ContentType, $"{ContentType.XML_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}");
 
 
             return response.WriteAsync(buffer.ToString(), Encoding.UTF8);

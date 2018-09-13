@@ -33,6 +33,8 @@ namespace NRLS_API.Models.Core
 
         public string[] AllowedParameters { get; set; }
 
+        public string[] InvalidParameters => GetInvalidParameters();
+
         public string RequestingAsid { get; set; }
 
         public string IdParameter => GetIdParameter();
@@ -91,6 +93,11 @@ namespace NRLS_API.Models.Core
         public static Uri CreateUrl(string scheme, string host, string path, string queryString)
         {
             return new Uri($"{scheme}://{host}{path}{queryString}");
+        }
+
+        private string[] GetInvalidParameters()
+        {
+            return QueryParameters.Where(x => !AllowedParameters.Contains(x.Item1)).Select(x => x.Item1).ToArray();
         }
 
         private string GetIdParameter()

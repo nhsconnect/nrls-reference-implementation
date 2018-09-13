@@ -42,18 +42,18 @@ namespace NRLS_API.WebApp
             services.AddMemoryCache();
             services.AddMvc(config =>
             {
+                // Add FHIR Content Negotiation
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = false;
+
                 config.InputFormatters.Clear();
-
+                config.OutputFormatters.Clear();
+                
                 //Default to fhir+xml
-
                 config.InputFormatters.Insert(0, new FhirXmlInputFormatter());
                 config.OutputFormatters.Insert(0, new FhirXmlOutputFormatter());
                 config.InputFormatters.Insert(1, new FhirJsonInputFormatter());
                 config.OutputFormatters.Insert(1, new FhirJsonOutputFormatter());
-
-                // Add FHIR Content Negotiation
-                config.RespectBrowserAcceptHeader = true;
-                config.ReturnHttpNotAcceptable = false;
 
             });
             //services.AddSwaggerGen(c =>
@@ -90,6 +90,7 @@ namespace NRLS_API.WebApp
                 options.SecureOnly = bool.Parse(Configuration.GetSection("NRLSAPI:SecureOnly").Value);
                 options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
                 options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+                options.ResourceLocation = Configuration.GetSection("NRLSAPI:ResourceLocation").Value;
             });
             services.Configure<ApiSetting>("PdsApiSetting", options =>
             {
@@ -123,12 +124,12 @@ namespace NRLS_API.WebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<ApiSetting> nrlsApiSettings)
         {
 
             app.UseExceptionHandler(new ExceptionHandlerOptions
             {
-                ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
+                ExceptionHandler = new FhirExceptionMiddleware(env, nrlsApiSettings).Invoke
             });
 
             app.UseCors(builder => builder.WithOrigins(new[] { "*" }).WithMethods(new[]{ "GET", "POST", "PUT", "DELETE" }).AllowAnyHeader());
@@ -152,7 +153,9 @@ namespace NRLS_API.WebApp
                 c.SwaggerEndpoint("/nrls-ri/Resources/swagger.json", "NRLS Reference Implementation");
                 c.InjectStylesheet("/nrls-ri/Resources/swagger-custom.css");
                 c.DefaultModelsExpandDepth(-1);
-                c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream; 
+                c.EnableDeepLinking();
+                c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream;
+                c.DocumentTitle = "NRLS API Reference Implementation - Explore with Swagger";
             });
         }
     }

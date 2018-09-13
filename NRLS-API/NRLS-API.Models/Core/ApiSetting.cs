@@ -26,5 +26,7 @@ namespace NRLS_API.Models.Core
         public string SecurePort { get; set; }
 
         public string ProfileUrl { get; set; }
+
+        public string ResourceLocation { get; set; }
     }
 }

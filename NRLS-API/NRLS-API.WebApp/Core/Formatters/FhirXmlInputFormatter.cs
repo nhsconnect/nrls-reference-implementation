@@ -19,6 +19,7 @@ namespace NRLS_API.WebApp.Core.Formatters
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/fhir+xml"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml+fhir"));
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/xml"));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("text/xml"));
 
             SupportedEncodings.Clear();
             SupportedEncodings.Add(Encoding.UTF8);

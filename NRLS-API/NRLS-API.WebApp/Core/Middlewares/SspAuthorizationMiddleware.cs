@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
@@ -46,22 +47,22 @@ namespace NRLS_API.WebApp.Core.Middlewares
             //Check is delegated to FhirInputMiddleware
 
 
-            var authorization = GetHeaderValue(headers, HttpRequestHeader.Authorization.ToString());
+            var authorization = GetHeaderValue(headers, HeaderNames.Authorization);
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
             var jwtResponse = _nrlsValidation.ValidJwt(scope, authorization);
-            if (authorization == null || !jwtResponse.Success)
+            if (string.IsNullOrEmpty(authorization) || !jwtResponse.Success)
             {
-                SetError(HttpRequestHeader.Authorization.ToString(), jwtResponse.Message);
+                SetJwtError(HeaderNames.Authorization, jwtResponse.Message);
             }
 
             var fromASID = GetHeaderValue(headers, FhirConstants.HeaderFromAsid);
-            if (fromASID == null || GetFromAsidMap(fromASID) == null)
+            if (string.IsNullOrEmpty(fromASID) || GetFromAsidMap(fromASID) == null)
             {
                 SetError(FhirConstants.HeaderFromAsid, null);
             }
 
             var toASID = GetHeaderValue(headers, FhirConstants.HeaderToAsid);
-            if (toASID == null || toASID != _spineSettings.Asid)
+            if (string.IsNullOrEmpty(toASID) || toASID != _spineSettings.Asid)
             {
                 SetError(FhirConstants.HeaderToAsid, null);
             }
@@ -109,6 +110,11 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private void SetError(string header, string diagnostics)
         {
             throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header, diagnostics), HttpStatusCode.BadRequest);
+        }
+
+        private void SetJwtError(string header, string diagnostics)
+        {
+            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidJwtHeader(header, diagnostics), HttpStatusCode.BadRequest);
         }
 
     }

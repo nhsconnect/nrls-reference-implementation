@@ -89,6 +89,11 @@ namespace NRLS_API.Core.Helpers
 
                 if (param.Type.Equals(SearchParamType.Reference) && !string.IsNullOrEmpty(paramVal))
                 {
+                    if (paramName.Contains("custodian")) //temp allow custodian.identifier
+                    {
+                        paramName = "custodian";
+                    }
+
                     filters.Add(builder.Eq($"{paramName}.reference", paramVal));
                     continue;
                 }
