@@ -32,7 +32,7 @@ const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() |
 
 // basic configuration:
 const title = 'NRLS Demonstrator';
-const appVersion = '0.1.1';
+const appVersion = '0.1.4';
 const gaTrackId = 'UA-38028819-4';
 const cookieBotId = '30398f35-a144-4edd-a779-05481f9da7b3';
 const baseUrl = '/';

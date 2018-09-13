@@ -125,7 +125,6 @@ namespace Demonstrator.NRLSAdapter.Helpers
                         { HeaderNames.AcceptLanguage, "en-GB,en" },
                         { HeaderNames.CacheControl, "no-cache" },
                         { HeaderNames.Connection, "Keep-Alive" },
-                        { HeaderNames.ContentType, $"{ContentType.JSON_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}"},
                         { HeaderNames.Host, $"{request.FullUrl.Host}{(":" + request.FullUrl.Port ?? "")}" },
                     }
             };
@@ -143,6 +142,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
             return httpRequest;
         }
+
 
         private bool ValidateServer(HttpRequestMessage sender, X509Certificate2 cert, X509Chain chain, SslPolicyErrors error, string spineThumbprint)
         {

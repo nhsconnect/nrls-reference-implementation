@@ -52,7 +52,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
         public async SystemTasks.Task<NrlsCreateResponse> CreatePointer(NrlsPointerRequest pointerRequest, DocumentReference pointer)
         {
             var pointerJson = new FhirJsonSerializer().SerializeToString(pointer);
-            var content = new StringContent(pointerJson, Encoding.UTF8, "application/fhir+json");
+            var content = new StringContent(pointerJson, Encoding.UTF8, $"{ContentType.JSON_CONTENT_HEADER }; charset={Encoding.UTF8.WebName}");
 
             var newPointer = await new FhirConnector().RequestOne(BuildPostRequest(pointerRequest.Asid, pointerRequest.JwtOrgCode, content));
 
