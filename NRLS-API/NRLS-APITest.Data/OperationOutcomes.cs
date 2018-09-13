@@ -11,12 +11,12 @@ namespace NRLS_APITest.Data
             {
                 return new OperationOutcome()
                 {
-                    //Meta = new Meta
-                    //{
-                    //    Profile = new List<string> {
-                    //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
-                    //    }
-                    //}
+                    Meta = new Meta
+                    {
+                        Profile = new List<string> {
+                            "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
+                        }
+                    }
                 };
             }
         }

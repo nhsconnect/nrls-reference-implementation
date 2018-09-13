@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hl7.Fhir.Rest;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Moq;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Models.Core;
@@ -38,7 +39,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.QueryString).Returns(new QueryString($"?_format={_validFormat}"));
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Accept.ToString(), $"{_validFormat}; {Encoding.UTF8.WebName}" }
+                { HeaderNames.Accept, $"{_validFormat}; {Encoding.UTF8.WebName}" }
             });
 
 
@@ -99,7 +100,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.QueryString).Returns(new QueryString(""));
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Accept.ToString(), $"{_validFormat}; {Encoding.UTF8.WebName}" }
+                { HeaderNames.Accept, $"{_validFormat}; {Encoding.UTF8.WebName}" }
             });
 
 
@@ -131,7 +132,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.QueryString).Returns(new QueryString($"?_format={_validFormat}"));
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Accept.ToString(), $"blaa" }
+                { HeaderNames.Accept, $"blaa" }
             });
 
 
@@ -162,7 +163,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.QueryString).Returns(new QueryString("?_format=invalidFormat"));
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Accept.ToString(), $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}" }
+                { HeaderNames.Accept, $"{ContentType.JSON_CONTENT_HEADER}; {Encoding.UTF8.WebName}" }
             });
 
 
@@ -193,7 +194,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             requestMock.Setup(x => x.QueryString).Returns(new QueryString("?_format=invalidFormat"));
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
-                { HttpRequestHeader.Accept.ToString(), "blaa" }
+                { HeaderNames.Accept, "blaa" }
             });
 
 

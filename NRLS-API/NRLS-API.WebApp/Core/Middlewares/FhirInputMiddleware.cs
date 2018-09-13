@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Models.Core;
 using NRLS_API.Models.Extensions;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
@@ -28,10 +29,12 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
         public async SystemTasks.Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> nrlsApiSettings)
         {
+            CheckRequestRequirements(context);
+
             _nrlsApiSettings = nrlsApiSettings.Get("NrlsApiSetting");
 
             var formatKey = "_format";
-            var acceptKey = HttpRequestHeader.Accept.ToString();
+            var acceptKey = HeaderNames.Accept;
 
             var parameters = context.Request.QueryString.Value.GetParameters();
 
@@ -48,8 +51,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var validFormatParam = !hasFormatParam || (!string.IsNullOrWhiteSpace(formatParam) && _nrlsApiSettings.SupportedContentTypes.Contains(formatParam));
             var validAcceptHeader = !hasAcceptHeader || (!string.IsNullOrWhiteSpace(acceptHeader) && ValidAccept(acceptHeader));
 
-
-            if(!validFormatParam && !validAcceptHeader)
+            if (!validFormatParam && (hasFormatParam || !validAcceptHeader))
             {
                 throw new HttpFhirException("Unsupported Media Type", OperationOutcomeFactory.CreateInvalidMediaType(), HttpStatusCode.UnsupportedMediaType);
             }
@@ -59,8 +61,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 var accepted = ContentType.GetResourceFormatFromFormatParam(formatParam);
                 if (accepted != ResourceFormat.Unknown)
                 {
-                    context.Request.Headers.Remove(acceptKey);
-
                     var newAcceptHeader = ContentType.XML_CONTENT_HEADER;
 
                     if (accepted == ResourceFormat.Json)
@@ -69,7 +69,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
                     }
 
                     var header = new MediaTypeHeaderValue(newAcceptHeader);
-                    header.CharSet = Encoding.UTF8.WebName;
 
                     context.Request.Headers.Remove(acceptKey);
                     context.Request.Headers.Add(acceptKey, new StringValues(header.ToString()));
@@ -77,6 +76,16 @@ namespace NRLS_API.WebApp.Core.Middlewares
             }
 
             await this._next(context);
+        }
+
+        private void CheckRequestRequirements(HttpContext context)
+        {
+            var contentLength = context?.Request?.ContentLength;
+            var type = context?.Request?.Method;
+            if (new string[] { HttpMethods.Post, HttpMethods.Put }.Contains(type) && (!contentLength.HasValue || contentLength.Value == 0))
+            {
+                throw new HttpFhirException("Invalid Request", OperationOutcomeFactory.CreateInvalidRequest(), HttpStatusCode.BadRequest);
+            }
         }
 
         private bool ValidAccept(string accept)
