@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Helpers;
@@ -51,6 +52,8 @@ namespace NRLS_API.Services
             //If we have an _id param it should be the only param so check for that here.
             if (request.HasIdParameter)
             {
+                ObjectId mongoId;
+                if (!ObjectId.TryParse(id, out mongoId))
                 {
                     return OperationOutcomeFactory.CreateNotFound("");
                 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Net;
 using System.Text;
 using SystemTask = System.Threading.Tasks;
 

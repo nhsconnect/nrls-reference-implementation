@@ -102,7 +102,8 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
-                    }
+                    },
+                    AllowedParameters = new string[] { "_id" }
                 };
             }
         }
@@ -283,7 +284,7 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("subject", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234"),
-                        new Tuple<string, string>("custodian", "https://directory.spineservices.nhs.uk/STU3/Organization/odscode")
+                        new Tuple<string, string>("custodian", "https://directory.spineservices.nhs.uk/STU3/Organization/TestOrgCode")
                     },
                     AllowedParameters = new string[] { "custodian", "subject" }
                 };

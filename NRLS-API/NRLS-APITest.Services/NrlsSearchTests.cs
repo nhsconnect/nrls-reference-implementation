@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 using NRLS_APITest.StubClasses;
+using NRLS_API.Core.Resources;
 
 namespace NRLS_APITest.Services
 {
@@ -30,9 +31,15 @@ namespace NRLS_APITest.Services
         {
             var validationMock = new Mock<IFhirValidation>();
             validationMock.Setup(op => op.ValidatePatientParameter(It.IsAny<string>())).Returns(delegate { return null; });
+
             validationMock.Setup(op => op.ValidateCustodianParameter(It.IsAny<string>())).Returns(delegate { return null; });
+            validationMock.Setup(op => op.ValidateCustodianIdentifierParameter(It.IsAny<string>())).Returns(delegate { return null; });
+
             validationMock.Setup(op => op.ValidSummaryParameter(It.Is<string>(p => p == "notcount"))).Returns(delegate { return new OperationOutcome(); });
             validationMock.Setup(op => op.ValidSummaryParameter(It.Is<string>(p => p == "count"))).Returns(delegate { return null; });
+
+            validationMock.Setup(op => op.GetOrganizationParameterId(It.Is<string>(p => p == "https://directory.spineservices.nhs.uk/STU3/Organization/TestOrgCode"))).Returns("TestOrgCode");
+            validationMock.Setup(op => op.GetOrganizationParameterIdentifierId(It.Is<string>(p => p == "https://fhir.nhs.uk/Id/ods-organization-code|TestOrgCode"))).Returns("TestOrgCode");
 
             _fhirValidation = validationMock.Object;
 
@@ -42,6 +49,10 @@ namespace NRLS_APITest.Services
             var searchMock = new Mock<IFhirSearch>();
             searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchBundle as Resource));
             searchMock.Setup(op => op.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchBundle as Resource));
+
+
+            var orgSearchBundle = FhirBundle.GetBundle<Organization>(new List<Organization> { FhirOrganizations.Valid_Organization });
+            searchMock.Setup(op => op.Find<Organization>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => orgSearchBundle as Resource));
 
             _fhirSearch = searchMock.Object;
 
@@ -144,7 +155,7 @@ namespace NRLS_APITest.Services
             {
                 ClientAsids = new Dictionary<string, ClientAsid>()
                 {
-                    { "000", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode", Thumbprint = "TestThumbprint" } },
+                    { "000", new ClientAsid { Interactions = new List<string>() { FhirConstants.CreateInteractionId }, OrgCode = "TestOrgCode", Thumbprint = "TestThumbprint" } },
                     { "002", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode2", Thumbprint = "TestThumbprint" } },
                     { "003", new ClientAsid { Interactions = new List<string>(), OrgCode = "RV99", Thumbprint = "TestThumbprint" } }
 
@@ -180,9 +191,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
 
-            var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_EmptyId);
-
-            Assert.IsType<OperationOutcome>(actualBundle);
+            await Assert.ThrowsAsync<HttpFhirException>(async () => { var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_EmptyId); });
 
             //TODO check exception thrown
         }
