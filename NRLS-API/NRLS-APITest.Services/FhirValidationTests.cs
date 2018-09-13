@@ -31,6 +31,7 @@ namespace NRLS_APITest.Services
 
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "valid|valid"), null, false)).Returns(true);
             mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "invalid|invalid"), null, false)).Returns(false);
+            mock.Setup(op => op.ValidTokenParameter(It.Is<string>(q => q == "https://fhir.nhs.uk/Id/ods-organization-code|test"), It.Is<string>(q => q == "https://fhir.nhs.uk/Id/ods-organization-code"), false)).Returns(true);
 
             mock.Setup(op => op.ValidIdentifier(It.IsAny<Identifier>(), It.IsAny<string>())).Returns((true, null));
             mock.Setup(op => op.ValidIdentifier(It.Is<Identifier>(i => string.IsNullOrEmpty(i.System)), It.IsAny<string>())).Returns((false, "test"));
@@ -40,6 +41,9 @@ namespace NRLS_APITest.Services
             mock.Setup(op => op.GetResourceReferenceId(It.Is<ResourceReference>(r => r.Reference == "InvalidAuthorhttps://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(delegate { return null; });
             mock.Setup(op => op.GetResourceReferenceId(It.Is<ResourceReference>(r => r.Reference == "InvalidCustodianhttps://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(delegate { return null; });
 
+            mock.Setup(op => op.GetOrganisationParameterIdentifierId(It.Is<string>(q => q == "https://fhir.nhs.uk/Id/ods-organization-code|test"))).Returns("test");
+
+            mock.Setup(op => op.GetOrganisationParameterId(It.Is<string>(q => q == "https://directory.spineservices.nhs.uk/STU3/Organization/test"))).Returns("test");
 
             _iValidationHelper = mock.Object;
         }
@@ -497,7 +501,7 @@ namespace NRLS_APITest.Services
 
             var actual = validationService.GetValidRelatesTo(relatesToList);
 
-            Assert.IsType<DocumentReference.RelatesToComponent>(actual);
+            Assert.IsType<DocumentReference.RelatesToComponent>(actual.element);
 
             Assert.NotNull(actual.element.Target);
             Assert.NotNull(actual.element.Target.Identifier);

@@ -214,12 +214,12 @@ namespace NRLS_API.Core.Helpers
 
         public string GetOrganisationParameterIdentifierId(string parameterVal)
         {
-            return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace($"{FhirConstants.SystemOrgCode}|", "") : null;
+            return !string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith($"{FhirConstants.SystemOrgCode}|") ? parameterVal.Replace($"{FhirConstants.SystemOrgCode}|", "") : null;
         }
 
         public string GetOrganisationParameterId(string parameterVal)
         {
-            return !string.IsNullOrEmpty(parameterVal) ? parameterVal.Replace($"{FhirConstants.SystemODS}", "") : null;
+            return !string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(FhirConstants.SystemODS) ? parameterVal.Replace(FhirConstants.SystemODS, "") : null;
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

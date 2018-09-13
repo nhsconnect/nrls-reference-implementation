@@ -236,7 +236,7 @@ namespace NRLS_API.Services
                 valid = false;
             }
 
-            var orgCode = parameterVal.Replace(FhirConstants.SystemODS, "");
+            var orgCode = GetOrganizationParameterId(parameterVal);
 
             if (string.IsNullOrWhiteSpace(orgCode))
             {
@@ -255,12 +255,12 @@ namespace NRLS_API.Services
         public OperationOutcome ValidateCustodianIdentifierParameter(string parameterVal)
         {
             var valid = true;
-            if (!_validationHelper.ValidReferenceParameter(parameterVal, FhirConstants.SystemOrgCode))
+            if (!_validationHelper.ValidTokenParameter(parameterVal, FhirConstants.SystemOrgCode, false))
             {
                 valid = false;
             }
 
-            var orgCode = GetOrganizationParameterId(parameterVal);
+            var orgCode = GetOrganizationParameterIdentifierId(parameterVal);
 
             if (string.IsNullOrWhiteSpace(orgCode))
             {
