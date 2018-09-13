@@ -1,7 +1,7 @@
 ﻿{
   "swagger": "2.0",
   "info": {
-    "version": "v0.1.1",
+    "version": "v0.1.4",
     "title": "NRLS API Reference Implementation",
     "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.1-beta &nbsp;</small>.<br /><br /><br /><b>Default Data</b> - You can view examples of default data and what possible parameter values that can be used in this demonstration within the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/7.-Data\" target=\"_blank\">Data section</a> of the repository Wiki.<br /><br /><b>HTTP Header values</b> - Head over to the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/6.-Security\" target=\"_blank\">Security section</a> of the repository Wiki to understand what values can be used in this demonstration.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
@@ -160,8 +160,8 @@
                   ]
                 },
                 "masterIdentifier": {
-                  "system": "http://www.testsystem.com",
-                  "value": "testMasterId001"
+                  "system": "urn:ietf:rfc:4151",
+                  "value": "urn:tag:nrls.digital.nhs.uk,2018:abc:241046512623:v2"
                 },
                 "subject": {
                   "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
@@ -180,8 +180,8 @@
                     "code": "replaces",
                     "target": {
                       "identifier": {
-                        "system": "http://www.testsystem.com",
-                        "value": "testMasterId001"
+                        "system": "urn:ietf:rfc:4151",
+                        "value": "urn:tag:nrls.digital.nhs.uk,2018:abc:241046512623:v1"
                       }
                     }
                   }
@@ -236,7 +236,7 @@
             "description": "The Master Identifer of the pointer",
             "required": false,
             "type": "string",
-            "example": "http://www.testsystem.com|testMasterId001"
+            "example": "urn:ietf:rfc:4151|urn:tag:nrls.digital.nhs.uk,2018:abc:241046512623:v2"
           },
           {
             "name": "subject",
