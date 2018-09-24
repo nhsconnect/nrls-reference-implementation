@@ -168,8 +168,8 @@ namespace NRLS_API.Services
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
 
-            SetMetaValues(request, oldVersion);
-            BuildUpdate(oldDocumentId, out updates, out updateRequest);
+            SetMetaValues(request, null);
+            BuildSupersede(oldDocumentId, out updates, out updateRequest);
 
             Resource created;
             bool updated;
@@ -323,21 +323,30 @@ namespace NRLS_API.Services
                 throw new HttpFhirException("Bad update values", OperationOutcomeFactory.CreateInvalidResource("relatesTo"), HttpStatusCode.BadRequest);
             }
 
+            var document = request.Resource as DocumentReference;
+
             //At present NRLS spec states updates are performed by delete and create so version will always be 1
-            request.Resource.Meta = request.Resource.Meta ?? new Meta();
-            request.Resource.Meta.LastUpdated = DateTime.UtcNow;
-            request.Resource.Meta.VersionId = $"{newVersion}";
-            request.Resource.Meta.Profile = new List<string> { _resourceProfile };
+            document.Meta = request.Resource.Meta ?? new Meta();
+            document.Meta.LastUpdated = DateTime.UtcNow;
+            document.Meta.VersionId = $"{newVersion}";
+            document.Meta.Profile = new List<string> { _resourceProfile };
+
+            //Overwrite indexed value as this should not be changed by clients
+            document.Indexed = new DateTimeOffset(DateTime.UtcNow);
+
+            request.Resource = document;
 
             return request;
         }
 
-        private void BuildUpdate(string oldDocuemtnId, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
+        private void BuildSupersede(string oldDocumentId, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
         {
             updates = new UpdateDefinitionBuilder<BsonDocument>()
-                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant());
+                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant())
+                .Set("meta.lastUpdated", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
+                .Set("meta.versionId", "2");
 
-            updateRequest = FhirRequest.Create(oldDocuemtnId, ResourceType.DocumentReference);
+            updateRequest = FhirRequest.Create(oldDocumentId, ResourceType.DocumentReference);
         }
 
         private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)
