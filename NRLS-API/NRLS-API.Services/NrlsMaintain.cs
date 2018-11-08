@@ -151,7 +151,7 @@ namespace NRLS_API.Services
         public async SystemTasks.Task<Resource> CreateWithoutValidation<T>(FhirRequest request) where T : Resource
         {
 
-            SetMetaValues(request, null);
+            SetMetaValues(request);
 
             var response = await _fhirMaintain.Create<T>(request);
 
@@ -163,13 +163,13 @@ namespace NRLS_API.Services
             return response;
         }
 
-        public async SystemTasks.Task<Resource> SupersedeWithoutValidation<T>(FhirRequest request, string oldDocumentId, string oldVersion) where T : Resource
+        public async SystemTasks.Task<Resource> SupersedeWithoutValidation<T>(FhirRequest request, string oldDocumentId, string oldVersionId) where T : Resource
         {
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
 
-            SetMetaValues(request, oldVersion);
-            BuildUpdate(oldDocumentId, out updates, out updateRequest);
+            SetMetaValues(request);
+            BuildSupersede(oldDocumentId, oldVersionId, out updates, out updateRequest);
 
             Resource created;
             bool updated;
@@ -306,9 +306,27 @@ namespace NRLS_API.Services
 
         }
 
-        public FhirRequest SetMetaValues(FhirRequest request, string oldVersion)
+        public FhirRequest SetMetaValues(FhirRequest request)
         {
 
+            var document = request.Resource as DocumentReference;
+
+            //At present NRLS spec states updates are performed by delete and create so version will always be 1
+            document.Meta = request.Resource.Meta ?? new Meta();
+            document.Meta.LastUpdated = DateTime.UtcNow;
+            document.Meta.VersionId = "1";
+            document.Meta.Profile = new List<string> { _resourceProfile };
+
+            //Overwrite indexed value as this should not be changed by clients
+            document.Indexed = new DateTimeOffset(DateTime.UtcNow);
+
+            request.Resource = document;
+
+            return request;
+        }
+
+        public void BuildSupersede(string oldDocumentId, string oldVersion, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
+        {
             int version = 0;
             int newVersion = 1;
             var validVersion = int.TryParse(oldVersion, out version);
@@ -318,26 +336,17 @@ namespace NRLS_API.Services
                 newVersion = version + 1;
             }
 
-            if(!string.IsNullOrEmpty(oldVersion) && !validVersion)
+            if (!string.IsNullOrEmpty(oldVersion) && !validVersion)
             {
                 throw new HttpFhirException("Bad update values", OperationOutcomeFactory.CreateInvalidResource("relatesTo"), HttpStatusCode.BadRequest);
             }
 
-            //At present NRLS spec states updates are performed by delete and create so version will always be 1
-            request.Resource.Meta = request.Resource.Meta ?? new Meta();
-            request.Resource.Meta.LastUpdated = DateTime.UtcNow;
-            request.Resource.Meta.VersionId = $"{newVersion}";
-            request.Resource.Meta.Profile = new List<string> { _resourceProfile };
-
-            return request;
-        }
-
-        private void BuildUpdate(string oldDocuemtnId, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
-        {
             updates = new UpdateDefinitionBuilder<BsonDocument>()
-                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant());
+                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant())
+                .Set("meta.lastUpdated", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
+                .Set("meta.versionId", $"{newVersion}");
 
-            updateRequest = FhirRequest.Create(oldDocuemtnId, ResourceType.DocumentReference);
+            updateRequest = FhirRequest.Create(oldDocumentId, ResourceType.DocumentReference);
         }
 
         private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)

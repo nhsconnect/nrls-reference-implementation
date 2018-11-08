@@ -15,6 +15,7 @@ using NRLS_APITest.StubClasses;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 
 namespace NRLS_APITest.Services
 {
@@ -128,7 +129,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
 
-            var response = service.SetMetaValues(FhirRequests.Valid_Create, null);
+            var response = service.SetMetaValues(FhirRequests.Valid_Create);
 
             Assert.IsType<FhirRequest>(response);
 
@@ -138,29 +139,106 @@ namespace NRLS_APITest.Services
             Assert.Equal("1", response.Resource.Meta.VersionId);
         }
 
-        [Fact]
-        public void BuildCreate_ValidVersion()
-        {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
-
-            var response = service.SetMetaValues(FhirRequests.Valid_Create, "2");
-
-            Assert.IsType<FhirRequest>(response);
-
-            Assert.NotNull(response.Resource);
-            Assert.NotNull(response.Resource.Meta);
-
-            Assert.Equal("3", response.Resource.Meta.VersionId);
-        }
 
         [Fact]
         public void BuildCreate_InvalidVersion()
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
 
+            var response = service.SetMetaValues(FhirRequests.Valid_Create);
+
+            Assert.IsType<FhirRequest>(response);
+
+            Assert.NotNull(response.Resource);
+            Assert.NotNull(response.Resource.Meta);
+
+            Assert.NotEqual("2", response.Resource.Meta.VersionId);
+        }
+
+        [Fact]
+        public void BuildSupersede_Valid()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+            FhirRequest updateRequest = null;
+
+            service.BuildSupersede("1", "2", out updates, out updateRequest);
+
+            Assert.NotNull(updates);
+            Assert.NotNull(updateRequest);
+
+            Assert.Equal("1", updateRequest.Id);
+        }
+
+        [Fact]
+        public void BuildSupersede_ValidVersion()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+            FhirRequest updateRequest = null;
+
+            service.BuildSupersede("1", "2", out updates, out updateRequest);
+
+            Assert.NotNull(updates);
+
+            var bson = updates.Render(BsonSerializer.LookupSerializer<BsonDocument>(), BsonSerializer.SerializerRegistry);
+
+            BsonDocument updateElements = bson.Elements.FirstOrDefault().Value.ToBsonDocument();
+
+            Assert.Equal("3", updateElements.Elements.FirstOrDefault(x => x.Name == "meta.versionId").Value.AsString);
+        }
+
+        [Fact]
+        public void BuildSupersede_ValidVersionNull()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+            FhirRequest updateRequest = null;
+
+            service.BuildSupersede("1", null, out updates, out updateRequest);
+
+            Assert.NotNull(updates);
+
+            var bson = updates.Render(BsonSerializer.LookupSerializer<BsonDocument>(), BsonSerializer.SerializerRegistry);
+
+            BsonDocument updateElements = bson.Elements.FirstOrDefault().Value.ToBsonDocument();
+
+            Assert.Equal("1", updateElements.Elements.FirstOrDefault(x => x.Name == "meta.versionId").Value.AsString);
+        }
+
+        [Fact]
+        public void BuildSupersede_ValidVersionAlt()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+            FhirRequest updateRequest = null;
+
+            service.BuildSupersede("1", "10", out updates, out updateRequest);
+
+            Assert.NotNull(updates);
+
+            var bson = updates.Render(BsonSerializer.LookupSerializer<BsonDocument>(), BsonSerializer.SerializerRegistry);
+
+            BsonDocument updateElements = bson.Elements.FirstOrDefault().Value.ToBsonDocument();
+
+            Assert.Equal("11", updateElements.Elements.FirstOrDefault(x => x.Name == "meta.versionId").Value.AsString);
+        }
+
+        [Fact]
+        public void BuildSupersede_InvalidVersion()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+
             Assert.Throws<HttpFhirException>(delegate
             {
-                var response = service.SetMetaValues(FhirRequests.Valid_Create, "bad-number");
+                UpdateDefinition<BsonDocument> updates = null;
+                FhirRequest updateRequest = null;
+
+                service.BuildSupersede("1", "bad-number", out updates, out updateRequest);
 
             });
         }
