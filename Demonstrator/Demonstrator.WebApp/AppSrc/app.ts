@@ -1,7 +1,7 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { DialogRequested, CookieCanTrack } from './core/helpers/EventMessages';
+import { DialogRequested, CookieCanTrack, CheckAnnouncements } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
 import { AnalyticsSvc } from './core/services/AnalyticsService';
@@ -13,6 +13,7 @@ export class App {
     router: Router;
     errorDialog: IDialog;
     canShowContact: boolean = false;
+    canSeeAnnouncements: boolean = true;
     handleAcceptTrack: any;
 
     appConfig: IDemonstratorConfig;
@@ -23,6 +24,10 @@ export class App {
             if (msg && msg.Severity != 'Information') {
                 this.showErrorDialog(msg);
             }
+        });
+
+        ea.subscribe(CheckAnnouncements, () => {
+            this.checkAnnouncements();
         });
 
         ea.subscribe(CookieCanTrack, cct => {
@@ -44,9 +49,11 @@ export class App {
         };
 
         this.appConfig = (window['demonstratorConfig'] || new DemonstratorConfig());
+
     }
 
     attached() {
+
         this.cookieSvc.start(this.appConfig.cookieBotId);
 
         window.addEventListener('CookiebotOnAccept', this.handleAcceptTrack);
@@ -71,6 +78,13 @@ export class App {
         this.analyticsSvc.trackPage(pageTitleSlice);
     }
 
+    checkAnnouncements() {
+
+        let canSeeAnnouncements = this.router.currentInstruction.config.settings.showAnnouncements;
+
+        this.canSeeAnnouncements = (canSeeAnnouncements === undefined || canSeeAnnouncements === true);
+    }
+
     configureRouter(config: RouterConfiguration, router: Router) {
 
         config.title = 'NRLS Interactive Guide';
@@ -84,6 +98,7 @@ export class App {
 
         config.addPipelineStep('preActivate', StartAnalyticsStep);
         config.addPipelineStep('postRender', EndAnalyticsStep);
+        config.addPipelineStep('postRender', CheckAnnouncementsStep);
         config.addPipelineStep('postRender', ScrollPageStep);
 
         config.map([
@@ -102,6 +117,8 @@ export class App {
             { route: 'privacy-policy', name: 'privacy-policy', moduleId: './pages/privacy-policy/index', nav: false, title: 'Privacy Policy' },
             { route: 'cookie-policy', name: 'cookie-policy', moduleId: './pages/cookie-policy/index', nav: false, title: 'Cookie Policy' },
             { route: 'accessibility', name: 'accessibility', moduleId: './pages/accessibility/index', nav: false, title: 'Accessibility' },
+
+            { route: 'phase-one-beta-go-live', name: 'phase-one-beta-go-live', moduleId: './pages/phase-one-beta-go-live/index', nav: false, title: 'NRLS Phase 1 Beta Go-Live', settings: { showAnnouncements: false } },
 
             notFoundRoute
         ]);
@@ -153,6 +170,20 @@ class EndAnalyticsStep {
         this.gaSvc.trackPage(pageTitleSlice);
 
         this.gaSvc.clearInitTime();
+
+        return next();
+    }
+
+}
+
+@inject(EventAggregator)
+class CheckAnnouncementsStep {
+
+    constructor(private ea: EventAggregator) { }
+
+    run(inst: NavigationInstruction, next: Next) {
+
+        this.ea.publish(new CheckAnnouncements());
 
         return next();
     }

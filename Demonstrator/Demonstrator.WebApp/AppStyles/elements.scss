@@ -97,6 +97,17 @@
             color: $nhsWarmYellow75;
         }
     }
+
+    &.alert-success {
+        background-color: $nhsLightGreen;
+        border-color: $nhsLightGreen125;
+        color: $nhsLightGreen125;
+
+        .fa-padding-sqr {
+            background-color: $nhsLightGreen125;
+            color: $nhsLightGreen;
+        }
+    }
 }
 
 
