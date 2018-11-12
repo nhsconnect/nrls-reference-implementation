@@ -131,10 +131,9 @@ let config = generateConfig(
     ] : [
     /* ENV === 'test' 
     generateCoverage({ options: { esModules: true } })*/
-  ]),
+  ])
 
-  ENV === 'production' ?
-    uglify({debug: false, mangle: { except: ['cb', '__webpack_require__'] }}) : {}
+  //,ENV === 'production' ?    uglify({debug: false, mangle: { except: ['cb', '__webpack_require__'] }}) : {}
 );
 
 module.exports = stripMetadata(config);
