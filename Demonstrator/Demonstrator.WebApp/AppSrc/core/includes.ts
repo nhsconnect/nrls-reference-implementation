@@ -8,6 +8,7 @@
         '../helpers/modals/scenario-modal',
         '../helpers/modals/contact-modal',
         '../helpers/modals/d-content-modal',
-        '../helpers/popover'
+        '../helpers/popover',
+        '../helpers/pdfviewer/pdfviewer'
     ]);
 }

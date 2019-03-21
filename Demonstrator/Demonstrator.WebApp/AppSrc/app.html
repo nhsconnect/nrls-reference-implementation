@@ -1,25 +1,14 @@
 <template>
-    <require from="./core/includes/nav-bar.html"></require>
-    <require from="./core/includes/footer-bar.html"></require>
     <require from="./core/helpers/modals/error-modal"></require>
+
     <a href="#SkipContent">Skip content</a>
     <div show.bind="!hideBanner" class="app-warning-banner bg-warning navbar-fixed-top">
-        <p class="no-margin"><strong>This guide is for demonstration purposes only and does not interact with live systems. Images and Systems viewed may not represent live systems. <button title="Close warning banner" href="#close" class="btn btn-default" click.delegate="hideBanner=true" aria-label="Close"><i class="fa fa-close"></i></button></strong></p>
-    </div>
-    <nav-bar router.bind="router" has-banner.one-way="!hideBanner" base-url.bind="appConfig.baseUrl"></nav-bar>
-
-    <div id="SkipContent" class="page-host text-left ${hideBanner !== true ? 'has-banner' : ''}">
-        <div class="container">
-            <div class="alert alert-warning alert-panel"><p><i class="fa fa-exclamation fa-padding-sqr"></i> This site is under ongoing development. Content and images shown are subject to change.</p></div>
-        </div>
-        <div if.bind="canSeeAnnouncements"  class="container announcements-container">
-            <div class="alert alert-success alert-panel"><p><i class="fa fa-bullhorn fa-padding-sqr"></i> NRLS Phase 1 Beta go-live announcement - <a route-href="route: phase-one-beta-go-live;">Read more about Go-Live</a></p></div>
-        </div>
-        <router-view></router-view>
+        <p class="no-margin"><strong>This is a demonstration system and does not interact with live systems. Data is fictitious. Images and Systems viewed may not represent live systems. <button title="Close warning banner" href="#close" class="btn btn-default" click.delegate="closeBanner()" aria-label="Close"><i class="fa fa-close"></i></button></strong></p>
     </div>
 
-    <footer-bar show-contact.call="showContactDialog()" updated-at.bind="appConfig.updatedAt" app-version.bind="appConfig.appVersion"></footer-bar>
+    <div class="${hideBanner === true ? '' : 'has-banner' }">
+        <router-view layout-view-model="layouts/chrome"></router-view>
+    </div>
+
     <error-modal if.bind="errorDialog" dialog.two-way="errorDialog"></error-modal>
-    <contact-modal can-show-contact.two-way="canShowContact"></contact-modal>
-
 </template>

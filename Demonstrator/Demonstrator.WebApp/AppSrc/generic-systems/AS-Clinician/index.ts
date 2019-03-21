@@ -1,6 +1,7 @@
 import { BaseGenericSystem } from "../BaseGenericSystem";
 import { IRequest } from "../../core/interfaces/IRequest";
 import * as moment from 'moment';
+import { observable } from "aurelia-framework";
 
 export class GsASClinician extends BaseGenericSystem {
     data: any = {};

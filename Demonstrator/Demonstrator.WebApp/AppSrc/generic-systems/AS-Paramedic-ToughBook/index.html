@@ -4,17 +4,21 @@
 
     <section class="gs-container">
 
-        <p class="gs-instructions">
-            Once integrated graded  NRLS will work seamlessly with your current systems without the need for you to alter your day-to-day tasks.
+        <p if.bind="!data.standalone" class="gs-instructions">
+            Once integrated graded  NRL will work seamlessly with your current systems without the need for you to alter your day-to-day tasks.
             <br />
-            The following is a representation of how NRLS may look like when used by a ${data.personnel.name} in their mobile device. This is a generic system that should look similar to a system that you use daily.
+            The following is a representation of how NRL may look like when used by a ${data.personnel.name} in their mobile device. This is a generic system that should look similar to a system that you use daily.
             <br />
-            The screen helps to show patient information as would normally be displayed after completing a search for a patient. It demonstrates how NRLS pointer results can be shown alongside this information.
+            The screen helps to show patient information as would normally be displayed after completing a search for a patient. It demonstrates how NRL pointer results can be shown alongside this information.
             <br />
             Once live, these pointer results may be able to return patient information such as care plans as created by Mental Health professionals.
             <br />
-            <span if.bind="data.organisation.personnelLinkId">These care plans are created separately from the NRLS at the point of care by the care professional - Why not also take a look at how NRLS can work for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health Trusts</a>?</span>
+            <span if.bind="data.organisation.personnelLinkId">These care plans are created separately from the NRL at the point of care by the care professional - Why not also take a look at how NRL can work for <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health Trusts</a>?</span>
             <button class="btn btn-primary pull-right" href="#showInstructions" aria-controls="genericSystemInstructions" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
+        </p>
+
+        <p if.bind="data.standalone" class="gs-instructions ${data.standalone ? 'standalone' : ''}">
+            <button href="#showInstructions" aria-controls="genericSystemInstructions" class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
         </p>
 
         <div class="generic-system-wrapper yellow-tooltips gs-as-paramedic">
@@ -62,7 +66,7 @@
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Treatment</button>
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Safeguarding</button>
                         <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Notes</button>
-                        <button class="btn btn-default btn-nrls" click.delegate="showNrls()">NRLS</button>
+                        <button class="btn btn-default btn-nrls" click.delegate="showNrls()">NRL</button>
                     </div>
                 </div>
 
@@ -107,7 +111,7 @@
                                 <ul>
                                     <li>At the top, patient information that has been found through a patient search</li>
                                     <li>
-                                        Amongst the tabs in the centre you can see an NRLS tab (<img src="/images/screen-instructions/asc-nrls-tab.png" style="width:120px;" alt="NRLS Tab" />), click that to display NRLS pointers for that patient
+                                        Amongst the tabs in the centre you can see an NRL tab (<img src="/images/screen-instructions/asc-nrls-tab.png" style="width:120px;" alt="NRL Tab" />), click that to display NRL pointers for that patient
                                         <ul>
                                             <li>Some patients will have one or more pointers</li>
                                             <li>Others might not have any</li>
@@ -117,12 +121,12 @@
                             </li>
                             <li>At the bottom of the screen you will see call tabs (<img src="/images/screen-instructions/patient-tab.png" alt="Call Tab" />), clicking these will open up other patient call events</li>
                             <li>At any time you can click 'Home' at the top to go back to the main tab display page</li>
-                            <li if.bind="data.organisation.personnelLinkId">
+                            <li if.bind="data.organisation.personnelLinkId && !data.standalone">
                                 Once done you can then head over to the <a route-href="route: actor-organisation-personnel; params.bind: { routeParamId: data.organisation.personnelLinkId }">Mental Health</a> section to learn how these pointers can be created.
                             </li>
                         </ol>
                         <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
-                        <p class="text-center"><button class="btn -btn-default" click.delegate="startView()"  aria-label="Close">Ok</button></p>
+                        <p class="text-center"><button class="btn -btn-default" click.delegate="startView()" aria-label="Close">Ok</button></p>
 
                     </div>
 
@@ -134,6 +138,18 @@
                 </div>
             </div>
         </div>
+
+        <p if.bind="data.standalone" class="gs-instructions">
+            Once integrated graded  NRL will work seamlessly with your current systems without the need for you to alter your day-to-day tasks.
+            <br />
+            The following is a representation of how NRL may look like when used by a ${data.personnel.name} in their mobile device. This is a generic system that should look similar to a system that you use daily.
+            <br />
+            The screen helps to show patient information as would normally be displayed after completing a search for a patient. It demonstrates how NRL pointer results can be shown alongside this information.
+            <br />
+            Once live, these pointer results may be able to return patient information such as care plans as created by Mental Health professionals.
+            <br />
+            <span if.bind="data.organisation.personnelLinkId">These care plans are created separately from the NRL at the point of care by the care professional.</span>
+        </p>
 
     </section>
 </template>

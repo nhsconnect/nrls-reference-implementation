@@ -15,12 +15,12 @@ export class AboutOnboarding {
     created() {
         this.setBreadcrumb();
 
-        if (this.configSvc.config.DPIALink) {
-            this.dpiaLink = this.configSvc.config.DPIALink;
+        if (this.configSvc.webAppConfig.DPIALink) {
+            this.dpiaLink = this.configSvc.webAppConfig.DPIALink;
         }
 
-        if (this.configSvc.config.TOMLink) {
-            this.tomLink = this.configSvc.config.TOMLink;
+        if (this.configSvc.webAppConfig.TOMLink) {
+            this.tomLink = this.configSvc.webAppConfig.TOMLink;
         }
     }
 

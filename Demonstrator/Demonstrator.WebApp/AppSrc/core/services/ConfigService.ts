@@ -1,23 +1,35 @@
 ﻿import { IWebAppConfig } from "../interfaces/IWebAppConfig";
+import { IDemonstratorConfig } from "../interfaces/IDemonstratorConfig";
+import { DemonstratorConfig } from "../models/DemonstratorConfig";
+import { IConfigSvc } from "../interfaces/IConfigSvc";
 
-export class ConfigSvc {
+export class ConfigSvc implements IConfigSvc {
 
-    private static _config: IWebAppConfig;
+    private static _webAppConfig: IWebAppConfig;
+    private static _demoAppConfig: IDemonstratorConfig;
 
     constructor() {
 
-        if (!ConfigSvc._config) {
+        if (!ConfigSvc._webAppConfig) {
             $.ajax({
                 url: '/webappconfig.json',
                 success: (data) => {
-                    ConfigSvc._config = data;
+                    ConfigSvc._webAppConfig = data;
                 },
                 async : false
             });
         }
+
+        if (!ConfigSvc._demoAppConfig) {
+            ConfigSvc._demoAppConfig = (window['demonstratorConfig'] || new DemonstratorConfig());
+        }
     }
 
-    get config(): IWebAppConfig {
-        return ConfigSvc._config;
+    get webAppConfig(): IWebAppConfig {
+        return ConfigSvc._webAppConfig;
+    }
+
+    get demoAppConfig(): IDemonstratorConfig {
+        return ConfigSvc._demoAppConfig;
     }
 }

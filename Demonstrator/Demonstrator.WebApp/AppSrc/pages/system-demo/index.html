@@ -1,0 +1,21 @@
+<template>
+
+    <section class="container nrls-select-container"  slot="content">
+        <h1 class="h1">${heading}</h1>
+        
+
+        <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
+
+        <div if.bind="!genericSystem && !systemsLoading">
+            <p>No Generic Systems to preview</p>
+        </div>
+
+        <div if.bind="genericSystem && !systemsLoading" class="generic-system-container">
+            <compose view-model="../../generic-systems/${genericSystem.fModule}/index" model.bind="systemModel"></compose>
+        </div>
+
+
+        <p><a route-href="route: system-select;"><i class="fa fa-angle-left"></i> View all available systems</a></p>
+
+    </section>
+</template>

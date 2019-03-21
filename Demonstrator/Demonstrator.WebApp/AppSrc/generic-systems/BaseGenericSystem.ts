@@ -5,6 +5,7 @@ import { IPatient } from '../core/interfaces/IPatient';
 import { ValidationControllerFactory, validateTrigger } from 'aurelia-validation';
 import { EprSvc } from '../core/services/EprService';
 import { AnalyticsSvc } from '../core/services/AnalyticsService';
+import { IPointerDocument } from '../core/interfaces/IPointerDocument';
 
 @inject(PatientSvc, EprSvc, ValidationControllerFactory, AnalyticsSvc)
 export class BaseGenericSystem {
@@ -19,6 +20,12 @@ export class BaseGenericSystem {
 
     @observable
     selectedPatient?: IPatientNumber;
+
+    @observable
+    pointerDocumentLoaded?: boolean;
+
+    pointerDocumentViewer: any;
+    pointerDocument?: IPointerDocument;
 
     showSystemMessage: boolean = false;
 
@@ -70,6 +77,21 @@ export class BaseGenericSystem {
         }
 
         this.getPatient();
+    }
+
+    private closePointerDocument(): void {
+
+        console.log("closePointerDocument");
+        this.pointerDocument = undefined;
+
+    }
+
+    private pointerDocumentLoadedChanged(newValue?: boolean, oldValue?: boolean): void {
+
+        if (newValue === true) {
+            this.pointerDocumentViewer.loadDocument();
+        }
+
     }
 
     get showPatientSearch(): boolean {

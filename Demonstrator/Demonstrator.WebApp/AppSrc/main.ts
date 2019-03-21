@@ -10,13 +10,15 @@ import '../AppStyles/app.scss';
 
 // comment out if you don't want a Promise polyfill (remove also from webpack.config.js)
 import * as Bluebird from 'bluebird';
+import { IWebAppConfig } from './core/interfaces/IWebAppConfig';
+import { IConfigSvc } from './core/interfaces/IConfigSvc';
 Bluebird.config({ warnings: false });
 
 export async function configure(aurelia: Aurelia) {
 
-    let configSvc = Container.instance.get(ConfigSvc);
+    let configSvc: IConfigSvc = Container.instance.get(ConfigSvc);
     
-    let debugLevel = configSvc && configSvc.config && configSvc.config.ENV !== "production" ? undefined : 'none';
+    let debugLevel = configSvc && configSvc.webAppConfig && configSvc.webAppConfig.ENV !== "production" ? undefined : 'none';
 
     aurelia.use
         .standardConfiguration()
@@ -33,8 +35,9 @@ export async function configure(aurelia: Aurelia) {
   // Anyone wanting to use HTMLImports to load views, will need to install the following plugin.
   // aurelia.use.plugin('aurelia-html-import-template-loader')
 
-  await aurelia.start();
-    aurelia.setRoot('app');
+    await aurelia.start().then(() => {
+        aurelia.setRoot('app');
+    });
 
   // if you would like your website to work offline (Service Worker), 
   // install and enable the @easy-webpack/config-offline package in webpack.config.js and uncomment the following code:

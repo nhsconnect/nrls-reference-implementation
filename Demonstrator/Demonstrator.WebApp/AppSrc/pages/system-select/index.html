@@ -1,0 +1,40 @@
+<template>
+
+    <section class="container" slot="content">
+
+        <h1 class="h1 margin-bottom-xlrg">NRL Demonstrator System Select</h1>
+        <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
+
+        <div show.bind="!systemsLoading" class="row">
+
+            <div class="col-md-12">
+
+                <div repeat.for="stype of systemTypes">
+                    <h2 show.bind="systemCaseStudies[stype.type].length > 0">${stype.display} Systems</h2>
+                    <div class="margin-bottom-xlrg" show.bind="systemCaseStudies[stype.type].length > 0" repeat.for="system of systemCaseStudies[stype.type]">
+                        <h4>
+                            <a class="gridtab-link" route-href="route: system-demo; params.bind: { routeParamId: system.id, routeParamTitle: system.fModule }">
+                                ${system.name}
+                            </a>
+                        </h4>
+                        <p>The ${system.name} system could be used in:</p>
+                        <ul>
+                            <li repeat.for="org of system.healthContexts">
+                                <b>${org.organisation.name}</b><br />
+                                Example personnel that may use this system:<br />
+                                <ul>
+                                    <li repeat.for="person of org.personnel">${person.name}</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div show.bind="systemCaseStudies[stype.type].length < 1" class="alert alert-warning alert-panel margin-bottom-xlrg"><p><i class="fa fa-exclamation fa-padding-sqr"></i> Sorry, there are no ${stype.display} systems to show right now.</p></div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</template>

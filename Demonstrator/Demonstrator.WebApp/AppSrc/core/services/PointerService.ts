@@ -2,6 +2,8 @@
 import { bindable, inject } from 'aurelia-framework';
 import { IPointer } from '../interfaces/IPointer';
 import { IRequest } from '../interfaces/IRequest';
+import { IDocumentRequest } from '../interfaces/IDocumentRequest';
+import { IBinary } from '../interfaces/fhir/IBinary';
 
 @inject(WebAPI)
 export class PointerSvc {
@@ -18,6 +20,11 @@ export class PointerSvc {
     getPointers(request: IRequest) {
         let pointers = this.api.do<Array<IPointer>>(`${this.baseUrl}/${request.id}`, null, 'get', request.headers);
         return pointers;
+    }
+
+    getPointerDocument(request: IDocumentRequest) {
+        let binary = this.api.do<IBinary>(`${this.baseUrl}/${request.id}/${request.nhsNumber}`, null, 'get', request.headers);
+        return binary;
     }
 
 }

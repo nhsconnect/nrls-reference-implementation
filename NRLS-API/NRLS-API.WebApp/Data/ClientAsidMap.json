@@ -12,12 +12,12 @@
     },
     "200000000117": {
       "Thumbprint": "79f88740bdcd25fdb91a314d5fcacc5cbb99745d",
-      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ],
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary" ],
       "OrgCode": "AMS01"
     },
     "200000000118": {
       "Thumbprint": "47806afa969125ed593782c2141a7ce3da1e7fd0",
-      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference" ],
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary" ],
       "OrgCode": "MHT01"
     }
   }

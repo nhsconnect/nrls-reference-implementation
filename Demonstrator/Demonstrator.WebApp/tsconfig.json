@@ -22,6 +22,7 @@
     "dist",
     "wwwroot",
     "obj",
-    "bin"
+    "bin",
+    "pdf.js"
   ]
 }

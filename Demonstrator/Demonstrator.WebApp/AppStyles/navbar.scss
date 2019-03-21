@@ -21,14 +21,6 @@
             background: none;
         }
 
-        &.has-banner {
-            top: 37px;
-
-            &:before {
-                top: 132px;
-            }
-        }
-
         .nrls-brand {
             padding: 0;
         }
@@ -73,6 +65,16 @@
                 a {
                     color: $black;
                 }
+            }
+        }
+    }
+
+    .has-banner {
+        .nrls-navbar {
+            top: 37px;
+
+            &:before {
+                top: 132px;
             }
         }
     }

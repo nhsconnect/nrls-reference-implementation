@@ -1,54 +1,32 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { DialogRequested, CookieCanTrack, CheckAnnouncements } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
 import { AnalyticsSvc } from './core/services/AnalyticsService';
-import { DemonstratorConfig } from './core/models/DemonstratorConfig';
 import { CookieSvc } from './core/services/CookieService';
+import { ConfigSvc } from "./core/services/ConfigService";
 
-@inject(EventAggregator, AnalyticsSvc, CookieSvc)
+@inject(EventAggregator, AnalyticsSvc, CookieSvc, ConfigSvc)
 export class App {
+
+    hideBanner: boolean;
     router: Router;
     errorDialog: IDialog;
-    canShowContact: boolean = false;
-    canSeeAnnouncements: boolean = true;
     handleAcceptTrack: any;
-
     appConfig: IDemonstratorConfig;
 
-    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc, private cookieSvc: CookieSvc) {
-        ea.subscribe(DialogRequested, msg => {
+    dialogRequestedSubscription: Subscription;
+    cookieCanTrackSubscription: Subscription;
 
-            if (msg && msg.Severity != 'Information') {
-                this.showErrorDialog(msg);
-            }
-        });
+    constructor(private ea: EventAggregator, private analyticsSvc: AnalyticsSvc, private cookieSvc: CookieSvc, private configSvc: ConfigSvc) {
 
-        ea.subscribe(CheckAnnouncements, () => {
-            this.checkAnnouncements();
-        });
-
-        ea.subscribe(CookieCanTrack, cct => {
-            if (cct.allowed) {
-                this.analyticsSvc.start(cct.allowed, () =>
-                {
-                    this.cookieSvc.runScripts();
-                    this.setPageTrack();
-                });
-            } else {
-                this.analyticsSvc.stop(() => {
-                    this.cookieSvc.runScripts();
-                });
-            }
-        });
+        this.appConfig = configSvc.demoAppConfig;
 
         this.handleAcceptTrack = e => {
             this.ea.publish(new CookieCanTrack(this.cookieSvc.canTrack));
         };
-
-        this.appConfig = (window['demonstratorConfig'] || new DemonstratorConfig());
 
     }
 
@@ -62,6 +40,26 @@ export class App {
         window['CookiebotCallback_OnDecline'] = () => {
             this.handleAcceptTrack();
         }
+
+        this.dialogRequestedSubscription = this.ea.subscribe(DialogRequested, msg => {
+
+            if (msg && msg.Severity != 'Information') {
+                this.showErrorDialog(msg);
+            }
+        });
+
+        this.cookieCanTrackSubscription = this.ea.subscribe(CookieCanTrack, cct => {
+            if (cct.allowed) {
+                this.analyticsSvc.start(cct.allowed, () => {
+                    this.cookieSvc.runScripts();
+                    this.setPageTrack();
+                });
+            } else {
+                this.analyticsSvc.stop(() => {
+                    this.cookieSvc.runScripts();
+                });
+            }
+        });
     }
 
     detached() {
@@ -69,6 +67,9 @@ export class App {
         window.removeEventListener('CookiebotOnDecline', this.handleAcceptTrack);
 
         window['CookiebotCallback_OnDecline'] = undefined;
+
+        this.dialogRequestedSubscription.dispose();
+        this.cookieCanTrackSubscription.dispose();
     }
 
     setPageTrack() {
@@ -76,13 +77,6 @@ export class App {
         let pageTitleSlice = this.router.currentInstruction.config.settings.dynamicTitle ? this.router.currentInstruction.params.routeParamTitle : undefined;
 
         this.analyticsSvc.trackPage(pageTitleSlice);
-    }
-
-    checkAnnouncements() {
-
-        let canSeeAnnouncements = this.router.currentInstruction.config.settings.showAnnouncements;
-
-        this.canSeeAnnouncements = (canSeeAnnouncements === undefined || canSeeAnnouncements === true);
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -120,6 +114,9 @@ export class App {
 
             { route: 'phase-one-beta-go-live', name: 'phase-one-beta-go-live', moduleId: './pages/phase-one-beta-go-live/index', nav: false, title: 'NRLS Phase 1 Beta Go-Live', settings: { showAnnouncements: false } },
 
+            { route: 'system-select', name: 'system-select', moduleId: './pages/system-select/index', nav: false, title: 'Demonstrator Explorer', layoutViewModel: 'layouts/chromeless' },
+            { route: 'system-demo/:routeParamId/:routeParamTitle?', name: 'system-demo', moduleId: './pages/system-demo/index', nav: false, title: 'Demonstrator System Example', layoutViewModel: 'layouts/chromeless', settings: { dynamicTitle: true } },
+
             notFoundRoute
         ]);
 
@@ -133,14 +130,9 @@ export class App {
         };
     }
 
-    showContactDialog() {
-        this.canShowContact = !this.canShowContact;
-
-        if (this.canShowContact === true) {
-            this.analyticsSvc.contactsModal(window.location.pathname);
-        }
+    closeBanner() {
+        this.hideBanner = true;
     }
-
 }
 
 @inject(AnalyticsSvc)

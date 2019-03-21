@@ -8,6 +8,7 @@ using Demonstrator.Models.ViewModels.Flows;
 using MongoDB.Bson;
 using Demonstrator.Core.Interfaces.Database;
 using Demonstrator.Core.Interfaces.Services.Flows;
+using Demonstrator.Models.Core.Enums;
 
 namespace Demonstrator.Services.Service.Flows
 {
@@ -53,6 +54,27 @@ namespace Demonstrator.Services.Service.Flows
                 var filters = new List<FilterDefinition<GenericSystem>>();
                 filters.Add(builder.Eq(x => x.IsActive, true));
                 filters.Add(builder.In(x => x.Id, systemObjectIds));
+
+                var options = new FindOptions<GenericSystem, GenericSystem>();
+                options.Sort = Builders<GenericSystem>.Sort.Ascending(x => x.Name);
+
+                return await _context.GenericSystems.FindSync(builder.And(filters), options).ToViewModelListAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<GenericSystemViewModel>> GetAll()
+        {
+
+            try
+            {
+                var builder = Builders<GenericSystem>.Filter;
+                var filters = new List<FilterDefinition<GenericSystem>>();
+                filters.Add(builder.Eq(x => x.IsActive, true));
 
                 var options = new FindOptions<GenericSystem, GenericSystem>();
                 options.Sort = Builders<GenericSystem>.Sort.Ascending(x => x.Name);

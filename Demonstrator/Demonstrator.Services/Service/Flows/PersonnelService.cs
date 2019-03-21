@@ -75,5 +75,28 @@ namespace Demonstrator.Services.Service.Flows
                 throw ex;
             }
         }
+
+        public async Task<PersonnelViewModel> GetModelBySystemId(string systemId)
+        {
+            try
+            {
+                var builder = Builders<Personnel>.Filter;
+                var filters = new List<FilterDefinition<Personnel>>();
+                filters.Add(builder.Eq(x => x.IsActive, true));
+                filters.Add(builder.AnyEq(x => x.SystemIds, systemId));
+
+                var options = new FindOptions<Personnel, Personnel>();
+                options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
+
+                var personnel = await _context.Personnel.FindSync(builder.And(filters), options).FirstOrDefaultAsync();
+                
+                return await personnel.ToViewModelAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
     }
 }

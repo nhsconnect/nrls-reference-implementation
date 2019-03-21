@@ -12,6 +12,7 @@
 @import "GenericSystems/gs-mht-care-coordinator-static.scss";
 @import "benefits-dialog.scss";
 @import "animations.scss";
+@import "pdf.scss";
 
 body {
     font-family: Arial;
@@ -43,8 +44,19 @@ body {
     margin-top: 95px;
     padding: 40px 0 75px 0;
 
-    &.has-banner {
+    &.chromeless {
+        margin-top: 37px;
+        padding: 0 0 10px 0;
+    }
+}
+
+.has-banner {
+    .page-host {
         margin-top: 132px;
+
+        &.chromeless {
+            margin-top: 37px;
+        }
     }
 }
 
