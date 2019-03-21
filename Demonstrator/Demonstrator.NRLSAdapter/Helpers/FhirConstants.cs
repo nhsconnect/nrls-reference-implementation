@@ -34,7 +34,11 @@
 
         public const string HeaderFSspVersion = "Ssp-Version";
 
-        public const string HeaderSspTradeId = "Ssp-TraceID";
+        public const string HeaderSspTraceId = "Ssp-TraceID";
+
+        public const string HeaderSspTo = "Ssp-To";
+
+        public const string HeaderSspFrom = "Ssp-From";
 
 
         //JWT
@@ -60,21 +64,23 @@
 
 
         //Interactions
-        public const string BaseInteractionId = "urn:nhs:names:services:nrls:fhir:rest:~interaction~:documentreference";
+        public const string BaseInteractionId = "urn:nhs:names:services:~service~:fhir:rest:~interaction~:~resource~";
 
-        public static string ReadInteractionId => GenerateInteraction("read");
+        public static string ReadInteractionId => GenerateInteraction("read", "documentreference", "nrls");
 
-        public static string SearchInteractionId => GenerateInteraction("search");
+        public static string SearchInteractionId => GenerateInteraction("search", "documentreference", "nrls");
 
-        public static string CreateInteractionId => GenerateInteraction("create");
+        public static string CreateInteractionId => GenerateInteraction("create", "documentreference", "nrls");
 
-        public static string UpdateInteractionId => GenerateInteraction("update");
+        public static string UpdateInteractionId => GenerateInteraction("update", "documentreference", "nrls");
 
-        public static string DeleteInteractionId => GenerateInteraction("delete");
+        public static string DeleteInteractionId => GenerateInteraction("delete", "documentreference", "nrls");
 
-        private static string GenerateInteraction(string interaction)
+        public static string ReadBinaryInteractionId => GenerateInteraction("read", "binary", "nrls");
+
+        private static string GenerateInteraction(string interaction, string resource, string service)
         {
-            return BaseInteractionId.Replace("~interaction~", interaction);
+            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resource~", resource).Replace("~service~", service);
         }
     }
 }

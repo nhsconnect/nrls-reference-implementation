@@ -8,6 +8,8 @@ using Demonstrator.Models.ViewModels.Nrls;
 using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.Services.Service.Base;
 using Hl7.Fhir.Model;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SystemTasks = System.Threading.Tasks;
@@ -17,14 +19,18 @@ namespace Demonstrator.Services.Service.Nrls
     public class PointerService : BaseFhirService, IPointerService
     {
         private readonly IDocumentReferenceServices _docRefService;
+        private readonly IDocumentsServices _docService;
         private readonly IPatientServices _patientService;
         private readonly IOrganisationServices _organisationServices;
+        private readonly IMemoryCache _cache;
 
-        public PointerService(IDocumentReferenceServices docRefService, IPatientServices patientService, IOrganisationServices organisationServices)
+        public PointerService(IDocumentReferenceServices docRefService, IPatientServices patientService, IOrganisationServices organisationServices, IMemoryCache cache, IDocumentsServices docService)
         {
             _docRefService = docRefService;
             _patientService = patientService;
             _organisationServices = organisationServices;
+            _cache = cache;
+            _docService = docService;
         }
 
         public async SystemTasks.Task<IEnumerable<PointerViewModel>> GetPointers(RequestViewModel request)
@@ -73,7 +79,44 @@ namespace Demonstrator.Services.Service.Nrls
                 pointerViewModels.Add(pointerViewModel);
             }
 
+            if (pointers.Any())
+            {
+                CachePointers(request.Id, pointerViewModels);
+            }
+
             return pointerViewModels;
+        }
+
+        public async SystemTasks.Task<Binary> GetPointerDocument(string pointerUrl)
+        {
+            var pointerResponse = await _docService.GetPointerDocument(pointerUrl);
+
+            return pointerResponse as Binary;
+        }
+
+        public PointerViewModel GetCachedPointer(string nhsNumber, string pointerId)
+        {
+            var pointers = CachedPointers(nhsNumber);
+
+            return pointers.FirstOrDefault(x => !string.IsNullOrEmpty(pointerId) && x.Id == pointerId);
+        }
+
+
+        //DO NOT DO IN LIVE
+        private IEnumerable<PointerViewModel> CachedPointers(string nhsNumber)
+        {
+            var map = _cache.Get<PatientPointers>($"Pointers:{nhsNumber}");
+
+            return map != null ? map.Pointers : new List<PointerViewModel>();
+        }
+
+        private void CachePointers(string nhsNumber, List<PointerViewModel> pointers)
+        {
+            if (!_cache.TryGetValue<PatientPointers>($"Pointers:{nhsNumber}", out PatientPointers patientPointers))
+            {
+                // Save data in cache.
+                _cache.Set($"Pointers:{nhsNumber}", new PatientPointers { Pointers = pointers }, new TimeSpan(0,30,0));
+            }
         }
 
     }

@@ -105,6 +105,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
             var jwt = JwtFactory.Generate(method == HttpMethod.Get ? JwtScopes.Read : JwtScopes.Write, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
 
+            command.Headers.Add(HeaderNames.Accept, ContentType.JSON_CONTENT_HEADER);
             command.Headers.Add(HeaderNames.Authorization, $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderFromAsid, asid);
             command.Headers.Add(FhirConstants.HeaderToAsid, _spineSettings.SpineAsid);

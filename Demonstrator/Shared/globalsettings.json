@@ -27,6 +27,7 @@
     "Secure": false,
     "SecureOnly": false,
     "DefaultPort": "55448",
-    "SecurePort": "55443"
+    "SecurePort": "55443",
+    "SupportedContentTypes": [ "application/fhir+xml","application/fhir+json" ]
   }
 }

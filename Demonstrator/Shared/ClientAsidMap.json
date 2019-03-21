@@ -12,7 +12,7 @@
     },
     "200000000117": {
       "Thumbprint": "79f88740bdcd25fdb91a314d5fcacc5cbb99745d",
-      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference" ],
+      "Interactions": [ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary" ],
       "OrgCode": "AMS01"
     },
     "200000000118": {

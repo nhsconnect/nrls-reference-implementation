@@ -23,6 +23,8 @@ using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.NRLSAdapter.Helpers;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Demonstrator.WebApp
 {
@@ -40,6 +42,7 @@ namespace Demonstrator.WebApp
         {
             services.AddMvc();
             services.AddOptions();
+            services.AddNodeServices();
             services.Configure<DbSetting>(options =>
             {
                 options.ConnectionString = Configuration.GetSection("NRLSMongoDb:ConnectionString").Value;
@@ -52,6 +55,7 @@ namespace Demonstrator.WebApp
                 options.SecureOnly = bool.Parse(Configuration.GetSection("DemonstratorApi:SecureOnly").Value);
                 options.DefaultPort = Configuration.GetSection("DemonstratorApi:DefaultPort").Value;
                 options.SecurePort = Configuration.GetSection("DemonstratorApi:SecurePort").Value;
+                options.SupportedContentTypes = Configuration.GetSection("DemonstratorApi:SupportedContentTypes").Get<IList<string>>();
             });
             services.Configure<ExternalApiSetting>(options =>
             {
@@ -88,6 +92,7 @@ namespace Demonstrator.WebApp
             services.AddTransient<IBenefitsViewService, BenefitsViewService>();
             services.AddTransient<IPointerMapService, PointerMapService>();
             services.AddTransient<IClientAsidHelper, ClientAsidHelper>();
+            services.AddTransient<IDocumentsServices, DocumentsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

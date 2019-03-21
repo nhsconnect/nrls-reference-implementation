@@ -9,6 +9,7 @@ using Demonstrator.NRLSAdapter.Helpers;
 using Hl7.Fhir.Rest;
 using Demonstrator.NRLSAdapter.Models;
 using System.Net.Http;
+using Microsoft.Net.Http.Headers;
 
 namespace Demonstrator.NRLSAdapter.Patients
 {
@@ -45,6 +46,8 @@ namespace Demonstrator.NRLSAdapter.Patients
                 Method = HttpMethod.Get,
                 UseSecure = _pdsSettings.PdsUseSecure,
             };
+
+            command.Headers.Add(HeaderNames.Accept, ContentType.JSON_CONTENT_HEADER);
 
             if (!string.IsNullOrEmpty(nhsNumber))
             {

@@ -51,7 +51,8 @@ namespace Demonstrator.NRLSAdapter.Helpers
         {
             {typeof(Patient), ResourceType.Patient},
             {typeof(Organization), ResourceType.Organization},
-            {typeof(DocumentReference), ResourceType.DocumentReference}
+            {typeof(DocumentReference), ResourceType.DocumentReference},
+            {typeof(Binary), ResourceType.Binary}
          };
     }
 }

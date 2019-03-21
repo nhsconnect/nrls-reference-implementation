@@ -12,5 +12,7 @@ namespace Demonstrator.Core.Interfaces.Services.Flows
         Task<PersonnelViewModel> GetById(string personnelId);
 
         Task<Personnel> GetModelById(string personnelId);
+
+        Task<PersonnelViewModel> GetModelBySystemId(string systemId);
     }
 }

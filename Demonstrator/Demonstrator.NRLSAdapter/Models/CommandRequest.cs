@@ -13,6 +13,7 @@ namespace Demonstrator.NRLSAdapter.Models
         public CommandRequest()
         {
             Headers = new Dictionary<string, string>();
+            RegenerateUrl = true;
         }
 
         public Resource Resource { get; set; }
@@ -31,6 +32,8 @@ namespace Demonstrator.NRLSAdapter.Models
 
         public bool UseSecure { get; set; }
 
+        public bool RegenerateUrl { get; set; }
+
         public string ResourceId { get; set; }
 
         public IDictionary<string, string> Headers { get; set; }
@@ -44,7 +47,9 @@ namespace Demonstrator.NRLSAdapter.Models
         private Uri BuildFullUrl()
         {
             //var url = new Uri($"{BaseUrl}/{ResourceType}{("/" + ResourceId ?? "")}{QueryString}"); // currently no endpoints contain a resource id
-            var url = new Uri($"{BaseUrl}/{ResourceType}{QueryString}");
+
+            var urlTemplate = RegenerateUrl ? $"{BaseUrl}/{ResourceType}{QueryString}" : $"{BaseUrl}" ;
+            var url = new Uri(urlTemplate);
 
             return url;
         }

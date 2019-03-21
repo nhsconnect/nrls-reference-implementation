@@ -50,50 +50,91 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 var httpRequest = GetMessage(request);
 
-                using (HttpResponseMessage res = await client.SendAsync(httpRequest))
+                //TODO logging out
+
+                using (HttpResponseMessage res = await client.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead))
                 using (HttpContent content = res.Content)
                 {
+                    //TODO logging in
+
                     //res.EnsureSuccessStatusCode(); //will throw a HttpRequestException to catch in future
 
-                    var data = content.ReadAsStreamAsync().Result;
+                    var mediaType = content.Headers.ContentType.MediaType?.ToLowerInvariant();
 
-                    if (data == null)
-                    {
-                        throw new HttpRequestException($"Request resulted in nothing for: {request.FullUrl}.");
-                    }
-
-                    if(res.Headers?.Location != null)
+                    if (res.Headers?.Location != null)
                     {
                         fhirResponse.ResponseLocation = res.Headers.Location;
+                    }               
+
+                    if (!string.IsNullOrEmpty(mediaType) && mediaType.Contains("fhir"))
+                    {
+                        ParseResource(content, request, ref fhirResponse);
+                    }
+                    else
+                    {
+                        ParseBinary(content, request, ref fhirResponse);
                     }
 
-                    using (var reader = new StreamReader(data, Encoding.UTF8))
+                    if (!res.IsSuccessStatusCode)
                     {
-                        try
-                        {
-                            var body = reader.ReadToEnd();
-
-                            if(!string.IsNullOrEmpty(body))
-                            {
-                                var jsonParser = new FhirJsonParser();
-                                fhirResponse.Resource = jsonParser.Parse<Resource>(body);
-                            }
-
-                            if (!res.IsSuccessStatusCode)
-                            {
-                                throw new HttpRequestException(new FhirJsonSerializer().SerializeToString(fhirResponse.GetResource<OperationOutcome>()));
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new HttpRequestException(ex.Message, ex.InnerException);
-                        }
+                        throw new HttpRequestException(new FhirJsonSerializer().SerializeToString(fhirResponse.GetResource<OperationOutcome>()));
                     }
                 }
             }
 
 
             return await SystemTasks.Task.Run(() => fhirResponse);
+        }
+
+        private void ParseResource(HttpContent content, CommandRequest request, ref FhirResponse fhirResponse)
+        {
+            var data = content.ReadAsStreamAsync().Result;
+
+            if (data == null)
+            {
+                throw new HttpRequestException($"Request resulted in nothing for: {request.FullUrl}.");
+            }
+
+            using (var reader = new StreamReader(data, Encoding.UTF8))
+            {
+                try
+                {
+                    var body = reader.ReadToEnd();
+
+                    if (!string.IsNullOrEmpty(body))
+                    {
+                        var jsonParser = new FhirJsonParser();
+                        fhirResponse.Resource = jsonParser.Parse<Resource>(body);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new HttpRequestException(ex.Message, ex.InnerException);
+                }
+            }
+        }
+
+        private void ParseBinary(HttpContent content, CommandRequest request, ref FhirResponse fhirResponse)
+        {
+            var binaryResource = new Binary();
+            binaryResource.ContentType = content.Headers.ContentType.MediaType;
+
+            var data = content.ReadAsByteArrayAsync().Result;
+
+            if (data == null)
+            {
+                throw new HttpRequestException($"Request resulted in nothing for: {request.FullUrl}.");
+            }
+
+            try
+            {
+                binaryResource.Content = data;
+                fhirResponse.Resource = binaryResource;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpRequestException(ex.Message, ex.InnerException);
+            }
         }
 
         private HttpClientHandler GetHandler(CommandRequest request)
@@ -120,7 +161,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 Method = request.Method,
                 Headers =
                     {
-                        { HeaderNames.Accept, $"{ContentType.JSON_CONTENT_HEADER}"},
+                        //{ HeaderNames.Accept, $"{ContentType.JSON_CONTENT_HEADER}"},
                         { HeaderNames.AcceptEncoding, "gzip, deflate" },
                         { HeaderNames.AcceptLanguage, "en-GB,en" },
                         { HeaderNames.CacheControl, "no-cache" },

@@ -10,6 +10,7 @@ using Hl7.Fhir.Rest;
 using Demonstrator.NRLSAdapter.Models;
 using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Net.Http.Headers;
 
 namespace Demonstrator.NRLSAdapter.Organisations
 {
@@ -45,6 +46,8 @@ namespace Demonstrator.NRLSAdapter.Organisations
                 Method = HttpMethod.Get,
                 UseSecure = _odsSettings.OdsUseSecure
             };
+
+            command.Headers.Add(HeaderNames.Accept, ContentType.JSON_CONTENT_HEADER);
 
             if (!string.IsNullOrEmpty(orgCode))
             {
