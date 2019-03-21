@@ -64,6 +64,10 @@ namespace Demonstrator.WebApp
                 options.NrlsUseSecure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
                 options.NrlsDefaultprofile = Configuration.GetSection("NRLSAPI:DefaultProfile").Value;
 
+                options.SspServerUrl = new Uri(Configuration.GetSection("SSP:ServerUrl").Value);
+                options.SspSecureServerUrl = new Uri(Configuration.GetSection("SSP:SecureServerUrl").Value);
+                options.SspUseSecure = bool.Parse(Configuration.GetSection("SSP:Secure").Value);
+
                 options.PdsServerUrl = new Uri(Configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.PdsSecureServerUrl = new Uri(Configuration.GetSection("PDSAPI:SecureServerUrl").Value);
                 options.PdsUseSecure = bool.Parse(Configuration.GetSection("PDSAPI:Secure").Value);

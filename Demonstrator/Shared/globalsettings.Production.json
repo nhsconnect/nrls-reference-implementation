@@ -4,6 +4,11 @@
     "SecureServerUrl": "https://nrlsapiapp:5443/nrls-ri",
     "Secure": false
   },
+  "SSP": {
+    "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
+    "SecureServerUrl": "https://nrlsapiapp:5443/nrls-ri",
+    "Secure": false
+  },
   "PDSAPI": {
     "ServerUrl": "http://nrlsapiapp:5001/nrls-ri",
     "SecureServerUrl": "http://nrlsapiapp:5001/nrls-ri",

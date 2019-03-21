@@ -28,9 +28,14 @@ namespace NRLS_API.WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        //private readonly ILogger _logger;
+
+        public Startup(IConfiguration configuration 
+            //,ILogger<Startup> logger
+            )
         {
             Configuration = configuration;
+            //_logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -121,6 +126,8 @@ namespace NRLS_API.WebApp
             services.AddTransient<IJwtHelper, JwtHelper>();
             services.AddTransient<IFhirSearchHelper, FhirSearchHelper>();
             services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
+
+            //_logger.LogInformation("Finished services setup.");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,6 +146,9 @@ namespace NRLS_API.WebApp
             //handle compression as per spec
             app.UseFhirInputMiddleware();
             //app.UseFhirOuputMiddleware();
+
+            //TODO inbound logger
+            //TODO outbound logger
 
             app.UseMvc();
 

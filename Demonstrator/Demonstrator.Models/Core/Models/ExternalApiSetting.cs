@@ -12,6 +12,14 @@ namespace Demonstrator.Models.Core.Models
 
         public string NrlsDefaultprofile { get; set; }
 
+        public Uri SspServerUrl { get; set; }
+
+        public Uri SspSecureServerUrl { get; set; }
+
+        public bool SspUseSecure { get; set; }
+
+        public string SspSslThumbprint { get; set; }
+
         public Uri PdsServerUrl { get; set; }
 
         public Uri PdsSecureServerUrl { get; set; }

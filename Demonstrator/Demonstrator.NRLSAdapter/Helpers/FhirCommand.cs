@@ -436,6 +436,10 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 options.NrlsUseSecure = bool.Parse(configuration.GetSection("NRLSAPI:Secure").Value);
                 options.NrlsDefaultprofile = configuration.GetSection("NRLSAPI:DefaultProfile").Value;
 
+                options.SspServerUrl = new Uri(configuration.GetSection("SSP:ServerUrl").Value);
+                options.SspSecureServerUrl = new Uri(configuration.GetSection("SSP:SecureServerUrl").Value);
+                options.SspUseSecure = bool.Parse(configuration.GetSection("SSP:Secure").Value);
+
                 options.PdsServerUrl = new Uri(configuration.GetSection("PDSAPI:ServerUrl").Value);
                 options.PdsSecureServerUrl = new Uri(configuration.GetSection("PDSAPI:SecureServerUrl").Value);
                 options.PdsUseSecure = bool.Parse(configuration.GetSection("PDSAPI:Secure").Value);
