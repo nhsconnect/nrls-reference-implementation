@@ -38,8 +38,8 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             var parameters = context.Request.QueryString.Value.GetParameters();
 
-            bool hasFormatParam = parameters?.FirstOrDefault(x => x.Item1 == "_format") != null;
-            string formatParam = parameters != null ? parameters.GetParameter(formatKey) : null;
+            bool hasFormatParam = parameters?.FirstOrDefault(x => x.Item1 == formatKey) != null;
+            string formatParam = parameters?.GetParameter(formatKey);
 
             string acceptHeader = null;
             bool hasAcceptHeader = context.Request.Headers.ContainsKey(acceptKey);

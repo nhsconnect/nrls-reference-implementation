@@ -51,18 +51,23 @@ namespace NRLS_API.Core.Helpers
                 return new Response("The JWT associated with the Authorisation header must have the 3 sections");
             }
 
-            var signature = claimsHashItems.Skip(2).Take(1).FirstOrDefault();
+            //Skip header parsing
+            //var header = claimsHashItems.First();
 
-            if (!string.IsNullOrEmpty(signature))
-            {
-                return new Response("The JWT associated with the Authorisation header must have the 3 sections");
-            }
+            //Skip sig check for now as no service available to validate. 
+            //Current guidance is not to hash the sign for self generated JWTs.
+            //var signature = claimsHashItems.Last();
+
+            //if (!string.IsNullOrEmpty(signature))
+            //{
+            //    return new Response("The JWT associated with the Authorisation header must have an empty signature.");
+            //}
 
             var claimsHash = claimsHashItems.Skip(1).Take(1).FirstOrDefault();
 
             if (string.IsNullOrEmpty(claimsHash))
             {
-                return new Response("The JWT associated with the Authorisation header must have the 3 sections");
+                return new Response("The JWT associated with the Authorisation header must have a body of claims.");
             }
 
             claimsHash = claimsHash.Replace('-', '+').Replace('_', '/');
@@ -77,7 +82,7 @@ namespace NRLS_API.Core.Helpers
             }
             catch (JsonReaderException ex)
             {
-                var errorMessage = "The Authorisation header must be supplied";
+                var errorMessage = "The Authorisation header must be supplied as a valid JWT.";
 
                 if (!string.IsNullOrWhiteSpace(ex.Path) && _validClaims.Contains(ex.Path))
                 {
