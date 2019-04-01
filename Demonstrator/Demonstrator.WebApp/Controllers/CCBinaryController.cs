@@ -1,7 +1,7 @@
-﻿using Demonstrator.Core.Helpers;
+﻿using Demonstrator.Core.Factories;
+using Demonstrator.Core.Helpers;
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.Core.Models;
-using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.WebApp.Core.Configuration;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
@@ -10,19 +10,14 @@ using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 //In reality all end points would be secured
 namespace Demonstrator.WebApp.Controllers
 {
-    [MiddlewareFilter(typeof(ContentRequestedMiddlewarePipeline))]
-    [Route("api/careconnect/[controller]")]
+    [Route("provider/fhir/STU3/careconnect/[controller]")]
     public class BinaryController : FhirBaseController
     {
         private readonly IPointerService _pointerService;
@@ -41,11 +36,22 @@ namespace Demonstrator.WebApp.Controllers
         /// <returns>A single file.</returns>
         /// <response code="200">Returns the file</response>
         [MiddlewareFilter(typeof(ProviderBinaryOutputMiddlewarePipeline))]
-        [HttpGet("{documentId:regex(^[[A-Fa-f0-9-]]{{1,1024}}$)}")]
+        [HttpGet("{documentId}")]
         //[ProducesResponseType(typeof(DocumentReference), 200)]
         public async Task<IActionResult> Get([FromServices] INodeServices nodeServices, string documentId)
         {
-            var outputType = GetOutputType();
+            //Not supporting 410 errors
+            var regex = new Regex("^[A-Fa-f0-9-]{1,1024}$");
+
+            if(string.IsNullOrWhiteSpace(documentId) || !regex.IsMatch(documentId))
+            {
+                return NotFound(new FhirJsonSerializer().SerializeToString(OperationOutcomeFactory.CreateNotFound(documentId)));
+            }
+
+            //TODO: switch to other types
+            var outputType = "application/pdf";
+
+            var responseOutputType = GetOutputType();
 
             var template = GetTemplate();
             var model = JsonConvert.SerializeObject(new { documentId = documentId });
@@ -54,7 +60,7 @@ namespace Demonstrator.WebApp.Controllers
             var result = data;
 
 
-            if (outputType.ToLowerInvariant().Contains("fhir"))
+            if (!string.IsNullOrEmpty(responseOutputType) && responseOutputType.ToLowerInvariant().Contains("fhir"))
             {
                 var binary = new Binary
                 {
@@ -64,8 +70,12 @@ namespace Demonstrator.WebApp.Controllers
 
                 result = new FhirJsonSerializer().SerializeToBytes(binary);
             }
+            else
+            {
+                responseOutputType = outputType;
+            }
 
-            return new FileContentResult(result, outputType);
+            return new FileContentResult(result, responseOutputType);
         }
 
         private string GetTemplate()
@@ -81,14 +91,13 @@ namespace Demonstrator.WebApp.Controllers
 
         private string GetOutputType()
         {
-            var outputType = "application/pdf";
 
             if (Request.Headers.ContainsKey(HeaderNames.Accept))
             {
-                outputType = Request.Headers[HeaderNames.Accept];
+                return Request.Headers[HeaderNames.Accept];
             }
 
-            return outputType;
+            return null;
         }
 
     }

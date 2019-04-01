@@ -21,9 +21,7 @@ namespace Demonstrator.WebApp.Core.Middlewares
         {
             _clientAsidHelper.Load();
 
-            await _next.Invoke(context);
-            return;
-
+            await _next(context);
         }
     }
 

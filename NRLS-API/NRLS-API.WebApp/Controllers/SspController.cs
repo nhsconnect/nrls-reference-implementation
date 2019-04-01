@@ -14,7 +14,7 @@ using NRLS_API.WebApp.Core.Configuration;
 namespace NRLS_API.WebApp.Controllers
 {
     [MiddlewareFilter(typeof(ClientCertificateCheckPipeline))]
-    [MiddlewareFilter(typeof(SspAuthorizationPipeline))]
+    [MiddlewareFilter(typeof(SpineAuthorizationPipeline))]
     [Route("nrls-ri/SSP")]
     public class SspController : Controller
     {

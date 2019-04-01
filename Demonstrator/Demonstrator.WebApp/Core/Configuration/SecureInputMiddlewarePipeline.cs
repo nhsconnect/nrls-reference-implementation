@@ -3,11 +3,11 @@ using Demonstrator.WebApp.Core.Middlewares;
 
 namespace Demonstrator.WebApp.Core.Configuration
 {
-    public class ContentRequestedMiddlewarePipeline
+    public class SecureInputMiddlewarePipeline
     {
         public void Configure(IApplicationBuilder applicationBuilder)
         {
-            applicationBuilder.UseContentRequestedMiddleware();
+            applicationBuilder.UseSecureInputMiddleware();
         }
     }
 }

@@ -11,7 +11,7 @@ using Demonstrator.Models.Extensions;
 using System.Linq;
 using System.Net;
 using SystemTasks = System.Threading.Tasks;
-
+using Demonstrator.Core.Resources;
 
 namespace Demonstrator.WebApp.Core.Middlewares
 {
@@ -44,6 +44,7 @@ namespace Demonstrator.WebApp.Core.Middlewares
             if (hasAcceptHeader)
             {
                 acceptHeader = context.Request.Headers[acceptKey];
+                context.Request.Headers.Remove(acceptKey);
             }
 
             var validFormatParam = !hasFormatParam || (!string.IsNullOrWhiteSpace(formatParam) && _apiSettings.SupportedContentTypes.Contains(formatParam));
@@ -73,7 +74,11 @@ namespace Demonstrator.WebApp.Core.Middlewares
                 }
             }
 
-            await this._next(context);
+            //TODO: add default switch on controller
+            context.Request.Headers.Remove(FhirConstants.HeaderXFhirDefault);
+            context.Request.Headers.Add(FhirConstants.HeaderXFhirDefault, ContentType.XML_CONTENT_HEADER);
+
+            await _next(context);
         }
 
         private void CheckRequestRequirements(HttpContext context)

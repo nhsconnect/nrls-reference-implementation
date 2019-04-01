@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Demonstrator.Utilities
 {
@@ -28,6 +30,17 @@ namespace Demonstrator.Utilities
             clean = Regex.Replace(clean, "-+", "-");
 
             return Regex.Replace(clean, @"[^a-zA-Z0-9-]", "");
+        }
+
+        public static string Base64UrlDecode(string input)
+        {
+            input = input.Replace('-', '+').Replace('_', '/');
+
+            input = input.PadRight(input.Length + (4 - input.Length % 4) % 4, '=');
+
+            byte[] output = Convert.FromBase64String(input);
+
+            return Encoding.UTF8.GetString(output);
         }
     }
 }

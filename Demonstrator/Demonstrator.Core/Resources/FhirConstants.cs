@@ -43,6 +43,8 @@
 
         public const string HeaderSspTradeId = "Ssp-TraceID";
 
+        public const string HeaderXFhirDefault = "X-FHIR-DEFAULT";
+
 
         //JWT
         public const string JwtClientSysIssuer = "iss";

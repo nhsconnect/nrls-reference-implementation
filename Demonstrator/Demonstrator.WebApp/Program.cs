@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Demonstrator.Core.Configuration;
 using Demonstrator.Models.Core.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Demonstrator.WebApp
@@ -20,7 +16,12 @@ namespace Demonstrator.WebApp
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            //var logger = host.Services.GetRequiredService<ILogger<Program>>();
+            //logger.LogInformation("Somethign just happened!");
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args)
@@ -66,6 +67,14 @@ namespace Demonstrator.WebApp
                         }
                     }
 
+                })
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    //logging.AddDebug();
+
+                    //TODO: add log persistence store
                 })
                 .UseStartup<Startup>()
                 .Build();

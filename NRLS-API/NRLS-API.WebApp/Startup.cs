@@ -150,8 +150,6 @@ namespace NRLS_API.WebApp
             //TODO inbound logger
             //TODO outbound logger
 
-            app.UseMvc();
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")), RequestPath = "/nrls-ri/Resources"
@@ -167,6 +165,10 @@ namespace NRLS_API.WebApp
                 c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream;
                 c.DocumentTitle = "NRLS API Reference Implementation - Explore with Swagger";
             });
+
+            //app.UseResponseCompression();
+            app.UseMvc();
+
         }
     }
 }

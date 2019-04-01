@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using Demonstrator.Core.Interfaces.Services.Nrls;
@@ -22,20 +21,22 @@ using Demonstrator.Services.Service.Epr;
 using Demonstrator.Core.Interfaces.Services.Epr;
 using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.NRLSAdapter.Helpers;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
+using Demonstrator.Core.Interfaces.Helpers;
+using Demonstrator.Core.Helpers;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Demonstrator.WebApp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup()
         {
             Configuration = ConfigurationHelper.GetConfigurationRoot();
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -97,33 +98,39 @@ namespace Demonstrator.WebApp
             services.AddTransient<IPointerMapService, PointerMapService>();
             services.AddTransient<IClientAsidHelper, ClientAsidHelper>();
             services.AddTransient<IDocumentsServices, DocumentsServices>();
+            services.AddTransient<IJwtHelper, JwtHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<ApiSetting> nrlsApiSettings)
         {
             app.UseExceptionHandler(new ExceptionHandlerOptions
             {
-                ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
+                ExceptionHandler = new FhirExceptionMiddleware(env, nrlsApiSettings).Invoke
             });
 
             app.UseClientInteractionCacheMiddleware();
-            app.Use(async (context, next) =>
-            {
-                await next();
 
-                var validLocations = new[] { "resources", "images", "api" };
+            app.UseWhen(cxt => cxt.Request.Path.StartsWithSegments(new PathString("/provider")), HandleProviderEndpoints);
 
-                if (context.Response.StatusCode == 404)
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
+            app.UseWhen(cxt => !cxt.Request.Path.StartsWithSegments(new PathString("/provider")), HandleSpaRequests);
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc();
+        }
+
+        private static void HandleProviderEndpoints(IApplicationBuilder app)
+        {
+            app.UseLoggingMiddleware();
+            app.UseSecureInputMiddleware();
+            app.UseFhirInputMiddleware();
+
+        }
+
+        private static void HandleSpaRequests(IApplicationBuilder app)
+        {
+            app.UseSpaPushStateMiddleware();
         }
     }
 }

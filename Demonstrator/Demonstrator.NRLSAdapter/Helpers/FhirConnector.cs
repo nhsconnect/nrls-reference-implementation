@@ -1,4 +1,5 @@
-﻿using Demonstrator.NRLSAdapter.Models;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
@@ -59,7 +60,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     //res.EnsureSuccessStatusCode(); //will throw a HttpRequestException to catch in future
 
-                    var mediaType = content.Headers.ContentType.MediaType?.ToLowerInvariant();
+                    var mediaType = content.Headers.ContentType?.MediaType?.ToLowerInvariant();
 
                     if (res.Headers?.Location != null)
                     {
@@ -77,7 +78,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     if (!res.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException(new FhirJsonSerializer().SerializeToString(fhirResponse.GetResource<OperationOutcome>()));
+                        throw new HttpFhirException("Request resulted in an error.", fhirResponse.GetResource<OperationOutcome>(), res.StatusCode);
                     }
                 }
             }
@@ -99,12 +100,23 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 try
                 {
+                    var mediaType = content.Headers.ContentType.MediaType.ToLowerInvariant();
+
                     var body = reader.ReadToEnd();
 
                     if (!string.IsNullOrEmpty(body))
                     {
-                        var jsonParser = new FhirJsonParser();
-                        fhirResponse.Resource = jsonParser.Parse<Resource>(body);
+                        if(mediaType.Contains("xml"))
+                        {
+                            var xmlParser = new FhirXmlParser();
+                            fhirResponse.Resource = xmlParser.Parse<Resource>(body);
+                        }
+                        else
+                        {
+                            var jsonParser = new FhirJsonParser();
+                            fhirResponse.Resource = jsonParser.Parse<Resource>(body);
+                        }
+
                     }
                 }
                 catch (Exception ex)
@@ -117,7 +129,6 @@ namespace Demonstrator.NRLSAdapter.Helpers
         private void ParseBinary(HttpContent content, CommandRequest request, ref FhirResponse fhirResponse)
         {
             var binaryResource = new Binary();
-            binaryResource.ContentType = content.Headers.ContentType.MediaType;
 
             var data = content.ReadAsByteArrayAsync().Result;
 
@@ -129,6 +140,8 @@ namespace Demonstrator.NRLSAdapter.Helpers
             try
             {
                 binaryResource.Content = data;
+                binaryResource.ContentType = content.Headers.ContentType?.MediaType;
+
                 fhirResponse.Resource = binaryResource;
             }
             catch (Exception ex)
@@ -202,6 +215,7 @@ namespace Demonstrator.NRLSAdapter.Helpers
         private X509Certificate2 ClientCertificate(string thumbprint)
         {
             //Update to ensure we grab certs in a cross platform way
+            //TODO: change to do check by fqdn and check no chain errors
             using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
             {
                 store.Open(OpenFlags.ReadOnly);
