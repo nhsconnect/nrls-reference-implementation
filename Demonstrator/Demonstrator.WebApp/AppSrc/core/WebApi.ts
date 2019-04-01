@@ -80,12 +80,17 @@ export class WebAPI {
                     let rsv = resolve(response.json());
                     return rsv;
                 }, error => {
-                    if (!error.ok && error.status === 404) {
-                        that.ea.publish(new DialogRequested({ Details: error.statusText }));
-                    } else {
+                    try {
                         error.json().then(serverError => {
-                            that.ea.publish(new DialogRequested(serverError));
+                            if (!error.ok && error.status === 404 && (!serverError || serverError.resourceType != "OperationOutcome")) {
+                                that.ea.publish(new DialogRequested({ details: error.statusText }));
+                            } else {
+                                //TODO: manage all issues
+                                that.ea.publish(new DialogRequested(serverError.issue[0] || { details: error.statusText }));
+                            }
                         });
+                    } catch (e) {
+                        that.ea.publish(new DialogRequested({ details: error.statusText }));
                     }
                 });
         });

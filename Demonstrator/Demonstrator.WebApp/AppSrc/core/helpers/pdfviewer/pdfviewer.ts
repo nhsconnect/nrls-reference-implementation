@@ -42,6 +42,7 @@ export class pdfviewer {
     }
 
     detached() {
+        console.log("detached");
         if (this.canDestroy) {
 
             if (this.pdfDoc.document) {
@@ -50,6 +51,10 @@ export class pdfviewer {
 
             if (this.worker) {
                 this.worker.destroy();
+            }
+
+            if (this.canvasContext) {
+                this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
         }
     }
@@ -84,7 +89,7 @@ export class pdfviewer {
 
             console.log("this.viewerContainer", this.viewerContainer);
 
-            this.pdfDoc.scale = viewport.width / (this.viewerContainer.width() || 0);
+            this.pdfDoc.scale = (this.viewerContainer.height() || 0) / (viewport.height + 40);
             console.log("re-scale", this.pdfDoc.scale);
             //re-scale
             viewport = page.getViewport(this.pdfDoc.scale);

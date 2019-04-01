@@ -1,7 +1,7 @@
 import { Aurelia, inject, bindable, bindingMode } from 'aurelia-framework';
 import { Router, RouterConfiguration, NavigationInstruction, Next, RouteConfig } from 'aurelia-router';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { DialogRequested, CookieCanTrack, CheckAnnouncements } from './core/helpers/EventMessages';
+import { DialogRequested, CookieCanTrack, CheckAnnouncements, SystemError } from './core/helpers/EventMessages';
 import { IDialog } from './core/interfaces/IDialog';
 import { IDemonstratorConfig } from './core/interfaces/IDemonstratorConfig';
 import { AnalyticsSvc } from './core/services/AnalyticsService';
@@ -43,7 +43,7 @@ export class App {
 
         this.dialogRequestedSubscription = this.ea.subscribe(DialogRequested, msg => {
 
-            if (msg && msg.Severity != 'Information') {
+            if (msg && msg.severity != 'Information') {
                 this.showErrorDialog(msg);
             }
         });
@@ -125,9 +125,11 @@ export class App {
 
     showErrorDialog(msg) {
         this.errorDialog = <IDialog> {
-            details: msg.dialog.Details,
-            debug: msg.dialog.Diagnostics
+            details: msg.dialog.details,
+            debug: msg.dialog.diagnostics
         };
+
+        this.ea.publish(new SystemError(null));
     }
 
     closeBanner() {

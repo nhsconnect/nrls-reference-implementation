@@ -4,8 +4,11 @@ import { IPointer } from '../../../core/interfaces/IPointer';
 import { IRequest } from '../../../core/interfaces/IRequest';
 import { IDocumentRequest } from '../../../core/interfaces/IDocumentRequest';
 import { IPointerDocument } from '../../../core/interfaces/IPointerDocument';
+import { ConfigSvc } from "../../../core/services/ConfigService";
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { SystemError } from '../../../core/helpers/EventMessages';
 
-@inject(PointerSvc)
+@inject(PointerSvc, ConfigSvc, EventAggregator)
 export class NrlsPointers {
 
     pointers: Array<IPointer> = [];
@@ -23,7 +26,17 @@ export class NrlsPointers {
     @bindable({ defaultBindingMode: bindingMode.oneWay })
     request?: IRequest;
 
-    constructor(private pointerSvc: PointerSvc) { }
+    systemErrorSubscription: Subscription;
+
+    constructor(private pointerSvc: PointerSvc, private configSvc: ConfigSvc, private ea: EventAggregator) { }
+
+    attached() {
+        this.systemErrorSubscription = this.ea.subscribe(SystemError, details => {
+            if (this.pointerDocument) {
+                this.pointerDocument = undefined;
+            }
+        });
+    }
 
     private requestChanged(newValue: IRequest, oldValue: IRequest): void {
         if (newValue && newValue.active) {
@@ -72,6 +85,17 @@ export class NrlsPointers {
             }
 
         });
+    }
+
+    isValidDocumentType(mimeType: string): boolean {
+        let types = this.configSvc.webAppConfig.ValidDocumentTypes;
+
+        return (types != null && types.indexOf(mimeType) != -1);
+    }
+
+    detached() {
+
+        this.systemErrorSubscription.dispose();
     }
 
 }

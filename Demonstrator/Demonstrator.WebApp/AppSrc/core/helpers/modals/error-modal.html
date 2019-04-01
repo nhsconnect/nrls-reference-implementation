@@ -7,8 +7,8 @@
                 </div>
                 <div class="modal-body">
                     <h4 class="n-text-red">An error has been encountered.</h4>
-                    <div if.bind="dialog.details && dialog.details.Coding">
-                        <span repeat.for="coding of dialog.details.Coding">${coding.DisplayElement.Value}</span>
+                    <div if.bind="dialog.details && dialog.details.coding">
+                        <span repeat.for="coding of dialog.details.coding">Details: ${coding.display}</span>
                     </div>
                     <div class="nrls-generated-content margin-bottom-xlrg" innerhtml.bind="dialog.message | sanitizeHTML"></div>
                     <div if.bind="dialog.debug" class="alert alert-danger">
