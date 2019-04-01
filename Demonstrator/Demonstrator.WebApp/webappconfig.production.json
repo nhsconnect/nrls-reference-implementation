@@ -1,5 +1,6 @@
 ﻿{
   "DPIALink": "/Resources/NRLS-DPIA-20180705-v1-0.docx",
   "TOMLink": "/Resources/NRLS-Target-Operating-Model-v1-0.xlsx",
-  "ENV": "production"
+  "ENV": "production",
+  "ValidDocumentTypes": [ "application/pdf" ]
 }

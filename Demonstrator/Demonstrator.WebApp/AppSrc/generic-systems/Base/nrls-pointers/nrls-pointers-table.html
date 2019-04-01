@@ -16,7 +16,11 @@
                 <td>${pointer.type.coding[0].display}</td>
                 <td>${pointer.authorViewModel.name}</td>
                 <td>${pointer.content[0].attachment.creation | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
-                <td class="action"><button type="button" class="btn btn-default nrls-record-retrieval-btn" click.delegate="getDocument(pointer.subjectViewModel.identifier[0].value, pointer.id)">View</button></td>
+                <td class="action">
+                    <button show.bind="isValidDocumentType(pointer.content[0].attachment.contentType)" type="button" class="btn btn-default nrls-record-retrieval-btn" click.delegate="getDocument(pointer.subjectViewModel.identifier[0].value, pointer.id)">View</button>
+                    <button show.bind="!isValidDocumentType(pointer.content[0].attachment.contentType)" type="button" class="btn btn-warning nrls-record-retrieval-btn" popover="placement:auto top;title:Incompatible document type;content:The document referenced is in a format that cannot be displayed. Please contact IT Help Desk quoting 'Unacceptable format for document referenced by NRL Pointer ID: {pointer_id}';" popover-data='{"pointer_id":"${pointer.id}"}'><i class="fa fa-warning"></i> Info</button>
+
+                </td>
             </tr>
             <tr if.bind="!pointers || pointers.length == 0">
                 <td colspan="4">No Pointers found for this Patient.</td>

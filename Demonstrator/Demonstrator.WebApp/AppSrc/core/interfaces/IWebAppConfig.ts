@@ -2,4 +2,5 @@
     DPIALink?: string;
     TOMLink?: string;
     ENV: string;
+    ValidDocumentTypes: string[];
 }
