@@ -16,7 +16,7 @@ using SystemTasks = System.Threading.Tasks;
 
 namespace NRLS_API.WebApp.Core.Middlewares
 {
-    public class SspAuthorizationMiddleware
+    public class SpineAuthorizationMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly SpineSetting _spineSettings;
@@ -24,7 +24,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private IMemoryCache _cache;
         private readonly INrlsValidation _nrlsValidation;
 
-        public SspAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
+        public SpineAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
         {
             _next = next;
             _spineSettings = spineSettings.Value;
@@ -119,16 +119,16 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
     }
 
-    public static class SspAuthorizationMiddlewareExtension
+    public static class SpineAuthorizationMiddlewareExtension
     {
-        public static IApplicationBuilder UseSspAuthorizationMiddleware(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSpineAuthorizationMiddleware(this IApplicationBuilder app)
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return app.UseMiddleware<SspAuthorizationMiddleware>();
+            return app.UseMiddleware<SpineAuthorizationMiddleware>();
         }
     }
 }
