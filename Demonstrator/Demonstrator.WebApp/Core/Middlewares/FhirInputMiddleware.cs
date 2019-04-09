@@ -31,24 +31,17 @@ namespace Demonstrator.WebApp.Core.Middlewares
 
             _apiSettings = apiSettings.Value;
 
-            var formatKey = "_format";
-            var acceptKey = HeaderNames.Accept;
-
             var parameters = context.Request.QueryString.Value.GetParameters();
 
             bool hasFormatParam = parameters?.FirstOrDefault(x => x.Item1 == "_format") != null;
-            string formatParam = parameters != null ? parameters.GetParameter(formatKey) : null;
+            string formatParam = parameters?.GetParameter("_format");
 
-            string acceptHeader = null;
-            bool hasAcceptHeader = context.Request.Headers.ContainsKey(acceptKey);
-            if (hasAcceptHeader)
-            {
-                acceptHeader = context.Request.Headers[acceptKey];
-                context.Request.Headers.Remove(acceptKey);
-            }
+            bool hasAcceptHeader = context.Request.Headers.ContainsKey(HeaderNames.Accept);
+            string acceptHeader = hasAcceptHeader ? context.Request.Headers[HeaderNames.Accept] : StringValues.Empty;
 
-            var validFormatParam = !hasFormatParam || (!string.IsNullOrWhiteSpace(formatParam) && _apiSettings.SupportedContentTypes.Contains(formatParam));
-            var validAcceptHeader = !hasAcceptHeader || (!string.IsNullOrWhiteSpace(acceptHeader) && ValidAccept(acceptHeader));
+
+            var validFormatParam = !hasFormatParam || ValidContentType(formatParam);
+            var validAcceptHeader = !hasAcceptHeader || ValidContentType(acceptHeader);
 
             if (!validFormatParam && (hasFormatParam || !validAcceptHeader))
             {
@@ -69,8 +62,8 @@ namespace Demonstrator.WebApp.Core.Middlewares
 
                     var header = new MediaTypeHeaderValue(newAcceptHeader);
 
-                    context.Request.Headers.Remove(acceptKey);
-                    context.Request.Headers.Add(acceptKey, new StringValues(header.ToString()));
+                    context.Request.Headers.Remove(HeaderNames.Accept);
+                    context.Request.Headers.Add(HeaderNames.Accept, new StringValues(header.ToString()));
                 }
             }
 
@@ -91,17 +84,9 @@ namespace Demonstrator.WebApp.Core.Middlewares
             }
         }
 
-        private bool ValidAccept(string accept)
+        private bool ValidContentType(string contentType)
         {
-            foreach (var type in _apiSettings.SupportedContentTypes)
-            {
-                if (accept.Contains(type))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return !string.IsNullOrWhiteSpace(contentType) && _apiSettings.SupportedContentTypes.Contains(contentType);
         }
     }
 

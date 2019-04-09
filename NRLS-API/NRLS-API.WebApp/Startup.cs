@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,14 +29,9 @@ namespace NRLS_API.WebApp
 {
     public class Startup
     {
-        //private readonly ILogger _logger;
-
-        public Startup(IConfiguration configuration 
-            //,ILogger<Startup> logger
-            )
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //_logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -97,6 +93,14 @@ namespace NRLS_API.WebApp
                 options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
                 options.ResourceLocation = Configuration.GetSection("NRLSAPI:ResourceLocation").Value;
             });
+            services.Configure<ApiSetting>("SspApiSetting", options =>
+            {
+                options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value;
+                options.Secure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
+                options.SecureOnly = bool.Parse(Configuration.GetSection("NRLSAPI:SecureOnly").Value);
+                options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+                options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+            });
             services.Configure<ApiSetting>("PdsApiSetting", options =>
             {
                 options.ProfileUrl = Configuration.GetSection("PDSAPI:ProfileUrl").Value;
@@ -126,8 +130,8 @@ namespace NRLS_API.WebApp
             services.AddTransient<IJwtHelper, JwtHelper>();
             services.AddTransient<IFhirSearchHelper, FhirSearchHelper>();
             services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
+            services.AddTransient<ISspProxyService, SspProxyService>();
 
-            //_logger.LogInformation("Finished services setup.");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -143,12 +147,12 @@ namespace NRLS_API.WebApp
 
             app.UseClientInteractionCacheMiddleware();
 
-            //handle compression as per spec
+            //app.UseLoggingMiddleware();
+
+            app.MapWhen(cxt => cxt.Request.Path.Value.StartsWith("/nrls-ri/SSP"), HandleSspRequests);
+
             app.UseFhirInputMiddleware();
             //app.UseFhirOuputMiddleware();
-
-            //TODO inbound logger
-            //TODO outbound logger
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -166,9 +170,15 @@ namespace NRLS_API.WebApp
                 c.DocumentTitle = "NRLS API Reference Implementation - Explore with Swagger";
             });
 
+            //handle compression as per spec
             //app.UseResponseCompression();
             app.UseMvc();
 
+        }
+
+        private static void HandleSspRequests(IApplicationBuilder app)
+        {
+            app.UseSspProxyMiddleware();
         }
     }
 }

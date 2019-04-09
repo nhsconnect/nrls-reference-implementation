@@ -17,6 +17,8 @@ namespace NRLS_API.Models.Core
 
         public string BaseUrl { get; set; }
 
+        public string BasePath { get; set; }
+
         public bool Secure { get; set; }
 
         public bool SecureOnly { get; set; }

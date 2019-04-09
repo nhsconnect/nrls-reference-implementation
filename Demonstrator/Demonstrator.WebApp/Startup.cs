@@ -99,6 +99,8 @@ namespace Demonstrator.WebApp
             services.AddTransient<IClientAsidHelper, ClientAsidHelper>();
             services.AddTransient<IDocumentsServices, DocumentsServices>();
             services.AddTransient<IJwtHelper, JwtHelper>();
+            services.AddTransient<IFhirConnector, FhirConnector>();
+            services.AddTransient<ILoggingHelper, LoggingHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,7 +124,7 @@ namespace Demonstrator.WebApp
 
         private static void HandleProviderEndpoints(IApplicationBuilder app)
         {
-            app.UseLoggingMiddleware();
+            //app.UseLoggingMiddleware();
             app.UseSecureInputMiddleware();
             app.UseFhirInputMiddleware();
 

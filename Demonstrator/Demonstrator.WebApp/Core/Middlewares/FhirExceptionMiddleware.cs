@@ -65,12 +65,12 @@ namespace Demonstrator.WebApp.Core.Middlewares
             {
                 output = new FhirXmlSerializer().SerializeToString(outcome);
                 output = Regex.Replace(output, @"((\s){1})(/>)", "/>", RegexOptions.Compiled);
-                context.Response.ContentType = ContentType.XML_CONTENT_HEADER;
+                context.Response.ContentType = $"{ContentType.XML_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}";
             }
             else
             {
                 output = new FhirJsonSerializer().SerializeToString(outcome);
-                context.Response.ContentType = ContentType.JSON_CONTENT_HEADER;
+                context.Response.ContentType = $"{ContentType.JSON_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}";
             }
 
             await context.Response.WriteAsync(output, Encoding.UTF8);

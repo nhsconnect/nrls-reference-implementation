@@ -1,4 +1,5 @@
-﻿using Hl7.Fhir.Serialization;
+﻿using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -62,13 +63,13 @@ namespace NRLS_API.WebApp.Core.Middlewares
             if (UseJsonOutput(context))
             {
                 output = new FhirJsonSerializer().SerializeToString(outcome);
-                context.Response.ContentType = "application/fhir+json";
+                context.Response.ContentType = $"{ContentType.JSON_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}";
             }
             else
             {
                 output = new FhirXmlSerializer().SerializeToString(outcome);
                 output = Regex.Replace(output, @"((\s){1})(/>)", "/>", RegexOptions.Compiled);
-                context.Response.ContentType = "application/fhir+xml";
+                context.Response.ContentType = $"{ContentType.XML_CONTENT_HEADER}; charset={Encoding.UTF8.WebName}";
             }
 
             await context.Response.WriteAsync(output, Encoding.UTF8);

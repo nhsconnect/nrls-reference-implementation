@@ -71,7 +71,7 @@
                 </div>
 
                 <div show.bind="nrlsTabActive" class="gs-nrls-panel">
-                    <nrls-pointers-table request.one-way="request"></nrls-pointers-table>
+                    <nrls-pointers-table pointer-document-loaded.two-way="pointerDocumentLoaded" pointer-document.two-way="pointerDocument" request.one-way="request"></nrls-pointers-table>
                 </div>
             </div>
 
@@ -99,6 +99,8 @@
                     </div>
                 </div>
             </div>
+
+            <pdfviewer if.bind="pointerDocument != undefined" view-model.ref="pointerDocumentViewer" close-viewer.call="closePointerDocument()" pdf-doc.two-way="pointerDocument"></pdfviewer>
 
             <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
                 <div class="gs-instruction-bg"></div>

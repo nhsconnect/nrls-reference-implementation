@@ -12,6 +12,6 @@ namespace Demonstrator.Core.Interfaces.Services.Nrls
 
         PointerViewModel GetCachedPointer(string nhsNumber, string pointerId);
 
-        SystemTasks.Task<Binary> GetPointerDocument(string pointerUrl);
+        SystemTasks.Task<Binary> GetPointerDocument(RequestViewModel request, PointerViewModel pointer);
     }
 }

@@ -24,21 +24,24 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
         private readonly ExternalApiSetting _spineSettings;
         private readonly ApiSetting _apiSettings;
         private readonly IMemoryCache _cache;
+        private readonly IFhirConnector _fhirConnector;
 
-        public DocumentsServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting, IMemoryCache cache)
+        public DocumentsServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting, IMemoryCache cache, IFhirConnector fhirConnector)
         {
             _spineSettings = externalApiSetting.Value;
             _apiSettings = apiSetting.Value;
             _cache = cache;
+            _fhirConnector = fhirConnector;
         }
 
-        public async SystemTasks.Task<Resource> GetPointerDocument(string pointerUrl)
+        public async SystemTasks.Task<Resource> GetPointerDocument(string fromASID, string fromODS, string toODS, string pointerUrl)
         {
-            var request = BuildGetRequest("200000000117", "AMS01", "MHT01");
+            var request = BuildGetRequest(fromASID, fromODS, toODS);
 
-            request.BaseUrl = pointerUrl;
+            //SSP base normally retrieved from SDS, but can be cached
+            request.BaseUrl = $"{SspUrlBase}{WebUtility.UrlEncode((pointerUrl))}";
 
-            var document = await new FhirConnector().RequestOne<Resource>(request);
+            var document = await _fhirConnector.RequestOneFhir<CommandRequest, Resource>(request);
 
             return document;
         }
@@ -82,7 +85,10 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         private string SDSLookup(string odsCode, string interactionId)
         {
-            //$"Filter: (&(nhsassvcia={interactionId})(nhsidcode={odsCode})(objectclass=nhsas))"
+            //TODO: LDAP support in .net core is limited right now
+            //ldapsearch - x - H ldaps://ldap.vn03.national.ncrs.nhs.uk –b "ou=services, o=nhs" 
+            //"(&(nhsIDCode={odsCode}) (objectClass=nhsAS)(nhsAsSvcIA={interactionId}))"
+            //uniqueIdentifier nhsMhsPartyKey
             var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
 
             return map.ClientAsids.FirstOrDefault(x => !string.IsNullOrEmpty(odsCode) && x.Value.OrgCode == odsCode 
@@ -94,6 +100,14 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             get
             {
                 return $"{(_apiSettings.Secure ? "https" : "http")}{_apiSettings.BaseUrl}:{(_apiSettings.Secure ? _apiSettings.SecurePort : _apiSettings.DefaultPort)}";
+            }
+        }
+
+        private string SspUrlBase
+        {
+            get
+            {
+                return $"{(_spineSettings.SspUseSecure ? _spineSettings.SspSecureServerUrl : _spineSettings.SspServerUrl)}/";
             }
         }
     }

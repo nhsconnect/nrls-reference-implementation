@@ -1,5 +1,6 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.ViewModels.Base;
+using Demonstrator.WebApp.Core.Configuration;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -48,6 +49,7 @@ namespace Demonstrator.WebApp.Controllers
         /// <param name="nhsNumber"></param>  
         /// <returns>A list of NRLS Pointers (Constrained FHIR DocumentReference) for a patient specificed by the patient nhs number.</returns>
         /// <response code="200">Returns the NRLS Pointers</response>
+        [MiddlewareFilter(typeof(FhirOutputMiddlewarePipeline))]
         [HttpGet("{nhsNumber:regex(^[[0-9]]{{10}}$)}/{documentId:regex(^[[A-Fa-f0-9-]]{{1,1024}}$)}")]
         [ProducesResponseType(typeof(Binary), 200)]
         public async Task<IActionResult> Document(string documentId, string nhsNumber)
@@ -62,7 +64,7 @@ namespace Demonstrator.WebApp.Controllers
 
             if (pointer != null)
             {
-                var document = await _pointerService.GetPointerDocument(pointer.Content.FirstOrDefault().Attachment.Url);
+                var document = await _pointerService.GetPointerDocument(request, pointer);
 
                 return Ok(document);
             }

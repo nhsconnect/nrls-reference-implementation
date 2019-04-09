@@ -6,6 +6,6 @@ namespace Demonstrator.Core.Interfaces.Services.Fhir
 {
     public interface IDocumentsServices
     {
-        SystemTasks.Task<Resource> GetPointerDocument(string pointerUrl);
+        SystemTasks.Task<Resource> GetPointerDocument(string fromASID, string fromODS, string toODS, string pointerUrl);
     }
 }

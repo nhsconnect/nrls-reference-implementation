@@ -1,4 +1,5 @@
-﻿using Demonstrator.NRLSAdapter.Helpers.Exceptions;
+﻿using Demonstrator.Models.Core.Models;
+using Demonstrator.NRLSAdapter.Helpers.Exceptions;
 using Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
@@ -6,8 +7,13 @@ using System.Linq;
 
 namespace Demonstrator.NRLSAdapter.Helpers
 {
-    public class FhirResponse
+    public class FhirResponse : Response
     {
+        public FhirResponse() : base()
+        {
+            Success = true;
+        }
+
         public Resource Resource { get; set; }
 
         public Uri ResponseLocation { get; set; }

@@ -1,4 +1,5 @@
-﻿using Demonstrator.Core.Factories;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Core.Factories;
 using Demonstrator.Core.Helpers;
 using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.Core.Models;
@@ -11,13 +12,15 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 //In reality all end points would be secured
 namespace Demonstrator.WebApp.Controllers
 {
-    [Route("provider/fhir/STU3/careconnect/[controller]")]
+    [Route("provider")]
     public class BinaryController : FhirBaseController
     {
         private readonly IPointerService _pointerService;
@@ -36,16 +39,19 @@ namespace Demonstrator.WebApp.Controllers
         /// <returns>A single file.</returns>
         /// <response code="200">Returns the file</response>
         [MiddlewareFilter(typeof(ProviderBinaryOutputMiddlewarePipeline))]
-        [HttpGet("{documentId}")]
+        [HttpGet("{providerOdsCode:regex(^[[A-Za-z0-9]]+$)}/fhir/STU3/careconnect/binary/{documentId}")]
         //[ProducesResponseType(typeof(DocumentReference), 200)]
         public async Task<IActionResult> Get([FromServices] INodeServices nodeServices, string documentId)
         {
             //Not supporting 410 errors
             var regex = new Regex("^[A-Fa-f0-9-]{1,1024}$");
 
+
+            //TODO: check pointers cache
             if(string.IsNullOrWhiteSpace(documentId) || !regex.IsMatch(documentId))
             {
-                return NotFound(new FhirJsonSerializer().SerializeToString(OperationOutcomeFactory.CreateNotFound(documentId)));
+                throw new HttpFhirException("Not Found", OperationOutcomeFactory.CreateNotFound(documentId), HttpStatusCode.NotFound);
+                //return NotFound(OperationOutcomeFactory.CreateNotFound(documentId));
             }
 
             //TODO: switch to other types
@@ -69,11 +75,17 @@ namespace Demonstrator.WebApp.Controllers
                 };
 
                 result = new FhirJsonSerializer().SerializeToBytes(binary);
+
+                if (!responseOutputType.Contains("charset"))
+                {
+                    responseOutputType = $"{responseOutputType}; charset={Encoding.UTF8.WebName}";
+                }
             }
             else
             {
                 responseOutputType = outputType;
             }
+
 
             return new FileContentResult(result, responseOutputType);
         }

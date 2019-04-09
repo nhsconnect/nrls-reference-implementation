@@ -87,9 +87,12 @@ namespace Demonstrator.Services.Service.Nrls
             return pointerViewModels;
         }
 
-        public async SystemTasks.Task<Binary> GetPointerDocument(string pointerUrl)
+        public async SystemTasks.Task<Binary> GetPointerDocument(RequestViewModel request, PointerViewModel pointer)
         {
-            var pointerResponse = await _docService.GetPointerDocument(pointerUrl);
+            var pointerUrl = pointer.Content.FirstOrDefault().Attachment.Url;
+            var providerOrgCode = pointer.AuthorViewModel.OrgCode;
+
+            var pointerResponse = await _docService.GetPointerDocument(request.Asid, request.OrgCode, providerOrgCode, pointerUrl);
 
             return pointerResponse as Binary;
         }

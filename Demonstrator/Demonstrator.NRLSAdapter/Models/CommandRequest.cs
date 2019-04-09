@@ -1,4 +1,5 @@
-﻿using Hl7.Fhir.Model;
+﻿using Demonstrator.Models.Core.Models;
+using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Demonstrator.NRLSAdapter.Models
 {
-    public class CommandRequest
+    public class CommandRequest : Request
     {
         public CommandRequest()
         {

@@ -6,8 +6,8 @@
     "DefaultProfile": "https://fhir.nhs.uk/STU3/StructureDefinition/NRLS-DocumentReference-1"
   },
   "SSP": {
-    "ServerUrl": "http://localhost:51913/nrls-ri",
-    "SecureServerUrl": "https://localhost:44313/nrls-ri",
+    "ServerUrl": "http://localhost:51913/nrls-ri/SSP",
+    "SecureServerUrl": "https://localhost:44313/nrls-ri/SSP",
     "Secure": false,
     "SslThumbprint": "b8062eae75405afafb975e126b179ea1211f06c8"
   },

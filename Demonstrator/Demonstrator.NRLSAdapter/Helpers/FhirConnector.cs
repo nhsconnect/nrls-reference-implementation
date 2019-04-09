@@ -1,4 +1,7 @@
 ﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Core.Interfaces.Helpers;
+using Demonstrator.Core.Interfaces.Services.Fhir;
+using Demonstrator.Models.Core.Models;
 using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
@@ -7,8 +10,10 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -17,32 +22,40 @@ using SystemTasks = System.Threading.Tasks;
 
 namespace Demonstrator.NRLSAdapter.Helpers
 {
-    public class FhirConnector
+    public class FhirConnector : IFhirConnector
     {
-        public async SystemTasks.Task<T> RequestOne<T>(CommandRequest request) where T : Resource
-        {
-            var fhirResponse = await Request(request);
+        private readonly ILoggingHelper _loggingHelper;
 
-            return fhirResponse.GetResource<T>();
+        public FhirConnector(ILoggingHelper loggingHelper)
+        {
+            _loggingHelper = loggingHelper;
         }
 
-        public async SystemTasks.Task<FhirResponse> RequestOne(CommandRequest request)
+        public async SystemTasks.Task<Tout> RequestOneFhir<Tin, Tout>(Tin request) where Tin : Request where Tout : Resource
         {
-            var fhirResponse = await Request(request);
+            var fhirResponse = await Request(request as CommandRequest);
 
-            return fhirResponse;
+            return fhirResponse.GetResource<Tout>();
         }
 
-        public async SystemTasks.Task<List<T>> RequestMany<T>(CommandRequest request) where T : Resource
+        public async SystemTasks.Task<Tout> RequestOne<Tin, Tout>(Tin request) where Tin : Request where Tout : Response
+        {
+            var fhirResponse = await Request(request as CommandRequest);
+
+            return fhirResponse as Tout;
+        }
+
+        public async SystemTasks.Task<List<Tout>> RequestMany<Tin, Tout>(Tin request) where Tin : Request where Tout : Resource
         {
 
-            var fhirResponse = await Request(request);
+            var fhirResponse = await Request(request as CommandRequest);
 
-            return fhirResponse.GetResources<T>();
+            return fhirResponse.GetResources<Tout>();
         }
 
         private async SystemTasks.Task<FhirResponse> Request(CommandRequest request)
         {
+            var internalTraceId = Guid.NewGuid();
             var fhirResponse = new FhirResponse();
 
             var handler = GetHandler(request);
@@ -51,13 +64,11 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 var httpRequest = GetMessage(request);
 
-                //TODO logging out
+                //LogRequest(httpRequest, request.Resource, internalTraceId);
 
                 using (HttpResponseMessage res = await client.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead))
                 using (HttpContent content = res.Content)
                 {
-                    //TODO logging in
-
                     //res.EnsureSuccessStatusCode(); //will throw a HttpRequestException to catch in future
 
                     var mediaType = content.Headers.ContentType?.MediaType?.ToLowerInvariant();
@@ -65,16 +76,24 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     if (res.Headers?.Location != null)
                     {
                         fhirResponse.ResponseLocation = res.Headers.Location;
-                    }               
+                    }
 
+                    //TODO: upgrade to core 2.2 and use IHttpClientFactory 
+                    // for delegate handling and retries policy
                     if (!string.IsNullOrEmpty(mediaType) && mediaType.Contains("fhir"))
                     {
-                        ParseResource(content, request, ref fhirResponse);
+                        fhirResponse = await ParseResource(content, request, fhirResponse);
                     }
                     else
                     {
-                        ParseBinary(content, request, ref fhirResponse);
+                        fhirResponse = await ParseBinary(content, request, fhirResponse);
                     }
+
+                    //get content from fhirResponse
+                    //string responseMessage = null;
+
+
+                    //LogResponse(res.Headers, (int)res.StatusCode, responseMessage, internalTraceId);
 
                     if (!res.IsSuccessStatusCode)
                     {
@@ -87,9 +106,9 @@ namespace Demonstrator.NRLSAdapter.Helpers
             return await SystemTasks.Task.Run(() => fhirResponse);
         }
 
-        private void ParseResource(HttpContent content, CommandRequest request, ref FhirResponse fhirResponse)
+        private async SystemTasks.Task<FhirResponse> ParseResource(HttpContent content, CommandRequest request, FhirResponse fhirResponse)
         {
-            var data = content.ReadAsStreamAsync().Result;
+            var data = await content.ReadAsStreamAsync();
 
             if (data == null)
             {
@@ -124,13 +143,15 @@ namespace Demonstrator.NRLSAdapter.Helpers
                     throw new HttpRequestException(ex.Message, ex.InnerException);
                 }
             }
+
+            return fhirResponse;
         }
 
-        private void ParseBinary(HttpContent content, CommandRequest request, ref FhirResponse fhirResponse)
+        private async SystemTasks.Task<FhirResponse> ParseBinary(HttpContent content, CommandRequest request, FhirResponse fhirResponse)
         {
             var binaryResource = new Binary();
 
-            var data = content.ReadAsByteArrayAsync().Result;
+            var data = await content.ReadAsByteArrayAsync();
 
             if (data == null)
             {
@@ -148,6 +169,20 @@ namespace Demonstrator.NRLSAdapter.Helpers
             {
                 throw new HttpRequestException(ex.Message, ex.InnerException);
             }
+
+            return fhirResponse;
+        }
+
+        private void LogRequest(HttpRequestMessage httpRequest, Resource resource, Guid internalTraceId)
+        {
+            var pointerJson = resource != null ? new FhirJsonSerializer().SerializeToString(resource) : string.Empty;
+
+            _loggingHelper.LogHttpRequestMessage(httpRequest.Headers, httpRequest.Version, httpRequest.Method, httpRequest.RequestUri, pointerJson, internalTraceId);
+        }
+
+        private void LogResponse(HttpResponseHeaders headers, int statusCode, string bodyAsText, Guid internalTraceId)
+        {
+            _loggingHelper.LogHttpResponseMessage(headers, statusCode, bodyAsText, internalTraceId);
         }
 
         private HttpClientHandler GetHandler(CommandRequest request)
@@ -189,9 +224,13 @@ namespace Demonstrator.NRLSAdapter.Helpers
                 httpRequest.Headers.Add(header.Key, header.Value);
             }
 
-            if (request.Content != null)
+            if (request.Resource != null)
             {
-                httpRequest.Content = request.Content;
+                //Always default to JSON
+                var pointerJson = new FhirJsonSerializer().SerializeToString(request.Resource);
+                var content = new StringContent(pointerJson, Encoding.UTF8, $"{ContentType.JSON_CONTENT_HEADER }; charset={Encoding.UTF8.WebName}");
+
+                httpRequest.Content = content;
             }
 
             return httpRequest;

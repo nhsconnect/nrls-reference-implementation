@@ -17,22 +17,24 @@ namespace Demonstrator.NRLSAdapter.Organisations
     public class OrganisationServices : IOrganisationServices
     {
         private readonly ExternalApiSetting _odsSettings;
+        private readonly IFhirConnector _fhirConnector;
 
-        public OrganisationServices(IOptions<ExternalApiSetting> externalApiSetting)
+        public OrganisationServices(IOptions<ExternalApiSetting> externalApiSetting, IFhirConnector fhirConnector)
         {
             _odsSettings = externalApiSetting.Value;
+            _fhirConnector = fhirConnector;
         }
 
         public async SystemTasks.Task<Organization> GetOrganisation(string orgCode)
         {
-            var orgs = await new FhirConnector().RequestMany<Organization>(BuildRequest(orgCode));
+            var orgs = await _fhirConnector.RequestMany<CommandRequest, Organization>(BuildRequest(orgCode));
 
             return orgs.First();
         }
 
         public async SystemTasks.Task<List<Organization>> GetOrganisations()
         {
-            var patients = await new FhirConnector().RequestMany<Organization>(BuildRequest(null));
+            var patients = await _fhirConnector.RequestMany<CommandRequest, Organization>(BuildRequest(null));
 
             return patients;
         }

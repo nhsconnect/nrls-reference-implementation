@@ -16,15 +16,17 @@ namespace Demonstrator.NRLSAdapter.Patients
     public class PatientServices : IPatientServices
     {
         private readonly ExternalApiSetting _pdsSettings;
+        private readonly IFhirConnector _fhirConnector;
 
-        public PatientServices(IOptions<ExternalApiSetting> externalApiSetting)
+        public PatientServices(IOptions<ExternalApiSetting> externalApiSetting, IFhirConnector fhirConnector)
         {
             _pdsSettings = externalApiSetting.Value;
+            _fhirConnector = fhirConnector;
         }
 
         public async SystemTasks.Task<Bundle> GetPatientAsBundle(string nhsNumber)
         {
-            var patient = await new FhirConnector().RequestOne<Bundle>(BuildRequest(nhsNumber));
+            var patient = await _fhirConnector.RequestOneFhir<CommandRequest, Bundle>(BuildRequest(nhsNumber));
 
             return patient;
         }
@@ -32,7 +34,7 @@ namespace Demonstrator.NRLSAdapter.Patients
 
         public async SystemTasks.Task<List<Patient>> GetPatients()
         {
-            var patients = await new FhirConnector().RequestMany<Patient>(BuildRequest(null));
+            var patients = await _fhirConnector.RequestMany<CommandRequest, Patient>(BuildRequest(null));
 
             return patients;
         }
