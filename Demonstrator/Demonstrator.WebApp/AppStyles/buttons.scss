@@ -46,5 +46,46 @@
                 color: $white;
             }
         }
+
+        &.btn-scra-blue {
+            background-color: $nhsBlue;
+            border-color: $nhsBlue120;
+            color: $white;
+            border-radius: 0;
+
+            &:hover {
+                background-color: $nhsDarkBlue;
+                border-color: $nhsDarkBlue;
+                color: $white;
+            }
+        }
+
+        &.btn-scra-grey {
+            background-color: $nhsPaleGrey;
+            border-color: $nhsPaleGrey;
+            color: $black;
+            border-radius: 0;
+            box-shadow: -1px 1px 4px rgba(0,0,0,0.4);
+
+            &:hover {
+                background-color: $nhsDarkGrey;
+                border-color: $nhsDarkGrey;
+                color: $nhsPaleGrey;
+                border-radius: 0;
+            }
+        }
+
+        &.btn-scra-blank {
+            background-color: $white;
+            border-color: $white;
+            color: $nhsBlue;
+            border-radius: 0;
+
+            &:hover {
+                background-color: $nhsPaleGrey;
+                border-color: $nhsPaleGrey;
+                color: $black;
+            }
+        }
     }
 }

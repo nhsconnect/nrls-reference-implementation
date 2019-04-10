@@ -79,3 +79,19 @@
         "$date": "2018-05-21T16:30:00.000Z"
     }
 }
+{
+    "_id": {
+        "$oid": "5cac75015de844a79d3d63b8"
+    },
+    "Name": "SCRa",
+    "FModule": "AS-SCRa",
+    "Asid": "200000000119",
+    "Context": "...",
+    "ActionTypes": [
+        "Consumer"
+    ],
+    "IsActive": true,
+    "CreatedOn": {
+        "$date": "2019-03-01T16:30:00.000Z"
+    }
+}

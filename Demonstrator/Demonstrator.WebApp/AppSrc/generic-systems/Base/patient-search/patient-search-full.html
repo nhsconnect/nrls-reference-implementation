@@ -65,7 +65,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-9">
-                                    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Patient Search is disabled in the Demo. Please select a Patient from below.">Find</button>
+                                    <button type="button" class="btn btn-scra-blue" data-toggle="tooltip" data-placement="top" title="Patient Search is disabled in the Demo. Please select a Patient from below.">Find</button>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                         <div class="form-horizontal margin-top-nml">
 
                             <div class="form-group form-group-header">
-                                <label class="col-sm-2 control-label">NHS Number</label>
+                                <label class="col-sm-2 control-label">Find by NHS Number</label>
                             </div>
 
                             <div class="form-group">
@@ -94,9 +94,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Patient</label>
+                                <label class="col-sm-2 control-label"><span class="n-text-red">*</span> NHS Number</label>
                                 <div class="col-sm-8">
-                                    <select show.bind="!nhsNumbersLoading || patientLoading" value.bind="currentPatient" class="form-control">
+                                    <select show.bind="!nhsNumbersLoading || patientLoading" disabled.bind="patientLoading" value.bind="currentPatient" class="form-control">
                                         <option value="">--select--</option>
                                         <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
                                     </select>
@@ -107,15 +107,14 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-9">
-                                    <button type="button" class="btn btn-info" click.delegate="setPatient()">View</button>
+                                    <span class="pull-left padding-right-lrg"><button type="button" disabled.bind="patientLoading" class="btn btn-scra-blue" click.delegate="setPatient()">Find</button></span>
+                                    <span class="pull-left"><spinner-msg message="Searching for Patient" logic.one-way="patientLoading"></spinner-msg></span>
                                 </div>
                             </div>
                         </div>
                     </td>
                 </tr>
             </tbody>
-        </table>
-
-        <spinner-msg message="Searching for Patient" logic.one-way="patientLoading"></spinner-msg>
+        </table>    
     </form>
 </template>

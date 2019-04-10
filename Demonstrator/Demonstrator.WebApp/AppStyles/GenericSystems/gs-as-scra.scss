@@ -1,0 +1,97 @@
+﻿.generic-system-wrapper {
+    &.gs-as-scra {
+        min-height: 650px;
+
+        .gs-patient-banner {
+            &.gs-banner-scra {
+                color: $white;
+                background-color: $nhsBlue;
+                height: auto;
+                line-height: 2.5em;
+                padding: 0 15px;
+                margin: 0 15px;
+                width: calc(100% - 30px);
+            }
+        }
+
+        .gs-content {
+            background-color: $nhsBlue40;
+
+            &.gs-content-narrow {
+                padding: 0;
+            }
+
+            .tab-pane {
+                padding: 15px 15px 0;
+                background-color: $white;
+            }
+
+            .nav-tabs {
+                padding: 0 15px;
+            }
+
+            &.gs-content-search {
+
+                .search-header {
+                    padding: 0 30px;
+                }
+            }
+        }
+
+        .gs-details-panel {
+            display: block;
+            border: 1px solid $nhsDarkGrey80;
+            padding: 15px;
+            margin: 10px 0 10px 0;
+            background-color: $nhsPaleGrey;
+
+            .detail-divider {
+                border-top-color: $nhsDarkGrey80;
+            }
+
+            table {
+                color: $nhsDarkGrey;
+                font-size: 10pt;
+
+                .detail-label {
+                    text-align: right;
+                    border: none;
+                    padding-right: 20px;
+                    width: 37%;
+                }
+
+                .data {
+                    border-top: none;
+                    border-bottom: 1px solid $nhsDarkGrey80;
+                }
+            }
+        }
+
+        .gs-details-panel-container {
+            .row {
+                &:last-of-type {
+                    margin-bottom: 20px;
+                }
+            }
+        }
+
+        .table {
+            &.nrls-pointer-results {
+                border-color: $nhsDarkGrey80 !important;
+                color: $nhsDarkGrey;
+
+                th {
+                    background-color: $nhsPaleGrey;
+                    color: $nhsDarkGrey;
+                    border-color: $nhsDarkGrey80;
+                }
+
+                td {
+                    background-color: $nhsPaleGrey95;
+                    color: $nhsDarkGrey;
+                    border-color: $nhsDarkGrey80;
+                }
+            }
+        }
+    }
+}

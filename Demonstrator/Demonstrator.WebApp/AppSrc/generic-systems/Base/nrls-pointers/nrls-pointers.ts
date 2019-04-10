@@ -26,6 +26,9 @@ export class NrlsPointers {
     @bindable({ defaultBindingMode: bindingMode.oneWay })
     request?: IRequest;
 
+    @bindable
+    showTitle: boolean = true;
+
     systemErrorSubscription: Subscription;
 
     constructor(private pointerSvc: PointerSvc, private configSvc: ConfigSvc, private ea: EventAggregator) { }

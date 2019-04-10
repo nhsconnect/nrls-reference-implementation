@@ -81,7 +81,7 @@ export class App {
 
     configureRouter(config: RouterConfiguration, router: Router) {
 
-        config.title = 'NRLS Interactive Guide';
+        config.title = 'NRL Interactive Guide';
         config.options.hashChange = false;
         config.options.pushState = true;
         config.options.route = this.appConfig.baseUrl;

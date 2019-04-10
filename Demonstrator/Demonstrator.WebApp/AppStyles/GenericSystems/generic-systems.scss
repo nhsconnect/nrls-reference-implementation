@@ -43,6 +43,27 @@
             }
         }
 
+
+        &.gs-header-short {
+            height: 30px;
+            font-size: 0.9em;
+
+            .gs-top-menu {
+                height: 30px;
+
+                li {
+                    height: 30px;
+                    line-height: 30px;
+                    margin: 0 10px 0 0;
+                }
+            }
+
+            .gs-menu-title {
+                height: 30px;
+                line-height: 30px;
+            }
+        }
+
         .gs-title {
             display: inline-block;
             width: 39%;

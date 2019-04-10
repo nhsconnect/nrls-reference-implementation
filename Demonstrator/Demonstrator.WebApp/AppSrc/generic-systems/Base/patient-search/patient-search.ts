@@ -44,6 +44,7 @@ export class PatientSearch {
 
     setPatient() {
         this.selectedPatient = this.currentPatient;
+        this.currentPatient = undefined;
     }
 
     detached() {

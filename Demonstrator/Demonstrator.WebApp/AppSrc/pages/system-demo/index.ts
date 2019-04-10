@@ -30,7 +30,7 @@ export class Personnel {
         this.systemsLoading = true;
         this.getSystem().then(done => {
 
-            this.heading = `Demonstration system for a ${this.genericSystem.name}`;
+            this.heading = `Demonstration system for ${this.genericSystem.name}`;
 
             this.getPersonnel().then(done => {
                 this.getOrganisation(this.personnel.actorOrganisationId).then(done => {
