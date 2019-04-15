@@ -1,0 +1,65 @@
+{
+  "_id": {
+    "$oid": "5cadb9a908747cf2f814f473"
+  },
+  "PartyKey":"26590ac1032548bd8a3e2ccaf7999684",
+  "Fqdn": "localhost:55448/consumer/AMS01/",
+  "EndPoints": ["http://localhost:55448/consumer/AMS01/"],
+  "OdsCode":"AMS01",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary"],
+  "Asid":"200000000115",
+  "Thumbprint": "",
+  "Active": true
+}
+{
+  "_id": {
+    "$oid": "5cadb9b308747cf2f814f474"
+  },
+  "PartyKey":"c319a5ebfd4c4b988f0496a062e951bc",
+  "Fqdn": "localhost:55448",
+  "EndPoints": ["http://localhost:55448/consumer/AMS01/"],
+  "OdsCode":"AMS01",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary"],
+  "Asid":"200000000116",
+  "Thumbprint": "",
+  "Active": true
+}
+{
+  "_id": {
+    "$oid": "5cadb9bd08747cf2f814f475"
+  },
+  "PartyKey":"db80c8241bf640d5b8f3dfd7d7da7da9",
+  "Fqdn": "localhost:55448",
+  "EndPoints": ["http://localhost:55448/consumer/AMS01/"],
+  "OdsCode":"AMS01",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary"],
+  "Asid":"200000000117",
+  "Thumbprint": "",
+  "Active": true
+}
+{
+  "_id": {
+    "$oid": "5cadb9c508747cf2f814f476"
+  },
+  "PartyKey":"2dc081e4fb314b528eca6019fcb7308b",
+  "Fqdn": "localhost:55448",
+  "EndPoints": ["http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary"],
+  "OdsCode":"MHT01",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:create:binary"],
+  "Asid":"200000000118",
+  "Thumbprint": "",
+  "Active": true
+}
+{
+  "_id": {
+    "$oid": "5cadb9cf08747cf2f814f477"
+  },
+  "PartyKey":"9ad485a722954aaaaa693604ade99baf",
+  "Fqdn": "localhost:55448",
+  "EndPoints": ["http://localhost:55448/consumer/AMS01/"],
+  "OdsCode":"AMS01",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:careconnect:fhir:rest:read:binary"],
+  "Asid":"200000000119",
+  "Thumbprint": "",
+  "Active": true
+}

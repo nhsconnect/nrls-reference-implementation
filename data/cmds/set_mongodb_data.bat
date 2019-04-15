@@ -28,9 +28,9 @@ echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits, NrlsPoi
 
 mongo admin --eval "db=db.getSiblingDB('%MONGODB_APPLICATION_DATABASE%');db.auth('%MONGODB_APPLICATION_USER%','%MONGODB_APPLICATION_PASS%');db.Personnel.drop();db.ActorOrganisation.drop();db.GenericSystem.drop();db.Benefits.drop();db.NrlsPointerMaps.drop();db.MedicalRecords.drop();quit()"
 
-echo "=> Dropping Patient, Organization, DocumentReference from %MONGODB_NRLS_DATABASE%"
+echo "=> Dropping Patient, Organization, DocumentReference, Sds from %MONGODB_NRLS_DATABASE%"
 
-mongo admin --eval "db=db.getSiblingDB('%MONGODB_NRLS_DATABASE%');db.auth('%MONGODB_NRLS_USER%','%MONGODB_NRLS_PASS%');db.Patient.drop();db.Organization.drop();db.DocumentReference.drop();quit()"
+mongo admin --eval "db=db.getSiblingDB('%MONGODB_NRLS_DATABASE%');db.auth('%MONGODB_NRLS_USER%','%MONGODB_NRLS_PASS%');db.Patient.drop();db.Organization.drop();db.DocumentReference.drop();db.Sds.drop();quit()"
 
 echo "=> Importing Default Data from %~dp0..\defaultdata\"
 
@@ -55,6 +55,9 @@ echo "=> Organization IMPORTED"
 
 mongoimport -c DocumentReference -d %MONGODB_NRLS_DATABASE% -u %MONGODB_NRLS_USER% -p %MONGODB_NRLS_PASS% --mode insert --file %~dp0..\defaultdata\DocumentReference.json
 echo "=> DocumentReference IMPORTED" 
+
+mongoimport -c Sds -d %MONGODB_NRLS_DATABASE% -u %MONGODB_NRLS_USER% -p %MONGODB_NRLS_PASS% --mode insert --file %~dp0..\defaultdata\Sds.json
+echo "=> Sds IMPORTED" 
 
 REM END Data Import
 

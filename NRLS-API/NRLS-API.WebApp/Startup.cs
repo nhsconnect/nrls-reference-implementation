@@ -112,7 +112,6 @@ namespace NRLS_API.WebApp
             services.Configure<SpineSetting>(options =>
             {
                 options.Asid = Configuration.GetSection("Spine:Asid").Value;
-                options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAsidMapFile").Value;
                 options.Thumbprint = Configuration.GetSection("Spine:Thumbprint").Value;
                 options.ThumbprintKey = Configuration.GetSection("Spine:ThumbprintKey").Value;
             });
@@ -131,6 +130,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<IFhirSearchHelper, FhirSearchHelper>();
             services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
             services.AddTransient<ISspProxyService, SspProxyService>();
+            services.AddTransient<ISdsService, SdsService>();
 
         }
 
@@ -143,7 +143,7 @@ namespace NRLS_API.WebApp
                 ExceptionHandler = new FhirExceptionMiddleware(env, nrlsApiSettings).Invoke
             });
 
-            app.UseCors(builder => builder.WithOrigins(new[] { "*" }).WithMethods(new[]{ "GET", "POST", "PUT", "DELETE" }).AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins(new[] { "*" }).WithMethods(new[] { "GET", "POST", "PUT", "DELETE" }).AllowAnyHeader());
 
             app.UseClientInteractionCacheMiddleware();
 
@@ -151,7 +151,7 @@ namespace NRLS_API.WebApp
 
             app.MapWhen(cxt => cxt.Request.Path.Value.StartsWith("/nrls-ri/SSP"), HandleSspRequests);
 
-            app.UseFhirInputMiddleware();
+            app.UseFhirRequestOutputMiddleware();
             //app.UseFhirOuputMiddleware();
 
             app.UseStaticFiles(new StaticFileOptions
@@ -162,12 +162,12 @@ namespace NRLS_API.WebApp
             //app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.RoutePrefix = "nrls-ri";
-                c.SwaggerEndpoint("/nrls-ri/Resources/swagger.json", "NRLS Reference Implementation");
+                c.SwaggerEndpoint("/nrls-ri/Resources/swagger.json", "NRL Reference Implementation");
                 c.InjectStylesheet("/nrls-ri/Resources/swagger-custom.css");
                 c.DefaultModelsExpandDepth(-1);
                 c.EnableDeepLinking();
                 c.IndexStream = () =>   File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "swagger-ui-index.html")).BaseStream;
-                c.DocumentTitle = "NRLS API Reference Implementation - Explore with Swagger";
+                c.DocumentTitle = "NRL API Reference Implementation - Explore with Swagger";
             });
 
             //handle compression as per spec

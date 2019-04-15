@@ -21,14 +21,14 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private readonly RequestDelegate _next;
         private readonly SpineSetting _spineSettings;
         private ApiSetting _nrlsApiSettings;
-        private IMemoryCache _cache;
+        private ISdsService _sdsService;
         private readonly INrlsValidation _nrlsValidation;
 
-        public SpineAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IMemoryCache memoryCache, INrlsValidation nrlsValidation)
+        public SpineAuthorizationMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, ISdsService sdsService, INrlsValidation nrlsValidation)
         {
             _next = next;
             _spineSettings = spineSettings.Value;
-            _cache = memoryCache;
+            _sdsService = sdsService;
             _nrlsValidation = nrlsValidation;
         }
 
@@ -56,7 +56,9 @@ namespace NRLS_API.WebApp.Core.Middlewares
             }
 
             var fromASID = GetHeaderValue(headers, FhirConstants.HeaderFromAsid);
-            if (string.IsNullOrEmpty(fromASID) || GetFromAsidMap(fromASID) == null)
+            var clientCache = _sdsService.GetFor(fromASID);
+
+            if (clientCache == null)
             {
                 SetError(FhirConstants.HeaderFromAsid, null);
             }
@@ -88,23 +90,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
             }
 
             return headerValue;
-        }
-
-        private ClientAsid GetFromAsidMap(string fromASID)
-        {
-            ClientAsidMap clientAsidMap;
-
-            if (!_cache.TryGetValue<ClientAsidMap>(ClientAsidMap.Key, out clientAsidMap))
-            {
-                return null;
-            }
-
-            if (clientAsidMap.ClientAsids == null || !clientAsidMap.ClientAsids.ContainsKey(fromASID))
-            {
-                return null;
-            }
-
-            return clientAsidMap.ClientAsids[fromASID];
         }
 
         private void SetError(string header, string diagnostics)

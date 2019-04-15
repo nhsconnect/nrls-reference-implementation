@@ -19,8 +19,7 @@
   },
   "Spine": {
     "Asid": "999999999999",
-    "SslThumbprint": "b8062eae75405afafb975e126b179ea1211f06c8",
-    "ClientAisMapFile": "Shared/ClientAsidMap.json"
+    "SslThumbprint": "b8062eae75405afafb975e126b179ea1211f06c8"
   },
   "DemonstratorApi": {
     "BaseUrl": "://localhost",

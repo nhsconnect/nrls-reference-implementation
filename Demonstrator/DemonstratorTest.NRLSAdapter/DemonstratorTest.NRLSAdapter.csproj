@@ -19,8 +19,4 @@
     <ProjectReference Include="..\DemonstratorTest.Data\DemonstratorTest.Data.csproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\Shared\copyconfig $(ProjectDir) /Y /I" />
-  </Target>
-
 </Project>

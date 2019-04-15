@@ -5,6 +5,7 @@ using Demonstrator.Models.DataModels.Epr;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Demonstrator.Models.DataModels.Base;
 
 namespace Demonstrator.Database
 {
@@ -64,6 +65,14 @@ namespace Demonstrator.Database
             get
             {
                 return _database.GetCollection<Benefit>("Benefits");
+            }
+        }
+
+        public IMongoCollection<Sds> Sds
+        {
+            get
+            {
+                return _database.GetCollection<Sds>("Sds");
             }
         }
     }

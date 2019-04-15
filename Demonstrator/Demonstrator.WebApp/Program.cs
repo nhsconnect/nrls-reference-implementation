@@ -1,7 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using Demonstrator.Core.Configuration;
+using Demonstrator.Core.Helpers;
 using Demonstrator.Models.Core.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,7 @@ namespace Demonstrator.WebApp
         public static IWebHost BuildWebHost(string[] args)
         {
 
-            var config = ConfigurationHelper.GetConfigurationRoot();
+            var config = GetConfigurationRoot();
 
             ApiSetting apiSettings = new ApiSetting();
             config.GetSection("DemonstratorApi").Bind(apiSettings);
@@ -79,6 +80,29 @@ namespace Demonstrator.WebApp
                 .UseStartup<Startup>()
                 .Build();
         }
+
+        public static IConfiguration GetConfigurationRoot()
+        {
+            IConfiguration configuration = null;
+
+            var basePath = DirectoryHelper.GetBaseDirectory();
+
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: true);
+
+            if (!string.IsNullOrEmpty(environmentName))
+            {
+                configurationBuilder = configurationBuilder.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
+            }
+
+            configuration = configurationBuilder.Build();
+
+            return configuration;
+        }
+
 
         private static X509Certificate2 ServerCertificate()
         {

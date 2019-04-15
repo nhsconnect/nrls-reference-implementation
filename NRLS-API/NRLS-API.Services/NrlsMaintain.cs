@@ -21,13 +21,13 @@ namespace NRLS_API.Services
     {
         private readonly IFhirMaintain _fhirMaintain;
         private readonly IFhirSearch _fhirSearch;
-        private readonly IMemoryCache _cache;
+        private readonly ISdsService _sdsService;
         private readonly IFhirValidation _fhirValidation;
 
-        public NrlsMaintain(IOptionsSnapshot<ApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, IMemoryCache memoryCache, IFhirValidation fhirValidation) : base(nrlsApiSetting, "NrlsApiSetting")
+        public NrlsMaintain(IOptionsSnapshot<ApiSetting> nrlsApiSetting, IFhirMaintain fhirMaintain, IFhirSearch fhirSearch, ISdsService sdsService, IFhirValidation fhirValidation) : base(nrlsApiSetting, "NrlsApiSetting")
         {
             _fhirMaintain = fhirMaintain;
-            _cache = memoryCache;
+            _sdsService = sdsService;
             _fhirSearch = fhirSearch;
             _fhirValidation = fhirValidation;
         }
@@ -68,7 +68,7 @@ namespace NRLS_API.Services
 
             var custodianOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
 
-            var invalidAsid = InvalidAsid(custodianOrgCode, request.RequestingAsid, true);
+            var invalidAsid = InvalidAsid(custodianOrgCode, request.RequestingAsid);
 
             if (invalidAsid != null)
             {
@@ -269,7 +269,7 @@ namespace NRLS_API.Services
 
                 var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
 
-                var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid, false);
+                var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid);
 
                 if (invalidAsid != null)
                 {
@@ -349,20 +349,15 @@ namespace NRLS_API.Services
             updateRequest = FhirRequest.Create(oldDocumentId, ResourceType.DocumentReference);
         }
 
-        private OperationOutcome InvalidAsid(string orgCode, string asid, bool isCreate)
+        private OperationOutcome InvalidAsid(string orgCode, string asid)
         {
-            var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
+            var cache = _sdsService.GetFor(asid);
 
-            if (!string.IsNullOrEmpty(asid) && map != null && map.ClientAsids != null)
+            if(cache != null && !string.IsNullOrEmpty(orgCode) && !string.IsNullOrEmpty(cache.OdsCode) && cache.OdsCode == orgCode)
             {
-                var asidMap = map.ClientAsids.FirstOrDefault(x => x.Key == asid);
-
-                if(asidMap.Value != null && !string.IsNullOrEmpty(orgCode) && !string.IsNullOrEmpty(asidMap.Value.OrgCode) && asidMap.Value.OrgCode == orgCode)
-                {
-                    return null;
-                }
+                return null;
             }
-
+            
             return OperationOutcomeFactory.CreateInvalidResource(FhirConstants.HeaderFromAsid, "The Custodian ODS code is not affiliated with the sender ASID.");
 
         }

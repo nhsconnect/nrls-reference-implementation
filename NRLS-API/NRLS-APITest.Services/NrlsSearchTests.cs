@@ -14,6 +14,7 @@ using NRLS_API.Core.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 using NRLS_APITest.StubClasses;
 using NRLS_API.Core.Resources;
+using NRLS_API.Models.ViewModels.Core;
 
 namespace NRLS_APITest.Services
 {
@@ -23,7 +24,7 @@ namespace NRLS_APITest.Services
         private IFhirValidation _fhirValidation;
         private IFhirSearch _fhirSearch;
         private IOptionsSnapshot<NrlsApiSetting> _nrlsApiSettings;
-        IMemoryCache _cache;
+        private ISdsService _sdsService;
 
         private Bundle _expectedBundle;
 
@@ -151,19 +152,14 @@ namespace NRLS_APITest.Services
 
             };
 
-            var clientMapCache = new ClientAsidMap
-            {
-                ClientAsids = new Dictionary<string, ClientAsid>()
-                {
-                    { "000", new ClientAsid { Interactions = new List<string>() { FhirConstants.CreateInteractionId }, OrgCode = "TestOrgCode", Thumbprint = "TestThumbprint" } },
-                    { "002", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode2", Thumbprint = "TestThumbprint" } },
-                    { "003", new ClientAsid { Interactions = new List<string>(), OrgCode = "RV99", Thumbprint = "TestThumbprint" } }
+            var sdsMock = new Mock<ISdsService>();
+            sdsMock.Setup(op => op.GetFor(It.IsAny<string>())).Returns((SdsViewModel)null);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "000"))).Returns(SdsViewModels.SdsAsid000);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "002"))).Returns(SdsViewModels.SdsAsid002);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "003"))).Returns(SdsViewModels.SdsAsid003);
+            //sdsMock.Setup(op => op.GetFor(It.IsAny<string>(), null)).Returns((SdsViewModel)null);
 
-                }
-            };
-
-            var cacheMock = MemoryCacheStub.MockMemoryCacheService.GetMemoryCache(clientMapCache);
-            _cache = cacheMock;
+            _sdsService = sdsMock.Object;
         }
 
         public void Dispose()
@@ -172,14 +168,14 @@ namespace NRLS_APITest.Services
             _fhirSearch = null;
             _nrlsApiSettings = null;
             _expectedBundle = null;
-            _cache = null;
+            _sdsService = null;
         }
 
 
         [Fact]
         public async void Find_Read_Valid()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Read) as Bundle;
 
@@ -189,7 +185,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Find_Read_Invalid_Id()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             await Assert.ThrowsAsync<HttpFhirException>(async () => { var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_EmptyId); });
 
@@ -199,7 +195,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void Find_Read_Invalid_Params()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_TooManyParams); });
         }
@@ -207,7 +203,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Find_Search_Valid()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Search) as Bundle;
 
@@ -217,7 +213,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void Find_Search_Invalid()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find<DocumentReference>(FhirRequests.Invalid_Search); });
         }
@@ -229,7 +225,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Find_Search_Valid_Summary()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Search_Summary) as Bundle;
 
@@ -239,7 +235,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void Find_Search_Invalid_Summary()
         {
-            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _cache, _fhirValidation);
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
 
             Assert.ThrowsAsync<HttpFhirException>(async () => 

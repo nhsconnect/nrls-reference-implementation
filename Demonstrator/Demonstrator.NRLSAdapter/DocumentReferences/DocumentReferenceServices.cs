@@ -1,6 +1,8 @@
-﻿using Demonstrator.Core.Interfaces.Services.Fhir;
+﻿using Demonstrator.Core.Interfaces.Services;
+using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.Nrls;
+using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.NRLSAdapter.Helpers.Models;
 using Demonstrator.NRLSAdapter.Models;
@@ -23,14 +25,14 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
     {
         private readonly ExternalApiSetting _spineSettings;
         private readonly ApiSetting _apiSettings;
-        private readonly IMemoryCache _cache;
+        private readonly ISdsService _sdsService;
         private readonly IFhirConnector _fhirConnector;
 
-        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting, IMemoryCache cache, IFhirConnector fhirConnector)
+        public DocumentReferenceServices(IOptions<ExternalApiSetting> externalApiSetting, IOptions<ApiSetting> apiSetting, ISdsService sdsService, IFhirConnector fhirConnector)
         {
             _spineSettings = externalApiSetting.Value;
             _apiSettings = apiSetting.Value;
-            _cache = cache;
+            _sdsService = sdsService;
             _fhirConnector = fhirConnector;
         }
 
@@ -100,7 +102,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
                 Method = method,
                 //Content = content,
                 UseSecure = _spineSettings.NrlsUseSecure,
-                ClientThumbprint = ClientSettings(asid)?.Thumbprint,
+                ClientThumbprint = _sdsService.GetFor(asid)?.Thumbprint,
                 ServerThumbprint = _spineSettings.SpineThumbprint
             };
 
@@ -139,13 +141,6 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             }
 
             return searchParams;
-        }
-
-        private ClientAsid ClientSettings(string asid)
-        {
-            var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
-
-            return map.ClientAsids.FirstOrDefault(x => !string.IsNullOrEmpty(asid) && x.Key == asid).Value;
         }
 
         private string SystemUrlBase

@@ -190,7 +190,7 @@
                   {
                     "attachment": {
                       "contentType": "application/pdf",
-                      "url": "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
+                      "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/5aba0f464f02ced4c7eb16c4",
                       "title": "Mental health Care Plan Report",
                       "creation": "2016-03-08T15:26:00+00:00"
                     }

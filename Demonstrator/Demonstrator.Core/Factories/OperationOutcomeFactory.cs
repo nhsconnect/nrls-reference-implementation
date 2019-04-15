@@ -138,6 +138,21 @@ namespace Demonstrator.Core.Factories
 
         }
 
+        public static OperationOutcome CreateGenericError(string additionalDiagnostics = null)
+        {
+
+            var details = CreateDetails("BAD_REQUEST", "Bad request");
+            var diagnostics = $"The request has failed.";
+
+            if (!string.IsNullOrEmpty(additionalDiagnostics))
+            {
+                diagnostics = $"{diagnostics} Reason: {additionalDiagnostics}";
+            }
+
+            return CreateError(diagnostics, details);
+
+        }
+
         public static OperationOutcome CreateNotFound(string id)
         {
 

@@ -47,6 +47,7 @@ db.auth('$MONGODB_NRLS_USER','$MONGODB_NRLS_PASS')
 db.Patient.drop()
 db.Organization.drop()
 db.DocumentReference.drop()
+db.Sds.drop()
 EOF
 
 echo "=> Importing Default Data from ${MONGODB_DEFAULT_DATA_PATH}"
@@ -66,6 +67,8 @@ mongoimport -c Patient -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGO
 echo "=> Patient IMPORTED"
 mongoimport -c DocumentReference -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGODB_NRLS_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}DocumentReference.json
 echo "=> DocumentReference IMPORTED" 
+mongoimport -c Sds -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGODB_NRLS_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Sds.json
+echo "=> Sds IMPORTED" 
 # END Data Import
 
 echo "=> Data setup complete"

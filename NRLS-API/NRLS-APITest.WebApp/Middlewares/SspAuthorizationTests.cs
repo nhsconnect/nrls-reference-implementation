@@ -8,6 +8,7 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
+using NRLS_API.Models.ViewModels.Core;
 using NRLS_API.WebApp.Core.Middlewares;
 using NRLS_APITest.Data;
 using NRLS_APITest.StubClasses;
@@ -23,7 +24,7 @@ namespace NRLS_APITest.WebApp.Middlewares
     {
         private IOptions<SpineSetting> _spineSettings;
         private IOptionsSnapshot<NrlsApiSetting> _nrlsSettings;
-        private IMemoryCache _cache;
+        private ISdsService _sdsService;
         private readonly INrlsValidation _nrlsValidation;
 
         public SspAuthorizationTests()
@@ -44,18 +45,13 @@ namespace NRLS_APITest.WebApp.Middlewares
             nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Read), It.IsAny<string>())).Returns(new Response(true));
             nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Write), It.IsAny<string>())).Returns(new Response());
 
-            var clientMapCache = new ClientAsidMap
-            {
-                ClientAsids = new Dictionary<string, ClientAsid>()
-                {
-                    { "000", new ClientAsid { Interactions = new List<string>{ "urn:nhs:names:services:nrls:fhir:rest:read:documentreference" }, OrgCode = "TestOrgCode", Thumbprint = "TestThumbprint" } },
-                    { "002", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode2", Thumbprint = "TestThumbprint" } }
+            var sdsMock = new Mock<ISdsService>();
+            sdsMock.Setup(op => op.GetFor(It.IsAny<string>())).Returns((SdsViewModel)null);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "000"))).Returns(SdsViewModels.SdsAsid000);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "002"))).Returns(SdsViewModels.SdsAsid002);
 
-                }
-            };
 
-            _cache = MemoryCacheStub.MockMemoryCacheService.GetMemoryCache(clientMapCache);
-
+            _sdsService = sdsMock.Object;
             _spineSettings = spineSettingsMock.Object;
             _nrlsSettings = nrlsSettingsMock.Object;
             _nrlsValidation = nrlsValidationMock.Object;
@@ -65,7 +61,7 @@ namespace NRLS_APITest.WebApp.Middlewares
         {
             _spineSettings = null;
             _nrlsSettings = null;
-            _cache = null;
+            _sdsService = null;
         }
 
         [Fact]
@@ -86,7 +82,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             //Test will fail if invalid
             await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
@@ -107,7 +103,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -132,7 +128,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -156,7 +152,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -181,7 +177,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -205,7 +201,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -230,7 +226,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+            var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -239,53 +235,55 @@ namespace NRLS_APITest.WebApp.Middlewares
             });
         }
 
-        [Fact]
-        public void Invalid_Header_SspInterationId_Missing()
-        {
-            var requestMock = new Mock<HttpRequest>();
-            requestMock.Setup(x => x.Method).Returns("GET");
-            requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Removed SspInterationId Header 
-            {
-                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
-                { FhirConstants.HeaderFromAsid, "000" },
-                { FhirConstants.HeaderToAsid, "999" }
-            });
+        //Interaction ids are currently not required - might be changed though
 
-            var contextMock = new Mock<HttpContext>();
-            contextMock.Setup(x => x.Request).Returns(requestMock.Object);
+        //[Fact]
+        //public void Invalid_Header_SspInterationId_Missing()
+        //{
+        //    var requestMock = new Mock<HttpRequest>();
+        //    requestMock.Setup(x => x.Method).Returns("GET");
+        //    requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() //Removed SspInterationId Header 
+        //    {
+        //        { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
+        //        { FhirConstants.HeaderFromAsid, "000" },
+        //        { FhirConstants.HeaderToAsid, "999" }
+        //    });
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+        //    var contextMock = new Mock<HttpContext>();
+        //    contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            Assert.ThrowsAsync<HttpFhirException>(async delegate
-            {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
+        //    var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
-            });
-        }
+        //    Assert.ThrowsAsync<HttpFhirException>(async delegate
+        //    {
+        //        await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
 
-        [Fact]
-        public void Invalid_Header_SspInterationId_Invalid()
-        {
-            var requestMock = new Mock<HttpRequest>();
-            requestMock.Setup(x => x.Method).Returns("GET");
-            requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() // Used invalid value for the SspInterationId header
-            {
-                { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
-                { FhirConstants.HeaderFromAsid, "000" },
-                { FhirConstants.HeaderToAsid, "999" },
-                { FhirConstants.HeaderSspInterationId, FhirConstants.SearchInteractionId }
-            });
+        //    });
+        //}
 
-            var contextMock = new Mock<HttpContext>();
-            contextMock.Setup(x => x.Request).Returns(requestMock.Object);
+        //[Fact]
+        //public void Invalid_Header_SspInterationId_Invalid()
+        //{
+        //    var requestMock = new Mock<HttpRequest>();
+        //    requestMock.Setup(x => x.Method).Returns("GET");
+        //    requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary() // Used invalid value for the SspInterationId header
+        //    {
+        //        { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
+        //        { FhirConstants.HeaderFromAsid, "000" },
+        //        { FhirConstants.HeaderToAsid, "999" },
+        //        { FhirConstants.HeaderSspInterationId, FhirConstants.SearchInteractionId }
+        //    });
 
-            var sspAuthorizationMiddleware = new SspAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, memoryCache: _cache, nrlsValidation: _nrlsValidation);
+        //    var contextMock = new Mock<HttpContext>();
+        //    contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            Assert.ThrowsAsync<HttpFhirException>(async delegate
-            {
-                await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
+        //    var sspAuthorizationMiddleware = new SpineAuthorizationMiddleware(next: (innerHttpContext) => Task.FromResult(0), spineSettings: _spineSettings, sdsService: _sdsService, nrlsValidation: _nrlsValidation);
 
-            });
-        }
+        //    Assert.ThrowsAsync<HttpFhirException>(async delegate
+        //    {
+        //        await sspAuthorizationMiddleware.Invoke(contextMock.Object, _nrlsSettings);
+
+        //    });
+        //}
     }
 }

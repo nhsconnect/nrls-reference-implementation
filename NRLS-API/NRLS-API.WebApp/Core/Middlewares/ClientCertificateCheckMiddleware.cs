@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
-using NRLS_API.Core.Helpers;
+using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using System;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -20,13 +16,13 @@ namespace NRLS_API.WebApp.Core.Middlewares
     public class ClientCertificateCheckMiddleware
     {
         private readonly RequestDelegate _next;
-        private IMemoryCache _cache;
+        private ISdsService _sdsService;
         private ApiSetting _nrlsApiSetting;
 
-        public ClientCertificateCheckMiddleware( RequestDelegate next, IMemoryCache memoryCache)
+        public ClientCertificateCheckMiddleware( RequestDelegate next, ISdsService sdsService)
         {
             _next = next;
-            _cache = memoryCache;
+            _sdsService = sdsService;
         }
 
         public async Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> apiSettings)
@@ -37,7 +33,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             if (_nrlsApiSetting.Secure && context.Request.IsHttps)
             {
-                var clientAsidMap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
+                //var clientAsidMap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
                 var clientCertificate = context.Connection.ClientCertificate;
 
                 using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
@@ -59,17 +55,13 @@ namespace NRLS_API.WebApp.Core.Middlewares
                     }
 
                     //Check client ASID Thumbprint against Supplied Certificate Thumbprint
-                    var clientmap = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
+                    var client = _sdsService.GetFor(fromAsid);
 
-                    if (clientmap != null)
+                    if (client == null || (client.Thumbprint.ToLowerInvariant() != clientCertificate.Thumbprint.ToLowerInvariant()))
                     {
-                        var client = clientmap.ClientAsids.FirstOrDefault(x => x.Key == fromAsid);
-
-                        if (client.Value != null && client.Value.Thumbprint.ToLowerInvariant() != clientCertificate.Thumbprint.ToLowerInvariant())
-                        {
-                            SetError();
-                        }
+                        SetError();
                     }
+                    
 
                 }
             }

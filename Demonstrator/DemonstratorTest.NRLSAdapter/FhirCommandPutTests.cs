@@ -72,23 +72,23 @@ namespace DemonstratorTest.NRLSAdapter
         //    Assert.False(fhirParse.Success);
         //}
 
-        [Fact]
-        public void Invalid_Method_Returns_Fail()
-        {
-            var validArgs = new string[] {
-                "--resource",
-                "DocumentReference",
-                "--method",
-                "PUT",
-                "--body",
-                "{'OrgCode': 'MHT01','NhsNumber': '3656987882','Url': 'http://example.org/xds/mhd/Binary/test12345.pdf','ContentType': 'application/pdf','TypeCode': '718347001','TypeDisplay': 'Mental health care plan','Creation': '2018-04-02T11:15:45+00:00'}"
-            };
+        //[Fact]
+        //public void Invalid_Method_Returns_Fail()
+        //{
+        //    var validArgs = new string[] {
+        //        "--resource",
+        //        "DocumentReference",
+        //        "--method",
+        //        "PUT",
+        //        "--body",
+        //        "{'OrgCode': 'MHT01','NhsNumber': '3656987882','Url': 'http://example.org/xds/mhd/Binary/test12345.pdf','ContentType': 'application/pdf','TypeCode': '718347001','TypeDisplay': 'Mental health care plan','Creation': '2018-04-02T11:15:45+00:00'}"
+        //    };
 
-            var fhirCommand = new FhirCommand(validArgs);
+        //    var fhirCommand = new FhirCommand(validArgs);
 
-            var fhirArgs = fhirCommand.StoreValidOptions();
-            Assert.False(fhirArgs.Success);
-        }
+        //    var fhirArgs = fhirCommand.StoreValidOptions();
+        //    Assert.False(fhirArgs.Success);
+        //}
 
     }
 }

@@ -9,13 +9,13 @@ using System;
 using System.Collections.Generic;
 using SystemTasks = System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.Caching.Memory;
 using NRLS_API.Core.Exceptions;
 using NRLS_APITest.StubClasses;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using NRLS_API.Models.ViewModels.Core;
 
 namespace NRLS_APITest.Services
 {
@@ -24,7 +24,7 @@ namespace NRLS_APITest.Services
         IOptionsSnapshot<NrlsApiSetting> _nrlsApiSettings;
         IFhirMaintain _fhirMaintain;
         IFhirSearch _fhirSearch;
-        IMemoryCache _cache;
+        ISdsService _sdsService;
         IFhirValidation _fhirValidation;
 
         public NrlsMaintainTests()
@@ -95,24 +95,19 @@ namespace NRLS_APITest.Services
 
             validationMock.Setup(op => op.GetSubjectReferenceId(It.IsAny<ResourceReference>())).Returns("2686033207");
 
-            var clientMapCache = new ClientAsidMap
-            {
-                ClientAsids = new Dictionary<string, ClientAsid>()
-                {
-                    { "000", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode", Thumbprint = "TestThumbprint" } },
-                    { "002", new ClientAsid { Interactions = new List<string>(), OrgCode = "TestOrgCode2", Thumbprint = "TestThumbprint" } },
-                    { "003", new ClientAsid { Interactions = new List<string>(), OrgCode = "RV99", Thumbprint = "TestThumbprint" } }
+            var sdsMock = new Mock<ISdsService>();
+            sdsMock.Setup(op => op.GetFor(It.IsAny<string>())).Returns((SdsViewModel)null);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "000"))).Returns(SdsViewModels.SdsAsid000);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "002"))).Returns(SdsViewModels.SdsAsid002);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "003"))).Returns(SdsViewModels.SdsAsid003);
 
-                }
-            };
-
-            var cacheMock = MemoryCacheStub.MockMemoryCacheService.GetMemoryCache(clientMapCache);
 
             _nrlsApiSettings = settingsMock.Object;
             _fhirMaintain = maintMock.Object;
             _fhirSearch = searchMock.Object;
             _fhirValidation = validationMock.Object;
-            _cache = cacheMock;
+            _sdsService = sdsMock.Object;
+
         }
 
         public void Dispose()
@@ -121,13 +116,13 @@ namespace NRLS_APITest.Services
             _fhirMaintain = null;
             _fhirSearch = null;
             _fhirValidation = null;
-            _cache = null;
+            _sdsService = null;
         }
 
         [Fact]
         public void BuildCreate_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = service.SetMetaValues(FhirRequests.Valid_Create);
 
@@ -143,7 +138,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildCreate_InvalidVersion()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = service.SetMetaValues(FhirRequests.Valid_Create);
 
@@ -158,7 +153,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildSupersede_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
@@ -174,7 +169,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildSupersede_ValidVersion()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
@@ -193,7 +188,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildSupersede_ValidVersionNull()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
@@ -212,7 +207,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildSupersede_ValidVersionAlt()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
@@ -231,7 +226,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void BuildSupersede_InvalidVersion()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             Assert.Throws<HttpFhirException>(delegate
             {
@@ -246,7 +241,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Create_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.CreateWithoutValidation<DocumentReference>(FhirRequests.Valid_Create);
 
@@ -256,7 +251,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Create_Invalid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.CreateWithoutValidation<DocumentReference>(FhirRequests.Invalid_Custodian);
 
@@ -282,7 +277,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateCreate_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create);
 
@@ -293,7 +288,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void ValidateCreate_Invalid_Pointer()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
@@ -309,7 +304,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateCreate_Invalid_Asid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create_Alt);
 
@@ -319,7 +314,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateCreate_Invalid_Custodian()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Invalid_Custodian);
 
@@ -329,7 +324,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateCreate_Invalid_MasterIdentifier()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create_MasterId);
 
@@ -339,7 +334,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Valid_Update);
 
@@ -349,7 +344,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Valid_NoRelatesTo()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Valid_Create);
 
@@ -359,7 +354,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Invalid_BadResourceType()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var request = FhirRequests.Valid_Update;
             request.Resource = new Patient();
@@ -387,7 +382,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Invalid_RelatesTo()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Invalid_Update_Bad_RelatesTo);
 
@@ -412,7 +407,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Invalid_RelatesTo_NotFound()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Valid_Update_Alt2);
 
@@ -437,7 +432,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Invalid_Incorrect_Custodian()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Valid_Update_Alt);
 
@@ -462,7 +457,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ValidateConditionalUpdate_Invalid_Status()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.ValidateConditionalUpdate(FhirRequests.Invalid_Update_Bad_Status);
 
@@ -487,7 +482,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Supersede_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1339", "1");
 
@@ -497,7 +492,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Supersede_Invalid_Create()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1338", "1");
 
@@ -519,7 +514,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Supersede_Invalid_Update()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1337", "1");
 
@@ -541,7 +536,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Supersede_Fatal_ThrowsException()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var exception = await Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -568,7 +563,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Delete_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete);
 
@@ -580,7 +575,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Delete_Invalid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete_Alt);
 
@@ -592,7 +587,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void Delete_Invalid_Id()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
@@ -607,7 +602,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void Delete_Invalid_Asid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete_Alt);
 
@@ -619,7 +614,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ConditionalDelete_Valid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.Delete<DocumentReference>(FhirRequests.Valid_ConditionalDelete);
 
@@ -631,7 +626,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public async void ConditionalDelete_Invalid()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete);
 
@@ -643,7 +638,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void ConditionalDelete_Invalid_Subject()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -657,7 +652,7 @@ namespace NRLS_APITest.Services
         [Fact]
         public void ConditionalDelete_Invalid_Identifier()
         {
-            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _cache, _fhirValidation);
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate

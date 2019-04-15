@@ -9,17 +9,19 @@ namespace Demonstrator.WebApp.Core.Middlewares
     public class ClientInteractionCacheMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IClientAsidHelper _clientAsidHelper;
+        private readonly ISdsService _sdsService;
 
-        public ClientInteractionCacheMiddleware(RequestDelegate next, IClientAsidHelper clientAsidHelper)
+        public ClientInteractionCacheMiddleware(RequestDelegate next, ISdsService sdsService)
         {
             _next = next;
-            _clientAsidHelper = clientAsidHelper;
+            _sdsService = sdsService;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            _clientAsidHelper.Load();
+            var entries = _sdsService.GetAllFromSource();
+
+            entries = null;
 
             await _next(context);
         }

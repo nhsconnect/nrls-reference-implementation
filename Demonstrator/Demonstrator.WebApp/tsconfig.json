@@ -23,6 +23,7 @@
     "wwwroot",
     "obj",
     "bin",
-    "pdf.js"
+    "pdf.js",
+    "html.js"
   ]
 }

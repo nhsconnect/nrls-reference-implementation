@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Core.Factories;
 using Demonstrator.Core.Interfaces.Helpers;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
@@ -97,7 +98,14 @@ namespace Demonstrator.NRLSAdapter.Helpers
 
                     if (!res.IsSuccessStatusCode)
                     {
-                        throw new HttpFhirException("Request resulted in an error.", fhirResponse.GetResource<OperationOutcome>(), res.StatusCode);
+                        var diagnostics = $"{res.StatusCode} encountered for the URL {httpRequest.RequestUri.AbsoluteUri}";
+
+                        var errorResource =
+                            (fhirResponse.Resource.ResourceType != ResourceType.OperationOutcome) ?
+                                OperationOutcomeFactory.CreateGenericError(diagnostics) :
+                                fhirResponse.GetResource<OperationOutcome>();
+
+                        throw new HttpFhirException("Request resulted in an error.", errorResource, res.StatusCode);
                     }
                 }
             }

@@ -31,15 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demonstrator.NRLSAdapter", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonstratorTest.NRLSAdapter", "DemonstratorTest.NRLSAdapter\DemonstratorTest.NRLSAdapter.csproj", "{5021E502-1CA7-4FDC-9981-0D36339C8CBB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{78264688-1E04-4B75-B932-873DE3C7E212}"
-	ProjectSection(SolutionItems) = preProject
-		Shared\ClientAsidMap.json = Shared\ClientAsidMap.json
-		Shared\globalsettings.json = Shared\globalsettings.json
-		Shared\globalsettings.Production.json = Shared\globalsettings.Production.json
-		Shared\globalsettings.Staging.json = Shared\globalsettings.Staging.json
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonstratorTest.Services", "DemonstratorTest.Services\DemonstratorTest.Services.csproj", "{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemonstratorTest.StubClasses", "DemonstratorTest.StubClasses\DemonstratorTest.StubClasses.csproj", "{49195819-F445-4B97-93F9-3D7B99B3C226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +93,10 @@ Global
 		{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F517CD8A-BE1F-4556-B9FC-DF5FA2180731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49195819-F445-4B97-93F9-3D7B99B3C226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49195819-F445-4B97-93F9-3D7B99B3C226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49195819-F445-4B97-93F9-3D7B99B3C226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49195819-F445-4B97-93F9-3D7B99B3C226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +109,7 @@ Global
 		{D568188C-49BA-4C3D-893A-2BA195CAB47E} = {A839F794-B857-40A3-824A-086BD7C000F4}
 		{5021E502-1CA7-4FDC-9981-0D36339C8CBB} = {C0820D03-C690-4DC7-81A9-2273A435241B}
 		{F517CD8A-BE1F-4556-B9FC-DF5FA2180731} = {C0820D03-C690-4DC7-81A9-2273A435241B}
+		{49195819-F445-4B97-93F9-3D7B99B3C226} = {A839F794-B857-40A3-824A-086BD7C000F4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B72AAA04-C35D-4BFF-A4BF-123D548D6675}

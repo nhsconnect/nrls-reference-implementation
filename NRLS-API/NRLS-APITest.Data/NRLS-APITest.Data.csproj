@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NRLS-API.Core\NRLS-API.Core.csproj" />
     <ProjectReference Include="..\NRLS-API.Models\NRLS-API.Models.csproj" />
     <ProjectReference Include="..\NRLS-APITest.TestModels\NRLS-APITest.TestModels.csproj" />
   </ItemGroup>

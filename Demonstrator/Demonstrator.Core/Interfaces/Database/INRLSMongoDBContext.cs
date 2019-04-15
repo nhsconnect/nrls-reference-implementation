@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Models.DataModels.Flows;
 using Demonstrator.Models.DataModels.Epr;
 using MongoDB.Driver;
+using Demonstrator.Models.DataModels.Base;
 
 namespace Demonstrator.Core.Interfaces.Database
 {
@@ -17,5 +18,7 @@ namespace Demonstrator.Core.Interfaces.Database
         IMongoCollection<CrisisPlan> CrisisPlans { get; }
 
         IMongoCollection<Benefit> Benefits { get; }
+
+        IMongoCollection<Sds> Sds { get; }
     }
 }

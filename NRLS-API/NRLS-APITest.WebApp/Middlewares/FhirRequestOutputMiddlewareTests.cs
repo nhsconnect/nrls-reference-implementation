@@ -15,7 +15,7 @@ using Xunit;
 
 namespace NRLS_APITest.WebApp.Middlewares
 {
-    public class FhirInputMiddlewareTests
+    public class FhirRequestOutputMiddlewareTests
     {
 
         string _validFormat = "application/fhir%2Bjson";
@@ -43,7 +43,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
             await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
@@ -75,7 +75,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
             await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
@@ -104,7 +104,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
             await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
@@ -136,7 +136,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             //Test will fail if invalid
             await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
@@ -168,7 +168,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             await fhirInputMiddleware.Invoke(contextMock.Object, settingsMock.Object);
         }
@@ -199,7 +199,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
@@ -234,7 +234,7 @@ namespace NRLS_APITest.WebApp.Middlewares
             var contextMock = new Mock<HttpContext>();
             contextMock.Setup(x => x.Request).Returns(requestMock.Object);
 
-            var fhirInputMiddleware = new FhirInputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var fhirInputMiddleware = new FhirRequestOutputMiddleware(next: (innerHttpContext) => Task.FromResult(0));
 
 
             Assert.ThrowsAsync<HttpFhirException>(async delegate

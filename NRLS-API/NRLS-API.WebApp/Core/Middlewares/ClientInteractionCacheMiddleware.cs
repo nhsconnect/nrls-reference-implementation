@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using NRLS_API.Core.Helpers;
-using NRLS_API.Models.Core;
+using NRLS_API.Core.Interfaces.Services;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace NRLS_API.WebApp.Core.Middlewares
@@ -14,35 +9,21 @@ namespace NRLS_API.WebApp.Core.Middlewares
     public class ClientInteractionCacheMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly SpineSetting _spineSettings;
-        private IMemoryCache _cache;
+        private ISdsService _sdsService;
 
-        public ClientInteractionCacheMiddleware(RequestDelegate next, IOptions<SpineSetting> spineSettings, IMemoryCache memoryCache)
+        public ClientInteractionCacheMiddleware(RequestDelegate next, ISdsService sdsService)
         {
             _next = next;
-            _spineSettings = spineSettings.Value;
-            _cache = memoryCache;
+            _sdsService = sdsService;
         }
 
         public async Task Invoke(HttpContext context)
         {
             //Fake SSP Interaction/ASID datastore
 
-            ClientAsidMap clientAsidMap;
-            if (!_cache.TryGetValue<ClientAsidMap>(ClientAsidMap.Key, out clientAsidMap))
-            {
-                var basePath = DirectoryHelper.GetBaseDirectory();
+            var entries = _sdsService.GetAll();
 
-                using (StreamReader interactionFile = File.OpenText(Path.Combine(basePath, _spineSettings.ClientAsidMapFile)))
-                {
-                    var serializer = new JsonSerializer();
-                    clientAsidMap = (ClientAsidMap)serializer.Deserialize(interactionFile, typeof(ClientAsidMap));
-
-                    // Save data in cache.
-                    _cache.Set(ClientAsidMap.Key, clientAsidMap);
-                }
-            }
-
+            entries = null;
 
             await _next.Invoke(context);
             return;

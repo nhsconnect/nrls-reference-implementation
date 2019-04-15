@@ -83,7 +83,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Shared\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -178,10 +177,5 @@
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers-table.ts" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\Shared\copyconfig $(ProjectDir) /Y /I" />
-    <Message Text="Starting PreBuild Events..." />
-  </Target>
 
 </Project>

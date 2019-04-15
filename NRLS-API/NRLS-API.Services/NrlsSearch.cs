@@ -1,5 +1,4 @@
 ﻿using Hl7.Fhir.Model;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using NRLS_API.Core.Exceptions;
@@ -8,10 +7,8 @@ using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
-using System;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NRLS_API.Services
@@ -19,13 +16,13 @@ namespace NRLS_API.Services
     public class NrlsSearch : FhirBase, INrlsSearch
     {
         private readonly IFhirSearch _fhirSearch;
-        private readonly IMemoryCache _cache;
+        private readonly ISdsService _sdsService;
         private readonly IFhirValidation _fhirValidation;
 
-        public NrlsSearch(IOptionsSnapshot<ApiSetting> apiSetting, IFhirSearch fhirSearch, IMemoryCache memoryCache, IFhirValidation fhirValidation) : base(apiSetting, "NrlsApiSetting")
+        public NrlsSearch(IOptionsSnapshot<ApiSetting> apiSetting, IFhirSearch fhirSearch, ISdsService sdsService, IFhirValidation fhirValidation) : base(apiSetting, "NrlsApiSetting")
         {
             _fhirSearch = fhirSearch;
-            _cache = memoryCache;
+            _sdsService = sdsService;
             _fhirValidation = fhirValidation;
         }
 
@@ -125,12 +122,13 @@ namespace NRLS_API.Services
                     throw new HttpFhirException("Missing or Invalid custodian parameter", invalidOrg, HttpStatusCode.NotFound);
                 }
 
-                var invalidOrgInteraction = ValidateOrganisationInteraction(request.RequestingAsid, custodianOrgCode, true);
+                //This is now out of scope
+                //var invalidOrgInteraction = ValidateOrganisationInteraction(request.RequestingAsid, custodianOrgCode, true);
 
-                if (invalidOrgInteraction != null)
-                {
-                    throw new HttpFhirException("Invalid Provider Request Exception", invalidOrgInteraction, HttpStatusCode.Unauthorized);
-                }
+                //if (invalidOrgInteraction != null)
+                //{
+                //    throw new HttpFhirException("Invalid Provider Request Exception", invalidOrgInteraction, HttpStatusCode.Unauthorized);
+                //}
             }
 
             var type = request.QueryParameters.FirstOrDefault(x => x.Item1 == "type.coding");
@@ -180,31 +178,28 @@ namespace NRLS_API.Services
         {
             var providerInteractions = new string[] { FhirConstants.CreateInteractionId, FhirConstants.UpdateInteractionId, FhirConstants.DeleteInteractionId };
 
-            var map = _cache.Get<ClientAsidMap>(ClientAsidMap.Key);
+            var cache = _sdsService.GetFor(asid);
 
-            if (!string.IsNullOrEmpty(asid) && map != null && map.ClientAsids != null)
+            if (cache != null)
             {
-                var asidMap = map.ClientAsids.FirstOrDefault(x => x.Key == asid);
 
-                if (asidMap.Value != null)
+                var valid = false;
+
+                if (!string.IsNullOrEmpty(orgCode) && !string.IsNullOrEmpty(cache.OdsCode) && cache.OdsCode == orgCode)
                 {
-                    var valid = false;
-
-                    if (!string.IsNullOrEmpty(orgCode) && !string.IsNullOrEmpty(asidMap.Value.OrgCode) && asidMap.Value.OrgCode == orgCode)
-                    {
-                        valid = true;
-                    }
-
-                    if(isProviderCheck && (asidMap.Value.Interactions == null || !asidMap.Value.Interactions.Any(x => providerInteractions.Contains(x))))
-                    {
-                        valid = false;
-                    }
-
-                    if (valid)
-                    {
-                        return null;
-                    }
+                    valid = true;
                 }
+
+                if(isProviderCheck && (cache.Interactions == null || !cache.Interactions.Any(x => providerInteractions.Contains(x))))
+                {
+                    valid = false;
+                }
+
+                if (valid)
+                {
+                    return null;
+                }
+                
             }
 
             return OperationOutcomeFactory.CreateAccessDenied();

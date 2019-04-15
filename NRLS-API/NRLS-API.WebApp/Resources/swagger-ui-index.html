@@ -104,6 +104,11 @@
           authHeader.exp = exp;
 
           request.headers.Authorization = 'Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.' + b64EncodeUnicode(JSON.stringify(authHeader)) + '.';
+
+          if (request.url.substring(0, 17) == "https://localhost") {
+              request.url = request.url.replace("https://localhost", "http://localhost");
+          }
+
           return request;
       }
 

@@ -7,7 +7,6 @@ using Demonstrator.NRLSAdapter.Patients;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Services.Service.Flows;
 using Demonstrator.NRLSAdapter.DocumentReferences;
-using Demonstrator.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +25,7 @@ using Demonstrator.Core.Interfaces.Helpers;
 using Demonstrator.Core.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Demonstrator.Services.Service.Base;
 
 namespace Demonstrator.WebApp
 {
@@ -33,9 +33,9 @@ namespace Demonstrator.WebApp
     {
         public IConfiguration Configuration { get; }
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            Configuration = ConfigurationHelper.GetConfigurationRoot();
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -81,7 +81,6 @@ namespace Demonstrator.WebApp
 
                 options.SpineAsid = Configuration.GetSection("Spine:Asid").Value;
                 options.SpineThumbprint = Configuration.GetSection("Spine:SslThumbprint").Value;
-                options.ClientAsidMapFile = Configuration.GetSection("Spine:ClientAisMapFile").Value;
             });
             services.AddTransient<INRLSMongoDBContext, NRLSMongoDBContext>();
             services.AddTransient<IActorOrganisationService, ActorOrganisationService>();
@@ -96,11 +95,11 @@ namespace Demonstrator.WebApp
             services.AddTransient<IBenefitsService, BenefitsService>(); 
             services.AddTransient<IBenefitsViewService, BenefitsViewService>();
             services.AddTransient<IPointerMapService, PointerMapService>();
-            services.AddTransient<IClientAsidHelper, ClientAsidHelper>();
             services.AddTransient<IDocumentsServices, DocumentsServices>();
             services.AddTransient<IJwtHelper, JwtHelper>();
             services.AddTransient<IFhirConnector, FhirConnector>();
             services.AddTransient<ILoggingHelper, LoggingHelper>();
+            services.AddTransient<ISdsService, SdsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -40,6 +40,5 @@ namespace Demonstrator.Models.Core.Models
 
         public string SpineThumbprint { get; set; }
 
-        public string ClientAsidMapFile { get; set; }
     }
 }

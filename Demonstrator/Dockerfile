@@ -6,10 +6,6 @@ WORKDIR /app
 # Copy all of solution
 COPY . ./
 
-# Set permissions on file used for MSBuild pre-build script
-# Error thrown without this.
-RUN chmod +x ./Shared/copyconfig
-
 # Restore Solution
 RUN dotnet restore Demonstrator.WebApp/Demonstrator.WebApp.csproj
 
@@ -26,17 +22,6 @@ RUN dotnet publish Demonstrator.WebApp/Demonstrator.WebApp.csproj -c Release -o 
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY --from=build-env /app/Demonstrator.WebApp/out .
-
-# Re-Copy shared config. File is lost during transfer from images.
-WORKDIR /app/Shared
-COPY --from=build-env /app/Shared/globalsettings.json .
-COPY --from=build-env /app/Shared/globalsettings.Production.json .
-COPY --from=build-env /app/Shared/globalsettings.Staging.json .
-COPY --from=build-env /app/Shared/ClientAsidMap.json .
-RUN chmod 644 ./globalsettings.json
-RUN chmod 644 ./globalsettings.Staging.json
-RUN chmod 644 ./globalsettings.Production.json
-RUN chmod 644 ./ClientAsidMap.json
 
 WORKDIR /app
 

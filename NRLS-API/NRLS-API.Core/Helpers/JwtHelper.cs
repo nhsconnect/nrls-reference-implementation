@@ -10,20 +10,21 @@ using NRLS_API.Models.Core;
 using Microsoft.Extensions.Caching.Memory;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Interfaces.Helpers;
+using NRLS_API.Core.Interfaces.Services;
 
 namespace NRLS_API.Core.Helpers
 {
     public class JwtHelper : IJwtHelper
     {
-        private IMemoryCache _cache;
+        private ISdsService _sdsService;
 
         private string[] _validClaims = { "iss", "sub", "aud", "exp", "iat", "reason_for_request", "scope", "requesting_system", "requesting_organization", "requesting_user" };
 
         private string[] _validScopes = { "patient/DocumentReference.read", "patient/DocumentReference.write" };
 
-        public JwtHelper(IMemoryCache memoryCache)
+        public JwtHelper(ISdsService sdsService)
         {
-            _cache = memoryCache;
+            _sdsService = sdsService;
         }
 
         public Response IsValid(string jwt, JwtScopes reqScope, DateTime? tokenIssued = null)
@@ -203,7 +204,7 @@ namespace NRLS_API.Core.Helpers
                 return new Response($"requesting_system ({reqSys.Value}) must be of the form [{FhirConstants.SystemASID}|[ASID]]");
             }
 
-            var fromAsidMap = GetFromAsidMap(fromAsid);
+            var fromAsidMap = _sdsService.GetFor(fromAsid);
 
             if (fromAsidMap == null)
             {
@@ -251,13 +252,13 @@ namespace NRLS_API.Core.Helpers
                 return new Response($"requesting_organisation ({reqOrg.Value}) must be of the form [{FhirConstants.SystemOrgCode}|[ODSCode]");
             }
 
-            if (!IsOrgInMap(orgCode))
+            if (_sdsService.GetFor(orgCode, null) == null)
             {
                 return new Response($"The ODS code defined in the requesting_organisation({orgCode}) is unknown");
             }
 
             // ### requesting_organization against requesting_system checks
-            if (fromAsidMap.OrgCode != orgCode)
+            if (fromAsidMap.OdsCode != orgCode)
             {
                 return new Response($"requesting_system ASID ({fromAsid}) is not associated with the requesting_organisation ODS code ({orgCode})");
             }
@@ -272,51 +273,10 @@ namespace NRLS_API.Core.Helpers
             return Encoding.UTF8.GetString(Convert.FromBase64String(partHash.PadRight(partHash.Length + (4 - partHash.Length % 4) % 4, '=')));
         }
 
-        private bool IsOrgInMap(string orgCode)
-        {
-            var clientAsidMap = GetAsidMap();
-
-            if (clientAsidMap != null && clientAsidMap.ClientAsids.Any(d => d.Value != null && !string.IsNullOrEmpty(orgCode) && d.Value.OrgCode == orgCode))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private ClientAsid GetFromAsidMap(string fromASID)
-        {
-
-            var clientAsidMap = GetAsidMap();
-
-            if (clientAsidMap == null || !clientAsidMap.ClientAsids.ContainsKey(fromASID))
-            {
-                return null;
-            }
-
-            return clientAsidMap.ClientAsids[fromASID];
-        }
-
         private string BaseErrorMessage(string claimName)
         {
             return $"The mandatory claim {claimName} from the JWT associated with the Authorisation header is missing";
         }
 
-        private ClientAsidMap GetAsidMap()
-        {
-            ClientAsidMap clientAsidMap;
-
-            if (!_cache.TryGetValue<ClientAsidMap>(ClientAsidMap.Key, out clientAsidMap))
-            {
-                return null;
-            }
-
-            if(clientAsidMap.ClientAsids == null)
-            {
-                return null;
-            }
-
-            return clientAsidMap;
-        }
     }
 }
