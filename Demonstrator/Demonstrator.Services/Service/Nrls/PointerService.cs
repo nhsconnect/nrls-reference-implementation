@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Core.Exceptions;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.Nrls;
 using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.Models.ViewModels.Factories;
@@ -9,6 +10,7 @@ using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.Services.Service.Base;
 using Hl7.Fhir.Model;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +20,16 @@ namespace Demonstrator.Services.Service.Nrls
 {
     public class PointerService : BaseFhirService, IPointerService
     {
+        private readonly ApiSetting _apiSetting;
         private readonly IDocumentReferenceServices _docRefService;
         private readonly IDocumentsServices _docService;
         private readonly IPatientServices _patientService;
         private readonly IOrganisationServices _organisationServices;
         private readonly IMemoryCache _cache;
 
-        public PointerService(IDocumentReferenceServices docRefService, IPatientServices patientService, IOrganisationServices organisationServices, IMemoryCache cache, IDocumentsServices docService)
+        public PointerService(IOptions<ApiSetting> apiSetting, IDocumentReferenceServices docRefService, IPatientServices patientService, IOrganisationServices organisationServices, IMemoryCache cache, IDocumentsServices docService)
         {
+            _apiSetting = apiSetting.Value;
             _docRefService = docRefService;
             _patientService = patientService;
             _organisationServices = organisationServices;
@@ -59,7 +63,7 @@ namespace Demonstrator.Services.Service.Nrls
 
             foreach (var pointer in pointers)
             {
-                var pointerViewModel = pointer.ToViewModel();
+                var pointerViewModel = pointer.ToViewModel(DefaultUrlBase, PointerUrlBase);
                 var patientNhsNumber = pointerViewModel.Subject?.Reference?.Replace(FhirConstants.SystemPDS, "");
                 var authorOrgCode = pointerViewModel.Author?.Reference?.Replace(FhirConstants.SystemODS, "");
                 var custodianOrgCode = pointerViewModel.Custodian?.Reference?.Replace(FhirConstants.SystemODS, "");
@@ -119,6 +123,24 @@ namespace Demonstrator.Services.Service.Nrls
             {
                 // Save data in cache.
                 _cache.Set($"Pointers:{nhsNumber}", new PatientPointers { Pointers = pointers }, new TimeSpan(0,30,0));
+            }
+        }
+
+        private string PointerUrlBase
+        {
+            get
+            {
+                return $"{(_apiSetting.Secure ? "https" : "http")}{_apiSetting.BaseUrl}:{(_apiSetting.Secure ? _apiSetting.SecurePort : _apiSetting.DefaultPort)}/";
+            }
+        }
+
+        //DocRefs created in //repo/data/defaultdata/DocumentReference.json 
+        //have attachment.url's starting with this url base
+        private string DefaultUrlBase
+        {
+            get
+            {
+                return $"http{_apiSetting.BaseUrl}:{_apiSetting.DefaultPort}/";
             }
         }
 

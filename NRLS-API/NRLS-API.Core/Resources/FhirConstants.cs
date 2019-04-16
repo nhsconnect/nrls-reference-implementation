@@ -43,6 +43,9 @@
 
         public const string HeaderSspTradeId = "Ssp-TraceID";
 
+        public const string HeaderSspFromAsid = "Ssp-From";
+
+        public const string HeaderSspToAsid = "Ssp-To";
 
         //JWT
         public const string JwtClientSysIssuer = "iss";

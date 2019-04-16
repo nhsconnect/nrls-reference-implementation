@@ -8,9 +8,16 @@ namespace Demonstrator.Models.ViewModels.Factories
 {
     public static class DocumentReferenceFactoryExt
     {
+        private static string _defaultUrlBase;
+
+        private static string _pointerUrlBase;
+
         //TODO : Set up test
-        public static PointerViewModel ToViewModel(this DocumentReference documentReference)
+        public static PointerViewModel ToViewModel(this DocumentReference documentReference, string defaultUrlBase, string pointerUrlBase)
         {
+            _defaultUrlBase = defaultUrlBase;
+            _pointerUrlBase = pointerUrlBase;
+
             var viewModel = new PointerViewModel
             {
                 Content = documentReference.Content.ToContentViewModelList(),
@@ -50,7 +57,7 @@ namespace Demonstrator.Models.ViewModels.Factories
                     ContentType = attachment.ContentType,
                     Creation = attachment.CreationElement?.ToDateTimeOffset(),
                     Title = attachment.Title,
-                    Url = attachment.Url
+                    Url = (attachment.Url.StartsWith(_defaultUrlBase)) ? $"{_pointerUrlBase}{attachment.Url.Substring(_defaultUrlBase.Length)}" : attachment.Url
                 }
             };
 

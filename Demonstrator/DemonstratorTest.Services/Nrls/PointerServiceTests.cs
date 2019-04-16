@@ -12,6 +12,8 @@ using Demonstrator.Models.ViewModels.Base;
 using DemonstratorTest.Comparer;
 using Demonstrator.Models.ViewModels.Nrls;
 using DemonstratorTest.StubClasses;
+using Demonstrator.Models.Core.Models;
+using Microsoft.Extensions.Options;
 
 namespace DemonstratorTest.Services.Nrls
 {
@@ -49,7 +51,20 @@ namespace DemonstratorTest.Services.Nrls
             _documentServices.Setup(m => m.GetPointerDocument(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(SystemTasks.Task.Run(() => MongoBinaries.Binaries.FirstOrDefault(x => x.Id == pdfBinaryId) as Resource)).Verifiable();
 
 
-            var pointerService = new PointerService(_docRefService.Object, _patientService.Object, _organisationServices.Object, cacheMock, _documentServices.Object);
+            var opts = new ApiSetting
+            {
+                BaseUrl = "://localhost",
+                DefaultPort = "55448",
+                Secure = false,
+                SecureOnly = false,
+                SecurePort = "55443",
+                SupportedContentTypes = new List<string> { "application/fhir+json" }
+            };
+
+            var _apiSettings = new Mock<IOptions<ApiSetting>>();
+            _apiSettings.Setup(op => op.Value).Returns(opts);
+
+            var pointerService = new PointerService(_apiSettings.Object, _docRefService.Object, _patientService.Object, _organisationServices.Object, cacheMock, _documentServices.Object);
 
             var request = RequestViewModel.Create(testNhsNumber);
             request.Asid = testAsid;

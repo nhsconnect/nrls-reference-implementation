@@ -16,12 +16,12 @@ using SystemTasks = System.Threading.Tasks;
 
 namespace NRLS_API.WebApp.Core.Middlewares
 {
-    public class SspProxyMiddleware
+    public class SspProxyRequestMiddleware
     {
         private readonly RequestDelegate _next;
         private ApiSetting _sspApiSettings;
 
-        public SspProxyMiddleware(RequestDelegate next)
+        public SspProxyRequestMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -65,11 +65,11 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
     }
 
-    public static class SspProxyMiddlewareExtensions
+    public static class SspProxyRequestMiddlewareExtensions
     {
-        public static IApplicationBuilder UseSspProxyMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseSspProxyRequestMiddleware(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<SspProxyMiddleware>();
+            return builder.UseMiddleware<SspProxyRequestMiddleware>();
         }
     }
 }
