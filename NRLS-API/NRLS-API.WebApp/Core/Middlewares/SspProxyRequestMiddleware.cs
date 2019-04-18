@@ -28,19 +28,14 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
         public async SystemTasks.Task Invoke(HttpContext context, IOptionsSnapshot<ApiSetting> apiSettings, ISspProxyService _sspProxyService)
         {
-            //TODO: sds looup = mapping file
-            //TODO: ssl check
-            //TODO: url check
-            //TODO: headers check (asid, auth, etc)
-
             _sspApiSettings = apiSettings.Get("SspApiSetting");
 
             var request = new CommandRequest();
 
-            var forwardingUrl = context.Request.Path.Value.Replace("/nrls-ri/SSP/", "");
+            var forwardingUrl = context.Request.Path.Value.Replace($"{_sspApiSettings.BasePath}/", "");
 
             request.Headers = context.Request.Headers.Select(h => KeyValuePair.Create(h.Key, string.Join("; ", (h.Value.ToList()))));
-            request.Method = HttpMethod.Get; //could be more types in future
+            request.Method = HttpMethod.Get; //could be more types in future, so fetch from context
             request.ForwardUrl = new Uri(WebUtility.UrlDecode(forwardingUrl));
             request.Forwarded = new Forwarded
             {

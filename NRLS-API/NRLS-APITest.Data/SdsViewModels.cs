@@ -30,7 +30,7 @@ namespace NRLS_APITest.Data
                     OdsCode = "TestOrgCode",
                     Interactions = new List<string> { FhirConstants.ReadInteractionId },
                     Thumbprint = "TestThumbprint",
-                    Id = "TestId000"
+                    Id = "5cb5fd22c892d7e5f291190a"
                 };
             }
         }
@@ -45,7 +45,7 @@ namespace NRLS_APITest.Data
                     OdsCode = "TestOrgCode2",
                     Interactions = new List<string>(),
                     Thumbprint = "TestThumbprint",
-                    Id = "TestId002"
+                    Id = "5cb5fdbdc892d7e5f291190b"
                 };
             }
         }
@@ -60,7 +60,7 @@ namespace NRLS_APITest.Data
                     OdsCode = "RV99",
                     Interactions = new List<string>(),
                     Thumbprint = "TestThumbprint",
-                    Id = "TestId003"
+                    Id = "5cb5fdcac892d7e5f291190c"
                 };
             }
         }
@@ -75,7 +75,7 @@ namespace NRLS_APITest.Data
                     OdsCode = "ORG1",
                     Interactions = new List<string>(),
                     Thumbprint = "TestThumbprint",
-                    Id = "TestId20000000017"
+                    Id = "5cb5fdd5c892d7e5f291190d"
                 };
             }
         }

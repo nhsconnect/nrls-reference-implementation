@@ -23,5 +23,21 @@ namespace NRLS_APITest.Data
                 };
             }
         }
+
+        public static ApiSetting SspApiSettings
+        {
+            get
+            {
+                return new ApiSetting
+                {
+                    BaseUrl = "://localhost.com",
+                    BasePath = "/nrls-ri/SSP",
+                    Secure = false,
+                    SecureOnly = false,
+                    DefaultPort = "51913",
+                    SecurePort = "44313"
+                };
+            }
+        }
     }
 }

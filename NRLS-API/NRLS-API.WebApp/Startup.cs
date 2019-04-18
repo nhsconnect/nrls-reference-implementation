@@ -131,6 +131,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
             services.AddTransient<ISspProxyService, SspProxyService>();
             services.AddTransient<ISdsService, SdsService>();
+            services.AddTransient<IHttpRequestHelper, HttpRequestHelper>();
 
         }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Moq;
@@ -11,23 +10,20 @@ using NRLS_API.Models.Core;
 using NRLS_API.Models.ViewModels.Core;
 using NRLS_API.WebApp.Core.Middlewares;
 using NRLS_APITest.Data;
-using NRLS_APITest.StubClasses;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace NRLS_APITest.WebApp.Middlewares
 {
-    public class SspAuthorizationTests : IDisposable
+    public class SpineAuthorizationTests : IDisposable
     {
         private IOptions<SpineSetting> _spineSettings;
         private IOptionsSnapshot<NrlsApiSetting> _nrlsSettings;
         private ISdsService _sdsService;
         private readonly INrlsValidation _nrlsValidation;
 
-        public SspAuthorizationTests()
+        public SpineAuthorizationTests()
         {
             var spineSettings = new SpineSetting
             {

@@ -5,6 +5,33 @@ namespace NRLS_APITest.Data
 {
     public class HttpContexts
     {
+        public static HttpContext Valid_Search
+        {
+            get
+            {
+                var context = new DefaultHttpContext();
+                context.Request.Scheme = "http";
+                context.Request.Host = new HostString("www.testhost.com");
+                context.Request.Path = new PathString("/testpath");
+                context.Request.Method = HttpMethods.Get;
+                context.Request.Headers["fromASID"] = "000";
+                context.Request.Headers["toASID"] = "toASID";
+
+                return context;
+            }
+        }
+
+        public static HttpContext NotFound_Search
+        {
+            get
+            {
+                var context = Valid_Search;
+                context.Request.Headers["fromASID"] = "notfound";
+
+                return context;
+            }
+        }
+
         public static HttpContext Valid_Create_Pointer
         {
             get
