@@ -37,6 +37,7 @@ db.GenericSystem.drop()
 db.Benefits.drop()
 db.NrlsPointerMaps.drop()
 db.MedicalRecords.drop()
+db.Sds.drop()
 EOF
 
 echo "=> Dropping Patient, Organization, DocumentReference"
@@ -60,6 +61,8 @@ mongoimport -c Personnel -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATIO
 echo "=> Personnel IMPORTED" 
 mongoimport -c Benefits -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Benefits.json
 echo "=> Benefits IMPORTED" 
+mongoimport -c Sds -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Sds.json
+echo "=> Sds IMPORTED" 
 
 mongoimport -c Organization -d $MONGODB_NRLS_DATABASE -u $MONGODB_NRLS_USER -p $MONGODB_NRLS_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Organization.json
 echo "=> Organization IMPORTED"
