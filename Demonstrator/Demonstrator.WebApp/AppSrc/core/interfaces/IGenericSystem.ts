@@ -3,6 +3,7 @@
 export interface IGenericSystem {
     id: string;
     name: string;
+    safeName: string;
     imageUrl: string;
     context: string;
     fModule: string;

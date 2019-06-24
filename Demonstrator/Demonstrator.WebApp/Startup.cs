@@ -100,6 +100,8 @@ namespace Demonstrator.WebApp
             services.AddTransient<IFhirConnector, FhirConnector>();
             services.AddTransient<ILoggingHelper, LoggingHelper>();
             services.AddTransient<ISdsService, SdsService>();
+            services.AddTransient<IHttpRequestHelper, HttpRequestHelper>();
+            services.AddTransient<INRLSMongoDBCaller, NRLSMongoDBCaller>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

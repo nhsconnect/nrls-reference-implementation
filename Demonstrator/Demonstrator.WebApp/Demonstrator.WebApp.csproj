@@ -178,4 +178,16 @@
     <TypeScriptCompile Include="AppSrc\generic-systems\Base\nrls-pointers\nrls-pointers-table.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Documents\care-plan.tmpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Documents\Parsers\html.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Documents\Parsers\pdf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -13,7 +13,7 @@
                     <h2 show.bind="systemCaseStudies[stype.type].length > 0">${stype.display} Systems</h2>
                     <div class="margin-bottom-xlrg" show.bind="systemCaseStudies[stype.type].length > 0" repeat.for="system of systemCaseStudies[stype.type]">
                         <h4>
-                            <a class="gridtab-link" route-href="route: system-demo; params.bind: { routeParamId: system.id, routeParamTitle: system.fModule }">
+                            <a class="gridtab-link" route-href="route: system-demo; params.bind: { routeParamId: system.id, routeParamTitle: system.safeName }">
                                 ${system.name}
                             </a>
                         </h4>

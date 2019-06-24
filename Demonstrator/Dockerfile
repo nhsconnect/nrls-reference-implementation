@@ -20,11 +20,22 @@ RUN dotnet publish Demonstrator.WebApp/Demonstrator.WebApp.csproj -c Release -o 
 
 # Build runtime image
 FROM microsoft/aspnetcore:2.0
+
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && apt-get install libfreetype6 -yq \
+    && apt-get install libfontconfig -yq \
+    && curl -sL https://deb.nodesource.com/setup_8.x | bash \
+    && apt-get install nodejs -yq
+
 WORKDIR /app
 COPY --from=build-env /app/Demonstrator.WebApp/out .
 
 WORKDIR /app
 
+RUN npm install jsreport-core@2.3.3
+RUN npm install jsreport-jsrender@2.0.0
+RUN npm install jsreport-phantom-pdf@2.1.4
 
 # Set Server ENVs
 EXPOSE 5000/tcp

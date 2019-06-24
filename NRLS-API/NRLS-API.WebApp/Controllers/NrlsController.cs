@@ -157,7 +157,14 @@ namespace NRLS_API.WebApp.Controllers
                 return Ok(result);
             }
 
-            return NotFound(result);
+            var operationOutcome = result as OperationOutcome;
+
+            if (operationOutcome != null && operationOutcome.Issue.Any(x => x.Details.Coding.Any(y => y.Code == "INVALID_RESOURCE")))
+            {
+                return BadRequest(operationOutcome);
+            }
+
+            return NotFound(operationOutcome);
         }
 
         private string RequestingAsid()

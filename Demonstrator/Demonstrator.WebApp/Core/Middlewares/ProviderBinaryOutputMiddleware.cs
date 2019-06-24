@@ -26,6 +26,7 @@ namespace Demonstrator.WebApp.Core.Middlewares
 
                 var statusCode = httpContext.Response.StatusCode;
 
+                //IF error always make sure fhir is the content type to match OperationOutcome
                 if (statusCode < 200 || statusCode > 299)
                 {
                     string contentTypeHeader = context.Response.Headers.FirstOrDefault(x => x.Key == HeaderNames.ContentType).Value;

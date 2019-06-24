@@ -94,6 +94,7 @@ export class SystemSelect {
             let system: ISystemExplorerItem = {
                 name: g.name,
                 id: g.id,
+                safeName: g.safeName,
                 healthContexts: new Array<ISystemExplorerOrg>()
             };
 

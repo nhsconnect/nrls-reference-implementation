@@ -7,6 +7,7 @@ namespace Demonstrator.Models.ViewModels.Factories
 {
     public static class PeriodFactoryExt
     {
+        //Tested in AddressExtTests
         public static PeriodViewModel ToPeriodViewModel(this Period period)
         {
             var viewModel = new PeriodViewModel

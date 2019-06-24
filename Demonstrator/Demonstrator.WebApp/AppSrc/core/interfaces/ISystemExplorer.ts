@@ -9,6 +9,7 @@ export interface ISystemExplorer {
 export interface ISystemExplorerItem {
     id: string;
     name: string;
+    safeName: string;
     healthContexts: ISystemExplorerOrg[];
 }
 

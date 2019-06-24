@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
-using NRLS_API.Models.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
 
@@ -25,7 +18,6 @@ namespace NRLS_API.WebApp.Core.Middlewares
         private readonly RequestDelegate _next;
         private readonly ISdsService _sdsService;
         private readonly INrlsValidation _nrlsValidation;
-        private ApiSetting _sspApiSettings;
 
         public SspProxyGateMiddleware(RequestDelegate next, ISdsService sdsService, INrlsValidation nrlsValidation)
         {
@@ -42,6 +34,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
             var headers = context.Request.Headers;
             var method = context.Request.Method;
 
+            // -> JWT
             var authorization = GetHeaderValue(headers, HeaderNames.Authorization);
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
             var jwtResponse = _nrlsValidation.ValidJwt(scope, authorization);
@@ -50,6 +43,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 SetJwtError(HeaderNames.Authorization, jwtResponse.Message);
             }
 
+            // -> fromASID
             var fromASID = GetHeaderValue(headers, FhirConstants.HeaderSspFromAsid);
             var consumerCache = _sdsService.GetFor(fromASID);
 
@@ -58,6 +52,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 SetError(FhirConstants.HeaderSspFromAsid, "The Ssp-From ASID header value is not known.");
             }
 
+            // -> toASID
             var toASID = GetHeaderValue(headers, FhirConstants.HeaderSspToAsid);
             var providerCache = _sdsService.GetFor(toASID);
 
@@ -66,13 +61,14 @@ namespace NRLS_API.WebApp.Core.Middlewares
                 SetError(FhirConstants.HeaderSspToAsid, "The Ssp-To ASID header value is not known.");
             }
 
+            // -> traceID
             var traceId = GetHeaderValue(headers, FhirConstants.HeaderSspTradeId);
             if (string.IsNullOrEmpty(traceId))
             {
                 SetError(FhirConstants.HeaderSspTradeId, null);
             }
 
-            
+            // -> interactionID
             var interactionId = GetHeaderValue(headers, FhirConstants.HeaderSspInterationId);
             if (string.IsNullOrEmpty(interactionId) || !consumerCache.Interactions.Contains(interactionId))
             {

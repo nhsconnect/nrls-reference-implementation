@@ -1,4 +1,5 @@
 ﻿using Demonstrator.Models.Core.Enums;
+using Demonstrator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,8 @@ namespace Demonstrator.Models.ViewModels.Flows
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public string SafeName => StringHelper.UrlString(Name);
 
         public string Context { get; set; }
 

@@ -41,7 +41,7 @@ namespace Demonstrator.Models.ViewModels.Factories
             return viewModels;
         }
 
-        private static CodingViewModel ToCodingViewModel(this Coding coding)
+        public static CodingViewModel ToCodingViewModel(this Coding coding)
         {
             var viewModel = new CodingViewModel
             {

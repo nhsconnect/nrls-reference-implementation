@@ -53,6 +53,12 @@ namespace Demonstrator.Core.Helpers
             var now = tokenIssued ?? DateTime.UtcNow;
 
             var parsedJwt = ParseJwt(jwt);
+
+            if (!parsedJwt.Success)
+            {
+                return parsedJwt;
+            }
+
             var claims = parsedJwt.Data;
 
             // ### iss

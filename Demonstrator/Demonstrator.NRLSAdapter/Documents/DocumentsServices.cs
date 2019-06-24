@@ -1,4 +1,6 @@
-﻿using Demonstrator.Core.Interfaces.Services;
+﻿using Demonstrator.Core.Exceptions;
+using Demonstrator.Core.Factories;
+using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.Nrls;
@@ -41,7 +43,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var request = BuildGetRequest(fromASID, fromODS, toODS);
 
             //SSP base normally retrieved from SDS, but can be cached
-            request.BaseUrl = $"{SspUrlBase}{WebUtility.UrlEncode((pointerUrl))}";
+            request.BaseUrl = $"{SspUrlBase}{WebUtility.UrlEncode(BuildPointerUrl(pointerUrl))}";
 
             var document = await _fhirConnector.RequestOneFhir<CommandRequest, Resource>(request);
 
@@ -56,13 +58,27 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
 
         private CommandRequest BuildRequest(string asid, string jwtOrgCode, string providerOds)
         {
+
+            var consumer = _sdsService.GetFor(asid);
+            var provider = _sdsService.GetFor(providerOds, FhirConstants.ReadBinaryInteractionId);
+
+            if(consumer == null)
+            {
+                throw new HttpFhirException("Local system not registered with SDS.", OperationOutcomeFactory.CreateGenericError($"Unknown ASID {asid}"), HttpStatusCode.BadRequest);
+            }
+
+            if (provider == null)
+            {
+                throw new HttpFhirException("External system not registered with SDS.", OperationOutcomeFactory.CreateGenericError($"Unknown ODS code {providerOds}"), HttpStatusCode.BadRequest);
+            }
+
             var command = new CommandRequest
             {
                 BaseUrl = $"{(_spineSettings.SspUseSecure ? _spineSettings.SspSecureServerUrl : _spineSettings.SspServerUrl)}",
                 ResourceType = ResourceType.Binary,
                 Method = HttpMethod.Get,
                 UseSecure = _spineSettings.SspUseSecure,
-                ClientThumbprint = _sdsService.GetFor(asid)?.Thumbprint,
+                ClientThumbprint = consumer?.Thumbprint,
                 ServerThumbprint = _spineSettings.SspSslThumbprint,
                 RegenerateUrl = false
             };
@@ -70,12 +86,21 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
             var jwt = JwtFactory.Generate(JwtScopes.Read, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
 
             command.Headers.Add(HeaderNames.Authorization, $"Bearer {jwt}");
-            command.Headers.Add(FhirConstants.HeaderSspFrom, asid); // GET consumer ASID
-            command.Headers.Add(FhirConstants.HeaderSspTo, _sdsService.GetFor(providerOds, FhirConstants.ReadBinaryInteractionId)?.Asid); // GET provider asid
+            command.Headers.Add(FhirConstants.HeaderSspFrom, consumer?.Asid); // GET consumer ASID
+            command.Headers.Add(FhirConstants.HeaderSspTo, provider?.Asid); // GET provider asid
             command.Headers.Add(FhirConstants.HeaderSspInterationId, FhirConstants.ReadBinaryInteractionId);
             command.Headers.Add(FhirConstants.HeaderSspTraceId, Guid.NewGuid().ToString());
 
             return command;
+        }
+
+        private string BuildPointerUrl(string original)
+        {
+            var uri = new Uri(original);
+
+            var pointerUri = $"{SystemUrlBase}{uri.PathAndQuery}";
+
+            return pointerUri;
         }
 
         private string SystemUrlBase

@@ -14,12 +14,12 @@ namespace Demonstrator.Services.Service.Base
 {
     public class SdsService : ISdsService
     {
-        private readonly INRLSMongoDBContext _context;
+        private readonly INRLSMongoDBCaller _nrlsMongoDBCaller;
         private readonly IMemoryCache _cache;
 
-        public SdsService(INRLSMongoDBContext context, IMemoryCache cache)
+        public SdsService(INRLSMongoDBCaller nrlsMongoDBCaller, IMemoryCache cache)
         {
-            _context = context;
+            _nrlsMongoDBCaller = nrlsMongoDBCaller;
             _cache = cache;
         }
 
@@ -59,11 +59,11 @@ namespace Demonstrator.Services.Service.Base
                 var filters = new List<FilterDefinition<Sds>>();
                 filters.Add(builder.Eq(x => x.Active, true));
 
-                var entries = await _context.Sds.FindSync(builder.And(filters)).ToViewModelListAsync();
+                var viewModels = await _nrlsMongoDBCaller.FindSds(builder.And(filters));
 
-                CachePointers(entries);
+                CachePointers(viewModels);
 
-                return entries;
+                return viewModels;
             }
             catch (Exception ex)
             {

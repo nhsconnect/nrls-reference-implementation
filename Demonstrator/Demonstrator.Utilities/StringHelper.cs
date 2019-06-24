@@ -25,13 +25,14 @@ namespace Demonstrator.Utilities
                 return null;
             }
 
-            var clean = Regex.Replace(value, @"\s+", "-");
+            var clean = Regex.Replace(value, "\\s+", "-");
 
             clean = Regex.Replace(clean, "-+", "-");
 
             return Regex.Replace(clean, @"[^a-zA-Z0-9-]", "");
         }
 
+        //TODO: Review Microsoft.IdentityModel.Tokens Deserializers
         public static string Base64UrlDecode(string input)
         {
             input = input.Replace('-', '+').Replace('_', '/');

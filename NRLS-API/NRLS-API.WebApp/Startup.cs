@@ -49,12 +49,13 @@ namespace NRLS_API.WebApp
 
                 config.InputFormatters.Clear();
                 config.OutputFormatters.Clear();
-                
+
                 //Default to fhir+xml
-                config.InputFormatters.Insert(0, new FhirXmlInputFormatter());
-                config.OutputFormatters.Insert(0, new FhirXmlOutputFormatter());
-                config.InputFormatters.Insert(1, new FhirJsonInputFormatter());
-                config.OutputFormatters.Insert(1, new FhirJsonOutputFormatter());
+                config.InputFormatters.Insert(0, new FhirJsonInputFormatter());
+                config.OutputFormatters.Insert(0, new FhirJsonOutputFormatter());
+                config.InputFormatters.Insert(1, new FhirXmlInputFormatter());
+                config.OutputFormatters.Insert(1, new FhirXmlOutputFormatter());
+
 
             });
             //services.AddSwaggerGen(c =>
@@ -95,11 +96,12 @@ namespace NRLS_API.WebApp
             });
             services.Configure<ApiSetting>("SspApiSetting", options =>
             {
-                options.BaseUrl = Configuration.GetSection("NRLSAPI:BaseUrl").Value;
-                options.Secure = bool.Parse(Configuration.GetSection("NRLSAPI:Secure").Value);
-                options.SecureOnly = bool.Parse(Configuration.GetSection("NRLSAPI:SecureOnly").Value);
-                options.DefaultPort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
-                options.SecurePort = Configuration.GetSection("NRLSAPI:DefaultPort").Value;
+                options.BaseUrl = Configuration.GetSection("SSPAPI:BaseUrl").Value;
+                options.BasePath = Configuration.GetSection("SSPAPI:BasePath").Value;
+                options.Secure = bool.Parse(Configuration.GetSection("SSPAPI:Secure").Value);
+                options.SecureOnly = bool.Parse(Configuration.GetSection("SSPAPI:SecureOnly").Value);
+                options.DefaultPort = Configuration.GetSection("SSPAPI:DefaultPort").Value;
+                options.SecurePort = Configuration.GetSection("SSPAPI:DefaultPort").Value;
             });
             services.Configure<ApiSetting>("PdsApiSetting", options =>
             {
@@ -132,6 +134,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<ISspProxyService, SspProxyService>();
             services.AddTransient<ISdsService, SdsService>();
             services.AddTransient<IHttpRequestHelper, HttpRequestHelper>();
+            services.AddTransient<INRLSMongoDBCaller, NRLSMongoDBCaller>();
 
         }
 
