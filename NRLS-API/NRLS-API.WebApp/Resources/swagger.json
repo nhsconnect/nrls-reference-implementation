@@ -1,11 +1,11 @@
 ﻿{
   "swagger": "2.0",
   "info": {
-    "version": "v0.1.6",
-    "title": "NRLS API Reference Implementation",
-    "description": "A reference implementation of the NRLS API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls/\" target=\"_blank\">NRLS Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.1-beta &nbsp;</small>.<br /><br /><br /><b>Default Data</b> - You can view examples of default data and what possible parameter values that can be used in this demonstration within the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/7.-Data\" target=\"_blank\">Data section</a> of the repository Wiki.<br /><br /><b>HTTP Header values</b> - Head over to the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/6.-Security\" target=\"_blank\">Security section</a> of the repository Wiki to understand what values can be used in this demonstration.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
+    "version": "v0.1.7",
+    "title": "NRL API Reference Implementation",
+    "description": "A reference implementation of the NRL API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrls-1-2-3-beta/\" target=\"_blank\">NRL Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v1.2.3-beta &nbsp;</small>.<br /><br /><div class=\"opblock opblock-get pa3\"><b>Note! A newer version of the NRL specification has been released. This is available at <a href=\"https://developer.nhs.uk/apis/nrl/\" target=\"_blank\">https://developer.nhs.uk/apis/nrl</a></b></div><br /><br /><br /><b>Default Data</b> - You can view examples of default data and what possible parameter values that can be used in this demonstration within the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/7.-Data\" target=\"_blank\">Data section</a> of the repository Wiki.<br /><br /><b>HTTP Header values</b> - Head over to the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/6.-Security\" target=\"_blank\">Security section</a> of the repository Wiki to understand what values can be used in this demonstration.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
-      "name": "NRLS Team",
+      "name": "NRL Team",
       "email": "nrls@nhs.net"
     }
   },
