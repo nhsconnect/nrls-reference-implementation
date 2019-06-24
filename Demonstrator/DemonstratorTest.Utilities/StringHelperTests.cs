@@ -26,6 +26,34 @@ namespace DemonstratorTest.Utilities
             Assert.Equal(expected, StringHelper.CleanInput(input));
         }
 
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("space test", "space-test")]
+        [InlineData("double  space test", "double-space-test")]
+        [InlineData("multi--hyphen---test", "multi-hyphen-test")]
+        [InlineData("not abc test $", "not-abc-test-")]
+        public void UrlString_Matches(string input, string expected)
+        {
+            Assert.Equal(expected, StringHelper.UrlString(input));
+        }
+
+
+        [Theory]
+        [InlineData("eyJzdWIiOiIxMjM0NTY3ODkwIn0", "{\"sub\":\"1234567890\"}")]
+        [InlineData("eyJzdWIiOiIxMjM0NTY3ODkwfiN-In0", "{\"sub\":\"1234567890~#~\"}")]
+        public void Base64UrlDecode_Valid(string input, string expected)
+        {
+            var actual = StringHelper.Base64UrlDecode(input);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("blaaa-hash", "{\"sub\":\"12345678903\"}")]
+        public void Base64UrlDecode_Invalid(string input, string expected)
+        {
+            var actual = StringHelper.Base64UrlDecode(input);
+            Assert.NotEqual(expected, actual);
+        }
 
     }
 

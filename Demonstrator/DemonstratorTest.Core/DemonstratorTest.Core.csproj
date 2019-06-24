@@ -15,10 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demonstrator.NRLSAdapter\Demonstrator.NRLSAdapter.csproj" />
-    <ProjectReference Include="..\DemonstratorTest.Comparer\DemonstratorTest.Comparer.csproj" />
+    <ProjectReference Include="..\Demonstrator.Core\Demonstrator.Core.csproj" />
     <ProjectReference Include="..\DemonstratorTest.Data\DemonstratorTest.Data.csproj" />
-    <ProjectReference Include="..\DemonstratorTest.StubClasses\DemonstratorTest.StubClasses.csproj" />
   </ItemGroup>
 
 </Project>

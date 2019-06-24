@@ -11,14 +11,16 @@
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demonstrator.NRLSAdapter\Demonstrator.NRLSAdapter.csproj" />
-    <ProjectReference Include="..\DemonstratorTest.Comparer\DemonstratorTest.Comparer.csproj" />
+    <ProjectReference Include="..\Demonstrator.Core\Demonstrator.Core.csproj" />
+    <ProjectReference Include="..\Demonstrator.WebApp\Demonstrator.WebApp.csproj" />
     <ProjectReference Include="..\DemonstratorTest.Data\DemonstratorTest.Data.csproj" />
-    <ProjectReference Include="..\DemonstratorTest.StubClasses\DemonstratorTest.StubClasses.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,21 +1,21 @@
-using Moq;
-using NRLS_API.Models.Core;
-using NRLS_API.Services;
-using NRLS_APITest.Data;
+﻿using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
 using Microsoft.Extensions.Caching.Memory;
-using NRLS_APITest.StubClasses;
-using NRLS_API.Models.ViewModels.Core;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NRLS_API.Core.Interfaces.Database;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using Demonstrator.Core.Interfaces.Database;
+using Demonstrator.Models.DataModels.Base;
+using Demonstrator.Models.ViewModels.Base;
+using DemonstratorTest.StubClasses;
+using DemonstratorTest.Data;
+using Demonstrator.Services.Service.Base;
 
-namespace NRLS_APITest.Services
+namespace DemonstratorTest.Services.Base
 {
     public class SdsServiceTests : IDisposable
     {
@@ -173,7 +173,7 @@ namespace NRLS_APITest.Services
 
             Assert.Equal(2, result.Count());
 
-            var cache000 = result.FirstOrDefault(x =>x.Asid == "000");
+            var cache000 = result.FirstOrDefault(x => x.Asid == "000");
 
             Assert.NotNull(cache000);
 
@@ -206,3 +206,4 @@ namespace NRLS_APITest.Services
         }
     }
 }
+

@@ -1,9 +1,9 @@
-﻿using NRLS_API.Core.Resources;
-using NRLS_API.Models.ViewModels.Core;
+﻿using Demonstrator.Core.Resources;
+using Demonstrator.Models.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 
-namespace NRLS_APITest.Data
+namespace DemonstratorTest.Data
 {
     public class SdsViewModels
     {

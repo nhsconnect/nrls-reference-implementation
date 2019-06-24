@@ -46,6 +46,44 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static OperationOutcome Invalid
+        {
+            get
+            {
+                return new OperationOutcome()
+                {
+                    //Meta = new Meta
+                    //{
+                    //    Profile = new List<string> {
+                    //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
+                    //    }
+                    //},
+                    Issue = new List<OperationOutcome.IssueComponent>
+                    {
+                        new OperationOutcome.IssueComponent
+                        {
+                            Code = OperationOutcome.IssueType.Invalid,
+                            Severity = OperationOutcome.IssueSeverity.Error,
+                            Diagnostics = "Error",
+                            Details = new CodeableConcept
+                            {
+                                Coding = new List<Coding>
+                                {
+                                    new Coding
+                                    {
+                                        System = "https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0",
+                                        Code = "INVALID_RESOURCE",
+                                        Display = "Invalid Resource"
+                                    }
+                                },
+                                Text = "91370360-d667-4bc8-bebe-f223560ff90e"
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
         public static OperationOutcome Deleted
         {
             get

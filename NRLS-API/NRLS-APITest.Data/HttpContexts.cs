@@ -87,6 +87,44 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static HttpContext Invalid_Delete_Pointer_BadRequest
+        {
+            get
+            {
+                var context = new DefaultHttpContext();
+                context.Request.Scheme = "http";
+                context.Request.Host = new HostString("www.testhost.com");
+                context.Request.Path = new PathString("/testpath");
+                context.Request.Method = HttpMethods.Delete;
+                context.Request.Headers["fromASID"] = "badrequest";
+                context.Request.Headers["toASID"] = "toASID";
+                context.Request.QueryString = QueryString.Create(new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("_id", "testId")
+                });
+
+                return context;
+            }
+        }
+
+        public static HttpContext Invalid_Delete_Pointer_NotFound
+        {
+            get
+            {
+                var context = new DefaultHttpContext();
+                context.Request.Scheme = "http";
+                context.Request.Host = new HostString("www.testhost.com");
+                context.Request.Path = new PathString("/testpath");
+                context.Request.Method = HttpMethods.Delete;
+                context.Request.Headers["fromASID"] = "notfound";
+                context.Request.Headers["toASID"] = "toASID";
+                context.Request.QueryString = QueryString.Create(new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("_id", "testId")
+                });
+
+                return context;
+            }
+        }
+
         public static HttpContext Invalid_ConditionalDelete_NoSearchValues
         {
             get
