@@ -1,5 +1,4 @@
 ﻿using Hl7.Fhir.Model;
-using NRLS_API.Models.Core;
 using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Services
@@ -21,6 +20,10 @@ namespace NRLS_API.Core.Interfaces.Services
         OperationOutcome ValidateCustodianIdentifierParameter(string parameterVal);
 
         OperationOutcome ValidateIdentifierParameter(string paramName, string parameterVal);
+
+        OperationOutcome ValidateIdentifierElement(Identifier identifier, string elementName);
+
+        OperationOutcome ValidatePatientIdentifier(Identifier identifier);
 
         string GetOrganizationParameterId(string parameterVal);
 

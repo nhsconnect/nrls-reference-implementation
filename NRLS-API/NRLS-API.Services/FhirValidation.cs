@@ -275,6 +275,46 @@ namespace NRLS_API.Services
             return null;
         }
 
+        public OperationOutcome ValidateIdentifierElement(Identifier identifier, string elementName)
+        {
+
+            if(identifier == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource(elementName);
+            }
+
+            if (identifier != null)
+            {
+                var identifierCheck = _validationHelper.ValidIdentifier(identifier, elementName);
+
+                if (!identifierCheck.valid)
+                {
+                    return OperationOutcomeFactory.CreateInvalidResource(identifierCheck.issue, $"The supplied identifer is not valid.");
+                }
+            }
+
+            return null;
+        }
+
+        public OperationOutcome ValidatePatientIdentifier(Identifier identifier)
+        {
+            var validIdentifer = ValidateIdentifierElement(identifier, "identifier:nhs-number");
+
+            if (validIdentifer != null && !validIdentifer.Success)
+            {
+                return validIdentifer;
+            }
+
+            var nhsNumber = identifier?.Value;
+
+            if (!_validationHelper.ValidNhsNumber(nhsNumber))
+            {
+                return OperationOutcomeFactory.CreateInvalidNhsNumberRes(nhsNumber);
+            }
+
+            return null;
+        }
+
         public string GetOrganizationParameterId(string parameterVal)
         {
             return _validationHelper.GetOrganisationParameterId(parameterVal);

@@ -121,6 +121,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<IJwtHelper, JwtHelper>();
             services.AddTransient<IFhirSearchHelper, FhirSearchHelper>();
             services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
+            services.AddTransient<IPdsMaintain, PdsMaintain>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

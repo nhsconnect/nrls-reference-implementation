@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NRLS_API.Services
@@ -32,7 +33,9 @@ namespace NRLS_API.Services
 
             request.ProfileUri = _resourceProfile;
 
-            return await _fhirSearch.Get<T>(request);
+            var bundle = await _fhirSearch.Get<T>(request) as Bundle;
+
+            return bundle.Entry.FirstOrDefault()?.Resource as Patient;
         }
     }
 }

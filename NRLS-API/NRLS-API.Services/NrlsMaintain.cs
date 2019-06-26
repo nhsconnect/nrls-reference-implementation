@@ -262,7 +262,7 @@ namespace NRLS_API.Services
 
                 if(!result.Total.HasValue || result.Total.Value < 1 || result.Entry.FirstOrDefault() == null)
                 {
-                    return OperationOutcomeFactory.CreateNotFound(id);
+                    return OperationOutcomeFactory.CreateNotFound(ResourceType.DocumentReference.ToString(), id);
                 }
 
                 var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
@@ -299,7 +299,7 @@ namespace NRLS_API.Services
 
             if (!deleted)
             {
-                return OperationOutcomeFactory.CreateNotFound(request.Id);
+                return OperationOutcomeFactory.CreateNotFound(ResourceType.DocumentReference.ToString(), request.Id);
             }
 
             return OperationOutcomeFactory.CreateDelete(request.RequestUrl?.AbsoluteUri, request.AuditId);

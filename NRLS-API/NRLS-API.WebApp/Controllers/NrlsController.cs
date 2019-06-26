@@ -128,7 +128,7 @@ namespace NRLS_API.WebApp.Controllers
                 return BadRequest(result);
             }
 
-            var response = OperationOutcomeFactory.CreateSuccess();
+            var response = OperationOutcomeFactory.CreateSuccess(ResourceType.DocumentReference.ToString());
 
             var newResource = $"{_nrlsApiSettings.ResourceLocation}/{ResourceType.DocumentReference}?_id={result.Id}";
 

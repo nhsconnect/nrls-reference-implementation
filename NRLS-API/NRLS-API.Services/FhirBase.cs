@@ -46,7 +46,7 @@ namespace NRLS_API.Services
 
             if (notFound)
             {
-                return OperationOutcomeFactory.CreateNotFound(id);
+                return OperationOutcomeFactory.CreateNotFound(results.ResourceType.ToString(), id);
             }
 
             return results;

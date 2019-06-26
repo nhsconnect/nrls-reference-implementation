@@ -55,7 +55,7 @@ namespace NRLS_API.Services
                 ObjectId mongoId;
                 if (!ObjectId.TryParse(id, out mongoId))
                 {
-                    return OperationOutcomeFactory.CreateNotFound("");
+                    return OperationOutcomeFactory.CreateNotFound(ResourceType.DocumentReference.ToString(), "");
                 }
 
                 if (request.QueryParameters.Count() > 1)
