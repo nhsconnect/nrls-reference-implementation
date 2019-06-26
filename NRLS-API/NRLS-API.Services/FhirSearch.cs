@@ -44,16 +44,16 @@ namespace NRLS_API.Services
 
                 Resource document;
 
-                var documents = new List<DocumentReference>();
+                var fhirResource = new List<T>();
 
                 if(resource != null)
                 {
                     document = await resource?.ToFhirAsync<T>();
-                    documents.Add(document as DocumentReference);
+                    fhirResource.Add(document as T);
                 }
 
                 //Get now returns bundle as per updated spec
-                var bundle = ToBundle(request, documents);
+                var bundle = ToBundle(request, fhirResource);
 
                 return bundle;
             }
