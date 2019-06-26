@@ -15,7 +15,8 @@ RUN dotnet restore Demonstrator.WebApp/Demonstrator.WebApp.csproj
 
 #Start Front-end build
 WORKDIR /app/Demonstrator.WebApp
-RUN npm install
+RUN nom install --global npm-install-que
+RUN npm-install-que
 RUN npm run build:prod
 
 #Start Back-end build
