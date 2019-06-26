@@ -254,3 +254,117 @@
     "reference": "Organization/00004X"
   }
 }
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5d1372bf66227ddcad4c7bcf"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9658218873"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "OLIVER",
+      "given": [
+        "Janice"
+      ],
+      "prefix": "Ms"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01155000099",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1960-07-09",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "physical",
+      "line": [
+        "19 Oliver Street"
+      ],
+      "city": "Nottingham",
+      "district": "Nottinghamshire",
+      "postalCode": "AB5 7CD",
+      "period": {
+        "start": "1987-03-26"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/200222",
+    "display": "HSCIC test Practice2"
+  },
+  "generalPractitioner": {
+    "reference": "Practitioner/203555",
+    "display": "Ms Nancy Brown"
+  }
+}
+{
+  "resourceType": "Patient",
+  "_id": {
+    "$oid": "5d1373c366227ddcad4c7bd0"
+  },
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9658218873"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "MEAKIN",
+      "given": [
+        "Michael"
+      ],
+      "prefix": "MR"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01155000088",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1960-06-06",
+  "deceasedBoolean": false,
+  "address": [
+    {
+      "use": "home",
+      "type": "physical",
+      "line": [
+        "21 Meakin Street"
+      ],
+      "city": "Nottingham",
+      "district": "Nottinghamshire",
+      "postalCode": "AB5 8CD",
+      "period": {
+        "start": "1987-03-26"
+      }
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/200268",
+    "display": "HSCIC test Practice"
+  },
+  "generalPractitioner": {
+    "reference": "Practitioner/203529",
+    "display": "Miss Nichole Gilbert"
+  }
+}
