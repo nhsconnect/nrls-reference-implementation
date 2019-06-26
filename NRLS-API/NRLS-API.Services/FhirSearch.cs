@@ -1,10 +1,7 @@
 ﻿using Hl7.Fhir.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NRLS_API.Core.Exceptions;
-using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
@@ -13,7 +10,6 @@ using NRLS_API.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace NRLS_API.Services
@@ -29,6 +25,32 @@ namespace NRLS_API.Services
             _fhirSearchHelper = fhirSearchHelper;
         }
 
+        public async Task<Resource> GetAsBundle<T>(FhirRequest request) where T : Resource
+        {
+
+            try
+            {
+                var resource = await Get<T>(request);
+
+                var documents = new List<DocumentReference>();
+
+                if (resource != null)
+                {
+                    documents.Add(resource as DocumentReference);
+                }
+
+                //Get now returns bundle as per updated spec
+                var bundle = ToBundle(request, documents);
+
+                return bundle;
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+
         public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
@@ -42,20 +64,9 @@ namespace NRLS_API.Services
 
                 var resource = await _context.Resource(request.StrResourceType).FindSync<BsonDocument>(filter).FirstOrDefaultAsync();
 
-                Resource document;
+                Resource document = await resource?.ToFhirAsync<T>();
 
-                var documents = new List<DocumentReference>();
-
-                if(resource != null)
-                {
-                    document = await resource?.ToFhirAsync<T>();
-                    documents.Add(document as DocumentReference);
-                }
-
-                //Get now returns bundle as per updated spec
-                var bundle = ToBundle(request, documents);
-
-                return bundle;
+                return document;
             }
             catch (Exception ex)
             {

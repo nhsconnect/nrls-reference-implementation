@@ -62,22 +62,22 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>A FHIR Resource</returns>
         /// <response code="200">Returns the FHIR Resource</response>
-        //[ProducesResponseType(typeof(Resource), 200)]
-        //[HttpGet]
-        //public async Task<IActionResult> Read()
-        //{
-        //    //TODO: Update to reflect new ID parameter
-        //    var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, null);
+        [ProducesResponseType(typeof(Resource), 200)]
+        [HttpGet("{logicalId}")]
+        public async Task<IActionResult> Read(string logicalId)
+        {
+            //TODO: Update to reflect new ID parameter
+            var request = FhirRequest.Create(logicalId, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
-        //    var result = await _nrlsSearch.Get<DocumentReference>(request);
+            var result = await _nrlsSearch.Get<DocumentReference>(request);
 
-        //    if (result.ResourceType == ResourceType.OperationOutcome)
-        //    {
-        //        return NotFound(result);
-        //    }
+            if (result.ResourceType == ResourceType.OperationOutcome)
+            {
+                return NotFound(result);
+            }
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
 
         /// <summary>
         /// Creates and Persists a new record the requested resource type into a datastore.
@@ -130,7 +130,7 @@ namespace NRLS_API.WebApp.Controllers
 
             var response = OperationOutcomeFactory.CreateSuccess();
 
-            var newResource = $"{_nrlsApiSettings.ResourceLocation}/{ResourceType.DocumentReference}?_id={result.Id}";
+            var newResource = $"{_nrlsApiSettings.ResourceLocation}/{ResourceType.DocumentReference}/{result.Id}";
 
             //Temp required header for NRLS API tests
             Request.HttpContext.Response.Headers.Add("Content-Location", newResource);

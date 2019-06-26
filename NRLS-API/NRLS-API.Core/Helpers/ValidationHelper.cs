@@ -38,38 +38,53 @@ namespace NRLS_API.Core.Helpers
             Validator = new Validator(ctx);
         }
 
-        public bool ValidCodableConcept(CodeableConcept concept, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet)
+        public bool ValidCodableConcept(CodeableConcept concept, int maxCodings, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet)
         {
-            if(concept == null || concept.Coding.Count != 1)
+            if (concept == null)
             {
                 return false;
             }
 
-            var coding = concept.Coding.ElementAt(0);
+            return ValidCoding(concept.Coding, maxCodings, validSystem, validateFromSet, systemRequired, codeRequired, displayRequired, valueSet);
+        }
 
-            if(systemRequired && (string.IsNullOrEmpty(coding.System) || !coding.System.Equals(validSystem)))
+        public bool ValidCoding(List<Coding> codings, int maxCodings, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet)
+        {
+            if (codings.Count != maxCodings)
             {
                 return false;
             }
 
-            if (codeRequired && string.IsNullOrEmpty(coding.Code))
-            {
-                return false;
-            }
-
-            if (displayRequired && string.IsNullOrEmpty(coding.Display))
-            {
-                return false;
-            }
-
+            ValueSet values = null;
             // TODO : parse and validate code from valueset
             // only available code is 736253002
             // not currently checking display but this should be validated
             if (validateFromSet && !string.IsNullOrWhiteSpace(valueSet))
             {
-                var values = GetCodableConceptValueSet(valueSet);
+                values = GetCodableConceptValueSet(valueSet);
+            }
 
-                return values?.Compose?.Include?.FirstOrDefault(x => x.System == validSystem)?.Concept?.FirstOrDefault(x => x.Code == coding.Code) != null;
+            foreach (var coding in codings)
+            {
+                if (systemRequired && (string.IsNullOrEmpty(coding.System) || !coding.System.Equals(validSystem)))
+                {
+                    return false;
+                }
+
+                if (codeRequired && string.IsNullOrEmpty(coding.Code))
+                {
+                    return false;
+                }
+
+                if (displayRequired && string.IsNullOrEmpty(coding.Display))
+                {
+                    return false;
+                }
+
+                if (validateFromSet && !string.IsNullOrWhiteSpace(valueSet))
+                {
+                    return values?.Compose?.Include?.FirstOrDefault(x => x.System == validSystem)?.Concept?.FirstOrDefault(x => x.Code == coding.Code) != null;
+                }
             }
 
             return true;

@@ -27,6 +27,23 @@ namespace NRLS_API.Services
         }
 
         /// <summary>
+        /// Get a DocumentReference by id
+        /// </summary>
+        /// <remarks>
+        /// Get a single DocumentReference using the DocRef logical id
+        /// </remarks>
+        public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
+        {
+            ValidateResource(request.StrResourceType);
+
+            request.ProfileUri = _resourceProfile;
+
+            var result = await _fhirSearch.Get<T>(request);
+
+            return result;
+        }
+
+        /// <summary>
         /// Search for Documents or Get one by _id
         /// </summary>
         /// <remarks>
@@ -62,7 +79,7 @@ namespace NRLS_API.Services
 
                 request.Id = id;
 
-                var results = await _fhirSearch.Get<T>(request);
+                var results = await _fhirSearch.GetAsBundle<T>(request);
 
                 var response = ParseRead(results, id);
 

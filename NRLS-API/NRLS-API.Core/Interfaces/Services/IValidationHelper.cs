@@ -1,6 +1,6 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Specification.Source;
 using Hl7.Fhir.Validation;
+using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
@@ -10,7 +10,9 @@ namespace NRLS_API.Core.Interfaces.Services
 
         Validator Validator { get; }
 
-        bool ValidCodableConcept(CodeableConcept concept, string validSystem, bool validateFromSet = false, bool systemRequired = true, bool codeRequired = true, bool displayRequired = true, string valueSet = null);
+        bool ValidCodableConcept(CodeableConcept concept, int maxCodings, string validSystem, bool validateFromSet = false, bool systemRequired = true, bool codeRequired = true, bool displayRequired = true, string valueSet = null);
+
+        bool ValidCoding(List<Coding> codings, int maxCodings, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet);
 
         bool ValidReference(ResourceReference reference, string startsWith);
 

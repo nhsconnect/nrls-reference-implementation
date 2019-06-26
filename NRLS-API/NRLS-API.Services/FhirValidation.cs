@@ -59,9 +59,19 @@ namespace NRLS_API.Services
             {
                 return OperationOutcomeFactory.CreateInvalidResource(null);
             }
-            else if(!_validationHelper.ValidCodableConcept(pointer.Type, FhirConstants.SystemPointerType, true, true, true, true, FhirConstants.VsRecordType))
+            else if(!_validationHelper.ValidCodableConcept(pointer.Type, 1, FhirConstants.SystemPointerType, true, true, true, true, FhirConstants.VsRecordType))
             {
                 return OperationOutcomeFactory.CreateInvalidResource("type");
+            }
+
+            //class
+            if (pointer.Class == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource(null);
+            }
+            else if (!_validationHelper.ValidCodableConcept(pointer.Class, 1, FhirConstants.SystemPointerClass, true, true, true, true, FhirConstants.VsRecordClass))
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("class");
             }
 
             //subject
@@ -127,12 +137,12 @@ namespace NRLS_API.Services
             //Only require basic checks here
             //Additional checks are carried out in NrlsMaintain.ValidateConditionalUpdate
             var relatesTo = GetValidRelatesTo(pointer.RelatesTo);
-            if (pointer.RelatesTo != null && pointer.RelatesTo.Count > 0 && relatesTo.element == null)
+            if (pointer.RelatesTo != null && (pointer.RelatesTo.Count > 1 || (pointer.RelatesTo.Count > 0 && relatesTo.element == null)))
             {
                 return OperationOutcomeFactory.CreateInvalidResource(relatesTo.issue);
             }
 
-            //attachment
+            //Content
             if (pointer.Content != null)
             {
                 var validContent = ValidateContent(pointer.Content);
@@ -163,7 +173,7 @@ namespace NRLS_API.Services
             var concept = new CodeableConcept(FhirConstants.VsRecordType, typeCode);
 
 
-            if (!_validationHelper.ValidCodableConcept(concept, FhirConstants.SystemPointerType, true, false, true, false, FhirConstants.VsRecordType))
+            if (!_validationHelper.ValidCodableConcept(concept, 1, FhirConstants.SystemPointerType, true, false, true, false, FhirConstants.VsRecordType))
             {
                 return OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The given code is not from the expected terminology system - {FhirConstants.SystemPointerType}");
             }
@@ -302,7 +312,7 @@ namespace NRLS_API.Services
                 return (null, "relatesTo");
             }
 
-            var relatesTo = relatesToElm.Where(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces)).FirstOrDefault();
+            var relatesTo = relatesToElm.FirstOrDefault(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces));
 
             if(relatesTo == null)
             {
@@ -314,20 +324,27 @@ namespace NRLS_API.Services
                 return (null, "relatesTo.target");
             }
 
-            if (relatesTo.Target.Identifier == null)
+            var checkIdentifier = string.IsNullOrWhiteSpace(relatesTo.Target.Reference);
+
+            if (checkIdentifier)
             {
-                return (null, "relatesTo.target.identifier");
+                if (relatesTo.Target.Identifier == null)
+                {
+                    //reference takes priority, if both are missing then error is with reference
+                    return (null, "relatesTo.target.reference");
+                }
+
+                if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.System))
+                {
+                    return (null, "relatesTo.target.identifier.system");
+                }
+
+                if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.Value))
+                {
+                    return (null, "relatesTo.target.identifier.value");
+                }
             }
 
-            if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.System))
-            {
-                return (null, "relatesTo.target.identifier.system");
-            }
-
-            if (string.IsNullOrWhiteSpace(relatesTo.Target.Identifier.Value))
-            {
-                return (null, "relatesTo.target.identifier.value");
-            }
 
             return (relatesTo, "relatesTo");
 
@@ -370,14 +387,21 @@ namespace NRLS_API.Services
 
             foreach (var content in contents)
             {
+
+                //format
+                if (content.Format == null || !_validationHelper.ValidCoding(new List<Coding> { content.Format }, 1, FhirConstants.SystemPointerFormat, true, true, true, true, FhirConstants.VsRecordFormat))
+                {
+                    return OperationOutcomeFactory.CreateInvalidResource("format");
+                }
+
                 //attachment
-                if(content.Attachment == null)
+                if (content.Attachment == null)
                 {
                     return OperationOutcomeFactory.CreateInvalidResource("attachment");
                 }
 
                 //attachment.contentType
-                //TODO validate content type format
+                //TODO validate contenttype format
                 var contentType = content.Attachment.ContentType;
                 if (string.IsNullOrEmpty(contentType))
                 {

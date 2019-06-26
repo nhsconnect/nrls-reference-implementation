@@ -247,7 +247,7 @@ namespace NRLS_API.Services
                     throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {id}"), HttpStatusCode.BadRequest);
                 }
 
-                document = await _fhirSearch.Get<T>(request);
+                document = await _fhirSearch.GetAsBundle<T>(request);
             }
             else
             {
