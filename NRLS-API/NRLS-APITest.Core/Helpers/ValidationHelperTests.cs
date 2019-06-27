@@ -34,7 +34,7 @@ namespace NRLS_APITest.Core.Helpers
         {
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(null, null, false, true, false, false, null);
+            var actual = helper.ValidCodableConcept(null, 1, null, false, true, false, false, null);
 
             Assert.False(actual);
         }
@@ -49,7 +49,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -79,7 +79,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -103,7 +103,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, "TestSystem", false, true, false, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, "TestSystem", false, true, false, false, null);
 
 
             Assert.True(actual);
@@ -127,7 +127,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, true, false, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, true, false, false, null);
 
 
             Assert.False(actual);
@@ -151,7 +151,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, false, true, false, null);
 
 
             Assert.True(actual);
@@ -175,7 +175,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, true, false, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, false, true, false, null);
 
 
             Assert.False(actual);
@@ -199,7 +199,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, false, false, true, null);
 
 
             Assert.True(actual);
@@ -223,7 +223,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var helper = new ValidationHelper(_fhirCacheHelper);
 
-            var actual = helper.ValidCodableConcept(concept, null, false, false, false, true, null);
+            var actual = helper.ValidCodableConcept(concept, 1, null, false, false, false, true, null);
 
 
             Assert.False(actual);

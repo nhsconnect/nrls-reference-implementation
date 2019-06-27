@@ -22,9 +22,9 @@ namespace NRLS_APITest.Services
             //mock.Setup(op => op.ValidReference(It.Is<ResourceReference>(r => r.Reference == "https://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(false);
             mock.Setup(op => op.ValidReference(It.IsAny<ResourceReference>(), It.IsAny<string>())).Returns(true);
             mock.Setup(op => op.ValidReferenceParameter(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code == null), It.IsAny<string>(), false, true, true, true, It.IsAny<string>())).Returns(false);
-            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code != null), It.IsAny<string>(), false, true, true, true, It.IsAny<string>())).Returns(true);
-            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code != null), It.IsAny<string>(), true, true, true, true, It.IsAny<string>())).Returns(true);
+            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code == null), It.IsAny<int>(), It.IsAny<string>(), false, true, true, true, It.IsAny<string>())).Returns(false);
+            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code != null), It.IsAny<int>(), It.IsAny<string>(), false, true, true, true, It.IsAny<string>())).Returns(true);
+            mock.Setup(op => op.ValidCodableConcept(It.Is<CodeableConcept>(q => q.Coding != null && q.Coding.FirstOrDefault() != null && q.Coding.FirstOrDefault().Code != null), It.IsAny<int>(), It.IsAny<string>(), true, true, true, true, It.IsAny<string>())).Returns(true);
 
             mock.Setup(op => op.ValidNhsNumber(It.Is<string>(q => string.IsNullOrEmpty(q)))).Returns(false);
             mock.Setup(op => op.ValidNhsNumber(It.Is<string>(q => !string.IsNullOrEmpty(q)))).Returns(true);
