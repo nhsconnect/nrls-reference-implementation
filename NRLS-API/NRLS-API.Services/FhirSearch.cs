@@ -171,7 +171,7 @@ namespace NRLS_API.Services
                     {
                         Mode = Bundle.SearchEntryMode.Match
                     },
-                    FullUrl = $"{request.RequestUrl.Scheme}://{request.RequestUrl.Host}/fhir/{request.ResourceType}/{r.Id}",
+                    FullUrl = $"{request.RequestUrl.Scheme}://{request.RequestUrl.Host}{(new int[] { 80, 443 }.Contains(request.RequestUrl.Port)? "": ":" + request.RequestUrl.Port)}/nrls-ri/{request.ResourceType}/{r.Id}",
                     Resource = r
                 }).ToList();
             }
