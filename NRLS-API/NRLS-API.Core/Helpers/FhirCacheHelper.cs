@@ -41,8 +41,9 @@ namespace NRLS_API.Core.Helpers
             var basePath = DirectoryHelper.GetBaseDirectory();
 
             var zip = Path.Combine(basePath, "Data", "definitions.xml.zip");
+            var local = Path.Combine(basePath, "Data", "reference");
 
-            return new CachedResolver(new MultiResolver(new WebResolver(uri => new FhirClient("https://fhir.nhs.uk/STU3")), new ZipSource(zip)));
+            return new CachedResolver(new MultiResolver(new DirectorySource(local, new DirectorySourceSettings { IncludeSubDirectories = true }), new WebResolver(uri => new FhirClient("https://fhir.nhs.uk/STU3")), new ZipSource(zip)));
         }
     }
 }

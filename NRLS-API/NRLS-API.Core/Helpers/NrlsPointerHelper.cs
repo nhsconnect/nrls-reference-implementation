@@ -26,6 +26,19 @@ namespace NRLS_API.Core.Helpers
             return null;
         }
 
+        public static FhirRequest CreateReferenceSearch(FhirRequest request, string logicalId)
+        {
+            if (!string.IsNullOrWhiteSpace(logicalId))
+            {
+                request.Id = logicalId;
+
+                var searchRequest = FhirRequest.Copy(request, ResourceType.DocumentReference, null, null, request.ProfileUri);
+                return searchRequest;
+            }
+
+            return null;
+        }
+
         public static FhirRequest CreateMasterIdentifierSearch(FhirRequest request, Identifier masterId, string nhsNumber)
         {
             if (masterId != null && !string.IsNullOrWhiteSpace(nhsNumber))

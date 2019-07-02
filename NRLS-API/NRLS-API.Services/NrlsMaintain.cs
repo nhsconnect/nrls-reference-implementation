@@ -41,7 +41,7 @@ namespace NRLS_API.Services
             // NRLS Layers of validation before Fhir Search Call
             var document = request.Resource as DocumentReference;
 
-            //Pointer Validation
+            //NRL Pointer validation
             var validProfile = _fhirValidation.ValidPointer(document);
 
             if (!validProfile.Success)
@@ -104,45 +104,88 @@ namespace NRLS_API.Services
 
             var document = request.Resource as DocumentReference;
 
-            if (document.RelatesTo == null || document.RelatesTo.Count == 0)
-            {
-                return null;
-            }
-
             var relatesTo = _fhirValidation.GetValidRelatesTo(document.RelatesTo);
 
-            if (relatesTo.element == null)
+            if (document.RelatesTo.Count == 0)
+            {
+                //skip checks, request is just a standard create
+                return null;
+            }
+            else if (relatesTo.element == null)
             {
                 return OperationOutcomeFactory.CreateInvalidResource(relatesTo.issue);
             }
 
             //Subject already validated during ValidateCreate
-            //relatesTo Identifier already validated during ValidateCreate => validPointer
-            var subjectNhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
-            var pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.element.Target.Identifier, subjectNhsNumber);
-            var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest) as Bundle;
+            //relatesTo Reference/Identifier already validated during ValidateCreate => validPointer
 
-            if (pointers.Entry.Count != 1)
+            var isRelatesToReference = !string.IsNullOrWhiteSpace(relatesTo.element.Target.Reference);
+
+            FhirRequest pointerRequest = null;
+            DocumentReference oldDocument = null;
+
+            if (isRelatesToReference)
+            {
+                pointerRequest = NrlsPointerHelper.CreateReferenceSearch(request, request.RequestResourceId);
+                oldDocument = await _fhirSearch.Get<DocumentReference>(pointerRequest) as DocumentReference;
+            }
+            else
+            {
+                var subjectNhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
+                pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.element.Target.Identifier, subjectNhsNumber);
+                var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest) as Bundle;
+
+                //There should only ever be zero or one
+                oldDocument = pointers.Entry.FirstOrDefault()?.Resource as DocumentReference;
+            }        
+
+            if (oldDocument == null)
             {
                 //Cant find related document
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Referenced DocumentReference does not exist.");
+            }
+
+            //Reference type checks
+            if (isRelatesToReference)
+            {
+                //related document does not have same patient
+                if (string.IsNullOrEmpty(oldDocument.Subject.Reference) || oldDocument.Subject.Reference != document.Subject.Reference)
+                {
+                    return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference is not associated with the same patient.");
+                }
+
+                //related document does not have masterIdentifier or masterIdentifier does not match new
+                var docRelatesToIdentifier = document.RelatesTo.First().Target.Identifier;
+                if (docRelatesToIdentifier != null)
+                {
+                    var oldDocRelatesToIdentifier = oldDocument.MasterIdentifier;
+
+                    if(oldDocRelatesToIdentifier == null)
+                    {
+                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference does not have a matching MasterIdentifier.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(docRelatesToIdentifier.System) || string.IsNullOrWhiteSpace(docRelatesToIdentifier.Value) || 
+                        (docRelatesToIdentifier.Value != oldDocRelatesToIdentifier.Value && docRelatesToIdentifier.System != oldDocRelatesToIdentifier.System))
+                    {
+                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference does not have a matching MasterIdentifier.");
+                    }
+                }
             }
 
             //Custodian already validated against incoming ASID during ValidateCreate
-            var custodianOdsCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);
-
-            var oldDocument = pointers.Entry.First().Resource as DocumentReference;
+            var custodianOdsCode = _fhirValidation.GetOrganizationReferenceId(document.Custodian);        
 
             if (oldDocument.Custodian == null || string.IsNullOrEmpty(oldDocument.Custodian.Reference) || oldDocument.Custodian.Reference != $"{FhirConstants.SystemODS}{custodianOdsCode}")
             {
                 //related document does not have same custodian
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference is not associated with custodian {custodianOdsCode}");
             }
 
             if(oldDocument.Status != DocumentReferenceStatus.Current)
             {
                 //Only allowed to transition to superseded from current
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.code");
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Invalid lifecycle transition. Resolved DocumentReference is not current.");
             }
 
             return oldDocument;

@@ -37,12 +37,27 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
-            //master identifier
-            if(pointer.MasterIdentifier != null)
-            {
-                var masterIdentifierCheck =  _validationHelper.ValidIdentifier(pointer.MasterIdentifier, "masterIdentifier");
 
-                if(!masterIdentifierCheck.valid)
+            //Base NRL Pointer Validation
+            var profileCheck = ValidProfile<DocumentReference>(pointer, FhirConstants.SystemNrlsProfile);
+
+            if (!profileCheck.Success)
+            {
+                var error = profileCheck.Issue.FirstOrDefault(x => x.Severity.HasValue && new OperationOutcome.IssueSeverity[] { OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueSeverity.Fatal }.Contains(x.Severity.Value));
+
+                //NOTE: structure of property and diagnostics will not match NRL output
+                return OperationOutcomeFactory.CreateInvalidResource(error.Location.First(), error.Details.Text);
+            }
+
+            //Below checks cover what profile checker can't check
+
+
+            //master identifier
+            if (pointer.MasterIdentifier != null)
+            {
+                var masterIdentifierCheck = _validationHelper.ValidIdentifier(pointer.MasterIdentifier, "masterIdentifier");
+
+                if (!masterIdentifierCheck.valid)
                 {
                     return OperationOutcomeFactory.CreateInvalidResource(masterIdentifierCheck.issue, "If the masterIdentifier is supplied then the value and system properties are mandatory");
                 }
@@ -54,108 +69,54 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidResource("status", "The status of a new DocumentReference can only be \"current\"");
             }
 
-            //type
-            if(pointer.Type == null)
+            //subject 
+            //Just NHS Number Validation
+            var validNhsNumber =  ValidatePatientReference(pointer.Subject);
+
+            if(validNhsNumber != null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-            else if(!_validationHelper.ValidCodableConcept(pointer.Type, 1, FhirConstants.SystemPointerType, true, true, true, true, FhirConstants.VsRecordType))
-            {
-                return OperationOutcomeFactory.CreateInvalidResource("type");
+                return validNhsNumber;
             }
 
-            //class
-            if (pointer.Class == null)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-            else if (!_validationHelper.ValidCodableConcept(pointer.Class, 1, FhirConstants.SystemPointerClass, true, true, true, true, FhirConstants.VsRecordClass))
-            {
-                return OperationOutcomeFactory.CreateInvalidResource("class");
-            }
-
-            //subject
-            if (pointer.Subject != null)
-            {
-                var validNhsNumber =  ValidatePatientReference(pointer.Subject);
-
-                if(validNhsNumber != null)
-                {
-                    return validNhsNumber;
-                }
-            }
-            else
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-
-            //validate orgcode is real done outside of here
             //author
-            if (pointer.Author != null && pointer.Author.Count == 1)
-            {
-                var validAuthor = ValidateOrganisationReference(pointer.Author.First(), "author");
+            //validate orgcode is done outside of here
+            var validAuthor = ValidateOrganisationReference(pointer.Author.First(), "author");
 
-                if (validAuthor != null)
-                {
-                    return validAuthor;
-                }
-            }
-            else
+            if (validAuthor != null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
+                return validAuthor;
             }
 
 
-            //validate orgcode for match against fromASID and is real done outside of here
             //custodian
-            if (pointer.Custodian != null)
-            {
-                var validCustodian = ValidateOrganisationReference(pointer.Custodian, "custodian");
+            //validate orgcode for match against fromASID is done outside of here
+            var validCustodian = ValidateOrganisationReference(pointer.Custodian, "custodian");
 
-                if (validCustodian != null)
-                {
-                    return validCustodian;
-                }
-            }
-            else
+            if (validCustodian != null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-
-            //indexed
-            DateTime validIndexed;
-            if (pointer.Indexed == null)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
-            }
-            else if (!pointer.Indexed.HasValue || !FhirDateTime.IsValidValue(pointer.Indexed.Value.ToString(DateTimeFormat)) || !DateTime.TryParse(pointer.Indexed.Value.ToString(DateTimeFormat), out validIndexed))
-            {
-                return OperationOutcomeFactory.CreateInvalidResource("indexed");
+                return validCustodian;
             }
 
             //relatesTo
             //Only require basic checks here
             //Additional checks are carried out in NrlsMaintain.ValidateConditionalUpdate
             var relatesTo = GetValidRelatesTo(pointer.RelatesTo);
-            if (pointer.RelatesTo != null && (pointer.RelatesTo.Count > 1 || (pointer.RelatesTo.Count > 0 && relatesTo.element == null)))
+            if (pointer.RelatesTo.Count > 0 && relatesTo.element == null)
             {
                 return OperationOutcomeFactory.CreateInvalidResource(relatesTo.issue);
             }
 
             //Content
-            if (pointer.Content != null)
-            {
-                var validContent = ValidateContent(pointer.Content);
+            var validContent = ValidateContent(pointer.Content);
 
-                if(validContent != null)
-                {
-                    return validContent;
-                }
-            }
-            else
+            if(validContent != null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource(null);
+                return validContent;
             }
+
+            //Context
+            //Checked in profile checker
+            //WARNING: practice setting valueset is stored locally
 
             return OperationOutcomeFactory.CreateOk();
         }
@@ -201,7 +162,7 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidResource("subject");
             }
 
-            var nhsNumber = reference.Reference.Replace(FhirConstants.SystemPDS, "");
+            var nhsNumber = GetSubjectReferenceId(reference);
 
             if (!_validationHelper.ValidNhsNumber(nhsNumber))
             {
@@ -307,21 +268,16 @@ namespace NRLS_API.Services
 
         public (DocumentReference.RelatesToComponent element, string issue) GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesToElm)
         {
-            if(relatesToElm == null)
-            {
-                return (null, "relatesTo");
-            }
-
-            var relatesTo = relatesToElm.FirstOrDefault(r => r.Code.HasValue && r.Code.Value.Equals(DocumentRelationshipType.Replaces));
+            //profile checker checks these if we have relatesTo:
+            // - there is just one relatesTo
+            // - it has a code of replaces
+            // - it has a target
+            // - has within target, an identifer or reference
+            var relatesTo = relatesToElm.FirstOrDefault();
 
             if(relatesTo == null)
             {
-                return (null, "relatesTo.code");
-            }
-
-            if (relatesTo.Target == null)
-            {
-                return (null, "relatesTo.target");
+                return (null, null);
             }
 
             var checkIdentifier = string.IsNullOrWhiteSpace(relatesTo.Target.Reference);
@@ -330,7 +286,7 @@ namespace NRLS_API.Services
             {
                 if (relatesTo.Target.Identifier == null)
                 {
-                    //reference takes priority, if both are missing then error is with reference
+                    //reference property takes priority, if both are missing then error is with reference
                     return (null, "relatesTo.target.reference");
                 }
 
@@ -379,27 +335,9 @@ namespace NRLS_API.Services
         }
 
         public OperationOutcome ValidateContent(List<DocumentReference.ContentComponent> contents)
-        {
-            if (contents == null || contents.Count == 0)
-            {
-                return OperationOutcomeFactory.CreateInvalidResource("content");
-            }
-
+        { 
             foreach (var content in contents)
             {
-
-                //format
-                if (content.Format == null || !_validationHelper.ValidCoding(new List<Coding> { content.Format }, 1, FhirConstants.SystemPointerFormat, true, true, true, true, FhirConstants.VsRecordFormat))
-                {
-                    return OperationOutcomeFactory.CreateInvalidResource("format");
-                }
-
-                //attachment
-                if (content.Attachment == null)
-                {
-                    return OperationOutcomeFactory.CreateInvalidResource("attachment");
-                }
-
                 //attachment.contentType
                 //TODO validate contenttype format
                 var contentType = content.Attachment.ContentType;
@@ -413,14 +351,6 @@ namespace NRLS_API.Services
                 if (string.IsNullOrEmpty(url) || !FhirUri.IsValidValue(url))
                 {
                     return OperationOutcomeFactory.CreateInvalidResource("url");
-                }
-
-                //attachment.creation can be empty
-                var creation = content.Attachment.Creation;
-                DateTime validCreation;
-                if (!string.IsNullOrEmpty(creation) && (!FhirDateTime.IsValidValue(creation) || !DateTime.TryParse(creation, out validCreation)))
-                {
-                    return OperationOutcomeFactory.CreateInvalidResource("creation", $"The attachment creation date value is not a valid dateTime type: {creation}.");
                 }
             }
 
