@@ -1,10 +1,10 @@
 @ECHO OFF
 
 REM Build Mongo Data Image
-cd ../data & docker build -t nrlsmongodb . --no-cache
+cd ../data && build.bat
 
 REM Build Demonstrator Image
-cd ../Demonstrator & docker build -t nrlsdemo . --no-cache
+cd ../Demonstrator && build.bat
 
 REM Build NRLS-API Image
-cd ../NRLS-API & docker build -t nrlsapi . --no-cache
+cd ../NRLS-API && build.bat

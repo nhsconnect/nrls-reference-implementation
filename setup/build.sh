@@ -1,10 +1,10 @@
 #!/bin/bash
 
 cd /nrlsrefimp/data
-docker build -t nrlsmongodb . --no-cache
+./build.sh
 
 cd /nrlsrefimp/Demonstrator
-docker build -t nrlsdemo . --no-cache
+./build.sh
 
 cd /nrlsrefimp/NRLS-API
-docker build -t nrlsapi . --no-cache
+./build.sh
