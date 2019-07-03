@@ -6,7 +6,6 @@ data/mongo-setup-and-commands.txt.local
 /**/*/obj
 /**/*/bin
 Demonstrator/Demonstrator.NRLSAdapter/Shared/*
-Demonstrator/Demonstrator.WebApp/appsettings.json
 Demonstrator/Demonstrator.WebApp/Shared/*
 Demonstrator/Demonstrator.WebApp/wwwroot/*
 !*.gitkeep
