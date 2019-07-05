@@ -47,12 +47,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
-            var result = await _nrlsSearch.Find<DocumentReference>(request);
-
-            if (result.ResourceType == ResourceType.OperationOutcome)
-            {
-                return NotFound(result);
-            }
+            var result = await _nrlsSearch.Find(request);
 
             return Ok(result);
         }
@@ -69,11 +64,11 @@ namespace NRLS_API.WebApp.Controllers
             //TODO: Update to reflect new ID parameter
             var request = FhirRequest.Create(logicalId, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
-            var result = await _nrlsSearch.Get<DocumentReference>(request);
+            var result = await _nrlsSearch.Get(request);
 
-            if (result.ResourceType == ResourceType.OperationOutcome)
+            if (result == null)
             {
-                return NotFound(result);
+                return NotFound(OperationOutcomeFactory.CreateNotFound(logicalId));
             }
 
             return Ok(result);
@@ -98,7 +93,7 @@ namespace NRLS_API.WebApp.Controllers
 
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request, RequestingAsid());
 
-            var createIssue = await _nrlsMaintain.ValidateCreate<DocumentReference>(request);
+            var createIssue = await _nrlsMaintain.ValidateCreate(request);
 
             if (createIssue != null)
             {
@@ -115,12 +110,12 @@ namespace NRLS_API.WebApp.Controllers
                     return BadRequest(validUpdateDocument);
                 }
 
-                result = await _nrlsMaintain.SupersedeWithoutValidation<DocumentReference>(request, validUpdateDocument.Id, validUpdateDocument.VersionId);
+                result = await _nrlsMaintain.SupersedeWithoutValidation(request, validUpdateDocument.Id, validUpdateDocument.VersionId);
             }
             else
             {
                 //just try and create new document
-                result = await _nrlsMaintain.CreateWithoutValidation<DocumentReference>(request);
+                result = await _nrlsMaintain.CreateWithoutValidation(request);
             }
 
             if (result.ResourceType == ResourceType.OperationOutcome)
@@ -149,7 +144,7 @@ namespace NRLS_API.WebApp.Controllers
         {
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
-            var result = await _nrlsMaintain.Delete<DocumentReference>(request);
+            var result = await _nrlsMaintain.Delete(request);
 
             if (result != null && result.Success)
             {

@@ -28,14 +28,15 @@ namespace NRLS_APITest.WebApp.Controllers
 
             var searchMock = new Mock<INrlsSearch>();
             //searchMock.Setup(x => x.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
-            searchMock.Setup(x => x.Find<DocumentReference>(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
-            searchMock.Setup(x => x.Find<DocumentReference>(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.NotFound as Resource));
+            searchMock.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
+            searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(NrlsPointers.Valid as Resource));
+            searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(null as Resource));
 
             var maintMock = new Mock<INrlsMaintain>();
             //maintMock.Setup(x => x.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(System.Threading.Tasks.Task.FromResult(new Bundle() as Resource));
-            maintMock.Setup(x => x.Delete<DocumentReference>(It.Is<FhirRequest>(y => y.RequestingAsid == "fromASID"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Deleted));
-            maintMock.Setup(x => x.Delete<DocumentReference>(It.Is<FhirRequest>(y => y.RequestingAsid == "badrequest"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Invalid));
-            maintMock.Setup(x => x.Delete<DocumentReference>(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.NotFound));
+            maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "fromASID"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Deleted));
+            maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "badrequest"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Invalid));
+            maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.NotFound));
 
             _nrlsSettings = nrlsSettingsMock.Object;
             _nrlsSearch = searchMock.Object;
@@ -75,14 +76,40 @@ namespace NRLS_APITest.WebApp.Controllers
         }
 
         [Fact]
-        public async void Search_NotFound()
+        public async void Read_Found()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
+
+            var response = await controller.Read("logicalId");
+
+            Assert.IsType<OkObjectResult>(response);
+
+            var okResult = response as OkObjectResult;
+
+            Assert.Equal(200, okResult.StatusCode);
+
+            var responseContent = okResult.Value;
+
+            Assert.IsType<DocumentReference>(responseContent);
+            var outcome = responseContent as DocumentReference;
+
+            Assert.Equal(ResourceType.DocumentReference, outcome.ResourceType);
+            Assert.Equal("https://directory.spineservices.nhs.uk/STU3/Organization/1XR", outcome.Custodian.Reference);
+            Assert.Equal("https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207", outcome.Subject.Reference);
+        }
+
+        [Fact]
+        public async void Read_NotFound()
         {
 
             var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = HttpContexts.NotFound_Search;
 
-            var response = await controller.Search();
+            var response = await controller.Read("logicalId");
 
             Assert.IsType<NotFoundObjectResult>(response);
 

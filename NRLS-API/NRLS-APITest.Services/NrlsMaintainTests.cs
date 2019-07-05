@@ -43,26 +43,27 @@ namespace NRLS_APITest.Services
             var searchDocEmptyBundle = FhirBundle.GetBundle<DocumentReference>(new List<DocumentReference>());
 
             var searchMock = new Mock<IFhirSearch>();
-            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => searchOrgBundle as Resource));
-            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => searchOrgBundle as Resource));
-            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => emptySearchBundle as Resource));
+            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchOrgBundle));
+            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchOrgBundle));
+            searchMock.Setup(op => op.Find<Organization>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => emptySearchBundle));
 
-            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
-            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => searchDocAltBundle as Resource));
-            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => searchDocEmptyBundle as Resource));
-            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "003"))).Returns(SystemTasks.Task.Run(() => searchDocAltInvalidBundle as Resource));
+            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchDocBundle));
+            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "001"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchDocAltBundle));
+            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchDocEmptyBundle));
+            searchMock.Setup(op => op.Find<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "003"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchDocAltInvalidBundle));
 
-            searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
+            searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => NrlsPointers.Valid_With_Alt_Custodian));
             //searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.Is<FhirRequest>(request => (request.Resource as DocumentReference).MasterIdentifier.Value == "testValueForMaintTest"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
-            searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
+            searchMock.Setup(op => op.GetAsBundle<DocumentReference>(It.Is<FhirRequest>(x => x.RequestingAsid == "003"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Bundle));
+            searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Bundle));
 
             var maintMock = new Mock<IFhirMaintain>();
-            maintMock.Setup(op => op.Create<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => NrlsPointers.Valid as Resource));
-            maintMock.Setup(op => op.Create<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => null as Resource));
+            maintMock.Setup(op => op.Create<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "000"))).Returns(SystemTasks.Task.Run(() => NrlsPointers.Valid));
+            maintMock.Setup(op => op.Create<DocumentReference>(It.Is<FhirRequest>(request => request.RequestingAsid == "002"))).Returns(SystemTasks.Task.Run(() => (DocumentReference) null));
 
-            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1339"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: NrlsPointers.Valid as Resource, updated: true)));
-            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1338"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: null as Resource, updated: true)));
-            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1337"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: NrlsPointers.Valid as Resource, updated: false)));
+            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1339"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: NrlsPointers.Valid, updated: true)));
+            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1338"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: (DocumentReference) null, updated: true)));
+            maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1337"), It.IsAny<UpdateDefinition<BsonDocument>>())).Returns(SystemTasks.Task.Run(() => (created: NrlsPointers.Valid, updated: false)));
 
             maintMock.Setup(op => op.CreateWithUpdate<DocumentReference>(It.IsAny<FhirRequest>(), It.Is<FhirRequest>(request => request.Id == "5ab13f41957d0ad5d93a1336"), It.IsAny<UpdateDefinition<BsonDocument>>())).ThrowsAsync(new HttpFhirException());
 
@@ -243,7 +244,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.CreateWithoutValidation<DocumentReference>(FhirRequests.Valid_Create);
+            var response = await service.CreateWithoutValidation(FhirRequests.Valid_Create);
 
             Assert.IsType<DocumentReference>(response);
         }
@@ -253,7 +254,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.CreateWithoutValidation<DocumentReference>(FhirRequests.Invalid_Custodian);
+            var response = await service.CreateWithoutValidation(FhirRequests.Invalid_Custodian);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -279,7 +280,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create);
+            var validation = await service.ValidateCreate(FhirRequests.Valid_Create);
 
             Assert.Null(validation);
 
@@ -295,7 +296,7 @@ namespace NRLS_APITest.Services
             {
                 await SystemTasks.Task.Run(async () => 
                 {
-                    var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Invalid_Create);
+                    var validation = await service.ValidateCreate(FhirRequests.Invalid_Create);
                 });
 
             });
@@ -306,7 +307,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create_Alt);
+            var validation = await service.ValidateCreate(FhirRequests.Valid_Create_Alt);
 
             Assert.IsType<OperationOutcome>(validation);
         }
@@ -316,7 +317,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Invalid_Custodian);
+            var validation = await service.ValidateCreate(FhirRequests.Invalid_Custodian);
 
             Assert.IsType<OperationOutcome>(validation);
         }
@@ -326,7 +327,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var validation = await service.ValidateCreate<DocumentReference>(FhirRequests.Valid_Create_MasterId);
+            var validation = await service.ValidateCreate(FhirRequests.Valid_Create_MasterId);
 
             Assert.IsType<OperationOutcome>(validation);
         }
@@ -484,7 +485,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1339", "1");
+            var response = await service.SupersedeWithoutValidation(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1339", "1");
 
             Assert.IsType<DocumentReference>(response);
         }
@@ -494,7 +495,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1338", "1");
+            var response = await service.SupersedeWithoutValidation(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1338", "1");
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -516,7 +517,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1337", "1");
+            var response = await service.SupersedeWithoutValidation(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1337", "1");
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -540,7 +541,7 @@ namespace NRLS_APITest.Services
 
             var exception = await Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
-                var response = await service.SupersedeWithoutValidation<DocumentReference>(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1336", "1");
+                var response = await service.SupersedeWithoutValidation(FhirRequests.Valid_Create, "5ab13f41957d0ad5d93a1336", "1");
 
             });
 
@@ -565,7 +566,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete);
+            var response = await service.Delete(FhirRequests.Valid_Delete);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -577,7 +578,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete_Alt);
+            var response = await service.Delete(FhirRequests.Valid_Delete_Alt);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -593,7 +594,7 @@ namespace NRLS_APITest.Services
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
                 await SystemTasks.Task.Run(async () => {
-                    var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_Delete);
+                    var response = await service.Delete(FhirRequests.Invalid_Delete);
                 });
 
             });
@@ -604,7 +605,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete_Alt);
+            var response = await service.Delete(FhirRequests.Valid_Delete_Alt);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -616,7 +617,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete<DocumentReference>(FhirRequests.Valid_ConditionalDelete);
+            var response = await service.Delete(FhirRequests.Valid_ConditionalDelete);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -628,7 +629,7 @@ namespace NRLS_APITest.Services
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete);
+            var response = await service.Delete(FhirRequests.Invalid_ConditionalDelete);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -643,7 +644,7 @@ namespace NRLS_APITest.Services
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
                 await SystemTasks.Task.Run(async () => {
-                    var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete_NoSubject);
+                    var response = await service.Delete(FhirRequests.Invalid_ConditionalDelete_NoSubject);
                 });
 
             });
@@ -658,7 +659,7 @@ namespace NRLS_APITest.Services
             Assert.ThrowsAsync<HttpFhirException>(async delegate
             {
                 await SystemTasks.Task.Run(async () => {
-                    var response = await service.Delete<DocumentReference>(FhirRequests.Invalid_ConditionalDelete_IncompleteIdentifier);
+                    var response = await service.Delete(FhirRequests.Invalid_ConditionalDelete_IncompleteIdentifier);
                 });
 
             });

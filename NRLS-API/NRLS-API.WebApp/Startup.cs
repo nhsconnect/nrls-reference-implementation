@@ -130,7 +130,7 @@ namespace NRLS_API.WebApp
             services.AddTransient<INrlsValidation, NrlsValidation>();
             services.AddTransient<IJwtHelper, JwtHelper>();
             services.AddTransient<IFhirSearchHelper, FhirSearchHelper>();
-            services.AddTransient<IFhirCacheHelper, FhirCacheHelper>();
+            services.AddTransient<IFhirResourceHelper, FhirResourceHelper>();
             services.AddTransient<ISspProxyService, SspProxyService>();
             services.AddTransient<ISdsService, SdsService>();
             services.AddTransient<IHttpRequestHelper, HttpRequestHelper>();

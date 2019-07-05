@@ -6,6 +6,7 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Models.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Hl7.Fhir.Model.ModelInfo;
@@ -14,19 +15,62 @@ namespace NRLS_API.Core.Helpers
 {
     public class FhirSearchHelper : IFhirSearchHelper
     {
-        private readonly IFhirCacheHelper _fhirCacheHelper;
+        private readonly IFhirResourceHelper _fhirResourceHelper;
 
-        public FhirSearchHelper(IFhirCacheHelper fhirCacheHelper)
+        public FhirSearchHelper(IFhirResourceHelper fhirResourceHelper)
         {
-            _fhirCacheHelper = fhirCacheHelper;
+            _fhirResourceHelper = fhirResourceHelper;
         }
 
         public Resource GetResourceProfile(string profileUrl)
         {
-            return _fhirCacheHelper.GetResourceProfile(profileUrl);
+            return _fhirResourceHelper.GetResourceProfile(profileUrl);
         }
 
-        public FilterDefinition<BsonDocument> BuildIdQuery(string _id)
+        //TODO: test this
+        public Bundle ToBundle<T>(FhirRequest request, List<T> resources, Guid? bundleId) where T : Resource
+        {
+            var meta = new Meta();
+            meta.LastUpdated = DateTime.UtcNow;
+
+            var selfLink = new Bundle.LinkComponent();
+            selfLink.Relation = "_self";
+            selfLink.Url = request.RequestUrl.AbsoluteUri;
+
+            var links = new List<Bundle.LinkComponent>();
+            links.Add(selfLink);
+
+            var entryResources = request.IsSummary ? new List<T>() : resources;
+            var entries = new List<Bundle.EntryComponent>();
+            entryResources.ForEach((r) =>
+            {
+                var urlPort = new int[] { 80, 443 }.Contains(request.RequestUrl.Port) ? "" : ":" + request.RequestUrl.Port;
+
+                var search = new Bundle.SearchComponent();
+                search.Mode = Bundle.SearchEntryMode.Match;
+
+                var entry = new Bundle.EntryComponent();
+                entry.Search = search;
+                entry.FullUrl = $"{request.RequestUrl.Scheme}://{request.RequestUrl.Host}{urlPort}/nrls-ri/{request.ResourceType}/{r.Id}";
+                entry.Resource = r;
+
+                entries.Add(entry);
+            });
+            
+            var bundle = new Bundle();
+            bundle.Id = $"{(bundleId.HasValue ? bundleId.Value : Guid.NewGuid())}";
+            bundle.Meta = meta;
+            bundle.Type = Bundle.BundleType.Searchset;
+            bundle.Total = resources.Count;
+            bundle.Link = links;
+            bundle.Entry = entries;
+
+            return bundle;
+        }
+
+        // IMPORTANT - these queries currently do not filter for active/un-deleted pointers
+
+        public FilterDefinition<BsonDocument> BuildQuery(string _id)
         {
             //validate request
             ObjectId id;
@@ -44,6 +88,11 @@ namespace NRLS_API.Core.Helpers
 
         public FilterDefinition<BsonDocument> BuildQuery(FhirRequest request)
         {
+            if (request.IsIdQuery)
+            {
+                return BuildQuery(request.Id);
+            }
+
             var builder = Builders<BsonDocument>.Filter;
             var filters = new List<FilterDefinition<BsonDocument>>();
 

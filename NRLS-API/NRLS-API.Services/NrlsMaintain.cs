@@ -32,7 +32,7 @@ namespace NRLS_API.Services
             _fhirValidation = fhirValidation;
         }
 
-        public async SystemTasks.Task<OperationOutcome> ValidateCreate<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<OperationOutcome> ValidateCreate(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
@@ -57,7 +57,7 @@ namespace NRLS_API.Services
             {
                 var nhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
                 var masterIdentifierRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, document.MasterIdentifier, nhsNumber);
-                var miPointers = await _fhirSearch.GetByMasterId<DocumentReference>(masterIdentifierRequest) as Bundle;
+                var miPointers = await _fhirSearch.GetByMasterId<DocumentReference>(masterIdentifierRequest);
 
                 if (miPointers.Entry.Count > 0)
                 {
@@ -76,7 +76,7 @@ namespace NRLS_API.Services
             }
 
             var custodianRequest = NrlsPointerHelper.CreateOrgSearch(request, custodianOrgCode);
-            var custodians = await _fhirSearch.Find<Organization>(custodianRequest) as Bundle;
+            var custodians = await _fhirSearch.Find<Organization>(custodianRequest);
 
             if (custodians.Entry.Count == 0)
             {
@@ -85,7 +85,7 @@ namespace NRLS_API.Services
 
             var authorOrgCode = _fhirValidation.GetOrganizationReferenceId(document.Author?.FirstOrDefault());
             var authorRequest = NrlsPointerHelper.CreateOrgSearch(request, authorOrgCode);
-            var authors = await _fhirSearch.Find<Organization>(authorRequest) as Bundle;
+            var authors = await _fhirSearch.Find<Organization>(authorRequest);
 
             if (authors.Entry.Count == 0)
             {
@@ -127,13 +127,13 @@ namespace NRLS_API.Services
             if (isRelatesToReference)
             {
                 pointerRequest = NrlsPointerHelper.CreateReferenceSearch(request, request.RequestResourceId);
-                oldDocument = await _fhirSearch.Get<DocumentReference>(pointerRequest) as DocumentReference;
+                oldDocument = await _fhirSearch.Get<DocumentReference>(pointerRequest);
             }
             else
             {
                 var subjectNhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
                 pointerRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, relatesTo.element.Target.Identifier, subjectNhsNumber);
-                var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest) as Bundle;
+                var pointers = await _fhirSearch.Find<DocumentReference>(pointerRequest);
 
                 //There should only ever be zero or one
                 oldDocument = pointers.Entry.FirstOrDefault()?.Resource as DocumentReference;
@@ -191,12 +191,12 @@ namespace NRLS_API.Services
             return oldDocument;
         }
 
-        public async SystemTasks.Task<Resource> CreateWithoutValidation<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<Resource> CreateWithoutValidation(FhirRequest request)
         {
 
             SetMetaValues(request);
 
-            var response = await _fhirMaintain.Create<T>(request);
+            var response = await _fhirMaintain.Create<DocumentReference>(request);
 
             if (response == null)
             {
@@ -206,7 +206,7 @@ namespace NRLS_API.Services
             return response;
         }
 
-        public async SystemTasks.Task<Resource> SupersedeWithoutValidation<T>(FhirRequest request, string oldDocumentId, string oldVersionId) where T : Resource
+        public async SystemTasks.Task<Resource> SupersedeWithoutValidation(FhirRequest request, string oldDocumentId, string oldVersionId)
         {
             UpdateDefinition<BsonDocument> updates = null;
             FhirRequest updateRequest = null;
@@ -219,7 +219,7 @@ namespace NRLS_API.Services
 
             try
             {
-                (created, updated) = await _fhirMaintain.CreateWithUpdate<T>(request, updateRequest, updates);
+                (created, updated) = await _fhirMaintain.CreateWithUpdate<DocumentReference>(request, updateRequest, updates);
             }
             catch
             {
@@ -250,7 +250,7 @@ namespace NRLS_API.Services
         /// If valid we can delete.
         /// We use the FhirMaintain service and FhirSearch service to facilitate this
         /// </remarks>
-        public async SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<OperationOutcome> Delete(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
@@ -290,11 +290,11 @@ namespace NRLS_API.Services
                     throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {id}"), HttpStatusCode.BadRequest);
                 }
 
-                document = await _fhirSearch.GetAsBundle<T>(request);
+                document = await _fhirSearch.GetAsBundle<DocumentReference>(request);
             }
             else
             {
-                document = await _fhirSearch.GetByMasterId<T>(request);
+                document = await _fhirSearch.GetByMasterId<DocumentReference>(request);
             }
 
             var documentResponse = ParseRead(document, id);
@@ -329,7 +329,7 @@ namespace NRLS_API.Services
 
             if (!string.IsNullOrEmpty(id))
             {
-                deleted = await _fhirMaintain.Delete<T>(request);
+                deleted = await _fhirMaintain.Delete<DocumentReference>(request);
 
             }
             else
@@ -337,7 +337,7 @@ namespace NRLS_API.Services
                 //Add identifier on the fly as it is not a standard search parameter
                 request.AllowedParameters = request.AllowedParameters.Concat(new[] { "identifier" }).ToArray();
 
-                deleted = await _fhirMaintain.DeleteConditional<T>(request);
+                deleted = await _fhirMaintain.DeleteConditional<DocumentReference>(request);
             }
 
             if (!deleted)

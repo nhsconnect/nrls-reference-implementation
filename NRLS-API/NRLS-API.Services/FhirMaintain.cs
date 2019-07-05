@@ -29,7 +29,7 @@ namespace NRLS_API.Services
             _fhirSearchHelper = fhirSearchHelper;
         }
 
-        public async SystemTasks.Task<Resource> Create<T>(FhirRequest request) where T : Resource
+        public async SystemTasks.Task<T> Create<T>(FhirRequest request) where T : Resource
         {
             ValidateResource(request.StrResourceType);
 
@@ -45,7 +45,7 @@ namespace NRLS_API.Services
                 var hasId = document.TryGetElement("_id", out documentId);
                 request.Resource.Id = documentId.Value?.ToString();
 
-                return await SystemTasks.Task.Run(() => request.Resource);
+                return await SystemTasks.Task.Run(() => request.Resource as T);
             }
             catch (Exception ex)
             {
@@ -54,10 +54,10 @@ namespace NRLS_API.Services
             }
         }
 
-        public async SystemTasks.Task<(Resource created, bool updated)> CreateWithUpdate<T>(FhirRequest request, FhirRequest updateRequest, UpdateDefinition<BsonDocument> updates) where T : Resource
+        public async SystemTasks.Task<(T created, bool updated)> CreateWithUpdate<T>(FhirRequest request, FhirRequest updateRequest, UpdateDefinition<BsonDocument> updates) where T : Resource
         {
  
-            Resource created = null;
+            T created = null;
             bool updated = false;
 
             //Can only do transactional style rollbacks in MongoDB 4.0 with replication
@@ -91,7 +91,7 @@ namespace NRLS_API.Services
 
         public async SystemTasks.Task<bool> Update<T>(FhirRequest request, UpdateDefinition<BsonDocument> updates) where T : Resource
         {
-            var filter = _fhirSearchHelper.BuildIdQuery(request.Id);
+            var filter = _fhirSearchHelper.BuildQuery(request.Id);
 
             try
             {
@@ -109,7 +109,7 @@ namespace NRLS_API.Services
 
         public async SystemTasks.Task<bool> Delete<T>(FhirRequest request) where T : Resource
         {
-            var filter = _fhirSearchHelper.BuildIdQuery(request.Id);
+            var filter = _fhirSearchHelper.BuildQuery(request.Id);
 
             return await DeleteResource<T>(request, filter);
         }

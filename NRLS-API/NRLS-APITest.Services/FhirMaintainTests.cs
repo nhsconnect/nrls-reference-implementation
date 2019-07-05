@@ -27,7 +27,7 @@ namespace NRLS_APITest.Services
 
             var fhirsearchHelperMock = new Mock<IFhirSearchHelper>();
             fhirsearchHelperMock.Setup(op => op.BuildQuery(FhirRequests.Valid_Search)).Returns(FilterDefinition<BsonDocument>.Empty);
-            fhirsearchHelperMock.Setup(op => op.BuildIdQuery(It.IsAny<string>())).Returns(FilterDefinition<BsonDocument>.Empty);
+            fhirsearchHelperMock.Setup(op => op.BuildQuery(It.IsAny<string>())).Returns(FilterDefinition<BsonDocument>.Empty);
 
             _nrlsApiSettings = settingsMock.Object;
             _fhirSearchHelper = fhirsearchHelperMock.Object;

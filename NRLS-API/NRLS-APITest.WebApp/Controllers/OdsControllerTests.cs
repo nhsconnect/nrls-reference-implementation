@@ -20,7 +20,7 @@ namespace NRLS_APITest.WebApp.Controllers
             var organizationList = new List<Organization> { new Organization { Id = "ValidOrg1" }, new Organization { Id = "ValidOrg2"} };
 
             var odsSearch = new Mock<IOdsSearch>();
-            odsSearch.Setup(x => x.Find<Organization>(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(organizationList) as Resource));
+            odsSearch.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(organizationList) as Resource));
 
             _odsSearch = odsSearch.Object;
         }
@@ -40,10 +40,17 @@ namespace NRLS_APITest.WebApp.Controllers
 
             var response = await controller.Search();
 
-            Assert.IsType<Bundle>(response);
+            Assert.IsType<OkObjectResult>(response);
 
+            var okResult = response as OkObjectResult;
 
-            var bundle = response as Bundle;
+            Assert.Equal(200, okResult.StatusCode);
+
+            var responseContent = okResult.Value;
+
+            Assert.IsType<Bundle>(responseContent);
+
+            var bundle = responseContent as Bundle;
 
             Assert.Equal(2, bundle.Total);
 

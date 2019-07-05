@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
+using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 
@@ -24,13 +25,13 @@ namespace NRLS_API.WebApp.Controllers
         /// <response code="200">Returns the FHIR Resource</response>
         [ProducesResponseType(typeof(Resource), 200)]
         [HttpGet]
-        public async Task<Resource> Search()
+        public async Task<IActionResult> Search()
         {
             var request = FhirRequest.Create(null, ResourceType.Patient, null, Request, null);
 
-            var result = await _pdsSearch.Find<Patient>(request);
+            var result = await _pdsSearch.Find(request);
 
-            return result;
+            return Ok(result);
         }
 
         /// <summary>
@@ -39,13 +40,18 @@ namespace NRLS_API.WebApp.Controllers
         /// <returns>A FHIR Resource</returns>
         /// <response code="200">Returns the FHIR Resource</response>
         [HttpGet("{id}")]
-        public async Task<Resource> Read(string id)
+        public async Task<IActionResult> Read(string id)
         {
             var request = FhirRequest.Create(id, ResourceType.Patient, null,  Request, null);
 
-            var result = await _pdsSearch.Get<Patient>(request);
+            var result = await _pdsSearch.Get(request);
 
-            return result;
+            if (result == null)
+            {
+                return NotFound(OperationOutcomeFactory.CreateNotFound(id));
+            }
+
+            return Ok(result);
         }
 
     }

@@ -135,10 +135,7 @@ namespace NRLS_APITest.Data
                 {
                     new DocumentReference.RelatesToComponent
                     {
-                        Target = new ResourceReference
-                        {
-                            Reference = "urn:ietf:rfc:4151|urn:tag:humber.nhs.uk,2004:cdc:600009612669​"
-                        }
+                        Target = new ResourceReference()
                     }
                 };
 
@@ -197,27 +194,6 @@ namespace NRLS_APITest.Data
             }
         }
 
-        public static DocumentReference Invalid_Type
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Type.Coding.First().Code = null;
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference Missing_Type
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Type = null;
-
-                return pointer;
-            }
-        }
 
         public static DocumentReference Invalid_Subject
         {
@@ -225,17 +201,6 @@ namespace NRLS_APITest.Data
             {
                 var pointer = Valid;
                 pointer.Subject.Reference = "https://demographics.spineservices.nhs.uk/STU3/Patient/";
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference Missing_Subject
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Subject = null;
 
                 return pointer;
             }
@@ -263,30 +228,6 @@ namespace NRLS_APITest.Data
             }
         }
 
-        public static DocumentReference Missing_Author
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Author = null;
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference TooMany_Author
-        {
-            get
-            {
-                var pointer = Valid;
-                var authour = pointer.Author.First();
-
-                pointer.Author.Add(authour);
-
-                return pointer;
-            }
-        }
-
         public static DocumentReference Invalid_Custodian
         {
             get
@@ -304,49 +245,6 @@ namespace NRLS_APITest.Data
             {
                 var pointer = Valid;
                 pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/error";
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference Missing_Custodian
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Custodian = null;
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference Missing_Content
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.Content = null;
-
-                return pointer;
-            }
-        }
-
-        public static DocumentReference Invalid_RelatesTo_Code
-        {
-            get
-            {
-                var pointer = Valid;
-                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
-                {
-                    new DocumentReference.RelatesToComponent
-                    {
-                        Code = DocumentRelationshipType.Signs,
-                        Target = new ResourceReference
-                        {
-                            Identifier = new Identifier("system", "value")
-                        }
-                    }
-                };
 
                 return pointer;
             }

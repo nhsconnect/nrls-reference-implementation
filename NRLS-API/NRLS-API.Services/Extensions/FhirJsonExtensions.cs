@@ -10,9 +10,9 @@ namespace NRLS_API.Services.Extensions
 {
     public static class FhirJsonExtensions
     {
-        public static async SystemTask.Task<List<T>> ToFhirListAsync<T>(this IAsyncCursor<BsonDocument> source) where T : Resource
+        public static async SystemTask.Task<List<T>> ToFhirListAsync<T>(this SystemTask.Task<IAsyncCursor<BsonDocument>> source) where T : Resource
         {
-            var fhirModels = source.ToList().Select(BsonToResourceFactory.ToResource<T>).ToList();
+            var fhirModels = (await source).ToList().Select(BsonToResourceFactory.ToResource<T>).ToList();
 
             return await SystemTask.Task.Run(() => fhirModels);
         }

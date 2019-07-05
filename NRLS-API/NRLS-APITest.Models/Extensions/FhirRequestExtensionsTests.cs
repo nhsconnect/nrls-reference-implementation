@@ -26,7 +26,7 @@ namespace NRLS_APITest.Models.Extensions
 
             Assert.Equal(2, asParameters.Count());
             Assert.Equal("json", asParameters.FirstOrDefault(x => x.Item1 == "_format").Item2);
-            Assert.Equal("https://fhir.nhs.uk/Id/ods-organization-code%7CXA999", asParameters.FirstOrDefault(x => x.Item1 == "custodian").Item2);
+            Assert.Equal("https://fhir.nhs.uk/Id/ods-organization-code|XA999", asParameters.FirstOrDefault(x => x.Item1 == "custodian").Item2);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace NRLS_APITest.Models.Extensions
             var asParameters = query.GetParameters().Cleaned();
 
             Assert.Single(asParameters);
-            Assert.Equal("https://fhir.nhs.uk/Id/ods-organization-code%7CXA999", asParameters.FirstOrDefault(x => x.Item1 == "custodian").Item2);
+            Assert.Equal("https://fhir.nhs.uk/Id/ods-organization-code|XA999", asParameters.FirstOrDefault(x => x.Item1 == "custodian").Item2);
         }
 
         [Fact]

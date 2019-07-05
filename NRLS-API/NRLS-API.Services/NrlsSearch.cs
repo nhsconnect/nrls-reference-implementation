@@ -32,13 +32,13 @@ namespace NRLS_API.Services
         /// <remarks>
         /// Get a single DocumentReference using the DocRef logical id
         /// </remarks>
-        public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
+        public async Task<Resource> Get(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
             request.ProfileUri = _resourceProfile;
 
-            var result = await _fhirSearch.Get<T>(request);
+            var result = await _fhirSearch.Get<DocumentReference>(request);
 
             return result;
         }
@@ -49,7 +49,7 @@ namespace NRLS_API.Services
         /// <remarks>
         /// As the NRLS is implemented with just a search and not read, to read a document the _id parameter is supplied
         /// </remarks>
-        public async Task<Resource> Find<T>(FhirRequest request) where T : Resource
+        public async Task<Resource> Find(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
@@ -69,17 +69,17 @@ namespace NRLS_API.Services
                 ObjectId mongoId;
                 if (!ObjectId.TryParse(id, out mongoId))
                 {
-                    return OperationOutcomeFactory.CreateNotFound("");
+                    throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateNotFound(id), HttpStatusCode.NotFound);
                 }
 
                 if (request.QueryParameters.Count() > 1)
                 {
-                    throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
+                    throw new HttpFhirException("Invalid _id parameter combination", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
                 }
 
                 request.Id = id;
 
-                var results = await _fhirSearch.GetAsBundle<T>(request);
+                var results = await _fhirSearch.GetAsBundle<DocumentReference>(request);
 
                 var response = ParseRead(results, id);
 
@@ -130,7 +130,7 @@ namespace NRLS_API.Services
                                                                          _fhirValidation.GetOrganizationParameterId(custodian.Item2);
 
                 var custodianRequest = NrlsPointerHelper.CreateOrgSearch(request, custodianOrgCode);
-                var custodians = await _fhirSearch.Find<Organization>(custodianRequest) as Bundle;
+                var custodians = await _fhirSearch.Find<Organization>(custodianRequest);
 
                 if (custodians.Entry.Count == 0)
                 {
@@ -187,7 +187,7 @@ namespace NRLS_API.Services
                 request.IsSummary = true;
             }
 
-            return await _fhirSearch.Find<T>(request);
+            return await _fhirSearch.Find<DocumentReference>(request);
 
          }
 

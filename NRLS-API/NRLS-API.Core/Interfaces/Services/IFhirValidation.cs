@@ -1,13 +1,10 @@
 ﻿using Hl7.Fhir.Model;
-using NRLS_API.Models.Core;
 using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
     public interface IFhirValidation
     {
-        OperationOutcome ValidProfile<T>(T resource, string customProfile) where T : Resource;
-
         OperationOutcome ValidPointer(DocumentReference pointer);
 
         OperationOutcome ValidTypeParameter(string type);

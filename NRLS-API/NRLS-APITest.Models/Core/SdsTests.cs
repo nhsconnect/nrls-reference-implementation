@@ -29,7 +29,7 @@ namespace NRLS_APITest.Models
 
             Assert.Equal("5cb5ddefc892d7e5f2911909", viewModel.Id);
             Assert.Equal(Guid.Parse("1e5ed8d1-438c-4e6a-8edf-bcb1f739ad5e"), viewModel.PartyKey);
-            Assert.Equal("5cb5ddefc892d7e5f2911909", viewModel.Fqdn);
+            Assert.Equal("fqdn.com", viewModel.Fqdn);
             Assert.NotNull(viewModel.EndPoints);
             Assert.NotEmpty(viewModel.EndPoints);
             Assert.Equal("/hello", viewModel.EndPoints.ElementAt(0).AbsolutePath);

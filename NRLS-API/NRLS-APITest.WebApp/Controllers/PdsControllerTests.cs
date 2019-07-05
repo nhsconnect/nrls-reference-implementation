@@ -20,7 +20,7 @@ namespace NRLS_APITest.WebApp.Controllers
             var patientList = new List<Patient> { new Patient { Id = "ValidPatient1" }, new Patient { Id = "ValidPatient2" } };
 
             var pdsSearch = new Mock<IPdsSearch>();
-            pdsSearch.Setup(x => x.Find<Patient>(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(patientList) as Resource));
+            pdsSearch.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(patientList) as Resource));
 
             _pdsSearch = pdsSearch.Object;
         }
@@ -40,10 +40,17 @@ namespace NRLS_APITest.WebApp.Controllers
 
             var response = await controller.Search();
 
-            Assert.IsType<Bundle>(response);
+            Assert.IsType<OkObjectResult>(response);
 
+            var okResult = response as OkObjectResult;
 
-            var bundle = response as Bundle;
+            Assert.Equal(200, okResult.StatusCode);
+
+            var responseContent = okResult.Value;
+
+            Assert.IsType<Bundle>(responseContent);
+
+            var bundle = responseContent as Bundle;
 
             Assert.Equal(2, bundle.Total);
 

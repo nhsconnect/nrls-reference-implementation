@@ -18,7 +18,9 @@ namespace NRLS_APITest.Services
 
         public FhirValidationTests()
         {
+
             var mock = new Mock<IValidationHelper>();
+            mock.Setup(op => op.ValidateResource(It.IsAny<Resource>(), It.IsAny<string>())).Returns(OperationOutcomes.Ok);
             //mock.Setup(op => op.ValidReference(It.Is<ResourceReference>(r => r.Reference == "https://directory.spineservices.nhs.uk/STU3/Organization/"), It.IsAny<string>())).Returns(false);
             mock.Setup(op => op.ValidReference(It.IsAny<ResourceReference>(), It.IsAny<string>())).Returns(true);
             mock.Setup(op => op.ValidReferenceParameter(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -127,50 +129,12 @@ namespace NRLS_APITest.Services
             Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
         }
 
-        [Fact]
-        public void ValidPointer_Invalid_Type()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Invalid_Type;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_Missing_Type()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Missing_Type;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
 
         [Fact]
         public void ValidPointer_Invalid_Subject()
         {
             var validationService = new FhirValidation(_iValidationHelper);
             var pointer = NrlsPointers.Invalid_Subject;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_Missing_Subject()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Missing_Subject;
 
             var validPoiner = validationService.ValidPointer(pointer);
 
@@ -206,75 +170,10 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
-        public void ValidPointer_Missing_Author()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Missing_Author;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_TooMany_Author()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.TooMany_Author;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
         public void ValidPointer_Invalid_Custodian()
         {
             var validationService = new FhirValidation(_iValidationHelper);
             var pointer = NrlsPointers.Invalid_Custodian;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_Missing_Custodian()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Missing_Custodian;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_Missing_Content()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Missing_Content;
-
-            var validPoiner = validationService.ValidPointer(pointer);
-
-            var notexpected = OperationOutcomes.Ok;
-
-            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
-        }
-
-        [Fact]
-        public void ValidPointer_Invalid_RelatesTo_Code()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var pointer = NrlsPointers.Invalid_RelatesTo_Code;
 
             var validPoiner = validationService.ValidPointer(pointer);
 
@@ -383,40 +282,6 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
-        public void ValidateContent_Invalid_Empty()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var emptyContent = new List<DocumentReference.ContentComponent>();
-
-            var validPoiner = validationService.ValidateContent(emptyContent);
-
-            Assert.IsType<OperationOutcome>(validPoiner);
-        }
-
-        [Fact]
-        public void ValidateContent_Missing_Attachment()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var content = FhirResources.Missing_Attachment;
-
-            var validPoiner = validationService.ValidateContent(content);
-
-            Assert.IsType<OperationOutcome>(validPoiner);
-        }
-
-        [Fact]
-        public void ValidateContent_Invalid_Creation()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-            var content = FhirResources.Invalid_Creation;
-
-            var validPoiner = validationService.ValidateContent(content);
-
-            Assert.IsType<OperationOutcome>(validPoiner);
-        }
-
-
-        [Fact]
         public void ValidateContent_Invalid_Url()
         {
             var validationService = new FhirValidation(_iValidationHelper);
@@ -518,54 +383,6 @@ namespace NRLS_APITest.Services
             var actual = validationService.GetValidRelatesTo(null);
 
             Assert.Null(actual.element);
-        }
-
-        [Fact]
-        public void GetValidRelatesTo_Invalid_NoCode()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-
-            var relatesToList = new List<DocumentReference.RelatesToComponent>
-            {
-                FhirResources.Invalid_Single_RelatesTo_NoCode
-            };
-
-            var actual = validationService.GetValidRelatesTo(relatesToList);
-
-            Assert.Null(actual.element);
-
-        }
-
-        [Fact]
-        public void GetValidRelatesTo_Invalid_BadCode()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-
-            var relatesToList = new List<DocumentReference.RelatesToComponent>
-            {
-                FhirResources.Invalid_Single_RelatesTo_BadCode
-            };
-
-            var actual = validationService.GetValidRelatesTo(relatesToList);
-
-            Assert.Null(actual.element);
-
-        }
-
-        [Fact]
-        public void GetValidRelatesTo_Invalid_NoTarget()
-        {
-            var validationService = new FhirValidation(_iValidationHelper);
-
-            var relatesToList = new List<DocumentReference.RelatesToComponent>
-            {
-                FhirResources.Invalid_Single_RelatesTo_NoTarget
-            };
-
-            var actual = validationService.GetValidRelatesTo(relatesToList);
-
-            Assert.Null(actual.element);
-
         }
 
         [Fact]

@@ -27,39 +27,6 @@ namespace NRLS_APITest.Data
             }
         }
 
-        public static List<DocumentReference.ContentComponent> Missing_Attachment
-        {
-            get
-            {
-                var content = Valid_Content;
-                content.First().Attachment = null;
-
-                return content;
-            }
-        }
-
-        public static List<DocumentReference.ContentComponent> Invalid_Creation
-        {
-            get
-            {
-                var content = Valid_Content;
-                content.First().Attachment.Creation = "invalid date";
-
-                return content;
-            }
-        }
-
-        public static List<DocumentReference.ContentComponent> Missing_Creation
-        {
-            get
-            {
-                var content = Valid_Content;
-                content.First().Attachment.Creation = null;
-
-                return content;
-            }
-        }
-
         public static List<DocumentReference.ContentComponent> Invalid_Url
         {
             get
@@ -105,39 +72,6 @@ namespace NRLS_APITest.Data
                         Identifier = new Identifier("urn:ietf:rfc:4151", "urn:tag:humber.nhs.uk,2004:cdc:600009612669")
                     }
                 };
-
-                return validRelatesTo;
-            }
-        }
-
-        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_NoCode
-        {
-            get
-            {
-                var validRelatesTo = Valid_Single_RelatesTo;
-                validRelatesTo.Code = null;
-
-                return validRelatesTo;
-            }
-        }
-
-        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadCode
-        {
-            get
-            {
-                var validRelatesTo = Valid_Single_RelatesTo;
-                validRelatesTo.Code = DocumentRelationshipType.Signs;
-
-                return validRelatesTo;
-            }
-        }
-
-        public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_NoTarget
-        {
-            get
-            {
-                var validRelatesTo = Valid_Single_RelatesTo;
-                validRelatesTo.Target = null;
 
                 return validRelatesTo;
             }

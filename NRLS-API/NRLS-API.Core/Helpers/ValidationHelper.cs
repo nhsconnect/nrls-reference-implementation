@@ -1,6 +1,4 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Specification.Source;
-using Hl7.Fhir.Validation;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
@@ -13,29 +11,16 @@ namespace NRLS_API.Core.Helpers
 {
     public class ValidationHelper : IValidationHelper
     {
-        public Validator Validator { get; }
+        private readonly IFhirResourceHelper _fhirResourceHelper;
 
-        private IResourceResolver _source { get; }
-
-        private readonly IFhirCacheHelper _fhirCacheHelper;
-
-        public ValidationHelper(IFhirCacheHelper fhirCacheHelper)
+        public ValidationHelper(IFhirResourceHelper fhirResourceHelper)
         {
-            _fhirCacheHelper = fhirCacheHelper;
+            _fhirResourceHelper = fhirResourceHelper;
+        }
 
-            _source = _fhirCacheHelper.GetSource();
-
-            var ctx = new ValidationSettings()
-            {
-                ResourceResolver = _source,
-                GenerateSnapshot = true,
-                EnableXsdValidation = false,
-                Trace = false,
-                ResolveExteralReferences = true
-            };
-
-
-            Validator = new Validator(ctx);
+        public OperationOutcome ValidateResource<T>(T resource, string resourceSchema) where T : Resource
+        {
+            return _fhirResourceHelper.ValidateResource(resource, resourceSchema);
         }
 
         public bool ValidCodableConcept(CodeableConcept concept, int maxCodings, string validSystem, bool validateFromSet, bool systemRequired, bool codeRequired, bool displayRequired, string valueSet)
@@ -239,7 +224,7 @@ namespace NRLS_API.Core.Helpers
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)
         {
-            ValueSet values = _fhirCacheHelper.GetValueSet(systemUrl);
+            ValueSet values = _fhirResourceHelper.GetValueSet(systemUrl);
 
             return values;
         }

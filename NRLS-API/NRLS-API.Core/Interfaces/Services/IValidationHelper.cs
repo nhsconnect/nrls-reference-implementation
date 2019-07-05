@@ -1,14 +1,11 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Validation;
 using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Services
 {
     public interface IValidationHelper
     {
-        //IResourceResolver Resolver { get; }
-
-        Validator Validator { get; }
+        OperationOutcome ValidateResource<T>(T resource, string resourceSchema) where T : Resource;
 
         bool ValidCodableConcept(CodeableConcept concept, int maxCodings, string validSystem, bool validateFromSet = false, bool systemRequired = true, bool codeRequired = true, bool displayRequired = true, string valueSet = null);
 

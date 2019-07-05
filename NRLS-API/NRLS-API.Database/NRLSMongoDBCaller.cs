@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using NRLS_API.Core.Interfaces.Database;
 using NRLS_API.Models.Core;
 using NRLS_API.Models.ViewModels.Core;
@@ -26,6 +27,14 @@ namespace NRLS_API.Database
             var viewModels = entries.ToList().Select(Sds.ToViewModel).ToList();
 
             return viewModels;
+        }
+
+        public async Task<IAsyncCursor<BsonDocument>> FindResource(string resourceName, FilterDefinition<BsonDocument> filter)
+        {
+
+            var resources = await _context.Resource(resourceName).FindAsync<BsonDocument>(filter);
+
+            return resources;
         }
 
 

@@ -47,13 +47,14 @@ namespace NRLS_APITest.Services
             var searchPointer = NrlsPointers.Valid;
             var searchPointerList = new List<DocumentReference> { searchPointer };
             var searchBundle = FhirBundle.GetBundle<DocumentReference>(searchPointerList);
+
             var searchMock = new Mock<IFhirSearch>();
-            searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchBundle as Resource));
-            searchMock.Setup(op => op.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchBundle as Resource));
+            searchMock.Setup(op => op.GetAsBundle<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchBundle));
+            searchMock.Setup(op => op.Find<DocumentReference>(It.IsAny<FhirRequest>(), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => searchBundle));
 
 
             var orgSearchBundle = FhirBundle.GetBundle<Organization>(new List<Organization> { FhirOrganizations.Valid_Organization });
-            searchMock.Setup(op => op.Find<Organization>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => orgSearchBundle as Resource));
+            searchMock.Setup(op => op.Find<Organization>(It.IsAny<FhirRequest>(), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => orgSearchBundle));
 
             _fhirSearch = searchMock.Object;
 
@@ -173,11 +174,22 @@ namespace NRLS_APITest.Services
 
 
         [Fact]
+        public async void Get_Read_Valid()
+        {
+            //var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
+
+            //var actualBundle = await search.Find(FhirRequests.Valid_Read) as Bundle;
+
+            //Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
+        }
+
+
+        [Fact]
         public async void Find_Read_Valid()
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Read) as Bundle;
+            var actualBundle = await search.Find(FhirRequests.Valid_Read) as Bundle;
 
             Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
         }
@@ -187,7 +199,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            await Assert.ThrowsAsync<HttpFhirException>(async () => { var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_EmptyId); });
+            await Assert.ThrowsAsync<HttpFhirException>(async () => { var actualBundle = await search.Find(FhirRequests.Invalid_Read_EmptyId); });
 
             //TODO check exception thrown
         }
@@ -197,7 +209,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find<DocumentReference>(FhirRequests.Invalid_Read_TooManyParams); });
+            Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find(FhirRequests.Invalid_Read_TooManyParams); });
         }
 
         [Fact]
@@ -205,7 +217,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Search) as Bundle;
+            var actualBundle = await search.Find(FhirRequests.Valid_Search) as Bundle;
 
             Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
         }
@@ -215,7 +227,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find<DocumentReference>(FhirRequests.Invalid_Search); });
+            Assert.ThrowsAsync<HttpFhirException>(async () => { var actual = await search.Find(FhirRequests.Invalid_Search); });
         }
 
         //TODO: add patient search exception
@@ -227,7 +239,7 @@ namespace NRLS_APITest.Services
         {
             var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
-            var actualBundle = await search.Find<DocumentReference>(FhirRequests.Valid_Search_Summary) as Bundle;
+            var actualBundle = await search.Find(FhirRequests.Valid_Search_Summary) as Bundle;
 
             Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
         }
@@ -240,7 +252,7 @@ namespace NRLS_APITest.Services
 
             Assert.ThrowsAsync<HttpFhirException>(async () => 
             {
-                var actualBundle = await search.Find<DocumentReference>(FhirRequests.Invalid_Search_IncorrectSummary);
+                var actualBundle = await search.Find(FhirRequests.Invalid_Search_IncorrectSummary);
             });
 
         }

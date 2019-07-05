@@ -51,6 +51,8 @@ namespace NRLS_API.Models.Core
 
         public bool IsSummary { get; set; }
 
+        public bool IsIdQuery { get; set; }
+
         public string RequestResourceId => GetRequestResourceId();
 
         public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)

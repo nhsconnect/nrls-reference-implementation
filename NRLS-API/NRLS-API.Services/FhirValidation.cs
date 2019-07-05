@@ -21,25 +21,11 @@ namespace NRLS_API.Services
             _validationHelper = validationHelper;
         }
 
-        public OperationOutcome ValidProfile<T>(T resource, string customProfile) where T : Resource
-        {
-            var customProfiles = new List<string>();
-
-            if (!string.IsNullOrEmpty(customProfile))
-            {
-                customProfiles.Add(customProfile);
-            }
-
-            var result = _validationHelper.Validator.Validate(resource, customProfiles.ToArray());
-
-            return result;
-        }
-
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
 
             //Base NRL Pointer Validation
-            var profileCheck = ValidProfile<DocumentReference>(pointer, FhirConstants.SystemNrlsProfile);
+            var profileCheck = _validationHelper.ValidateResource(pointer, FhirConstants.SystemNrlsProfile);
 
             if (!profileCheck.Success)
             {
@@ -273,13 +259,14 @@ namespace NRLS_API.Services
             // - it has a code of replaces
             // - it has a target
             // - has within target, an identifer or reference
-            var relatesTo = relatesToElm.FirstOrDefault();
+            var relatesTo = relatesToElm?.FirstOrDefault();
 
             if(relatesTo == null)
             {
                 return (null, null);
             }
 
+            //Target is checked in base profile checker
             var checkIdentifier = string.IsNullOrWhiteSpace(relatesTo.Target.Reference);
 
             if (checkIdentifier)
@@ -335,7 +322,15 @@ namespace NRLS_API.Services
         }
 
         public OperationOutcome ValidateContent(List<DocumentReference.ContentComponent> contents)
-        { 
+        {
+
+            //profile checker checks
+            // - has at least one content
+            // - has valid format
+            // - has valid contentStability extension
+            // - has 1 attachment
+            //    - has valid creation date
+            //    - 
             foreach (var content in contents)
             {
                 //attachment.contentType

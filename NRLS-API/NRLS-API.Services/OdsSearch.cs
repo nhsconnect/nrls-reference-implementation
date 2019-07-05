@@ -16,23 +16,23 @@ namespace NRLS_API.Services
             _fhirSearch = fhirSearch;
         }
         
-        public async Task<Resource> Find<T>(FhirRequest request) where T : Resource
+        public async Task<Resource> Find(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
             request.ProfileUri = _resourceProfile;
          
 
-            return await _fhirSearch.Find<T>(request);
+            return await _fhirSearch.Find<Organization>(request);
         }
 
-        public async Task<Resource> Get<T>(FhirRequest request) where T : Resource
+        public async Task<Resource> Get(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
             request.ProfileUri = _resourceProfile;
 
-            return await _fhirSearch.Get<T>(request);
+            return await _fhirSearch.Get<Organization>(request);
         }
     }
 }

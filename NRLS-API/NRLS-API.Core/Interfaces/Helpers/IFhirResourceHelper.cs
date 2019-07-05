@@ -1,11 +1,10 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Specification.Source;
 
 namespace NRLS_API.Core.Interfaces.Helpers
 {
-    public interface IFhirCacheHelper
+    public interface IFhirResourceHelper
     {
-        IResourceResolver GetSource();
+        OperationOutcome ValidateResource<T>(T resource, string resourceSchema) where T : Resource;
 
         Resource GetResourceProfile(string profileUrl);
 

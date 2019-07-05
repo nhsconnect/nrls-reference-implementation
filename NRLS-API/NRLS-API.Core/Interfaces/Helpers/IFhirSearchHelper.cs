@@ -2,6 +2,8 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NRLS_API.Models.Core;
+using System;
+using System.Collections.Generic;
 
 namespace NRLS_API.Core.Interfaces.Helpers
 {
@@ -9,7 +11,9 @@ namespace NRLS_API.Core.Interfaces.Helpers
     {
         Resource GetResourceProfile(string profileUrl);
 
-        FilterDefinition<BsonDocument> BuildIdQuery(string _id);
+        Bundle ToBundle<T>(FhirRequest request, List<T> resources, Guid? bundleId = null) where T : Resource;
+
+        FilterDefinition<BsonDocument> BuildQuery(string _id);
 
         FilterDefinition<BsonDocument> BuildQuery(FhirRequest request);
     }

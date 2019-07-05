@@ -8,15 +8,15 @@ namespace NRLS_API.Core.Interfaces.Services
 {
     public interface INrlsMaintain
     {
-        SystemTasks.Task<OperationOutcome> ValidateCreate<T>(FhirRequest request) where T : Resource;
+        SystemTasks.Task<OperationOutcome> ValidateCreate(FhirRequest request);
 
         SystemTasks.Task<Resource> ValidateConditionalUpdate(FhirRequest request);
 
-        SystemTasks.Task<Resource> CreateWithoutValidation<T>(FhirRequest request) where T : Resource;
+        SystemTasks.Task<Resource> CreateWithoutValidation(FhirRequest request);
 
-        SystemTasks.Task<Resource> SupersedeWithoutValidation<T>(FhirRequest request, string oldDocumentId, string oldVersionId) where T : Resource;
+        SystemTasks.Task<Resource> SupersedeWithoutValidation(FhirRequest request, string oldDocumentId, string oldVersionId);
 
-        SystemTasks.Task<OperationOutcome> Delete<T>(FhirRequest request) where T : Resource;
+        SystemTasks.Task<OperationOutcome> Delete(FhirRequest request);
 
         FhirRequest SetMetaValues(FhirRequest request);
 
