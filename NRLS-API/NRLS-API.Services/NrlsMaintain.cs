@@ -243,7 +243,7 @@ namespace NRLS_API.Services
 
 
         /// <summary>
-        /// Delete a DocumentReference using the id value found in the request _id query parameter
+        /// Delete a DocumentReference using the id in the path or the id value found in the request _id query parameter, or by Master Identifier
         /// </summary>
         /// <remarks>
         /// First we do a search to get the document, then we check the incoming ASID associated OrgCode against the custodian on the document. 
@@ -257,38 +257,52 @@ namespace NRLS_API.Services
             request.ProfileUri = _resourceProfile;
 
             // NRLS Layers of validation before Fhir Delete Call
-            var id = request.IdParameter;
-            var identifier = request.IdentifierParameter;
-            var subject = request.SubjectParameter;
+            //If we have id path segment we should have nothing else
+            if (!string.IsNullOrEmpty(request.Id) && (!string.IsNullOrEmpty(request.IdParameter) || !string.IsNullOrEmpty(request.IdentifierParameter) || !string.IsNullOrEmpty(request.SubjectParameter)))
+            {
+                throw new HttpFhirException("Invalid query parameters for Delete by Logical Id", OperationOutcomeFactory.CreateInvalidParameter("Invalid query parameters for Delete by Logical Id"), HttpStatusCode.BadRequest);
+            }
 
-            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier) != null && _fhirValidation.ValidatePatientParameter(subject) != null)
+            //If we did not start from HTTP DELETE DocRef/[id] set id
+            if (string.IsNullOrEmpty(request.Id))
+            {
+                request.Id = request.IdParameter;
+            }
+     
+            var identifier = request.IdentifierParameter;
+            var identifierValidationResult = _fhirValidation.ValidateIdentifierParameter("identifier", identifier);
+            var subject = request.SubjectParameter;
+            var subjectValidationResult = _fhirValidation.ValidatePatientParameter(subject);
+
+
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult != null && subjectValidationResult != null)
             {
                 throw new HttpFhirException("Missing or Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: _id"), HttpStatusCode.BadRequest);
             }
 
-            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier) == null && _fhirValidation.ValidatePatientParameter(subject) != null)
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult == null && subjectValidationResult != null)
             {
                 throw new HttpFhirException("Missing or Invalid subject parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: subject"), HttpStatusCode.BadRequest);
             }
 
-            if (string.IsNullOrEmpty(id) && _fhirValidation.ValidateIdentifierParameter("identifier", identifier)  != null && _fhirValidation.ValidatePatientParameter(subject) == null)
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult != null && subjectValidationResult == null)
             {
                 throw new HttpFhirException("Missing or Invalid identifier parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: identifier"), HttpStatusCode.BadRequest);
             }
 
 
-            request.Id = id;
-
             Resource document;
 
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(request.Id))
             {
                 ObjectId mongoId;
 
-                if (!ObjectId.TryParse(id, out mongoId))
+                if (!ObjectId.TryParse(request.Id, out mongoId))
                 {
-                    throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {id}"), HttpStatusCode.BadRequest);
+                    throw new HttpFhirException("Invalid _id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {request.Id}"), HttpStatusCode.BadRequest);
                 }
+
+                request.IsIdQuery = true;
 
                 document = await _fhirSearch.GetAsBundle<DocumentReference>(request);
             }
@@ -297,7 +311,7 @@ namespace NRLS_API.Services
                 document = await _fhirSearch.GetByMasterId<DocumentReference>(request);
             }
 
-            var documentResponse = ParseRead(document, id);
+            var documentResponse = ParseRead(document, request.Id);
 
             if(documentResponse.ResourceType == ResourceType.Bundle)
             {
@@ -305,7 +319,7 @@ namespace NRLS_API.Services
 
                 if(!result.Total.HasValue || result.Total.Value < 1 || result.Entry.FirstOrDefault() == null)
                 {
-                    return OperationOutcomeFactory.CreateNotFound(id);
+                    return OperationOutcomeFactory.CreateNotFound(request.Id);
                 }
 
                 var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
@@ -327,7 +341,7 @@ namespace NRLS_API.Services
 
             bool deleted;
 
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(request.Id))
             {
                 deleted = await _fhirMaintain.Delete<DocumentReference>(request);
 

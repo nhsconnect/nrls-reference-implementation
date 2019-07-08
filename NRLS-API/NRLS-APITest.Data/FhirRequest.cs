@@ -108,7 +108,22 @@ namespace NRLS_APITest.Data
             }
         }
 
-        public static FhirRequest Valid_Delete
+        public static FhirRequest Valid_Delete_Path_Id
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "003",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ResourceType = ResourceType.DocumentReference,
+                    Id = "5b5c5bec7f1c649fdea426a1",
+                    AuditId = "91370360-d667-4bc8-bebe-f223560ff90e"
+                };
+            }
+        }
+
+        public static FhirRequest Valid_Delete_Query_Id
         {
             get
             {
@@ -121,7 +136,6 @@ namespace NRLS_APITest.Data
                     {
                         new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
                     },
-                    Id = "5b5c5bec7f1c649fdea426a1",
                     AuditId = "91370360-d667-4bc8-bebe-f223560ff90e"
                 };
             }
@@ -139,8 +153,7 @@ namespace NRLS_APITest.Data
                     QueryParameters = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("_id", "5b5c5bec7f1c649fdea426a1")
-                    },
-                    Id = "5b5c5bec7f1c649fdea426a1"
+                    }
                 };
             }
         }
@@ -154,6 +167,26 @@ namespace NRLS_APITest.Data
                     RequestingAsid = "000",
                     RequestUrl = new Uri("https://testdomain/testurl"),
                     ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Delete_Path_Id_and_Query
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "003",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    ResourceType = ResourceType.DocumentReference,
+                    Id = "5b5c5bec7f1c649fdea426a1",
+                    AuditId = "91370360-d667-4bc8-bebe-f223560ff90e",
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("identifier", "testsystem|testvalue"),
+                    },
+                    AllowedParameters = new string[] { "identifier" }
                 };
             }
         }

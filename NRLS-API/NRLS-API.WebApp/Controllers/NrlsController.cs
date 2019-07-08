@@ -136,10 +136,10 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>The OperationOutcome</returns>
         /// <response code="200">Returns OperationOutcome</response>
-        [HttpDelete()]
-        public async Task<IActionResult> Delete()
+        [HttpDelete("{logicalId?}")]
+        public async Task<IActionResult> Delete(string logicalId = null)
         {
-            var request = FhirRequest.Create(null, ResourceType.DocumentReference, null, Request, RequestingAsid());
+            var request = FhirRequest.Create(logicalId, ResourceType.DocumentReference, null, Request, RequestingAsid());
 
             var result = await _nrlsMaintain.Delete(request);
 

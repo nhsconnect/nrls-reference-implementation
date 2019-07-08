@@ -176,7 +176,7 @@ namespace NRLS_APITest.Services
 
             var service = new FhirMaintain(_nrlsApiSettings, dbMock.Object, _fhirSearchHelper);
 
-            var result = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete);
+            var result = await service.Delete<DocumentReference>(FhirRequests.Valid_Delete_Path_Id);
 
             Assert.True(result);
         }

@@ -14,6 +14,7 @@ namespace NRLS_APITest.Data
                 return new List<SdsViewModel>
                 {
                     SdsAsid000,
+                    SdsAsid001,
                     SdsAsid002,
                     SdsAsid003,
                     SdsAsid20000000017
@@ -32,6 +33,21 @@ namespace NRLS_APITest.Data
                     Interactions = new List<string> { FhirConstants.ReadInteractionId },
                     Thumbprint = "TestThumbprint",
                     Id = "5cb5fd22c892d7e5f291190a"
+                };
+            }
+        }
+
+        public static SdsViewModel SdsAsid001
+        {
+            get
+            {
+                return new SdsViewModel
+                {
+                    Asid = "001",
+                    OdsCode = "RV88",
+                    Interactions = new List<string> { FhirConstants.ReadInteractionId },
+                    Thumbprint = "TestThumbprintc",
+                    Id = "5cb5fd22c892d7e5f291190d"
                 };
             }
         }

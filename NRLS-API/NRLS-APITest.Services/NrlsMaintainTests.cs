@@ -54,6 +54,7 @@ namespace NRLS_APITest.Services
 
             searchMock.Setup(op => op.Get<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => NrlsPointers.Valid_With_Alt_Custodian));
             //searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.Is<FhirRequest>(request => (request.Resource as DocumentReference).MasterIdentifier.Value == "testValueForMaintTest"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Resource));
+            searchMock.Setup(op => op.GetAsBundle<DocumentReference>(It.Is<FhirRequest>(x => x.RequestingAsid == "001"))).Returns(SystemTasks.Task.Run(() => searchDocAltBundle as Bundle));
             searchMock.Setup(op => op.GetAsBundle<DocumentReference>(It.Is<FhirRequest>(x => x.RequestingAsid == "003"))).Returns(SystemTasks.Task.Run(() => searchDocBundle as Bundle));
             searchMock.Setup(op => op.GetByMasterId<DocumentReference>(It.IsAny<FhirRequest>())).Returns(SystemTasks.Task.Run(() => searchDocBundle as Bundle));
 
@@ -99,6 +100,7 @@ namespace NRLS_APITest.Services
             var sdsMock = new Mock<ISdsService>();
             sdsMock.Setup(op => op.GetFor(It.IsAny<string>())).Returns((SdsViewModel)null);
             sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "000"))).Returns(SdsViewModels.SdsAsid000);
+            sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "001"))).Returns(SdsViewModels.SdsAsid001);
             sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "002"))).Returns(SdsViewModels.SdsAsid002);
             sdsMock.Setup(op => op.GetFor(It.Is<string>(x => x == "003"))).Returns(SdsViewModels.SdsAsid003);
 
@@ -562,11 +564,11 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
-        public async void Delete_Valid()
+        public async void Delete_Valid_Conditional_Id()
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
-            var response = await service.Delete(FhirRequests.Valid_Delete);
+            var response = await service.Delete(FhirRequests.Valid_Delete_Query_Id);
 
             Assert.IsType<OperationOutcome>(response);
 
@@ -574,7 +576,33 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
-        public async void Delete_Invalid()
+        public async void Delete_Valid_Path_Id()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
+
+            var response = await service.Delete(FhirRequests.Valid_Delete_Path_Id);
+
+            Assert.IsType<OperationOutcome>(response);
+
+            Assert.True(response.Success);
+        }
+
+        [Fact]
+        public void Delete_Invalid_Path_Id_And_Query()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
+
+            Assert.ThrowsAsync<HttpFhirException>(async delegate
+            {
+                await SystemTasks.Task.Run(async () => {
+                    var response = await service.Delete(FhirRequests.Invalid_Delete_Path_Id_and_Query);
+                });
+
+            });
+        }
+
+        [Fact]
+        public async void Delete_Invalid_NotFound()
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
@@ -625,7 +653,7 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
-        public async void ConditionalDelete_Invalid()
+        public async void ConditionalDelete_InvalidAsidForCustodian()
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
 
