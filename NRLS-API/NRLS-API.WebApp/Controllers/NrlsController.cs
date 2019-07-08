@@ -126,10 +126,7 @@ namespace NRLS_API.WebApp.Controllers
             var response = OperationOutcomeFactory.CreateSuccess();
 
             var newResource = $"{_nrlsApiSettings.ResourceLocation}/{ResourceType.DocumentReference}/{result.Id}";
-
-            //Temp required header for NRLS API tests
-            Request.HttpContext.Response.Headers.Add("Content-Location", newResource);
-			
+		
 			return Created(newResource, response);
         }
 

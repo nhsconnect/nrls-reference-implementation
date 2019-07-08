@@ -148,55 +148,87 @@
             "schema": {
               "type": "object",
               "example": {
-                "resourceType": "DocumentReference",
-                "status": "current",
-                "type": {
-                  "coding": [
-                    {
-                      "system": "http://snomed.info/sct",
-                      "code": "736253002",
-                      "display": "Mental Health Crisis Plan"
-                    }
-                  ]
-                },
-                "masterIdentifier": {
-                  "system": "urn:ietf:rfc:4151",
-                  "value": "urn:tag:nrls.digital.nhs.uk,2018:abc:241046512623:v2"
-                },
+                  "resourceType": "DocumentReference",
+                  "meta": {
+                    "profile": [
+                      "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1"
+                    ]
+                  },
+                  "status": "current",
+                  "type": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "736253002",
+                        "display": "Mental health crisis plan"
+                      }
+                    ]
+                  },
+                  "class": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "734163000",
+                        "display": "Care plan"
+                      }
+                    ]
+                  },
                 "subject": {
                   "reference": "https://demographics.spineservices.nhs.uk/STU3/Patient/2686033207"
                 },
-                "indexed": "2005-12-24T09:43:41+00:00",
-                "author": [
-                  {
-                    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
-                  }
-                ],
-                "custodian": {
-                  "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/MHT01"
-                },
-                "relatesTo": [
-                  {
-                    "code": "replaces",
-                    "target": {
-                      "identifier": {
-                        "system": "urn:ietf:rfc:4151",
-                        "value": "urn:tag:nrls.digital.nhs.uk,2018:abc:241046512623:v1"
-                      }
+                  "indexed": "2016-03-08T15:26:01+01:00",
+                  "author": [
+                    {
+                      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
+                    }
+                  ],
+                  "custodian": {
+                    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/MHT01"
+                  },
+                  "content": [
+                    {
+                      "attachment": {
+                        "contentType": "application/pdf",
+                        "url": "https://spine-proxy.national.ncrs.nhs.uk/p1.nhs.uk/MentalhealthCrisisPlanReport_123.pdf",
+                        "title": "Mental health Crisis Plan Report",
+                        "creation": "2016-03-08T15:26:00+01:00"
+                      },
+                      "format": {
+                        "system": "https://fhir.nhs.uk/STU3/CodeSystem/NRL-FormatCode-1",
+                        "code": "proxy:https://www.iso.org/standard/63534.html",
+                        "display": "PDF"
+                      },
+                      "extension": [
+                        {
+                          "url": "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-NRL-ContentStability-1",
+                          "valueCodeableConcept": {
+                            "coding": [
+                              {
+                                "system": "https://fhir.nhs.uk/STU3/CodeSystem/NRL-ContentStability-1",
+                                "code": "static",
+                                "display": "Static"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "context": {
+                    "period": {
+                      "start": "2016-03-07T13:34:00+01:00"
+                    },
+                    "practiceSetting": {
+                      "coding": [
+                        {
+                          "system": "http://snomed.info/sct",
+                          "code": "892811000000109",
+                          "display": "Adult mental health service"
+                        }
+                      ]
                     }
                   }
-                ],
-                "content": [
-                  {
-                    "attachment": {
-                      "contentType": "application/pdf",
-                      "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/5aba0f464f02ced4c7eb16c4",
-                      "title": "Mental health Care Plan Report",
-                      "creation": "2016-03-08T15:26:00+00:00"
-                    }
-                  }
-                ]
-              }
+                }
             }
           }
         ],
