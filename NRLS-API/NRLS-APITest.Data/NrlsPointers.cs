@@ -60,6 +60,17 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference Valid_Superseded
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Status = DocumentReferenceStatus.Superseded;
+
+                return pointer;
+            }
+        }
+
         public static DocumentReference Valid_With_Alt_Custodian
         {
             get

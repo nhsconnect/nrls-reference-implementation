@@ -488,7 +488,7 @@ namespace NRLS_APITest.Services
 
             var errorDetail = details.Coding.FirstOrDefault();
 
-            Assert.Equal("INVALID_RESOURCE", errorDetail.Code);
+            Assert.Equal("BAD_REQUEST", errorDetail.Code);
         }
 
         [Fact]

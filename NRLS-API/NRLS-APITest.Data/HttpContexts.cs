@@ -32,6 +32,17 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static HttpContext Inactive_Search
+        {
+            get
+            {
+                var context = Valid_Search;
+                context.Request.Headers["fromASID"] = "inactive";
+
+                return context;
+            }
+        }
+
         public static HttpContext Valid_Create_Pointer
         {
             get

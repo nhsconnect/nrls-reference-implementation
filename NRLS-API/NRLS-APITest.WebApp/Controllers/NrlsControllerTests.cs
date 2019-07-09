@@ -31,6 +31,7 @@ namespace NRLS_APITest.WebApp.Controllers
             searchMock.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
             searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(NrlsPointers.Valid as Resource));
             searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(null as Resource));
+            searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "inactive"))).Returns(System.Threading.Tasks.Task.FromResult(NrlsPointers.Valid_Superseded as Resource)); 
 
             var maintMock = new Mock<INrlsMaintain>();
             //maintMock.Setup(x => x.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(System.Threading.Tasks.Task.FromResult(new Bundle() as Resource));
@@ -123,6 +124,31 @@ namespace NRLS_APITest.WebApp.Controllers
             var outcome = responseContent as OperationOutcome;
 
             Assert.False(outcome.Success);
+
+        }
+
+        [Fact]
+        public async void Read_Inactive()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Inactive_Search;
+
+            var response = await controller.Read("logicalId");
+
+            Assert.IsType<BadRequestObjectResult>(response);
+
+            var result = response as BadRequestObjectResult;
+
+            Assert.Equal(400, result.StatusCode);
+
+            var responseContent = result.Value;
+
+            Assert.IsType<OperationOutcome>(responseContent);
+            var outcome = responseContent as OperationOutcome;
+
+            Assert.Equal(1, outcome.Warnings);
 
         }
 

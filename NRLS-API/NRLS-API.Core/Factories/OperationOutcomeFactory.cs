@@ -39,6 +39,14 @@ namespace NRLS_API.Core.Factories
             return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, diagnostics, details, false);
         }
 
+        public static OperationOutcome CreateInactiveDocumentReference()
+        {
+
+            var details = CreateDetails("BAD_REQUEST", "Bad Request");
+
+            return Create(OperationOutcome.IssueSeverity.Warning, OperationOutcome.IssueType.Invalid, "DocumentReference status is not \"current\"", details, false);
+        }
+
         public static OperationOutcome CreateAccessDenied()
         {
             var details = CreateDetails("ACCESS_DENIED", "ResourceType is invalid");

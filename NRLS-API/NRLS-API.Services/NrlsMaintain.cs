@@ -186,7 +186,7 @@ namespace NRLS_API.Services
             if(oldDocument.Status != DocumentReferenceStatus.Current)
             {
                 //Only allowed to transition to superseded from current
-                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Invalid lifecycle transition. Resolved DocumentReference is not current.");
+                return OperationOutcomeFactory.CreateInactiveDocumentReference();
             }
 
             return oldDocument;

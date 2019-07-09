@@ -71,6 +71,11 @@ namespace NRLS_API.WebApp.Controllers
                 return NotFound(OperationOutcomeFactory.CreateNotFound(logicalId));
             }
 
+            if((result as DocumentReference).Status != DocumentReferenceStatus.Current)
+            {
+                return BadRequest(OperationOutcomeFactory.CreateInactiveDocumentReference());
+            }
+
             return Ok(result);
         }
 
@@ -151,12 +156,12 @@ namespace NRLS_API.WebApp.Controllers
 
             var operationOutcome = result as OperationOutcome;
 
-            if (operationOutcome != null && operationOutcome.Issue.Any(x => x.Details.Coding.Any(y => y.Code == "INVALID_RESOURCE")))
+            if (operationOutcome != null && operationOutcome.Issue.Any(x => x.Details.Coding.Any(y => y.Code == "NO_RECORD_FOUND")))
             {
-                return BadRequest(operationOutcome);
+                return NotFound(operationOutcome); 
             }
 
-            return NotFound(operationOutcome);
+            return BadRequest(operationOutcome);
         }
 
         private string RequestingAsid()
