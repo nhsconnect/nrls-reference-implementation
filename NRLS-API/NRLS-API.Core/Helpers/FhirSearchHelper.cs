@@ -158,35 +158,69 @@ namespace NRLS_API.Core.Helpers
                     var arrayPath = "";
 
                     //extend for other types
-                    if(paramDef != null && paramDef.Type.FirstOrDefault(t => t.Code.Equals(FHIRAllTypes.CodeableConcept.ToString())) != null)
+                    if(paramDef != null)
                     {
-                        valType = "code";
-
-                        var tokenCodingDef = profile.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{paramName}.coding"));
-
-                        if (tokenCodingDef == null)
+                        if (paramDef.Type.FirstOrDefault(t => t.Code.Equals(FHIRAllTypes.CodeableConcept.ToString())) != null)
                         {
-                            continue;
+                            valType = "code";
+
+                            var tokenCodingDef = profile.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{paramName}.coding"));
+
+                            if (tokenCodingDef == null)
+                            {
+                                continue;
+                            }
+
+                            int? minVal = tokenCodingDef.Min;
+                            string maxVal = tokenCodingDef.Max;
+
+                            if (tokenCodingDef.Base != null)
+                            {
+                                minVal = tokenCodingDef.Base.Min;
+                                maxVal = tokenCodingDef.Base.Max;
+                            }
+
+                            int max = 0;
+                            var isMaxint = !string.IsNullOrWhiteSpace(maxVal) && int.TryParse(maxVal, out max);
+
+                            //Assuming tokenCodingDef is a CodeableConcept.coding element
+                            if (minVal.HasValue && minVal.Value >= 0 && (maxVal.Equals("*") || isMaxint && max > 0))
+                            {
+                                arrayPath = ".coding";
+                            }
                         }
 
-                        int? minVal = tokenCodingDef.Min;
-                        string maxVal = tokenCodingDef.Max;
-
-                        if (tokenCodingDef.Base != null)
+                        if (paramDef.Type.FirstOrDefault(t => t.Code.Equals(FHIRAllTypes.Code.ToString().ToLowerInvariant())) != null)
                         {
-                            minVal = tokenCodingDef.Base.Min;
-                            maxVal = tokenCodingDef.Base.Max;
-                        }
+                            valType = "";
 
-                        int max = 0;
-                        var isMaxint = !string.IsNullOrWhiteSpace(maxVal) && int.TryParse(maxVal, out max);
+                            var tokenCodingDef = profile.Snapshot?.Element.FirstOrDefault(e => e.Path.Equals($"{request.StrResourceType}.{paramName}"));
 
-                        //Assuming tokenCodingDef is a CodeableConcept.coding element
-                        if (minVal.HasValue && minVal.Value >= 0 && (maxVal.Equals("*") || isMaxint && max > 0))
-                        {
-                            arrayPath = ".coding";
+                            if (tokenCodingDef == null)
+                            {
+                                continue;
+                            }
+
+                            int? minVal = tokenCodingDef.Min;
+                            string maxVal = tokenCodingDef.Max;
+
+                            if (tokenCodingDef.Base != null)
+                            {
+                                minVal = tokenCodingDef.Base.Min;
+                                maxVal = tokenCodingDef.Base.Max;
+                            }
+
+                            int max = 0;
+                            var isMaxint = !string.IsNullOrWhiteSpace(maxVal) && int.TryParse(maxVal, out max);
+
+                            //Assuming tokenCodingDef is a code element
+                            if (minVal.HasValue && minVal.Value >= 0 && (maxVal.Equals("*") || isMaxint && max > 0))
+                            {
+                                arrayPath = "";
+                            }
                         }
                     }
+
 
                     // NRLS Hack - NRLS allows masterIdentifier but not identifier document element
                     // Could extend this to create an OR for masterIdentifier || identifier
@@ -200,7 +234,8 @@ namespace NRLS_API.Core.Helpers
                     {
                         if (string.IsNullOrEmpty(arrayPath))
                         {
-                            filters.Add(builder.Eq($"{paramName}.{valType}", sysVal.ElementAt(0)));
+                            var valTypeSegment = string.IsNullOrEmpty(valType) ? "" : $".{valType}";
+                            filters.Add(builder.Eq($"{paramName}{valTypeSegment}", sysVal.ElementAt(0)));
                         }
                         else
                         {

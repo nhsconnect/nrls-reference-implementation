@@ -7,6 +7,7 @@ using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -186,6 +187,12 @@ namespace NRLS_API.Services
 
                 request.IsSummary = true;
             }
+
+            //Only allow current pointers
+            var queryParameters = request.QueryParameters.ToList();
+            queryParameters.Add(new Tuple<string, string>("status", "current"));
+            request.QueryParameters = queryParameters;
+            request.AllowedParameters = request.AllowedParameters.Concat(new string[] { "status" }).ToArray();
 
             return await _fhirSearch.Find<DocumentReference>(request);
 
