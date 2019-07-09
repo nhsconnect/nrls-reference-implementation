@@ -501,6 +501,19 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static FhirRequest Valid_Update_ByReference
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "002",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_RelatesToReference,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
         public static FhirRequest Invalid_Update_Bad_Status
         {
             get
@@ -509,6 +522,45 @@ namespace NRLS_APITest.Data
                 {
                     RequestingAsid = "003",
                     Resource = NrlsPointers.Valid_AltCustodian_With_MasterId_and_RelatesTo,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Update_PatientMismatch
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "patientmismatch",
+                    Resource = NrlsPointers.Valid_With_AltPatient,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Update_RelatesToNoRelatedIdentifier
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "RelatesToNoRelatedIdentifier",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_RelatesToReferenceAndIdentifier,
+                    ResourceType = ResourceType.DocumentReference
+                };
+            }
+        }
+
+        public static FhirRequest Invalid_Update_RelatesToInvalidRelatedIdentifier
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    RequestingAsid = "RelatesToInvalidRelatedIdentifier",
+                    Resource = NrlsPointers.Valid_AltCustodian_With_RelatesToReferenceAndIdentifier,
                     ResourceType = ResourceType.DocumentReference
                 };
             }

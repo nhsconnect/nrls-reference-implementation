@@ -466,5 +466,61 @@ namespace NRLS_APITest.Services
             Assert.Null(actual);
 
         }
+
+        [Theory]
+        [InlineData("domain/path", "path")]
+        [InlineData("path", "path")]
+        [InlineData("", "")]
+        [InlineData("http://domain.com/path/id", "id")]
+        [InlineData("domain.com/path?with=query", "path?with=query")]
+        public void GetReferenceId_Valid(string reference, string expected)
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var resource = new ResourceReference(reference);
+
+            var actual = validationService.GetReferenceId(resource);
+
+            Assert.Equal(expected, actual);
+
+        }
+
+        [Fact]
+        public void GetReferenceId_Invalid_NullResource()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var actual = validationService.GetReferenceId(null);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetReferenceId_Invalid_NullRef()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var resource = new ResourceReference(null);
+
+            var actual = validationService.GetReferenceId(resource);
+
+            Assert.Null(actual);
+
+        }
+
+        [Fact]
+        public void GetReferenceId_Invalid_EmptyRef()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var resource = new ResourceReference();
+
+            var actual = validationService.GetReferenceId(resource);
+
+            Assert.Null(actual);
+
+        }
+
     }
 }

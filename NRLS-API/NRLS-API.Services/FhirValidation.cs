@@ -252,6 +252,11 @@ namespace NRLS_API.Services
             return _validationHelper.GetResourceReferenceId(reference, FhirConstants.SystemPDS);
         }
 
+        public string GetReferenceId(ResourceReference reference)
+        {
+            return reference?.Reference?.Split('/')?.Last();
+        }
+
         public (DocumentReference.RelatesToComponent element, string issue) GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesToElm)
         {
             //profile checker checks these if we have relatesTo:

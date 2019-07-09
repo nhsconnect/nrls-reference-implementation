@@ -126,7 +126,8 @@ namespace NRLS_API.Services
 
             if (isRelatesToReference)
             {
-                pointerRequest = NrlsPointerHelper.CreateReferenceSearch(request, request.RequestResourceId);
+                var pointerId = _fhirValidation.GetReferenceId(relatesTo.element.Target);
+                pointerRequest = NrlsPointerHelper.CreateReferenceSearch(request, pointerId);
                 oldDocument = await _fhirSearch.Get<DocumentReference>(pointerRequest);
             }
             else
@@ -145,15 +146,15 @@ namespace NRLS_API.Services
                 return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Referenced DocumentReference does not exist.");
             }
 
+            //related document does not have same patient
+            if (string.IsNullOrEmpty(oldDocument.Subject.Reference) || oldDocument.Subject.Reference != document.Subject.Reference)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Resolved DocumentReference is not associated with the same patient.");
+            }
+
             //Reference type checks
             if (isRelatesToReference)
             {
-                //related document does not have same patient
-                if (string.IsNullOrEmpty(oldDocument.Subject.Reference) || oldDocument.Subject.Reference != document.Subject.Reference)
-                {
-                    return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference is not associated with the same patient.");
-                }
-
                 //related document does not have masterIdentifier or masterIdentifier does not match new
                 var docRelatesToIdentifier = document.RelatesTo.First().Target.Identifier;
                 if (docRelatesToIdentifier != null)
@@ -162,13 +163,13 @@ namespace NRLS_API.Services
 
                     if(oldDocRelatesToIdentifier == null)
                     {
-                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference does not have a matching MasterIdentifier.");
+                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Resolved DocumentReference does not have an MasterIdentifier.");
                     }
 
                     if (string.IsNullOrWhiteSpace(docRelatesToIdentifier.System) || string.IsNullOrWhiteSpace(docRelatesToIdentifier.Value) || 
-                        (docRelatesToIdentifier.Value != oldDocRelatesToIdentifier.Value && docRelatesToIdentifier.System != oldDocRelatesToIdentifier.System))
+                        docRelatesToIdentifier.Value != oldDocRelatesToIdentifier.Value || docRelatesToIdentifier.System != oldDocRelatesToIdentifier.System)
                     {
-                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", $"Resolved DocumentReference does not have a matching MasterIdentifier.");
+                        return OperationOutcomeFactory.CreateInvalidResource("relatesTo.target", "Resolved DocumentReference does not have a matching MasterIdentifier.");
                     }
                 }
             }

@@ -59,6 +59,34 @@ namespace NRLS_APITest.Core.Helpers
 
             Assert.Contains("identifier", request.AllowedParameters);
         }
+
+        [Fact]
+        public void CreateReferenceSearch_Valid_HasLogicalId()
+        {
+
+            var request = NrlsPointerHelper.CreateReferenceSearch(FhirRequests.Valid_Create, "logicalIdA");
+
+            Assert.Equal("logicalIdA", request.Id);
+            Assert.Equal(ResourceType.DocumentReference, request.ResourceType);
+        }
+
+        [Fact]
+        public void CreateReferenceSearch_Invalid_NoLogicalId()
+        {
+
+            var request = NrlsPointerHelper.CreateReferenceSearch(FhirRequests.Valid_Create, null);
+
+            Assert.Null(request);
+        }
+
+        [Fact]
+        public void CreateReferenceSearch_Invalid_EmptyLogicalId()
+        {
+
+            var request = NrlsPointerHelper.CreateReferenceSearch(FhirRequests.Valid_Create, "");
+
+            Assert.Null(request);
+        }
     }
 
 }

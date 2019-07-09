@@ -77,6 +77,23 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference.RelatesToComponent Valid_Single_RelatesToByReference
+        {
+            get
+            {
+                var validRelatesTo = new DocumentReference.RelatesToComponent
+                {
+                    Code = DocumentRelationshipType.Replaces,
+                    Target = new ResourceReference
+                    {
+                        Reference = "reference/id/600009612669​"
+                    }
+                };
+
+                return validRelatesTo;
+            }
+        }
+
         public static DocumentReference.RelatesToComponent Invalid_Single_RelatesTo_BadTarget
         {
             get

@@ -27,6 +27,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         string GetSubjectReferenceId(ResourceReference reference);
 
+        string GetReferenceId(ResourceReference reference);
+
         (DocumentReference.RelatesToComponent element, string issue) GetValidRelatesTo(IList<DocumentReference.RelatesToComponent> relatesTo);
 
         DocumentReferenceStatus? GetValidStatus(DocumentReferenceStatus? status);

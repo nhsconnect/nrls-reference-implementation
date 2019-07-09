@@ -53,8 +53,6 @@ namespace NRLS_API.Models.Core
 
         public bool IsIdQuery { get; set; }
 
-        public string RequestResourceId => GetRequestResourceId();
-
         public static FhirRequest Create(string id, ResourceType resourceType, Resource resource, HttpRequest request, string requestingAsid)
         {
             return new FhirRequest
@@ -127,11 +125,6 @@ namespace NRLS_API.Models.Core
         private Tuple<string, string> GetParameter(RequestParameters param)
         {
             return QueryParameters.FirstOrDefault(x => x.Item1 == param.ToString().ToLowerInvariant());
-        }
-
-        private string GetRequestResourceId()
-        {
-            return RequestUrl.Segments.Last();
         }
 
     }

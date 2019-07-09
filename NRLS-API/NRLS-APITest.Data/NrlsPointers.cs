@@ -104,6 +104,49 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference Valid_AltCustodian_With_RelatesToReference
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV99";
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Replaces,
+                        Target = new ResourceReference
+                        {
+                            Reference = "reference/id/600009612669​"
+                        }
+                    }
+                };
+                return pointer;
+            }
+        }
+
+        public static DocumentReference Valid_AltCustodian_With_RelatesToReferenceAndIdentifier
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Custodian.Reference = "https://directory.spineservices.nhs.uk/STU3/Organization/RV99";
+                pointer.RelatesTo = new List<DocumentReference.RelatesToComponent>
+                {
+                    new DocumentReference.RelatesToComponent
+                    {
+                        Code = DocumentRelationshipType.Replaces,
+                        Target = new ResourceReference
+                        {
+                            Reference = "reference/id/600009612669​",
+                            Identifier = new Identifier("urn:ietf:rfc:4151", "urn:tag:humber.nhs.uk,2004:cdc:600009612772")
+                        }
+                    }
+                };
+                return pointer;
+            }
+        }
+
         public static DocumentReference Valid_AltCust_With_MasterId_and_RelatesTo_BadStatus
         {
             get
@@ -163,6 +206,16 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static DocumentReference Valid_With_AltPatient
+        {
+            get
+            {
+                var pointer = Valid_AltCustodian_With_MasterId_and_RelatesTo;
+                pointer.Subject.Reference = "https://demographics.spineservices.nhs.uk/STU3/Patient/2222222222";
+                return pointer;
+            }
+        }
+
         public static DocumentReference Invalid_MasterId_Value
         {
             get
@@ -216,6 +269,7 @@ namespace NRLS_APITest.Data
                 return pointer;
             }
         }
+
 
         public static DocumentReference Invalid_Author
         {
