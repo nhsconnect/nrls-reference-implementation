@@ -135,6 +135,34 @@ namespace NRLS_API.WebApp.Controllers
 			return Created(newResource, response);
         }
 
+        /// <summary>
+        /// Updates a records status.
+        /// </summary>
+        /// <returns>The OperationOutcome</returns>
+        /// <response code="200">Returns OperationOutcome</response>
+        [HttpPatch("{logicalId?}")]
+        public async Task<IActionResult> Patch([FromBody]Resource resource, string logicalId = null)
+        {
+            var request = FhirRequest.Create(logicalId, ResourceType.DocumentReference, resource, Request, RequestingAsid());
+
+            var result = await _nrlsMaintain.Patch(request);
+
+            if (result != null && result.Success)
+            {
+                //Assume success
+                return Ok(result);
+            }
+
+            var operationOutcome = result as OperationOutcome;
+
+            if (operationOutcome != null && operationOutcome.Issue.Any(x => x.Details.Coding.Any(y => y.Code == "NO_RECORD_FOUND")))
+            {
+                return NotFound(operationOutcome);
+            }
+
+            return BadRequest(operationOutcome);
+        }
+
 
         /// <summary>
         /// Deletes a record that was previously persisted into a datastore.

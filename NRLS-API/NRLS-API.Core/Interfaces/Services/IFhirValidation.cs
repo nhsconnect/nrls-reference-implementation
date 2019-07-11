@@ -7,6 +7,8 @@ namespace NRLS_API.Core.Interfaces.Services
     {
         OperationOutcome ValidPointer(DocumentReference pointer);
 
+        OperationOutcome ValidateParameters(Parameters parameters);
+
         OperationOutcome ValidTypeParameter(string type);
 
         OperationOutcome ValidSummaryParameter(string summary);

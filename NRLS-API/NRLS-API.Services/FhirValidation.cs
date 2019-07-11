@@ -107,6 +107,44 @@ namespace NRLS_API.Services
             return OperationOutcomeFactory.CreateOk();
         }
 
+        public OperationOutcome ValidateParameters(Parameters parameters)
+        {
+            //TODO: make more generic
+
+            if (parameters.Parameter == null || parameters.Parameter.Count == 0)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("parameter");
+            }
+
+            var parameter = parameters.Parameter.First();
+
+            if (parameter.Name != "operation")
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("parameter.name");
+            }
+
+            var typePart = parameter.Part?.FirstOrDefault(x => x.Name == "type");
+            var pathPart = parameter.Part?.FirstOrDefault(x => x.Name == "path");
+            var valuePart = parameter.Part?.FirstOrDefault(x => x.Name == "value");
+
+            if (typePart == null || (typePart.Value as Code) == null || (typePart.Value as Code).Value != "replace")
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("parameter.part.type");
+            }
+
+            if (pathPart == null || (pathPart.Value as FhirString) == null || (pathPart.Value as FhirString).Value != "DocumentReference.status")
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("parameter.part.path");
+            }
+
+            if (valuePart == null || (valuePart.Value as FhirString) == null || (valuePart.Value as FhirString).Value != "entered-in-error")
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("parameter.part.value");
+            }
+
+            return OperationOutcomeFactory.CreateOk();
+        }
+
         public OperationOutcome ValidTypeParameter(string type)
         {
 

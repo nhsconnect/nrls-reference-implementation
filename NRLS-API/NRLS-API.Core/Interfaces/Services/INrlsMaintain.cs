@@ -16,6 +16,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         SystemTasks.Task<Resource> SupersedeWithoutValidation(FhirRequest request, string oldDocumentId, string oldVersionId);
 
+        SystemTasks.Task<OperationOutcome> Patch(FhirRequest request);
+
         SystemTasks.Task<OperationOutcome> Delete(FhirRequest request);
 
         FhirRequest SetMetaValues(FhirRequest request);

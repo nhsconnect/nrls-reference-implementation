@@ -242,6 +242,133 @@ namespace NRLS_API.Services
             return response;
         }
 
+        /// <summary>
+        /// Update a DocumentReference using the id in the path or by Master Identifier
+        /// </summary>
+        /// <remarks>
+        /// First we do a search to get the document, then we check the incoming ASID associated OrgCode against the custodian on the document. 
+        /// If valid we can patch.
+        /// We use the FhirMaintain service and FhirSearch service to facilitate this
+        /// </remarks>
+        public async SystemTasks.Task<OperationOutcome> Patch(FhirRequest request)
+        {
+            ValidateResource(request.StrResourceType);
+
+            request.ProfileUri = _resourceProfile;
+
+            // NRLS Layers of validation before Fhir Delete Call
+            //If we have id path segment we should have nothing else
+            if (!string.IsNullOrEmpty(request.Id) && (!string.IsNullOrEmpty(request.IdentifierParameter) || !string.IsNullOrEmpty(request.SubjectParameter)))
+            {
+                throw new HttpFhirException("Invalid query parameters for Update by Logical Id", OperationOutcomeFactory.CreateInvalidParameter("Invalid query parameters for Update by Logical Id"), HttpStatusCode.BadRequest);
+            }
+
+            var identifier = request.IdentifierParameter;
+            var identifierValidationResult = _fhirValidation.ValidateIdentifierParameter("identifier", identifier);
+            var subject = request.SubjectParameter;
+            var subjectValidationResult = _fhirValidation.ValidatePatientParameter(subject);
+
+
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult != null && subjectValidationResult != null)
+            {
+                throw new HttpFhirException("Missing or Invalid id", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: id"), HttpStatusCode.BadRequest);
+            }
+
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult == null && subjectValidationResult != null)
+            {
+                throw new HttpFhirException("Missing or Invalid subject parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: subject"), HttpStatusCode.BadRequest);
+            }
+
+            if (string.IsNullOrEmpty(request.Id) && identifierValidationResult != null && subjectValidationResult == null)
+            {
+                throw new HttpFhirException("Missing or Invalid identifier parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter: identifier"), HttpStatusCode.BadRequest);
+            }
+
+            var parameters = request.Resource as Parameters;
+
+            var validParameters = _fhirValidation.ValidateParameters(parameters);
+
+            if(!validParameters.Success)
+            {
+                throw new HttpFhirException("Missing or Invalid parameter", validParameters, HttpStatusCode.BadRequest);
+            }
+
+            Resource documentBundle;
+
+            if (!string.IsNullOrEmpty(request.Id))
+            {
+                ObjectId mongoId;
+
+                if (!ObjectId.TryParse(request.Id, out mongoId))
+                {
+                    throw new HttpFhirException("Invalid id parameter", OperationOutcomeFactory.CreateInvalidParameter("Invalid parameter", $"The Logical ID format does not apply to the given Logical ID - {request.Id}"), HttpStatusCode.BadRequest);
+                }
+
+                request.IsIdQuery = true;
+
+                documentBundle = await _fhirSearch.GetAsBundle<DocumentReference>(request);
+            }
+            else
+            {
+                documentBundle = await _fhirSearch.GetByMasterId<DocumentReference>(request);
+            }
+
+            var documentResponse = ParseRead(documentBundle, request.Id);
+            string oldVersionId;
+
+            if (documentResponse.ResourceType == ResourceType.Bundle)
+            {
+                var result = documentResponse as Bundle;
+
+                if (!result.Total.HasValue || result.Total.Value < 1 || result.Entry.FirstOrDefault() == null)
+                {
+                    return OperationOutcomeFactory.CreateNotFound(request.Id);
+                }
+
+                var orgDocument = result.Entry.FirstOrDefault().Resource as DocumentReference;
+                oldVersionId = orgDocument.Meta?.VersionId;
+
+                var orgCode = _fhirValidation.GetOrganizationReferenceId(orgDocument.Custodian);
+
+                var invalidAsid = InvalidAsid(orgCode, request.RequestingAsid);
+
+                if (invalidAsid != null)
+                {
+                    return invalidAsid;
+                }
+
+                if (orgDocument.Status != DocumentReferenceStatus.Current)
+                {
+                    //Only allowed to transition to entered-in-error from current
+                    return OperationOutcomeFactory.CreateInactiveDocumentReference();
+                }
+
+                if (string.IsNullOrEmpty(request.Id))
+                {
+                    request.Id = orgDocument.Id;
+                }
+
+            }
+            else
+            {
+                return documentResponse as OperationOutcome;
+            }
+
+
+            UpdateDefinition<BsonDocument> updates = null;
+            BuildEnteredInError(oldVersionId, out updates);
+
+            var patched = await _fhirMaintain.Update<DocumentReference>(request, updates);
+
+            if (!patched)
+            {
+                return OperationOutcomeFactory.CreateNotFound(request.Id);
+            }
+
+            return OperationOutcomeFactory.CreateUpdated(request.RequestUrl?.AbsoluteUri, request.AuditId);
+
+        }
+
 
         /// <summary>
         /// Delete a DocumentReference using the id in the path or the id value found in the request _id query parameter, or by Master Identifier
@@ -385,6 +512,18 @@ namespace NRLS_API.Services
 
         public void BuildSupersede(string oldDocumentId, string oldVersion, out UpdateDefinition<BsonDocument> updates, out FhirRequest updateRequest)
         {
+            updates = UpdateResource(oldVersion, "superseded", "relatesTo");
+
+            updateRequest = FhirRequest.Create(oldDocumentId, ResourceType.DocumentReference);
+        }
+
+        public void BuildEnteredInError(string oldVersion, out UpdateDefinition<BsonDocument> updates)
+        {
+            updates = UpdateResource(oldVersion, "entered-in-error", "parameters");
+        }
+
+        private UpdateDefinition<BsonDocument> UpdateResource(string oldVersion, string status, string resourceTarget)
+        {
             int version = 0;
             int newVersion = 1;
             var validVersion = int.TryParse(oldVersion, out version);
@@ -396,15 +535,13 @@ namespace NRLS_API.Services
 
             if (!string.IsNullOrEmpty(oldVersion) && !validVersion)
             {
-                throw new HttpFhirException("Bad update values", OperationOutcomeFactory.CreateInvalidResource("relatesTo"), HttpStatusCode.BadRequest);
+                throw new HttpFhirException("Bad update values", OperationOutcomeFactory.CreateInvalidResource(resourceTarget), HttpStatusCode.BadRequest);
             }
 
-            updates = new UpdateDefinitionBuilder<BsonDocument>()
-                .Set("status", DocumentReferenceStatus.Superseded.ToString().ToLowerInvariant())
+            return  new UpdateDefinitionBuilder<BsonDocument>()
+                .Set("status", status)
                 .Set("meta.lastUpdated", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
                 .Set("meta.versionId", $"{newVersion}");
-
-            updateRequest = FhirRequest.Create(oldDocumentId, ResourceType.DocumentReference);
         }
 
         private OperationOutcome InvalidAsid(string orgCode, string asid)

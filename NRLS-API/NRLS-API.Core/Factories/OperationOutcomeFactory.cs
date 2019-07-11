@@ -44,7 +44,7 @@ namespace NRLS_API.Core.Factories
 
             var details = CreateDetails("BAD_REQUEST", "Bad Request");
 
-            return Create(OperationOutcome.IssueSeverity.Warning, OperationOutcome.IssueType.Invalid, "DocumentReference status is not \"current\"", details, false);
+            return Create(OperationOutcome.IssueSeverity.Warning, OperationOutcome.IssueType.Invalid, "DocumentReference status is not 'current'", details, false);
         }
 
         public static OperationOutcome CreateAccessDenied()
@@ -188,6 +188,18 @@ namespace NRLS_API.Core.Factories
             var details = CreateDetails("RESOURCE_CREATED", "New resource created", false, Guid.NewGuid().ToString());
 
             return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully created resource DocumentReference", details, false);
+        }
+
+        public static OperationOutcome CreateUpdated(string url, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                text = Guid.NewGuid().ToString();
+            }
+
+            var details = CreateDetails("RESOURCE_UPDATED", "Resource updated", false, text);
+
+            return Create(OperationOutcome.IssueSeverity.Information, OperationOutcome.IssueType.Informational, $"Successfully updated resource DocumentReference: {url}", details, false);
         }
 
         public static OperationOutcome CreateDelete(string url, string text)
