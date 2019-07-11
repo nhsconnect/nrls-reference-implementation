@@ -1,20 +1,10 @@
 <template>
     <require from="../core/includes/nav-bar.html"></require>
-    <require from="../core/includes/footer-bar.html"></require>
 
     <nav-bar router.bind="router" base-url.bind="appConfig.baseUrl"></nav-bar>
 
     <div id="SkipContent" class="page-host text-left">
-        <div class="container">
-            <div class="alert alert-warning alert-panel"><p><i class="fa fa-exclamation fa-padding-sqr"></i> This site is under ongoing development. Content and images shown are subject to change.</p></div>
-        </div>
-        <div if.bind="canSeeAnnouncements"  class="container announcements-container">
-            <div class="alert alert-success alert-panel"><p><i class="fa fa-bullhorn fa-padding-sqr"></i> NRLS Phase 1 Beta go-live announcement - <a route-href="route: phase-one-beta-go-live;">Read more about Go-Live</a></p></div>
-        </div>
         <slot name="content"></slot>
     </div>
-
-    <footer-bar show-contact.call="showContactDialog()" updated-at.bind="appConfig.updatedAt" app-version.bind="appConfig.appVersion"></footer-bar>
-    <contact-modal can-show-contact.two-way="canShowContact"></contact-modal>
 
 </template>
