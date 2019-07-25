@@ -16,7 +16,7 @@ namespace NRLS_API.Services
             _fhirSearch = fhirSearch;
         }
         
-        public async Task<Resource> Find(FhirRequest request)
+        public async Task<Bundle> Find(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 

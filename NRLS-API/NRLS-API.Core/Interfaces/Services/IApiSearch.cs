@@ -8,6 +8,6 @@ namespace NRLS_API.Core.Interfaces.Services
     {
         Task<Resource> Get(FhirRequest request);
 
-        Task<Resource> Find(FhirRequest request);
+        Task<Bundle> Find(FhirRequest request);
     }
 }

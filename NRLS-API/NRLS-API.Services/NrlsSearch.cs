@@ -50,7 +50,7 @@ namespace NRLS_API.Services
         /// <remarks>
         /// As the NRLS is implemented with just a search and not read, to read a document the _id parameter is supplied
         /// </remarks>
-        public async Task<Resource> Find(FhirRequest request)
+        public async Task<Bundle> Find(FhirRequest request)
         {
             ValidateResource(request.StrResourceType);
 
@@ -82,7 +82,7 @@ namespace NRLS_API.Services
 
                 var results = await _fhirSearch.GetAsBundle<DocumentReference>(request);
 
-                var response = ParseRead(results, id);
+                var response = ParseRead(results, id) as Bundle;
 
                 return response;
             }
