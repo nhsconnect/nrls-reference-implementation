@@ -2,10 +2,7 @@
 using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
-using NRLS_API.Core.Exceptions;
-using NRLS_API.Core.Factories;
 using System;
-using System.Net;
 using System.Text;
 using System.Xml;
 using SystemTask = System.Threading.Tasks;
@@ -46,20 +43,19 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 try
                 {
-                    //TODO: parse xml
+                    var settings = new ParserSettings
+                    {
+                        AllowUnrecognizedEnums = true,
+                        AcceptUnknownMembers = false
+                    };
 
-                    //TODO: create a simple model to allow passthrough to validation because a missing element will throw wrong error here
                     var resource = new FhirXmlParser().Parse(xmlReader, type);
+
                     return InputFormatterResult.SuccessAsync(resource);
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Remove Fhir Hack
-                    if (ex != null)
-                    {
-                        //Assuming invalid xml here, see above
-                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidRequest());
-                    }
+                    context.ModelState.AddModelError("InputFormatter", ex.Message);
 
                     return InputFormatterResult.FailureAsync();
                 }

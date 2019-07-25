@@ -1,10 +1,7 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Validation;
 using NRLS_API.Core.Factories;
-using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

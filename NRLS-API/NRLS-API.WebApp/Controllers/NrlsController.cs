@@ -1,15 +1,14 @@
 ﻿using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using NRLS_API.WebApp.Core.Configuration;
+using NRLS_API.WebApp.Core.Filters;
 
 namespace NRLS_API.WebApp.Controllers
 {
@@ -84,18 +83,11 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>The created FHIR Resource</returns>
         /// <response code="201">Returns the FHIR Resource</response>
+        [FhirFormatterValidation]
         [ProducesResponseType(typeof(Resource), 201)]
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody]Resource resource)
         {
-            //TODO: Remove temp code
-            if(resource.ResourceType.Equals(ResourceType.OperationOutcome))
-            {
-                throw new HttpFhirException("Invalid Fhir Request", (OperationOutcome) resource, HttpStatusCode.BadRequest);
-            }
-
-            Resource result = null;
-
             var request = FhirRequest.Create(null, ResourceType.DocumentReference, resource, Request, RequestingAsid());
 
             var createIssue = await _nrlsMaintain.ValidateCreate(request);
@@ -104,6 +96,8 @@ namespace NRLS_API.WebApp.Controllers
             {
                 return BadRequest(createIssue);
             }
+
+            Resource result = null;
 
             //If we have a valid document that needs to be Superseded, try update on that
             var validUpdateDocument = await _nrlsMaintain.ValidateConditionalUpdate(request);
@@ -140,6 +134,7 @@ namespace NRLS_API.WebApp.Controllers
         /// </summary>
         /// <returns>The OperationOutcome</returns>
         /// <response code="200">Returns OperationOutcome</response>
+        [FhirFormatterValidation]
         [HttpPatch("{logicalId?}")]
         public async Task<IActionResult> Patch([FromBody]Resource resource, string logicalId = null)
         {

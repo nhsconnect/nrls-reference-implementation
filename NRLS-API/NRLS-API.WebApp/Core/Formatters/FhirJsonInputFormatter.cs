@@ -3,11 +3,7 @@ using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using NRLS_API.Core.Exceptions;
-using NRLS_API.Core.Factories;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using SystemTask = System.Threading.Tasks;
 
@@ -47,20 +43,19 @@ namespace NRLS_API.WebApp.Core.Formatters
 
                 try
                 {
-                    //TODO: parse json
+                    var settings = new ParserSettings
+                    {
+                        AllowUnrecognizedEnums = true,
+                        AcceptUnknownMembers = false
+                    };
 
-                    //TODO: create a simple model to allow passthrough to validation because a missing element will throw wrong error here
-                    var resource = new FhirJsonParser().Parse(jsonReader, type);
+                    var resource = new FhirJsonParser(settings).Parse(jsonReader, type);
+
                     return InputFormatterResult.SuccessAsync(resource);
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Remove Fhir Hack
-                    if (ex != null)
-                    {
-                        //Assuming invalid json here, see above
-                        return InputFormatterResult.SuccessAsync(OperationOutcomeFactory.CreateInvalidRequest());
-                    }
+                    context.ModelState.AddModelError("InputFormatter", ex.Message);
 
                     return InputFormatterResult.FailureAsync();
                 }

@@ -46,7 +46,7 @@ namespace NRLS_API.Services
 
             if (notFound)
             {
-                return OperationOutcomeFactory.CreateNotFound(id);
+                throw new HttpFhirException("Not Found", OperationOutcomeFactory.CreateNotFound(id), HttpStatusCode.NotFound);
             }
 
             return results;
