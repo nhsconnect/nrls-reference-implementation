@@ -76,3 +76,16 @@
   "Thumbprint": "",
   "Active": true
 }
+{
+  "_id": {
+    "$oid": "5d3614df21cdead3e29f1f3d"
+  },
+  "PartyKey":"5db16ee87ecf46fca778cfd23771ef70",
+  "Fqdn": "localhost:55448",
+  "EndPoints": ["http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary", "http://localhost:55443/provider/1XR/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5000/provider/1XR/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5443/provider/1XR/fhir/STU3/careconnect/binary"],
+  "OdsCode":"1XR",
+  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Asid":"200000000121",
+  "Thumbprint": "",
+  "Active": true
+}
