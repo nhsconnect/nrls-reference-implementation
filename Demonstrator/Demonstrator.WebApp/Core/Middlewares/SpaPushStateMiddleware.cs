@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +19,9 @@ namespace Demonstrator.WebApp.Core.Middlewares
         {
             await _next(context);
 
-            if (context.Response.StatusCode == 404)
+            var routeData = context.GetRouteData();
+
+            if (context.Response.StatusCode == 404 && routeData == null)
             {
                 context.Request.Path = "/index.html";
                 await _next(context);

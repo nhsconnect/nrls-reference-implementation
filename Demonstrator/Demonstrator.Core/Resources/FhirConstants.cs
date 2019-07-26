@@ -43,6 +43,10 @@
 
         public const string HeaderSspTradeId = "Ssp-TraceID";
 
+        public const string HeaderSspTo = "Ssp-To";
+
+        public const string HeaderSspFrom = "Ssp-From";
+
         public const string HeaderXFhirDefault = "X-FHIR-DEFAULT";
 
 

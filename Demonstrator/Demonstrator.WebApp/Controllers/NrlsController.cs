@@ -44,10 +44,10 @@ namespace Demonstrator.WebApp.Controllers
         }
 
         /// <summary>
-        /// Fetches a list of NRLS Pointers.
+        /// Fetches a Document/Record referenced by an NRL Pointer
         /// </summary>
         /// <param name="nhsNumber"></param>  
-        /// <returns>A list of NRLS Pointers (Constrained FHIR DocumentReference) for a patient specificed by the patient nhs number.</returns>
+        /// <returns>A Blob (Document/Record)</returns>
         /// <response code="200">Returns the NRLS Pointers</response>
         [MiddlewareFilter(typeof(FhirOutputMiddlewarePipeline))]
         [HttpGet("{nhsNumber:regex(^[[0-9]]{{10}}$)}/{documentId:regex(^[[A-Fa-f0-9-]]{{1,1024}}$)}")]

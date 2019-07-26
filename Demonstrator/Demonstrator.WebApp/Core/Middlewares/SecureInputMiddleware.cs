@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Core.Exceptions;
 using Demonstrator.Core.Factories;
 using Demonstrator.Core.Interfaces.Helpers;
+using Demonstrator.Core.Resources;
 using Demonstrator.Models.Core.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -31,12 +32,29 @@ namespace Demonstrator.WebApp.Core.Middlewares
             var method = request.Method;
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
 
-
+            // -> JWT
             var authorization = GetHeaderValue(headers, HeaderNames.Authorization);
             var jwtResponse = _jwtHelper.IsValidUser(authorization);
             if (!jwtResponse.Success)
             {
                 SetJwtError(HeaderNames.Authorization, jwtResponse.Message);
+            }
+
+            // -> fromASID
+            var fromASID = GetHeaderValue(headers, FhirConstants.HeaderSspFrom);
+            //var consumerCache = _sdsService.GetFor(fromASID);
+
+            //if (consumerCache == null)
+            if (string.IsNullOrWhiteSpace(fromASID))
+            {
+                SetError(FhirConstants.HeaderSspFrom, "The Ssp-From ASID header value is not known.");
+            }
+
+            // -> traceID
+            var traceId = GetHeaderValue(headers, FhirConstants.HeaderSspTradeId);
+            if (string.IsNullOrEmpty(traceId))
+            {
+                SetError(FhirConstants.HeaderSspTradeId, null);
             }
 
             //TODO: check user is auth & auth
@@ -61,6 +79,11 @@ namespace Demonstrator.WebApp.Core.Middlewares
             }
 
             return headerValue;
+        }
+
+        private void SetError(string header, string diagnostics)
+        {
+            throw new HttpFhirException("Invalid/Missing Header", OperationOutcomeFactory.CreateInvalidHeader(header, diagnostics), HttpStatusCode.BadRequest);
         }
 
         private void SetJwtError(string header, string diagnostics)

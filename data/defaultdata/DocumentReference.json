@@ -35,7 +35,7 @@
     {
       "attachment": {
         "contentType": "application/pdf",
-        "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/5d36202621cdead3e29f1f3e",
+        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/5d36202621cdead3e29f1f3e",
         "title": "Mental Health Crisis Plan",
         "creation": "2016-03-08T15:26:00+00:00"
       }
@@ -79,7 +79,7 @@
     {
       "attachment": {
         "contentType": "application/pdf",
-        "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/5ab13f41957d0ad5d93a1339",
+        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/5ab13f41957d0ad5d93a1339",
         "title": "Mental Health Crisis Plan",
         "creation": "2016-03-08T15:26:00+00:00"
       }

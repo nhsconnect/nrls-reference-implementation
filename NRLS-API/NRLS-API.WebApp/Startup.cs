@@ -182,7 +182,7 @@ namespace NRLS_API.WebApp
 
         private static void HandleSspRequests(IApplicationBuilder app)
         {
-            //app.UseSspProxyGateMiddleware();
+            app.UseSspProxyGateMiddleware();
             app.UseSspProxyRequestMiddleware();
         }
     }

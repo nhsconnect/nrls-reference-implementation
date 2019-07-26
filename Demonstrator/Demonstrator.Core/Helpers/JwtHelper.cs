@@ -29,6 +29,12 @@ namespace Demonstrator.Core.Helpers
         {
 
             var parsedJwt = ParseJwt(jwt);
+
+            if (!parsedJwt.Success)
+            {
+                return parsedJwt;
+            }
+
             var claims = parsedJwt.Data;
 
             // ### sub
