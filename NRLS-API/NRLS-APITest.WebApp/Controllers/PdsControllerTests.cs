@@ -20,7 +20,7 @@ namespace NRLS_APITest.WebApp.Controllers
             var patientList = new List<Patient> { new Patient { Id = "ValidPatient1" }, new Patient { Id = "ValidPatient2" } };
 
             var pdsSearch = new Mock<IPdsSearch>();
-            pdsSearch.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(patientList) as Resource));
+            pdsSearch.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == null))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(patientList)));
 
             _pdsSearch = pdsSearch.Object;
         }

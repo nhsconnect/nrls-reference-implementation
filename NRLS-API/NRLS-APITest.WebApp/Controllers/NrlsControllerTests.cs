@@ -28,7 +28,7 @@ namespace NRLS_APITest.WebApp.Controllers
 
             var searchMock = new Mock<INrlsSearch>();
             //searchMock.Setup(x => x.Find<DocumentReference>(It.IsAny<FhirRequest>())).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
-            searchMock.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList) as Resource));
+            searchMock.Setup(x => x.Find(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(FhirBundle.GetBundle(pointerList)));
             searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "000"))).Returns(System.Threading.Tasks.Task.FromResult(NrlsPointers.Valid as Resource));
             searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(null as Resource));
             searchMock.Setup(x => x.Get(It.Is<FhirRequest>(y => y.RequestingAsid == "inactive"))).Returns(System.Threading.Tasks.Task.FromResult(NrlsPointers.Valid_Superseded as Resource)); 
