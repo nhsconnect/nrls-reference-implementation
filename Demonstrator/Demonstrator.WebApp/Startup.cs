@@ -26,6 +26,8 @@ using Demonstrator.Core.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Demonstrator.Services.Service.Base;
+using Microsoft.AspNetCore.Rewrite;
+using Demonstrator.WebApp.Core.Extensions;
 
 namespace Demonstrator.WebApp
 {
@@ -111,6 +113,11 @@ namespace Demonstrator.WebApp
             {
                 ExceptionHandler = new FhirExceptionMiddleware(env, nrlsApiSettings).Invoke
             });
+
+            var redirectOptions = new RewriteOptions()
+                .Add(PermanentRedirects.RedirectRequests);
+
+            app.UseRewriter(redirectOptions);
 
             app.UseClientInteractionCacheMiddleware();
 
