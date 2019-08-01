@@ -23,4 +23,13 @@
     <ProjectReference Include="..\DemonstratorTest.Data\DemonstratorTest.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Documents\cancer-care-plan.tmpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Documents\mental-health-crisis-plan.tmpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

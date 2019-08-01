@@ -44,7 +44,7 @@ namespace DemonstratorTest.WebApp
             var nodeServices = new Mock<INodeServices>();
             nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
 
-            var response = await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377");
+            var response = await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377", "mhcp");
 
             Assert.IsType<FileContentResult>(response);
 
@@ -64,7 +64,7 @@ namespace DemonstratorTest.WebApp
             var nodeServices = new Mock<INodeServices>();
             nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
 
-            var response = await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377");
+            var response = await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377", "mhcp");
 
             Assert.IsType<FileContentResult>(response);
 
@@ -84,7 +84,7 @@ namespace DemonstratorTest.WebApp
             var nodeServices = new Mock<INodeServices>();
             nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
 
-            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, " "));
+            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, " ", "mhcp"));
 
         }
 
@@ -98,7 +98,35 @@ namespace DemonstratorTest.WebApp
             var nodeServices = new Mock<INodeServices>();
             nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
 
-            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, null));
+            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, null, "mhcp"));
+
+        }
+
+        [Fact]
+        public void Get_InvalidEmptyType()
+        {
+            var controller = new BinaryController(_pointerService, _apiSettings);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
+
+            var nodeServices = new Mock<INodeServices>();
+            nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
+
+            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377", " "));
+
+        }
+
+        [Fact]
+        public void Get_InvalidNullType()
+        {
+            var controller = new BinaryController(_pointerService, _apiSettings);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
+
+            var nodeServices = new Mock<INodeServices>();
+            nodeServices.Setup(x => x.InvokeAsync<byte[]>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(Task.Run(() => Encoding.UTF8.GetBytes("I'm a PDF!")));
+
+            Assert.ThrowsAsync<HttpFhirException>(async () => await controller.Get(nodeServices.Object, "5a82f9ffcb969daa58d33377", null));
 
         }
 
