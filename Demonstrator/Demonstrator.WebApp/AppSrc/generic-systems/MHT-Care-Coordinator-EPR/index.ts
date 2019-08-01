@@ -43,28 +43,28 @@ export class GsMHTCareCoordinatorEPR extends BaseGenericSystem {
 
     savePlan() {
 
-        this.vdController.reset({ object: this.crisisPlan });
-        this.vdController.validate({ object: this.crisisPlan, rules: this.crisisPlan.crisisPlanRules() })
-            .then(result => {
-                if (result.valid && this.patient) {
+        //this.vdController.reset({ object: this.crisisPlan });
+        //this.vdController.validate({ object: this.crisisPlan, rules: this.crisisPlan.crisisPlanRules() })
+        //    .then(result => {
+        //        if (result.valid && this.patient) {
 
-                    this.crisisPlan.patientNhsNumber = this.patient.identifier[0].value;
-                    this.crisisPlan.planCreated = new Date();
-                    this.crisisPlan.planUpdated = new Date();
+        //            this.crisisPlan.patientNhsNumber = this.patient.identifier[0].value;
+        //            this.crisisPlan.planCreated = new Date();
+        //            this.crisisPlan.planUpdated = new Date();
 
-                    this.crisisPlan.planCreatedBy = `${this.data.personnel.name.substr(0,1)} Jones`;
-                    this.crisisPlan.planCreatedByJobTitle = this.data.personnel.name;
+        //            this.crisisPlan.planCreatedBy = `${this.data.personnel.name.substr(0,1)} Jones`;
+        //            this.crisisPlan.planCreatedByJobTitle = this.data.personnel.name;
 
-                    this.crisisPlan.cleaned();
+        //            this.crisisPlan.cleaned();
 
-                    if (this.hasCrisisPlan) {
-                        this.updatePlan();
-                    } else {
-                        this.createPlan();
-                    }
+        //            if (this.hasCrisisPlan) {
+        //                this.updatePlan();
+        //            } else {
+        //                this.createPlan();
+        //            }
 
-                }
-            });
+        //        }
+        //    });
     }
 
     deletePlan() {

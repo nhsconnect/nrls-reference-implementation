@@ -23,42 +23,7 @@
     border-radius: 2px;
 }
 
-.breadcrumb {
-    color: #768692;
-    width: 100%;
-    position: absolute;
-    top: -15px;
-    left: 0;
-    font-weight: normal;
-    font-size: 0.9em;
-    background-color: transparent;
 
-    b {
-        color: $blue;
-    }
-
-    a {
-        &:link,
-        &:visited,
-        &:hover,
-        &:active {
-            color: $nhsMidGrey;
-            text-decoration: none;
-        }
-    }
-
-    .active {
-        a {
-            &:link,
-            &:visited,
-            &:hover,
-            &:active {
-                color: $blue;
-                font-weight: bold;
-            }
-        }
-    }
-}
 
 .form-control {
     &.no-border {
@@ -178,68 +143,11 @@ a {
 }
 
 
-.benefits-button {
-    .btn {
-        border-width: 1px;
-        box-shadow: 0px 0px 8px rgba(0, 68, 133, 0.8) inset;
-    }
-
-    .txt {
-        border-right: 1px solid $nhsDarkBlue;
-        padding-right: 10px;
-        font-weight: bold;
-        font-size: 1.5em;
-        vertical-align: super;
-        display: inline-block;
-        line-height: 1.9em;
-    }
-
-    .sym {
-        padding: 0 10px;
-        font-weight: bold;
-        font-size: 2em;
-        line-height: 1em;
-    }
-
-    .act {
-        border-left: 1px solid $nhsDarkBlue;
-        padding-left: 10px;
-        font-weight: bold;
-        font-size: 2.5em;
-        line-height: 1em;
-    }
-
-    .benefits-btn-icon {
-        padding: 0 6px;
-    }
-}
-
 .nrls-border-img {
     background-color: $nhsPaleGrey;
     padding: $spacing-normal;
     border-radius: 14px;
     max-width: 350px;
-}
-
-.nrls-benefits-list {
-    list-style-position: inside;
-    margin-left: $spacing-small;
-
-    li {
-        position: relative;
-        top: 0;
-        left: 0;
-        padding-left: $spacing-xlarge;
-        line-height: 1.4em;
-        margin-bottom: 20px;
-
-        i {
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 1.7em;
-        }
-    }
 }
 
 .nrls-modal {
@@ -281,145 +189,6 @@ a {
 
             .modal-header {
                 height: 85px;
-            }
-        }
-    }
-
-    &.nrls-benefit-modal {
-        .modal-dialog {
-            width: 704px;
-
-            .modal-content {
-                border: none;
-                overflow: hidden;
-
-                .modal-body {
-                    padding: 0;
-                    max-height: calc(100vh - 160px);
-                }
-            }
-        }
-    }
-
-    &.nrls-contact-modal {
-        text-align: left;
-
-        .modal-dialog {
-            width: 704px;
-
-            .modal-header {
-                padding: 0 $spacing-large;
-
-                .close {
-                    margin-top: 20px;
-                }
-            }
-
-            .modal-body {
-                padding: 0 $spacing-large;
-            }
-        }
-    }
-
-    &.nrls-scenario-modal {
-        .modal-dialog {
-            width: 992px;
-
-            .modal-content {
-                border-top-width: 40px;
-
-                .modal-body {
-                    padding: 0 0 10px 0;
-                    max-height: calc(100vh - 110px);
-                    background-color: $paleYellow;
-
-                    .benefits-button {
-                        position: absolute;
-                        top: 772px;
-                        left: 358px;
-                        width: 239px;
-                        height: 33px;
-                    }
-
-                    .switch-button {
-                        position: fixed;
-                        bottom: 5px;
-                        right: 5px;
-                        font-size: 1.1em;
-                        font-weight: bold;
-                        cursor: pointer;
-                        z-index: 3;
-                        background-color: $nhsBlue;
-                        padding: $spacing-small $spacing-normal;
-                        line-height: 1.3em;
-
-                        .switch {
-                            display: inline-block;
-                            width: 75px;
-                            text-align: right;
-                        }
-
-                        &.active {
-                            .off {
-                                display: none;
-                            }
-
-                            .on {
-                                display: inline-block;
-                            }
-                        }
-
-                        &.inactive {
-                            .off {
-                                display: inline-block;
-                            }
-
-                            .on {
-                                display: none;
-                            }
-                        }
-                    }
-
-                    button {
-                        &.close {
-                            background-color: $red;
-                            color: $white;
-                            border-radius: 4px;
-                            opacity: 1;
-                            padding: 6px 10px;
-                            font-size: 1em;
-                            line-height: 1.1em;
-                            position: fixed;
-                            top: 5px;
-                            right: 5px;
-                            box-shadow: 0 0 8px rgba(0,0,0,0.7);
-                        }
-                    }
-
-                    .context-switch-wrap {
-                        .context {
-                            position: relative;
-                            top: 0;
-                            left: 0;
-                            z-index: 1;
-
-                            &.on {
-                                position: absolute;
-                                z-index: 2;
-                                opacity: 0;
-                                transition: opacity 0.45s linear 0s;
-                            }
-                        }
-
-                        &.active {
-                            .context {
-                                &.on {
-                                    opacity: 1;
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -466,18 +235,3 @@ a {
     }
 }
 
-
-.scenario-wrapper {
-    .scenario-img-wrapper {
-        display: block;
-        width: 250px;
-        margin-top: $spacing-small;
-        border: 2px solid $nhsBlue;
-        border-radius: 4px;
-        
-        .btn-block {
-            border-radius: 0;
-            border-color: $nhsBlue;
-        }
-    }
-}

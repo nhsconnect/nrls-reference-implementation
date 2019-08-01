@@ -3,7 +3,7 @@
 
     <a href="#SkipContent">Skip content</a>
     <div show.bind="!hideBanner" class="app-warning-banner bg-warning navbar-fixed-top">
-        <p class="no-margin"><strong>This is a demonstration system and does not interact with live systems. Data is fictitious. Images and Systems viewed may not represent live systems. <button title="Close warning banner" href="#close" class="btn btn-default" click.delegate="closeBanner()" aria-label="Close"><i class="fa fa-close"></i></button></strong></p>
+        <p class="no-margin"><strong>This is a demonstration system and does not interact with live systems. Data is fictitious. Images and Systems viewed may not represent live systems. <button title="Close warning banner" href="#close" class="btn btn-default hidden" click.delegate="closeBanner()" aria-label="Close"><i class="fa fa-close"></i></button></strong></p>
     </div>
 
     <div class="${hideBanner === true ? '' : 'has-banner' }">

@@ -1,8 +1,5 @@
 ﻿using Demonstrator.Core.Interfaces.Services.Flows;
-using Demonstrator.Models.Core.Enums;
-using Demonstrator.WebApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 //In reality all end points would be secured
@@ -56,16 +53,6 @@ namespace Demonstrator.WebApp.Controllers
         {
             //Service to get GenericSystem
             var genericSystem = await _genericSystemService.GetAll();
-
-            return Ok(genericSystem);
-        }
-
-        // POST api/GenericSystems
-        [HttpPost("")]
-        public async Task<IActionResult> Get([FromBody] ObjectIdList systemIds)
-        {
-            //Service to get GenericSystem
-            var genericSystem = await _genericSystemService.GetByIdList(systemIds.ObjectIds);
 
             return Ok(genericSystem);
         }

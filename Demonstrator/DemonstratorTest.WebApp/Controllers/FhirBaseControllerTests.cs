@@ -1,14 +1,8 @@
 using Demonstrator.Core.Exceptions;
-using Demonstrator.Core.Interfaces.Services.Nrls;
 using Demonstrator.Models.ViewModels.Base;
-using Demonstrator.Models.ViewModels.Nrls;
 using Demonstrator.WebApp.Controllers;
 using DemonstratorTest.Data;
-using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System;
-using System.Text;
 using Xunit;
 
 namespace DemonstratorTest.WebApp

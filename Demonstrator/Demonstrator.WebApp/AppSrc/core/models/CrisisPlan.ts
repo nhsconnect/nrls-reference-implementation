@@ -1,4 +1,4 @@
-﻿import { ValidationRules } from "aurelia-validation";
+﻿//import { ValidationRules } from "aurelia-validation";
 import { ICarePlan } from "../interfaces/ICarePlan";
 import { MedicalRecord } from "./MedicalRecord";
 
@@ -37,15 +37,15 @@ export class CrisisPlan extends MedicalRecord implements ICarePlan {
         this.crisisNumber = this.cleanContent(this.crisisNumber);
     }
 
-    public crisisPlanRules() {
-        const crisisPlanRules = ValidationRules
-            .ensure('involveFamilyOrCarer').required()
-            .ensure('signsFeelingUnwell').required()
-            .ensure('potentialTriggers').required()
-            .ensure('whatHelpsInCrisis').required()
-            .ensure('patientAcceptsPlan').required()
-            .rules;
+    //public crisisPlanRules() {
+    //    const crisisPlanRules = ValidationRules
+    //        .ensure('involveFamilyOrCarer').required()
+    //        .ensure('signsFeelingUnwell').required()
+    //        .ensure('potentialTriggers').required()
+    //        .ensure('whatHelpsInCrisis').required()
+    //        .ensure('patientAcceptsPlan').required()
+    //        .rules;
 
-        return crisisPlanRules;
-    }
+    //    return crisisPlanRules;
+    //}
 }

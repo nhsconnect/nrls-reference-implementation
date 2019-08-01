@@ -9,7 +9,6 @@ import { AnalyticsSvc } from "../core/services/AnalyticsService";
 @inject(EventAggregator, ConfigSvc, Router, AnalyticsSvc)
 export class Chrome {
 
-    canShowContact: boolean = false;
     canSeeAnnouncements: boolean = true;
     appConfig: IDemonstratorConfig;
 
@@ -31,18 +30,10 @@ export class Chrome {
     }
  
     checkAnnouncements() {
-        console.log(this.router.currentInstruction.config.settings.showAnnouncements);
+
         let canSeeAnnouncements = this.router.currentInstruction.config.settings.showAnnouncements;
 
         this.canSeeAnnouncements = (canSeeAnnouncements === undefined || canSeeAnnouncements === true);
-    }
-
-    showContactDialog() {
-        this.canShowContact = !this.canShowContact;
-
-        if (this.canShowContact === true) {
-            this.analyticsSvc.contactsModal(window.location.pathname);
-        }
     }
 }
 

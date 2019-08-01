@@ -10,6 +10,11 @@ export class GenericSystemSvc {
 
     constructor(private api: WebAPI) { }
 
+    getAll() {
+        let systems = this.api.do<Array<IGenericSystem>>(`${this.baseUrl}`, null, 'get');
+        return systems;
+    }
+
     getOne(systemId: string) {
         let system = this.api.do<IGenericSystem>(`${this.baseUrl}/${systemId}`, null, 'get');
         return system;
@@ -18,11 +23,6 @@ export class GenericSystemSvc {
     getPersonnel(systemId: string) {
         let personnel = this.api.do<IPersonnel>(`${this.baseUrl}/${systemId}/Personnel`, null, 'get');
         return personnel;
-    }
-
-    getList(systemIds: Array<string>) {
-        let systems = this.api.do<Array<IGenericSystem>>(`${this.baseUrl}`, { objectIds: systemIds }, 'post');
-        return systems;
     }
 
 }

@@ -26,14 +26,13 @@ export class pdfviewer {
     }
 
     bind() {
-        console.log("PDFJS: " + PDFJS);
+
         PDFJS.GlobalWorkerOptions.workerSrc = this.loader.normalizeSync('pdfjs-dist/build/pdf.worker.js');
 
         this.worker = new PDFJS.PDFWorker();
     }
 
     attached() {
-        console.log("this.pdfDoc: ", this.pdfDoc);
 
         this.viewerContainer = $(".pdf-viewer-container");
         this.pdfContainer = $("#pdfCanvasContainer");
@@ -42,7 +41,7 @@ export class pdfviewer {
     }
 
     detached() {
-        console.log("detached");
+
         if (this.canDestroy) {
 
             if (this.pdfDoc.document) {
@@ -65,7 +64,6 @@ export class pdfviewer {
         var pdfDocument = PDFJS.getDocument({ data: pdfAsArray, worker: this.worker });
 
         pdfDocument.promise.then((pdf) => {
-                console.log('PDF loaded', pdf);
 
                 this.pdfDoc.document = pdf;
 
@@ -83,21 +81,18 @@ export class pdfviewer {
 
         // Fetch the first page
         this.pdfDoc.document.getPage(pageNumber).then((page) => {
-            console.log('Page loaded', page);
 
             let viewport = page.getViewport(this.pdfDoc.scale);
 
-            console.log("this.viewerContainer", this.viewerContainer);
-
             this.pdfDoc.scale = (this.viewerContainer.height() || 0) / (viewport.height + 40);
-            console.log("re-scale", this.pdfDoc.scale);
+
             //re-scale
             viewport = page.getViewport(this.pdfDoc.scale);
 
             // Prepare canvas using PDF page dimensions
 
             if (this.canvas && this.canvasContext) {
-                console.log("scaled viewport", viewport);
+
                 this.canvas.height = viewport.height;
                 this.canvas.width = viewport.width;
 
@@ -113,7 +108,6 @@ export class pdfviewer {
                 let renderTask = page.render(renderContext);
 
                 renderTask.promise.then(() => {
-                    console.log('Page rendered');
 
                     this.pageRendering = false;
 

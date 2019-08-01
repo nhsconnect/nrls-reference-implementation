@@ -8,6 +8,7 @@ import { AnalyticsSvc } from './core/services/AnalyticsService';
 import { CookieSvc } from './core/services/CookieService';
 import { ConfigSvc } from "./core/services/ConfigService";
 
+
 @inject(EventAggregator, AnalyticsSvc, CookieSvc, ConfigSvc)
 export class App {
 
@@ -96,26 +97,9 @@ export class App {
         config.addPipelineStep('postRender', ScrollPageStep);
 
         config.map([
-            { route: ['', 'welcome'], name: 'welcome', moduleId: './pages/welcome/index', nav: true, title: 'Home' },
-            { route: 'about', name: 'about', moduleId: './pages/about/index', nav: true, title: 'About' },
-            { route: 'about/consumers-providers', name: 'about-consumers-providers', moduleId: './pages/about/consumers-providers', nav: false, title: 'About - Consumers Providers' },
-            { route: 'about/onboarding', name: 'about-onboarding', moduleId: './pages/about/onboarding', nav: false, title: 'About - Onboarding' },
-            { route: 'about/timeline', name: 'about-timeline', moduleId: './pages/about/timeline', nav: false, title: 'About - Timeline' },
-            { route: 'about/benefits', name: 'about-benefits', moduleId: './pages/about/benefits', nav: false, title: 'About - Benefits' },
-
-            { route: 'developers', name: 'developers', moduleId: './pages/developers/index', nav: true, title: 'Developers' },
-
-            { route: 'actor-organisation/:routeParamId/:routeParamTitle?', name: 'actor-organisation-personnel', moduleId: './pages/actor-organisation/index', nav: false, title: 'Explore Organisation - Choose a Persona', settings: { dynamicTitle: true } },
-            { route: 'personnel/:routeParamId/:routeParamTitle?', name: 'personnel', moduleId: './pages/personnel/index', nav: false, title: 'Explore Persona - What does the NRLS mean for me', settings: { dynamicTitle: true } },
-
-            { route: 'privacy-policy', name: 'privacy-policy', moduleId: './pages/privacy-policy/index', nav: false, title: 'Privacy Policy' },
-            { route: 'cookie-policy', name: 'cookie-policy', moduleId: './pages/cookie-policy/index', nav: false, title: 'Cookie Policy' },
-            { route: 'accessibility', name: 'accessibility', moduleId: './pages/accessibility/index', nav: false, title: 'Accessibility' },
-
-            { route: 'phase-one-beta-go-live', name: 'phase-one-beta-go-live', moduleId: './pages/phase-one-beta-go-live/index', nav: false, title: 'NRLS Phase 1 Beta Go-Live', settings: { showAnnouncements: false } },
-
-            { route: 'system-select', name: 'system-select', moduleId: './pages/system-select/index', nav: false, title: 'Demonstrator Explorer', layoutViewModel: 'layouts/chromeless' },
-            { route: 'system-demo/:routeParamId/:routeParamTitle?', name: 'system-demo', moduleId: './pages/system-demo/index', nav: false, title: 'Demonstrator System Example', layoutViewModel: 'layouts/chromeless', settings: { dynamicTitle: true } },
+            { route: [''], name: 'home', moduleId: './pages/home/index', nav: true, title: 'Home' },
+            { route: 'system-select', name: 'system-select', moduleId: './pages/system-select/index', nav: false, title: 'Demonstrator Explorer' },
+            { route: 'system-demo/:routeParamId/:routeParamTitle?', name: 'system-demo', moduleId: './pages/system-demo/index', nav: false, title: 'Demonstrator System Example', settings: { dynamicTitle: true } },
 
             notFoundRoute
         ]);

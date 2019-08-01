@@ -20,26 +20,6 @@ namespace Demonstrator.Services.Service.Flows
             _context = context;
         }
 
-        public async Task<IEnumerable<ActorOrganisationViewModel>> GetAll()
-        {
-            try
-            {
-                var builder = Builders<ActorOrganisation>.Filter;
-                var filters = new List<FilterDefinition<ActorOrganisation>>();
-                filters.Add(builder.Eq(x => x.IsActive, true));
-
-                var options = new FindOptions<ActorOrganisation, ActorOrganisation>();
-                options.Sort = Builders<ActorOrganisation>.Sort.Ascending(x => x.Name);
-
-                return await _context.ActorOrganisations.FindSync(builder.And(filters), options).ToViewModelListAsync();
-            }
-            catch (Exception ex)
-            {
-                // log or manage the exception
-                throw ex;
-            }
-        }
-
         public async Task<ActorOrganisationViewModel> GetById(string orgId)
         {
             try
@@ -76,25 +56,5 @@ namespace Demonstrator.Services.Service.Flows
             }
         }
 
-        public async Task<IEnumerable<PersonnelViewModel>> GetPersonnel(string orgId)
-        {
-            try
-            {
-                var builder = Builders<Personnel>.Filter;
-                var filters = new List<FilterDefinition<Personnel>>();
-                filters.Add(builder.Eq(x => x.IsActive, true));
-                filters.Add(builder.Eq(x => x.OrganisationId, orgId));
-
-                var options = new FindOptions<Personnel, Personnel>();
-                options.Sort = Builders<Personnel>.Sort.Ascending(x => x.Name);
-
-                return await _context.Personnel.FindSync(builder.And(filters), options).ToViewModelListAsync();
-            }
-            catch (Exception ex)
-            {
-                // log or manage the exception
-                throw ex;
-            }
-        }
     }
 }

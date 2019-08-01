@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using Demonstrator.Core.Interfaces.Helpers;
 using Demonstrator.Core.Helpers;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 using Demonstrator.Services.Service.Base;
 using Microsoft.AspNetCore.Rewrite;
 using Demonstrator.WebApp.Core.Extensions;
@@ -94,8 +93,6 @@ namespace Demonstrator.WebApp
             services.AddTransient<IPointerService, PointerService>();
             services.AddTransient<IPatientViewService, PatientViewService>();
             services.AddTransient<ICrisisPlanService, CrisisPlanService>();
-            services.AddTransient<IBenefitsService, BenefitsService>(); 
-            services.AddTransient<IBenefitsViewService, BenefitsViewService>();
             services.AddTransient<IPointerMapService, PointerMapService>();
             services.AddTransient<IDocumentsServices, DocumentsServices>();
             services.AddTransient<IJwtHelper, JwtHelper>();

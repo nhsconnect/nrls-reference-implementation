@@ -10,10 +10,11 @@ export interface ISystemExplorerItem {
     id: string;
     name: string;
     safeName: string;
-    healthContexts: ISystemExplorerOrg[];
+    moduleName: string;
+    //healthContexts: ISystemExplorerOrg[];
 }
 
-export interface ISystemExplorerOrg {
-    organisation: IActorOrganisation;
-    personnel: IPersonnel[];
-}
+//export interface ISystemExplorerOrg {
+//    organisation: IActorOrganisation;
+//    personnel: IPersonnel[];
+//}

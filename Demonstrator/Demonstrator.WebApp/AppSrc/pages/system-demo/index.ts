@@ -1,4 +1,3 @@
-import { PersonnelSvc }         from '../../core/services/PersonnelService';
 import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
 import { GenericSystemSvc }     from '../../core/services/GenericSystemService';
 import { bindable, inject }     from 'aurelia-framework';
@@ -7,8 +6,8 @@ import { IGenericSystem }       from '../../core/interfaces/IGenericSystem';
 import { ActorTypes }           from '../../core/models/enums/ActorTypes';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 
-@inject(PersonnelSvc, ActorOrganisationSvc, GenericSystemSvc)
-export class Personnel {
+@inject(ActorOrganisationSvc, GenericSystemSvc)
+export class SystemDemo {
     heading: string = 'System Demonstrator';
     personnel: IPersonnel;
     organisation: IActorOrganisation;
@@ -17,8 +16,7 @@ export class Personnel {
     systemsLoading: boolean = false;
     systemModel: any = {};
 
-    constructor(private personnelSvc: PersonnelSvc, private actorOrganisationSvc: ActorOrganisationSvc,
-        private genericSystemSvc: GenericSystemSvc) { }
+    constructor(private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) { }
 
     activate(params) {
         this.genericSystemId = params.routeParamId;

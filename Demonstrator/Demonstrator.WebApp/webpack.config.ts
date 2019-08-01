@@ -23,7 +23,7 @@ import * as uglify from '@easy-webpack/config-uglify';
 import * as generateCoverage from '@easy-webpack/config-test-coverage-istanbul';
 import * as copyWebpackPlugin from 'copy-webpack-plugin';
 
-const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || (process.env.NODE_ENV = 'development');
+const ENV: string = process.env.NODE_ENV = (process.env.NODE_ENV || 'development').toLowerCase();
 
 /** ###################    LOOK HERE 
  * 
@@ -32,7 +32,7 @@ const ENV: string = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() |
 
 // basic configuration:
 const title = 'NRL Demonstrator';
-const appVersion = '0.1.6';
+const appVersion = '0.2.0';
 const gaTrackId = 'UA-38028819-4';
 const cookieBotId = '30398f35-a144-4edd-a779-05481f9da7b3';
 const baseUrl = '/';
@@ -69,8 +69,8 @@ const coreBundles = {
     'aurelia-templating',
     'aurelia-templating-binding',
     'aurelia-templating-router',
-    'aurelia-templating-resources',
-    'aurelia-validation'
+    'aurelia-templating-resources'
+    /*'aurelia-validation'*/
   ]
 };
 
@@ -107,9 +107,10 @@ let config = generateConfig(
     copyFiles({
         patterns: [
             { from: 'webappconfig' + (ENV === 'development' ? '' : '.' + ENV) + '.json', to: 'webappconfig.json' },
-            { from: 'Resources/*.+(docx|xlsx)', to: './' },
-            { from: 'images', to: 'images' }
-        ]
+            { from: 'images', to: 'images' },
+            { from: 'AppSrc/generic-systems', to: 'images/generic-systems' }
+        ],
+        options: { ignore: ['*.html', '*.ts'] }
     }),
     sass({ filename: 'app.[contenthash].css', allChunks: true, sourceMap: false }),
     css({ filename: 'lib.[contenthash].css', allChunks: true, sourceMap: false }),

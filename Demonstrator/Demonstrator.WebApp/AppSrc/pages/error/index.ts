@@ -1,6 +1,1 @@
-export class Error {
-    heading: string = 'Error';
-
-}
-
-
+export class Error {}

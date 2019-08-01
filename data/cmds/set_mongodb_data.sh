@@ -26,7 +26,7 @@ done
 echo "=> Data: MongoDB service running."
 
 # START Data Import
-echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, Benefits, NrlsPointerMaps, MedicalRecords"
+echo "=> Dropping Personnel, ActorOrganisation, GenericSystem, NrlsPointerMaps, MedicalRecords"
 
 mongo << EOF
 use $MONGODB_APPLICATION_DATABASE
@@ -34,7 +34,6 @@ db.auth('$MONGODB_APPLICATION_USER','$MONGODB_APPLICATION_PASS')
 db.Personnel.drop()
 db.ActorOrganisation.drop()
 db.GenericSystem.drop()
-db.Benefits.drop()
 db.NrlsPointerMaps.drop()
 db.MedicalRecords.drop()
 db.Sds.drop()
@@ -59,8 +58,6 @@ mongoimport -c GenericSystem -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLIC
 echo "=> GenericSystem IMPORTED"
 mongoimport -c Personnel -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Personnel.json
 echo "=> Personnel IMPORTED" 
-mongoimport -c Benefits -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Benefits.json
-echo "=> Benefits IMPORTED" 
 mongoimport -c Sds -d $MONGODB_APPLICATION_DATABASE -u $MONGODB_APPLICATION_USER -p $MONGODB_APPLICATION_PASS --mode insert --file ${MONGODB_DEFAULT_DATA_PATH}Sds.json
 echo "=> Sds IMPORTED" 
 

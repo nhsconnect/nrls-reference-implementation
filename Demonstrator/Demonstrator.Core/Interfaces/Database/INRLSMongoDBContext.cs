@@ -17,8 +17,6 @@ namespace Demonstrator.Core.Interfaces.Database
 
         IMongoCollection<CrisisPlan> CrisisPlans { get; }
 
-        IMongoCollection<Benefit> Benefits { get; }
-
         IMongoCollection<Sds> Sds { get; }
     }
 }

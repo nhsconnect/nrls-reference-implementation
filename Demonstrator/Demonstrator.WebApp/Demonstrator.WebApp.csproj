@@ -7,27 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <None Remove="AppSrc\core\helpers\converters\bool-filter.ts" />
     <None Remove="AppSrc\core\helpers\converters\date-format.ts" />
     <None Remove="AppSrc\core\helpers\converters\index - Copy.ts" />
     <None Remove="AppSrc\core\helpers\converters\index.ts" />
     <None Remove="AppSrc\core\helpers\converters\nhs-number.ts" />
     <None Remove="AppSrc\core\helpers\converters\string.ts" />
-    <None Remove="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
-    <None Remove="AppSrc\core\helpers\modals\benefit-modal.ts" />
-    <None Remove="AppSrc\core\helpers\modals\contact-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\d-content-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
-    <None Remove="AppSrc\core\helpers\modals\scenario-modal.ts" />
     <None Remove="AppSrc\core\helpers\pdfviewer\pdfviewer.ts" />
     <None Remove="AppSrc\core\helpers\popover.ts" />
     <None Remove="AppSrc\core\interfaces\IBase.ts" />
-    <None Remove="AppSrc\core\interfaces\IBenefitDialog.ts" />
-    <None Remove="AppSrc\core\interfaces\IBenefitMenu.ts" />
     <None Remove="AppSrc\core\interfaces\IBinary.ts" />
-    <None Remove="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <None Remove="AppSrc\core\interfaces\IConfigSvc.ts" />
     <None Remove="AppSrc\core\interfaces\IContentView.ts" />
     <None Remove="AppSrc\core\interfaces\IDemonstratorConfig.ts" />
@@ -62,13 +54,11 @@
     <None Remove="AppSrc\core\models\IPointer.ts" />
     <None Remove="AppSrc\core\models\MedicalRecord.ts" />
     <None Remove="AppSrc\core\services\AnalyticsService.ts" />
-    <None Remove="AppSrc\core\services\BenefitsService.ts" />
     <None Remove="AppSrc\core\services\ConfigService.ts" />
     <None Remove="AppSrc\core\services\CookieService.ts" />
     <None Remove="AppSrc\core\services\EprService.ts" />
     <None Remove="AppSrc\core\services\GenericSystemService.ts" />
     <None Remove="AppSrc\core\services\PatientService.ts" />
-    <None Remove="AppSrc\core\services\PersonnelService.ts" />
     <None Remove="AppSrc\core\services\PointerService.ts" />
     <None Remove="AppSrc\generic-systems\BaseGenericSystem.ts" />
     <None Remove="AppSrc\generic-systems\Base\Content\provider-action-complete-modal-content.ts" />
@@ -89,7 +79,7 @@
   <ItemGroup>
     <PackageReference Include="Hl7.Fhir.STU3" Version="0.94.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,13 +94,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="AppSrc\core\helpers\benefitsdialog\benefitsdialog.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\string.ts" />
-    <TypeScriptCompile Include="AppSrc\core\helpers\gridtabs\gridtabs.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\modals\d-content-modal.ts" />
-    <TypeScriptCompile Include="AppSrc\core\helpers\modals\contact-modal.ts" />
-    <TypeScriptCompile Include="AppSrc\core\helpers\modals\scenario-modal.ts" />
-    <TypeScriptCompile Include="AppSrc\core\helpers\modals\benefit-modal.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\pdfviewer\pdfviewer.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\popover.ts" />
     <TypeScriptCompile Include="AppSrc\core\includes.ts" />
@@ -125,9 +110,6 @@
     <TypeScriptCompile Include="AppSrc\core\interfaces\ISystemExplorer.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IDemonstratorConfig.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IContentView.ts" />
-    <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitMenu.ts" />
-    <TypeScriptCompile Include="AppSrc\core\interfaces\IBenefitDialog.ts" />
-    <TypeScriptCompile Include="AppSrc\core\interfaces\IBreadcrumb.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IBase.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\fhir\IBinary.ts" />
     <TypeScriptCompile Include="AppSrc\core\interfaces\IPointerDocument.ts" />
@@ -165,11 +147,9 @@
     <TypeScriptCompile Include="AppSrc\core\services\AnalyticsService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ConfigService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\GenericSystemService.ts" />
-    <TypeScriptCompile Include="AppSrc\core\services\BenefitsService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\EprService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PointerService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\PatientService.ts" />
-    <TypeScriptCompile Include="AppSrc\core\services\PersonnelService.ts" />
     <TypeScriptCompile Include="AppSrc\core\services\ActorOrganisationService.ts" />
     <TypeScriptCompile Include="AppSrc\core\WebApi.ts" />
     <TypeScriptCompile Include="AppSrc\generic-systems\BaseGenericSystem.ts" />
@@ -180,7 +160,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Documents\care-plan.tmpl">
+    <None Update="Documents\cancer-care-plan.tmpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Documents\mental-health-crisis-plan.tmpl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Documents\Parsers\html.js">

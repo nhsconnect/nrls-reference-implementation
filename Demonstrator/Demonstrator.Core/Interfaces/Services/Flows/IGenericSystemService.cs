@@ -8,8 +8,6 @@ namespace Demonstrator.Core.Interfaces.Services.Flows
     {
         Task<GenericSystemViewModel> GetById(string systemId);
 
-        Task<IEnumerable<GenericSystemViewModel>> GetByIdList(List<string> systemIds);
-
         Task<IEnumerable<GenericSystemViewModel>> GetAll();
     }
 }

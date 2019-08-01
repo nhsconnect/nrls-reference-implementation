@@ -25,8 +25,8 @@ export async function configure(aurelia: Aurelia) {
         .developmentLogging(debugLevel)
         .plugin('core/helpers/converters/index')
         .plugin('core/helpers/loaders/index')
-        .plugin('core/includes')
-        .plugin('aurelia-validation');
+        .plugin('core/includes');
+        //.plugin('aurelia-validation');
 
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');

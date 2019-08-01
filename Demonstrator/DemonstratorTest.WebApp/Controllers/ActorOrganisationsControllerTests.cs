@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,8 +43,6 @@ namespace DemonstratorTest.WebApp
             var actorOrganisationService = new Mock<IActorOrganisationService>();
             actorOrganisationService.Setup(x => x.GetById(It.Is<string>(y => y == "5a82f9ffcb969daa58d33377"))).Returns(Task.Run(() => model));
             actorOrganisationService.Setup(x => x.GetById(It.Is<string>(y => y == "5a82f9ffcb969daa58d33378"))).Returns(Task.Run(() => (ActorOrganisationViewModel)null));
-            actorOrganisationService.Setup(x => x.GetPersonnel(It.Is<string>(y => y == "5a82f9ffcb969daa58d33377"))).Returns(Task.Run(() => (IEnumerable<PersonnelViewModel>) new List<PersonnelViewModel>()));
-
             _actorOrganisationService = actorOrganisationService.Object;
         }
 
@@ -86,44 +83,6 @@ namespace DemonstratorTest.WebApp
             controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
 
             var response = await controller.GetOne("5a82f9ffcb969daa58d33378");
-
-            Assert.IsType<NotFoundObjectResult>(response);
-
-            var notFoundResult = response as NotFoundObjectResult;
-
-            Assert.Equal(404, notFoundResult.StatusCode);
-
-        }
-
-        [Fact]
-        public async void ValidPerson_ReturnsOk()
-        {
-            var controller = new ActorOrganisationsController(_actorOrganisationService);
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
-
-            var response = await controller.GetPersonnel("5a82f9ffcb969daa58d33377");
-
-            Assert.IsType<OkObjectResult>(response);
-
-            var okResult = response as OkObjectResult;
-
-            Assert.Equal(200, okResult.StatusCode);
-
-            var responseContent = okResult.Value;
-
-            Assert.IsType<List<PersonnelViewModel>>(responseContent);
-            var viewModel = responseContent as List<PersonnelViewModel>;
-        }
-
-        [Fact]
-        public async void ValidPerson_ReturnsNotFound()
-        {
-            var controller = new ActorOrganisationsController(_actorOrganisationService);
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.HttpContext = HttpContexts.Valid_Search;
-
-            var response = await controller.GetPersonnel("5a82f9ffcb969daa58d33378");
 
             Assert.IsType<NotFoundObjectResult>(response);
 

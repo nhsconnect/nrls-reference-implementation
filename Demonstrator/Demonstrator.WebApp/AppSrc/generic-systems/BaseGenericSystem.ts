@@ -2,15 +2,15 @@
 import { bindable, inject, observable } from 'aurelia-framework';
 import { IPatientNumber } from "../core/interfaces/IPatientNumber";
 import { IPatient } from '../core/interfaces/IPatient';
-import { ValidationControllerFactory, validateTrigger } from 'aurelia-validation';
+//import { ValidationControllerFactory, validateTrigger } from 'aurelia-validation';
 import { EprSvc } from '../core/services/EprService';
 import { AnalyticsSvc } from '../core/services/AnalyticsService';
 import { IPointerDocument } from '../core/interfaces/IPointerDocument';
 
-@inject(PatientSvc, EprSvc, ValidationControllerFactory, AnalyticsSvc)
+@inject(PatientSvc, EprSvc, AnalyticsSvc)
 export class BaseGenericSystem {
 
-    vdController: any;
+    //vdController: any;
 
     @observable
     protected patient?: IPatient;
@@ -31,9 +31,9 @@ export class BaseGenericSystem {
 
     systemMessage?: string = "Unknown";
 
-    constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private validationControllerFactory: ValidationControllerFactory, private analyticsSvc: AnalyticsSvc) {
-        this.vdController = validationControllerFactory.createForCurrentScope();
-        this.vdController.validateTrigger = validateTrigger.manual;
+    constructor(private patientSvc: PatientSvc, protected eprSvc: EprSvc, private analyticsSvc: AnalyticsSvc) {
+        //this.vdController = validationControllerFactory.createForCurrentScope();
+        //this.vdController.validateTrigger = validateTrigger.manual;
     }
 
     attached() {

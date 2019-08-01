@@ -41,7 +41,7 @@
     "ActionTypes": [
         "Consumer"
     ],
-    "IsActive": true,
+    "IsActive": false,
     "CreatedOn": {
         "$date": "2018-02-08T10:00:00.000Z"
     }
@@ -74,7 +74,7 @@
     "ActionTypes": [
         "Provider"
     ],
-    "IsActive": true,
+    "IsActive": false,
     "CreatedOn": {
         "$date": "2018-05-21T16:30:00.000Z"
     }

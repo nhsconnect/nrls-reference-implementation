@@ -15,7 +15,7 @@
       {
         "system": "http://snomed.info/sct",
         "code": "736253002",
-        "display": "Mental health crisis plan (record artifact)"
+        "display": "Mental health crisis plan"
       }
     ]
   },
@@ -35,8 +35,7 @@
     {
       "attachment": {
         "contentType": "application/pdf",
-        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/5d36202621cdead3e29f1f3e",
-        "title": "Mental Health Crisis Plan",
+        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/mhcp/5d36202621cdead3e29f1f3e",
         "creation": "2016-03-08T15:26:00+00:00"
       }
     }
@@ -59,7 +58,7 @@
       {
         "system": "http://snomed.info/sct",
         "code": "736253002",
-        "display": "Mental health crisis plan (record artifact)"
+        "display": "Mental health crisis plan"
       }
     ]
   },
@@ -79,8 +78,7 @@
     {
       "attachment": {
         "contentType": "application/pdf",
-        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/5ab13f41957d0ad5d93a1339",
-        "title": "Mental Health Crisis Plan",
+        "url": "http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary/mhcp/5ab13f41957d0ad5d93a1339",
         "creation": "2016-03-08T15:26:00+00:00"
       }
     }
@@ -103,7 +101,7 @@
       {
         "system": "http://snomed.info/sct",
         "code": "736252007",
-        "display": "Cancer care plan (record artifact)"
+        "display": "Cancer care plan"
       }
     ]
   },
@@ -123,8 +121,7 @@
     {
       "attachment": {
         "contentType": "text/html",
-        "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/5ab13f4a957d0ad5d93a133a",
-        "title": "Cancer Care Plan",
+        "url": "http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary/ccp/5ab13f4a957d0ad5d93a133a",
         "creation": "2011-07-19T11:27:16+00:00"
       }
     }
@@ -147,7 +144,7 @@
       {
         "system": "http://snomed.info/sct",
         "code": "736253002",
-        "display": "Mental health crisis plan (record artifact)"
+        "display": "Mental health crisis plan"
       }
     ]
   },
@@ -167,8 +164,7 @@
     {
       "attachment": {
         "contentType": "application/pdf",
-        "url": "http://localhost:55448/provider/00003X/fhir/STU3/careconnect/binary/5aba0f464f02ced4c7eb16c4",
-        "title": "Mental Health Crisis Plan",
+        "url": "http://localhost:55448/provider/00003X/fhir/STU3/careconnect/binary/mhcp/5aba0f464f02ced4c7eb16c4",
         "creation": "2011-06-21T11:45:16+00:00"
       }
     }

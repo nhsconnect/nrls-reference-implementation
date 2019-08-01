@@ -39,27 +39,29 @@ namespace Demonstrator.WebApp.Controllers
         /// <returns>A single file.</returns>
         /// <response code="200">Returns the file</response>
         [MiddlewareFilter(typeof(ProviderBinaryOutputMiddlewarePipeline))]
-        [HttpGet("{providerOdsCode:regex(^[[A-Za-z0-9]]+$)}/fhir/STU3/careconnect/binary/{documentId}")]
+        [HttpGet("{providerOdsCode:regex(^[[A-Za-z0-9]]+$)}/fhir/STU3/careconnect/binary/{documentType}/{documentId}")]
         //[ProducesResponseType(typeof(DocumentReference), 200)]
-        public async Task<IActionResult> Get([FromServices] INodeServices nodeServices, string documentId)
+        public async Task<IActionResult> Get([FromServices] INodeServices nodeServices, string documentId, string documentType)
         {
             //Not supporting 410 errors
             var regex = new Regex("^[A-Fa-f0-9-]{1,1024}$");
 
+            var documentTypeTemplate = GetDocumentType(documentType);
 
             //TODO: check pointers cache
-            if(string.IsNullOrWhiteSpace(documentId) || !regex.IsMatch(documentId))
+            if (documentTypeTemplate == null || string.IsNullOrWhiteSpace(documentId) || !regex.IsMatch(documentId))
             {
                 throw new HttpFhirException("Not Found", OperationOutcomeFactory.CreateNotFound(documentId), HttpStatusCode.NotFound);
                 //return NotFound(OperationOutcomeFactory.CreateNotFound(documentId));
             }
+
 
             //TODO: switch to other types
             var outputType = "application/pdf";
 
             var responseOutputType = GetOutputType();
 
-            var template = GetTemplate();
+            var template = GetTemplate(documentTypeTemplate);
             var model = JsonConvert.SerializeObject(new { documentId = documentId });
 
             var data = await nodeServices.InvokeAsync<byte[]>("./Documents/Parsers/pdf", template, model);
@@ -90,11 +92,29 @@ namespace Demonstrator.WebApp.Controllers
             return new FileContentResult(result, responseOutputType);
         }
 
-        private string GetTemplate()
+        private string GetDocumentType(string documentType)
+        {
+            if (string.IsNullOrWhiteSpace(documentType))
+            {
+                return null;
+            }
+
+            switch(documentType.ToUpperInvariant())
+            {
+                case "MHCP":
+                    return "mental-health-crisis-plan.tmpl";
+                case "CCP":
+                    return "cancer-care-plan.tmpl";
+                default:
+                    return null;
+            }
+        }
+
+        private string GetTemplate(string documentTypeTemplate)
         {
             var basePath = DirectoryHelper.GetBaseDirectory();
 
-            var filePath = Path.Combine(basePath, "Documents", "care-plan.tmpl");
+            var filePath = Path.Combine(basePath, "Documents", documentTypeTemplate);
 
             var template = System.IO.File.ReadAllText(filePath);
 

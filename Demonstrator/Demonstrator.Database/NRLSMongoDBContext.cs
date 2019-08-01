@@ -4,7 +4,6 @@ using Demonstrator.Models.DataModels.Flows;
 using Demonstrator.Models.DataModels.Epr;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using MongoDB.Bson;
 using Demonstrator.Models.DataModels.Base;
 
 namespace Demonstrator.Database
@@ -57,14 +56,6 @@ namespace Demonstrator.Database
             get
             {
                 return _database.GetCollection<CrisisPlan>("MedicalRecords");
-            }
-        }
-
-        public IMongoCollection<Benefit> Benefits
-        {
-            get
-            {
-                return _database.GetCollection<Benefit>("Benefits");
             }
         }
 

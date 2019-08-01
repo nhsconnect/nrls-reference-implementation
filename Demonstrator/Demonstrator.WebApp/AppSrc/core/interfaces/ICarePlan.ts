@@ -17,5 +17,5 @@ export interface ICarePlan extends IRecord {
     active?: boolean
     patientNhsNumber?: string;
 
-    crisisPlanRules: any;
+    //crisisPlanRules: any;
 }
