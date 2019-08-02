@@ -111,6 +111,8 @@ namespace Demonstrator.WebApp
                 ExceptionHandler = new FhirExceptionMiddleware(env, nrlsApiSettings).Invoke
             });
 
+            app.UseCors(builder => builder.WithOrigins(new[] { "*" }).WithMethods(new[] { "GET" }).AllowAnyHeader());
+
             var redirectOptions = new RewriteOptions()
                 .Add(PermanentRedirects.RedirectRequests);
 
