@@ -75,21 +75,23 @@
 
 
         //Interactions
-        public const string BaseInteractionId = "urn:nhs:names:services:nrls:fhir:rest:~interaction~:documentreference";
+        public const string BaseInteractionId = "urn:nhs:names:services:~service~:~resourceOrOperation~.~interaction~";
 
-        public static string ReadInteractionId => GenerateInteraction("read");
+        public static string ReadInteractionId => GenerateInteraction("read", "DocumentReferenceRead", "nrl");
 
-        public static string SearchInteractionId => GenerateInteraction("search");
+        public static string SearchInteractionId => GenerateInteraction("read", "DocumentReference", "nrl");
 
-        public static string CreateInteractionId => GenerateInteraction("create");
+        public static string CreateInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
 
-        public static string UpdateInteractionId => GenerateInteraction("update");
+        public static string UpdateInteractionId => GenerateInteraction("write", "DocumentReferencePatch", "nrl");
 
-        public static string DeleteInteractionId => GenerateInteraction("delete");
+        public static string DeleteInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
 
-        private static string GenerateInteraction(string interaction)
+        public static string ReadBinaryInteractionId => GenerateInteraction("read", "SspRetrieval", "nrl");
+
+        private static string GenerateInteraction(string interaction, string resource, string service, bool isFhirRest = true)
         {
-            return BaseInteractionId.Replace("~interaction~", interaction);
+            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resourceOrOperation~", resource).Replace("~service~", service);
         }
     }
 }

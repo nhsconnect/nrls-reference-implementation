@@ -6,7 +6,7 @@
   "Fqdn": "localhost:55448/consumer/AMS01/",
   "EndPoints": ["http://localhost:55448/consumer/AMS01/", "http://localhost:55443/consumer/AMS01/", "http://nrlsdemoapp:5000/consumer/AMS01/", "http://nrlsdemoapp:5443/consumer/AMS01/"],
   "OdsCode":"AMS01",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.read", "urn:nhs:names:services:nrl:DocumentReferenceRead.read", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000115",
   "Thumbprint": "",
   "Active": true
@@ -19,7 +19,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/consumer/AMS01/", "http://localhost:55443/consumer/AMS01/", "http://nrlsdemoapp:5000/consumer/AMS01/", "http://nrlsdemoapp:5443/consumer/AMS01/"],
   "OdsCode":"AMS01",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.read", "urn:nhs:names:services:nrl:DocumentReferenceRead.read", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000116",
   "Thumbprint": "",
   "Active": true
@@ -32,7 +32,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/consumer/AMS01/", "http://localhost:55443/consumer/AMS01/", "http://nrlsdemoapp:5000/consumer/AMS01/", "http://nrlsdemoapp:5443/consumer/AMS01/"],
   "OdsCode":"AMS01",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.read", "urn:nhs:names:services:nrl:DocumentReferenceRead.read", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000117",
   "Thumbprint": "",
   "Active": true
@@ -45,7 +45,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/provider/MHT01/fhir/STU3/careconnect/binary", "http://localhost:55443/provider/MHT01/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5000/provider/MHT01/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5443/provider/MHT01/fhir/STU3/careconnect/binary"],
   "OdsCode":"MHT01",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.write", "urn:nhs:names:services:nrl:DocumentReferencePatch.write", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000118",
   "Thumbprint": "",
   "Active": true
@@ -58,7 +58,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/consumer/AMS01/", "http://localhost:55443/consumer/AMS01/", "http://nrlsdemoapp:5000/consumer/AMS01/", "http://nrlsdemoapp:5443/consumer/AMS01/"],
   "OdsCode":"AMS01",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:read:documentreference", "urn:nhs:names:services:nrls:fhir:rest:search:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.read", "urn:nhs:names:services:nrl:DocumentReferenceRead.read", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000119",
   "Thumbprint": "",
   "Active": true
@@ -71,7 +71,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/provider/00003X/fhir/STU3/careconnect/binary", "http://localhost:55443/provider/00003X/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5000/provider/00003X/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5443/provider/00003X/fhir/STU3/careconnect/binary"],
   "OdsCode":"00003X",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.write", "urn:nhs:names:services:nrl:DocumentReferencePatch.write", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000120",
   "Thumbprint": "",
   "Active": true
@@ -84,7 +84,7 @@
   "Fqdn": "localhost:55448",
   "EndPoints": ["http://localhost:55448/provider/1XR/fhir/STU3/careconnect/binary", "http://localhost:55443/provider/1XR/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5000/provider/1XR/fhir/STU3/careconnect/binary", "http://nrlsdemoapp:5443/provider/1XR/fhir/STU3/careconnect/binary"],
   "OdsCode":"1XR",
-  "Interactions": ["urn:nhs:names:services:nrls:fhir:rest:create:documentreference", "urn:nhs:names:services:nrls:fhir:rest:update:documentreference", "urn:nhs:names:services:nrls:fhir:rest:delete:documentreference", "urn:nhs:names:services:nrls:fhir:rest:read:binary"],
+  "Interactions": ["urn:nhs:names:services:nrl:DocumentReference.write", "urn:nhs:names:services:nrl:DocumentReferencePatch.write", "urn:nhs:names:services:nrl:SspRetrieval.read"],
   "Asid":"200000000121",
   "Thumbprint": "",
   "Active": true

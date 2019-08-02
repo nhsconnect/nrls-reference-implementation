@@ -64,23 +64,23 @@
 
 
         //Interactions
-        public const string BaseInteractionId = "urn:nhs:names:services:~service~:fhir:rest:~interaction~:~resource~";
+        public const string BaseInteractionId = "urn:nhs:names:services:~service~:~resourceOrOperation~.~interaction~";
 
-        public static string ReadInteractionId => GenerateInteraction("read", "documentreference", "nrls");
+        public static string ReadInteractionId => GenerateInteraction("read", "DocumentReferenceRead", "nrl");
 
-        public static string SearchInteractionId => GenerateInteraction("search", "documentreference", "nrls");
+        public static string SearchInteractionId => GenerateInteraction("read", "DocumentReference", "nrl");
 
-        public static string CreateInteractionId => GenerateInteraction("create", "documentreference", "nrls");
+        public static string CreateInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
 
-        public static string UpdateInteractionId => GenerateInteraction("update", "documentreference", "nrls");
+        public static string UpdateInteractionId => GenerateInteraction("write", "DocumentReferencePatch", "nrl");
 
-        public static string DeleteInteractionId => GenerateInteraction("delete", "documentreference", "nrls");
+        public static string DeleteInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
 
-        public static string ReadBinaryInteractionId => GenerateInteraction("read", "binary", "nrls");
+        public static string ReadBinaryInteractionId => GenerateInteraction("read", "SspRetrieval", "nrl");
 
-        private static string GenerateInteraction(string interaction, string resource, string service)
-        {
-            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resource~", resource).Replace("~service~", service);
+        private static string GenerateInteraction(string interaction, string resource, string service, bool isFhirRest = true)
+        { 
+            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resourceOrOperation~", resource).Replace("~service~", service);
         }
     }
 }

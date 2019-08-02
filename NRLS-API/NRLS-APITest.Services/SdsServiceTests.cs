@@ -31,7 +31,7 @@ namespace NRLS_APITest.Services
                     Id = "5cb5fd22c892d7e5f291190a",
                     Asid = "000",
                     OdsCode = "TestOrgCode",
-                    Interactions = new List<string> { "urn:nhs:names:services:nrls:fhir:rest:read:documentreference" },
+                    Interactions = new List<string> { "urn:nhs:names:services:nrl:DocumentReferenceRead.read" },
                     Thumbprint = "TestThumbprint",
                     Active = true,
                     Fqdn = "fqdn.com",
@@ -142,7 +142,7 @@ namespace NRLS_APITest.Services
         {
             var service = new SdsService(_nrlsMongoDBCaller, _cache);
 
-            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrls:fhir:rest:read:documentreference");
+            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrl:DocumentReferenceRead.read");
 
             Assert.NotNull(result);
 

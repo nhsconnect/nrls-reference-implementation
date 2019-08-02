@@ -87,21 +87,19 @@ namespace NRLS_APITest.Services
             var bundle = FhirBundle.GetBundle(organisations);
             var baseService = new FhirBaseStub(_nrlsApiSettings);
 
-            var actual = baseService.ParseReadStub(bundle, "testid");
-
-            Assert.Equal(ResourceType.OperationOutcome, actual.ResourceType);
+            Assert.Throws<HttpFhirException>(() => {
+                var actual = baseService.ParseReadStub(bundle, "testid");
+            });
         }
 
         [Fact]
         public void ParseRead_ExpectOperationOutcomeWhenNull()
         {
-
-
             var baseService = new FhirBaseStub(_nrlsApiSettings);
 
-            var actual = baseService.ParseReadStub<Bundle>(null, "testid");
-
-            Assert.Equal(ResourceType.OperationOutcome, actual.ResourceType);
+            Assert.Throws<HttpFhirException>(() => {
+                var actual = baseService.ParseReadStub<Bundle>(null, "testid");
+            });
         }
 
         [Fact]
