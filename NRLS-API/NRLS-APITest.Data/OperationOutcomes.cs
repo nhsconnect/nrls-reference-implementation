@@ -122,6 +122,44 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static OperationOutcome Updated
+        {
+            get
+            {
+                return new OperationOutcome()
+                {
+                    //Meta = new Meta
+                    //{
+                    //    Profile = new List<string> {
+                    //        "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1-0"
+                    //    }
+                    //},
+                    Issue = new List<OperationOutcome.IssueComponent>
+                    {
+                        new OperationOutcome.IssueComponent
+                        {
+                            Code = OperationOutcome.IssueType.Informational,
+                            Severity = OperationOutcome.IssueSeverity.Information,
+                            Diagnostics = "Successfully updated resource DocumentReference: https://testdomain/testurl",
+                            Details = new CodeableConcept
+                            {
+                                Coding = new List<Coding>
+                                {
+                                    new Coding
+                                    {
+                                        System = "https://fhir.nhs.uk/STU3/ValueSet/spine-response-code-2-0",
+                                        Code = "RESOURCE_UPDATED",
+                                        Display = "Resource updated"
+                                    }
+                                },
+                                Text = "91370360-d667-4bc8-bebe-f223560ff90e"
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
         public static OperationOutcome NotFound
         {
             get

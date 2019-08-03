@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
+using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
 using NRLS_API.WebApp.Controllers;
@@ -9,6 +10,7 @@ using NRLS_APITest.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Xunit;
 
 namespace NRLS_APITest.WebApp.Controllers
@@ -38,6 +40,11 @@ namespace NRLS_APITest.WebApp.Controllers
             maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "fromASID"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Deleted));
             maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "badrequest"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Invalid));
             maintMock.Setup(x => x.Delete(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.NotFound));
+
+            maintMock.Setup(x => x.Patch(It.Is<FhirRequest>(y => y.RequestingAsid == "fromASID"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Updated));
+            maintMock.Setup(x => x.Patch(It.Is<FhirRequest>(y => y.RequestingAsid == "badrequest"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.Invalid));
+            maintMock.Setup(x => x.Patch(It.Is<FhirRequest>(y => y.RequestingAsid == "badquery"))).Throws(new HttpFhirException("Invalid", OperationOutcomes.Invalid, HttpStatusCode.BadRequest));
+            maintMock.Setup(x => x.Patch(It.Is<FhirRequest>(y => y.RequestingAsid == "notfound"))).Returns(System.Threading.Tasks.Task.FromResult(OperationOutcomes.NotFound));
 
             _nrlsSettings = nrlsSettingsMock.Object;
             _nrlsSearch = searchMock.Object;
@@ -229,6 +236,107 @@ namespace NRLS_APITest.WebApp.Controllers
 
             Assert.NotNull(operationOutcome.Issue.FirstOrDefault(x => x.Details.Coding.FirstOrDefault(y => y.Code == "NO_RECORD_FOUND") != null));
 
+        }
+
+
+        [Fact]
+        public async void UpdateStatus_Valid()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Valid_Update_Pointer;
+
+            var response = await controller.Patch(new Parameters(), "logicalId");
+
+            Assert.IsType<OkObjectResult>(response);
+
+            var okResult = response as OkObjectResult;
+
+            Assert.Equal(200, okResult.StatusCode);
+
+            var responseContent = okResult.Value;
+
+            Assert.IsType<OperationOutcome>(responseContent);
+            var operationOutcome = responseContent as OperationOutcome;
+
+            Assert.True(operationOutcome.Success);
+
+        }
+
+        [Fact]
+        public async void UpdateStatus_Invalid()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Invalid_Delete_Pointer_BadRequest;
+
+            var response = await controller.Patch(new Parameters());
+
+            Assert.IsType<BadRequestObjectResult>(response);
+
+            var badResult = response as BadRequestObjectResult;
+
+            Assert.Equal(400, badResult.StatusCode);
+
+            var responseContent = badResult.Value;
+
+            Assert.IsType<OperationOutcome>(responseContent);
+            var operationOutcome = responseContent as OperationOutcome;
+
+            Assert.False(operationOutcome.Success);
+
+            Assert.NotNull(operationOutcome.Issue.FirstOrDefault(x => x.Details.Coding.FirstOrDefault(y => y.Code == "INVALID_RESOURCE") != null));
+
+        }
+
+        [Fact]
+        public async void UpdateStatus_NotFound()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.Invalid_Delete_Pointer_NotFound;
+
+            var response = await controller.Patch(new Parameters());
+
+            Assert.IsType<NotFoundObjectResult>(response);
+
+            var notfoundResult = response as NotFoundObjectResult;
+
+            Assert.Equal(404, notfoundResult.StatusCode);
+
+            var responseContent = notfoundResult.Value;
+
+            Assert.IsType<OperationOutcome>(responseContent);
+            var operationOutcome = responseContent as OperationOutcome;
+
+            Assert.False(operationOutcome.Success);
+
+            Assert.NotNull(operationOutcome.Issue.FirstOrDefault(x => x.Details.Coding.FirstOrDefault(y => y.Code == "NO_RECORD_FOUND") != null));
+
+        }
+
+        [Fact]
+        public void UpdateStatus_BadBodyOrQuery()
+        {
+
+            var controller = new NrlsController(_nrlsSettings, _nrlsSearch, _nrlsMaintain);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = HttpContexts.InvalidQuery_Update_Pointer;
+
+            var response = controller.Patch(new Parameters());
+
+            Assert.True(response.IsFaulted);
+
+            Assert.NotNull(response.Exception);
+
+            Assert.NotNull(response.Exception.InnerException);
+
+            Assert.Equal(typeof(HttpFhirException), response.Exception.InnerException.GetType());
+
+            Assert.NotNull((response.Exception.InnerException as HttpFhirException).OperationOutcome);
         }
 
     }

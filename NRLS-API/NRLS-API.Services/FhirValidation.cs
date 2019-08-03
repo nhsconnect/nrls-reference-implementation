@@ -35,6 +35,14 @@ namespace NRLS_API.Services
             //Below checks cover what profile checker can't check
 
 
+            //profile check
+            var profiles = pointer.Meta?.Profile;
+
+            if (profiles == null || profiles.Count() != 1 || profiles.FirstOrDefault(x => x == FhirConstants.SystemNrlsProfile) == null)
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("meta.Profile", $"There must be a single profile of the value {FhirConstants.SystemNrlsProfile}");
+            }
+
             //master identifier
             if (pointer.MasterIdentifier != null)
             {

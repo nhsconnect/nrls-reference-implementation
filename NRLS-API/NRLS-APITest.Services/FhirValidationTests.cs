@@ -208,6 +208,45 @@ namespace NRLS_APITest.Services
             Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
         }
 
+        [Fact]
+        public void ValidPointer_Invalid_NoProfile()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.NoProfile;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_BadProfile()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.BadProfile;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
+        [Fact]
+        public void ValidPointer_Invalid_TooManyProfiles()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+            var pointer = NrlsPointers.TooManyProfiles;
+
+            var validPoiner = validationService.ValidPointer(pointer);
+
+            var notexpected = OperationOutcomes.Ok;
+
+            Assert.NotEqual(notexpected, validPoiner, Comparers.ModelComparer<OperationOutcome>());
+        }
+
 
         //[Fact]
         //public void ValidatePatientReference_Valid()
@@ -520,6 +559,442 @@ namespace NRLS_APITest.Services
 
             Assert.Null(actual);
 
+        }
+
+
+        [Fact]
+        public void ValidateParameters_Valid()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.True(actual.Success);
+
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_Empty()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters();
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter", actual.Issue.First().Diagnostics);
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_MultipleParameters()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    },
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.True(actual.Success);
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_BadName()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "badOperation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.name", actual.Issue.First().Diagnostics);
+
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_No_Parts()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation"
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            //Type check is hit first in parts section so this error will be thrown
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.type", actual.Issue.First().Diagnostics);
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_BadType()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replacer")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.type", actual.Issue.First().Diagnostics);
+
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_NoType()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.type", actual.Issue.First().Diagnostics);
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_BadPath()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.created")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.path", actual.Issue.First().Diagnostics);
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_NoPath()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("entered-in-error")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.path", actual.Issue.First().Diagnostics);
+
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_BadValue()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "value",
+                                Value = new FhirString("current")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.value", actual.Issue.First().Diagnostics);
+
+        }
+
+        [Fact]
+        public void ValidateParameters_Invalid_NoValue()
+        {
+            var validationService = new FhirValidation(_iValidationHelper);
+
+            var parameters = new Parameters
+            {
+                Parameter = new List<Parameters.ParameterComponent>
+                {
+                    new Parameters.ParameterComponent
+                    {
+                        Name = "operation",
+                        Part = new List<Parameters.ParameterComponent>
+                        {
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "type",
+                                Value = new Code("replace")
+                            },
+                            new Parameters.ParameterComponent
+                            {
+                                Name = "path",
+                                Value = new FhirString("DocumentReference.status")
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = validationService.ValidateParameters(parameters);
+
+            Assert.IsType<OperationOutcome>(actual);
+            Assert.False(actual.Success);
+
+            Assert.Single(actual.Issue);
+            Assert.Equal("Resource is invalid : parameter.part.value", actual.Issue.First().Diagnostics);
         }
 
     }

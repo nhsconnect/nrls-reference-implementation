@@ -251,6 +251,59 @@ namespace NRLS_APITest.Services
         }
 
         [Fact]
+        public void BuildEnteredInError_Valid()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+
+            service.BuildEnteredInError("1", out updates);
+
+            Assert.NotNull(updates);
+
+            var bson = updates.Render(BsonSerializer.LookupSerializer<BsonDocument>(), BsonSerializer.SerializerRegistry);
+
+            BsonDocument updateElements = bson.Elements.FirstOrDefault().Value.ToBsonDocument();
+
+            Assert.Equal("2", updateElements.Elements.FirstOrDefault(x => x.Name == "meta.versionId").Value.AsString);
+            Assert.Equal("entered-in-error", updateElements.Elements.FirstOrDefault(x => x.Name == "status").Value.AsString);
+            Assert.NotNull(updateElements.Elements.FirstOrDefault(x => x.Name == "meta.lastUpdated").Value.AsString);
+        }
+
+
+        [Fact]
+        public void BuildEnteredInError_ValidVersionNull()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
+
+            UpdateDefinition<BsonDocument> updates = null;
+
+            service.BuildEnteredInError(null, out updates);
+
+            Assert.NotNull(updates);
+
+            var bson = updates.Render(BsonSerializer.LookupSerializer<BsonDocument>(), BsonSerializer.SerializerRegistry);
+
+            BsonDocument updateElements = bson.Elements.FirstOrDefault().Value.ToBsonDocument();
+
+            Assert.Equal("1", updateElements.Elements.FirstOrDefault(x => x.Name == "meta.versionId").Value.AsString);
+        }
+
+        [Fact]
+        public void BuildEnteredInError_InvalidVersion()
+        {
+            var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);
+
+            Assert.Throws<HttpFhirException>(delegate
+            {
+                UpdateDefinition<BsonDocument> updates = null;
+
+                service.BuildEnteredInError("bad-number", out updates);
+
+            });
+        }
+
+        [Fact]
         public async void Create_Valid()
         {
             var service = new NrlsMaintain(_nrlsApiSettings, _fhirMaintain, _fhirSearch, _sdsService, _fhirValidation);

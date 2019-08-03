@@ -14,6 +14,10 @@ namespace NRLS_APITest.Data
                 return new DocumentReference
                 {
                     Id = "5ab13f41957d0ad5d93a1339",
+                    Meta = new Meta
+                    {
+                        Profile = new List<string> { "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1" }
+                    },
                     Status = DocumentReferenceStatus.Current,
                     Type = new CodeableConcept
                     {
@@ -352,6 +356,39 @@ namespace NRLS_APITest.Data
                         }
                     }
                 };
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference NoProfile
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Meta.Profile = new List<string>();
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference BadProfile
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Meta.Profile = new List<string> { "profile-a" };
+
+                return pointer;
+            }
+        }
+
+        public static DocumentReference TooManyProfiles
+        {
+            get
+            {
+                var pointer = Valid;
+                pointer.Meta.Profile = new List<string> { "profile-a", "profile-b" };
 
                 return pointer;
             }

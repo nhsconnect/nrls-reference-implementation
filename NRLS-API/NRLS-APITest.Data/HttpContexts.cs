@@ -155,5 +155,37 @@ namespace NRLS_APITest.Data
                 return context;
             }
         }
+
+        public static HttpContext Valid_Update_Pointer
+        {
+            get
+            {
+                var context = new DefaultHttpContext();
+                context.Request.Scheme = "http";
+                context.Request.Host = new HostString("www.testhost.com");
+                context.Request.Path = new PathString("/testpath");
+                context.Request.Method = HttpMethods.Delete;
+                context.Request.Headers["fromASID"] = "fromASID";
+                context.Request.Headers["toASID"] = "toASID";
+
+                return context;
+            }
+        }
+
+        public static HttpContext InvalidQuery_Update_Pointer
+        {
+            get
+            {
+                var context = new DefaultHttpContext();
+                context.Request.Scheme = "http";
+                context.Request.Host = new HostString("www.testhost.com");
+                context.Request.Path = new PathString("/testpath");
+                context.Request.Method = HttpMethods.Delete;
+                context.Request.Headers["fromASID"] = "badquery";
+                context.Request.Headers["toASID"] = "toASID";
+
+                return context;
+            }
+        }
     }
 }
