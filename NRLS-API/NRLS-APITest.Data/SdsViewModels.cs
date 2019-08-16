@@ -30,7 +30,7 @@ namespace NRLS_APITest.Data
                 {
                     Asid = "000",
                     OdsCode = "TestOrgCode",
-                    Interactions = new List<string> { FhirConstants.ReadInteractionId },
+                    Interactions = new List<string> { FhirConstants.ReadInteractionId, FhirConstants.SearchInteractionId },
                     Thumbprint = "TestThumbprint",
                     Id = "5cb5fd22c892d7e5f291190a"
                 };
@@ -129,6 +129,21 @@ namespace NRLS_APITest.Data
                     Asid = "20000000017",
                     OdsCode = "ORG1",
                     Interactions = new List<string>(),
+                    Thumbprint = "TestThumbprint",
+                    Id = "5cb5fdd5c892d7e5f291190d"
+                };
+            }
+        }
+
+        public static SdsViewModel SdsAsid20000000018
+        {
+            get
+            {
+                return new SdsViewModel
+                {
+                    Asid = "20000000018",
+                    OdsCode = "ORG1",
+                    Interactions = new List<string> { FhirConstants.UpdateInteractionId },
                     Thumbprint = "TestThumbprint",
                     Id = "5cb5fdd5c892d7e5f291190d"
                 };

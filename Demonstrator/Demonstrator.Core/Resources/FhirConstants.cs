@@ -27,7 +27,7 @@
         //public const string SystemPointerType = "https://fhir.nhs.uk/STU3/ValueSet/CarePlanType-1";
         public const string SystemPointerType = "http://snomed.info/sct";
 
-
+  
         //ValueSets
         public const string VsRecordType = "https://fhir.nhs.uk/STU3/ValueSet/NRLS-RecordType-1";
 
@@ -41,7 +41,7 @@
 
         public const string HeaderFSspVersion = "Ssp-Version";
 
-        public const string HeaderSspTradeId = "Ssp-TraceID";
+        public const string HeaderSspTraceId = "Ssp-TraceID";
 
         public const string HeaderSspTo = "Ssp-To";
 
@@ -73,21 +73,23 @@
 
 
         //Interactions
-        public const string BaseInteractionId = "urn:nhs:names:services:nrls:fhir:rest:~interaction~:documentreference";
+        public const string BaseInteractionId = "urn:nhs:names:services:nrl:~resourceOrOperation~.~interaction~";
 
-        public static string ReadInteractionId => GenerateInteraction("read");
+        public static string ReadInteractionId => GenerateInteraction("read", "DocumentReference");
 
-        public static string SearchInteractionId => GenerateInteraction("search");
+        public static string SearchInteractionId => GenerateInteraction("search", "DocumentReference");
 
-        public static string CreateInteractionId => GenerateInteraction("create");
+        public static string CreateInteractionId => GenerateInteraction("create", "DocumentReference");
 
-        public static string UpdateInteractionId => GenerateInteraction("update");
+        public static string UpdateInteractionId => GenerateInteraction("update", "DocumentReference");
 
-        public static string DeleteInteractionId => GenerateInteraction("delete");
+        public static string DeleteInteractionId => GenerateInteraction("delete", "DocumentReference");
 
-        private static string GenerateInteraction(string interaction)
+        public static string ReadBinaryInteractionId => GenerateInteraction("read", "DocumentReference.content");
+
+        private static string GenerateInteraction(string interaction, string resource)
         {
-            return BaseInteractionId.Replace("~interaction~", interaction);
+            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resourceOrOperation~", resource);
         }
     }
 }

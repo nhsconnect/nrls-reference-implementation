@@ -9,6 +9,7 @@ using Hl7.Fhir.Model;
 using System.Collections.Generic;
 using System.Linq;
 using SystemTasks = System.Threading.Tasks;
+using Demonstrator.Core.Resources;
 
 namespace Demonstrator.Services.Service.Epr
 {
@@ -29,7 +30,7 @@ namespace Demonstrator.Services.Service.Epr
             var patientNumbers = new List<PatientNumberViewModel>();
 
             patients.ForEach(p => {
-                var nhsNumber = p.Identifier.FirstOrDefault(i => i.System.Equals(FhirConstants.IdsNhsNumber));
+                var nhsNumber = p.Identifier.FirstOrDefault(i => i.System.Equals(FhirConstants.SystemNhsNumber));
 
                 var patientNumber = new PatientNumberViewModel
                 {
@@ -55,10 +56,10 @@ namespace Demonstrator.Services.Service.Epr
 
             if(patient != null)
             {
-                patientViewModel = patient.ToViewModel(FhirConstants.IdsNhsNumber);
+                patientViewModel = patient.ToViewModel(FhirConstants.SystemNhsNumber);
 
                 var gpPractice = organisations.FirstOrDefault(s => !string.IsNullOrWhiteSpace(s.Id) && s.Id == patientViewModel.ManagingOrganization?.Id);
-                patientViewModel.GpPractice = gpPractice?.ToViewModel(FhirConstants.IdsOrgCode);
+                patientViewModel.GpPractice = gpPractice?.ToViewModel(FhirConstants.SystemOrgCode);
             }
 
             return patientViewModel;

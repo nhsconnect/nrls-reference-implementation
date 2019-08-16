@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
-using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
 using NRLS_API.Models.Core;
 using System;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using SystemTasks = System.Threading.Tasks;
 
 namespace NRLS_API.WebApp.Core.Middlewares
@@ -49,7 +49,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             var authorization = GetHeaderValue(headers, HeaderNames.Authorization);
             var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
-            var jwtResponse = _nrlsValidation.ValidJwt(scope, authorization);
+            var jwtResponse = _nrlsValidation.ValidJwt(new Tuple<JwtScopes, string>(scope, "DocumentReference"), authorization);
             if (string.IsNullOrEmpty(authorization) || !jwtResponse.Success)
             {
                 SetJwtError(HeaderNames.Authorization, jwtResponse.Message);
@@ -67,6 +67,12 @@ namespace NRLS_API.WebApp.Core.Middlewares
             if (string.IsNullOrEmpty(toASID) || toASID != _spineSettings.Asid)
             {
                 SetError(FhirConstants.HeaderToAsid, null);
+            }
+
+            var interactionId = GetInteractionId(method, request.Path.Value);
+            if(string.IsNullOrEmpty(interactionId) || !clientCache.Interactions.Contains(interactionId))
+            {
+                throw new HttpFhirException("Client interaction request invalid", OperationOutcomeFactory.CreateAccessDenied(), HttpStatusCode.Forbidden);
             }
 
             //We've Passed! Continue to App...
@@ -90,6 +96,38 @@ namespace NRLS_API.WebApp.Core.Middlewares
             }
 
             return headerValue;
+        }
+
+        private string GetInteractionId(string method, string url)
+        {
+            if(method == HttpMethods.Get)
+            {
+                if(new Regex(@"\/DocumentReference\/([A-Fa-f0-9]{1,1024}$)").IsMatch(url))
+                {
+                    return FhirConstants.ReadInteractionId;
+                }
+                else if(url.EndsWith("/DocumentReference"))
+                {
+                    return FhirConstants.SearchInteractionId;
+                }
+            }
+
+            if(method == HttpMethods.Post)
+            {
+                return FhirConstants.CreateInteractionId;
+            }
+
+            if (method == HttpMethods.Patch)
+            {
+                return FhirConstants.UpdateInteractionId;
+            }
+
+            if (method == HttpMethods.Delete)
+            {
+                return FhirConstants.DeleteInteractionId;
+            }
+
+            return null;
         }
 
         private void SetError(string header, string diagnostics)

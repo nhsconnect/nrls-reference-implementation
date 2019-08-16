@@ -2,6 +2,7 @@
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Models.Core;
+using System;
 
 namespace NRLS_API.Services
 {
@@ -14,9 +15,9 @@ namespace NRLS_API.Services
             _jwtHelper = jwtHelper;
         }
 
-        public Response ValidJwt(JwtScopes scope, string jwt)
+        public Response ValidJwt(Tuple<JwtScopes, string> reqScope, string jwt)
         {
-            return _jwtHelper.IsValid(jwt, scope);
+            return _jwtHelper.IsValid(jwt, reqScope);
         }
     }
 }

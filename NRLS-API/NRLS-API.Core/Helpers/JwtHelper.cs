@@ -1,13 +1,10 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using NRLS_API.Core.Resources;
 using System.Linq;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using NRLS_API.Models.Core;
-using Microsoft.Extensions.Caching.Memory;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Interfaces.Helpers;
 using NRLS_API.Core.Interfaces.Services;
@@ -27,7 +24,7 @@ namespace NRLS_API.Core.Helpers
             _sdsService = sdsService;
         }
 
-        public Response IsValid(string jwt, JwtScopes reqScope, DateTime? tokenIssued = null)
+        public Response IsValid(string jwt, Tuple<JwtScopes, string> reqScope, DateTime? tokenIssued = null)
         {
             var now = tokenIssued ?? DateTime.UtcNow;
 
@@ -225,7 +222,7 @@ namespace NRLS_API.Core.Helpers
 
             // ### scope
             var scope = claims.FirstOrDefault(x => x.Key.Equals(FhirConstants.JwtScope));
-            var expScope = $"patient/DocumentReference.{reqScope.ToString().ToLowerInvariant()}";
+            var expScope = $"patient/{reqScope.Item2}.{reqScope.Item1.ToString().ToLowerInvariant()}";
 
             if (string.IsNullOrWhiteSpace(scope.Value))
             {
@@ -234,7 +231,7 @@ namespace NRLS_API.Core.Helpers
             else if (scope.Value != expScope) // || !_validScopes.Contains(scope.Value)
             {
                 //currently 
-                return new Response($"scope ({scope.Value}) must match either 'patient/DocumentReference.read' or 'patient/DocumentReference.write'");
+                return new Response($"scope ({scope.Value}) must match '{expScope}'");
             }
 
 
@@ -249,18 +246,18 @@ namespace NRLS_API.Core.Helpers
 
             if (!reqOrg.Value.StartsWith(FhirConstants.SystemOrgCode) || string.IsNullOrWhiteSpace(orgCode))
             {
-                return new Response($"requesting_organisation ({reqOrg.Value}) must be of the form [{FhirConstants.SystemOrgCode}|[ODSCode]");
+                return new Response($"requesting_organization ({reqOrg.Value}) must be of the form [{FhirConstants.SystemOrgCode}|[ODSCode]");
             }
 
             if (_sdsService.GetFor(orgCode, null) == null)
             {
-                return new Response($"The ODS code defined in the requesting_organisation({orgCode}) is unknown");
+                return new Response($"The ODS code defined in the requesting_organization ({orgCode}) is unknown");
             }
 
             // ### requesting_organization against requesting_system checks
             if (fromAsidMap.OdsCode != orgCode)
             {
-                return new Response($"requesting_system ASID ({fromAsid}) is not associated with the requesting_organisation ODS code ({orgCode})");
+                return new Response($"requesting_system ASID ({fromAsid}) is not associated with the requesting_organization ODS code ({orgCode})");
             }
 
 

@@ -11,6 +11,7 @@ using Demonstrator.NRLSAdapter.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Net.Http.Headers;
+using Demonstrator.Core.Resources;
 
 namespace Demonstrator.NRLSAdapter.Organisations
 {
@@ -62,7 +63,7 @@ namespace Demonstrator.NRLSAdapter.Organisations
         private SearchParams GetParams(string orgCode)
         {
             var searchParams = new SearchParams();
-            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.IdsOrgCode)}|{orgCode}");
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemOrgCode)}|{orgCode}");
 
             return searchParams;
         }

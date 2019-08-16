@@ -6,6 +6,7 @@ using NRLS_API.Core.Exceptions;
 using NRLS_API.Core.Factories;
 using NRLS_API.Core.Interfaces.Services;
 using NRLS_API.Core.Resources;
+using System;
 using System.Linq;
 using System.Net;
 using SystemTasks = System.Threading.Tasks;
@@ -36,8 +37,8 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             // -> JWT
             var authorization = GetHeaderValue(headers, HeaderNames.Authorization);
-            var scope = method == HttpMethods.Get ? JwtScopes.Read : JwtScopes.Write;
-            var jwtResponse = _nrlsValidation.ValidJwt(scope, authorization);
+
+            var jwtResponse = _nrlsValidation.ValidJwt(new Tuple<JwtScopes, string>(JwtScopes.Read, "*"), authorization);
             if (string.IsNullOrEmpty(authorization) || !jwtResponse.Success)
             {
                 SetJwtError(HeaderNames.Authorization, jwtResponse.Message);

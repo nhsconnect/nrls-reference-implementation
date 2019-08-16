@@ -1,5 +1,6 @@
 using Demonstrator.Core.Exceptions;
 using Demonstrator.Core.Interfaces.Helpers;
+using Demonstrator.Core.Resources;
 using Demonstrator.NRLSAdapter.Helpers;
 using Demonstrator.NRLSAdapter.Models;
 using DemonstratorTest.Data;

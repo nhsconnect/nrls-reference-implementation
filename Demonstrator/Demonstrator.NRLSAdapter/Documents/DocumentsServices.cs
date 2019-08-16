@@ -2,23 +2,16 @@
 using Demonstrator.Core.Factories;
 using Demonstrator.Core.Interfaces.Services;
 using Demonstrator.Core.Interfaces.Services.Fhir;
+using Demonstrator.Core.Resources;
 using Demonstrator.Models.Core.Models;
-using Demonstrator.Models.Nrls;
-using Demonstrator.Models.ViewModels.Base;
 using Demonstrator.NRLSAdapter.Helpers;
-using Demonstrator.NRLSAdapter.Helpers.Models;
 using Demonstrator.NRLSAdapter.Models;
 using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
-using Hl7.Fhir.Serialization;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using SystemTasks = System.Threading.Tasks;
 
 namespace Demonstrator.NRLSAdapter.DocumentReferences
@@ -83,7 +76,7 @@ namespace Demonstrator.NRLSAdapter.DocumentReferences
                 RegenerateUrl = false
             };
 
-            var jwt = JwtFactory.Generate(JwtScopes.Read, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase);
+            var jwt = JwtFactory.Generate(JwtScopes.Read, jwtOrgCode, "fakeRoleId", asid, command.FullUrl.AbsoluteUri, SystemUrlBase, "*");
 
             command.Headers.Add(HeaderNames.Authorization, $"Bearer {jwt}");
             command.Headers.Add(FhirConstants.HeaderSspFrom, consumer?.Asid); // GET consumer ASID

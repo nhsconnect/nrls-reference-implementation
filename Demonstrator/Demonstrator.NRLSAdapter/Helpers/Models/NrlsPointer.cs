@@ -1,4 +1,5 @@
-﻿using Hl7.Fhir.Model;
+﻿using Demonstrator.Core.Resources;
+using Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
 
@@ -37,7 +38,7 @@ namespace Demonstrator.NRLSAdapter.Helpers.Models
                 Type = new CodeableConcept() {
                     Coding = new List<Coding>()
                     {
-                        new Coding(FhirConstants.CodingSystemPointerType, typeCode, typeDisplay)
+                        new Coding(FhirConstants.SystemPointerType, typeCode, typeDisplay)
                     }
                 },
                 Content = new List<DocumentReference.ContentComponent>()

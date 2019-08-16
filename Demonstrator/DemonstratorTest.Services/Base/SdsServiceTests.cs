@@ -140,7 +140,7 @@ namespace DemonstratorTest.Services.Base
         {
             var service = new SdsService(_nrlsMongoDBCaller, _cache);
 
-            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrls:fhir:rest:read:documentreference");
+            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrl:DocumentReference.read");
 
             Assert.NotNull(result);
 

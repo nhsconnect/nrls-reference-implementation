@@ -1,6 +1,7 @@
 ﻿using Demonstrator.Core.Exceptions;
 using Demonstrator.Core.Interfaces.Services.Fhir;
 using Demonstrator.Core.Interfaces.Services.Nrls;
+using Demonstrator.Core.Resources;
 using Demonstrator.Models.Core.Models;
 using Demonstrator.Models.Nrls;
 using Demonstrator.Models.ViewModels.Base;
@@ -70,15 +71,15 @@ namespace Demonstrator.Services.Service.Nrls
 
                 //This assumes the resource is relative
                 //In reality it does not make sense to attach a patient because a GET to NRLS should be in the patient context anyway!
-                var subject = patients.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(patientNhsNumber) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.IdsNhsNumber) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(patientNhsNumber)) != null);
+                var subject = patients.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(patientNhsNumber) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemNhsNumber) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(patientNhsNumber)) != null);
                 pointerViewModel.SubjectViewModel = subject?.ToViewModel(null);
 
                 //This assumes the resource is relative
-                var custodian = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(custodianOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.IdsOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(custodianOrgCode)) != null);
-                pointerViewModel.CustodianViewModel = custodian?.ToViewModel(FhirConstants.IdsOrgCode);
+                var custodian = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(custodianOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(custodianOrgCode)) != null);
+                pointerViewModel.CustodianViewModel = custodian?.ToViewModel(FhirConstants.SystemOrgCode);
 
-                var author = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(authorOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.IdsOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(authorOrgCode)) != null);
-                pointerViewModel.AuthorViewModel = author?.ToViewModel(FhirConstants.IdsOrgCode);
+                var author = organisations.FirstOrDefault(s => s.Identifier.FirstOrDefault(t => !string.IsNullOrEmpty(authorOrgCode) && !string.IsNullOrEmpty(t.System) && t.System.Equals(FhirConstants.SystemOrgCode) && !string.IsNullOrEmpty(t.Value) && t.Value.Equals(authorOrgCode)) != null);
+                pointerViewModel.AuthorViewModel = author?.ToViewModel(FhirConstants.SystemOrgCode);
 
                 pointerViewModels.Add(pointerViewModel);
             }

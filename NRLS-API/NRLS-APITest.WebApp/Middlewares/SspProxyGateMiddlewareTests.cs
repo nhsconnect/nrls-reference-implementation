@@ -24,8 +24,8 @@ namespace NRLS_APITest.WebApp.Middlewares
         public SspProxyGateMiddlewareTests()
         {
             var nrlsValidationMock = new Mock<INrlsValidation>();
-            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Read), It.IsAny<string>())).Returns(new Response(true));
-            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<JwtScopes>(q => q == JwtScopes.Read), It.Is<string>(j => j == "invalid-jwt"))).Returns(new Response());
+            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<Tuple<JwtScopes, string>>(q => q.Item1 == JwtScopes.Read), It.IsAny<string>())).Returns(new Response(true));
+            nrlsValidationMock.Setup(x => x.ValidJwt(It.Is<Tuple<JwtScopes, string>>(q => q.Item1 == JwtScopes.Read), It.Is<string>(j => j == "invalid-jwt"))).Returns(new Response());
 
             var sdsMock = new Mock<ISdsService>();
             sdsMock.Setup(op => op.GetFor(It.IsAny<string>())).Returns((SdsViewModel)null);

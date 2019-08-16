@@ -10,9 +10,9 @@ namespace NRLS_API.Services
         {
             var conformance = new CapabilityStatement
             {
-                Url = "https://fhir.nhs.uk/STU3/CapabilityStatement/NRLS-CapabilityStatement-1",
+                Url = "https://fhir.nhs.uk/STU3/CapabilityStatement/NRL-CapabilityStatement-1",
                 Version = ModelInfo.Version,
-                Name = "NRLS-CapabilityStatement-1",
+                Name = "NRL-CapabilityStatement-1",
                 Status = PublicationStatus.Draft,
                 Date = "2017-10-11T10:20:38+00:00",
                 Publisher = "NHS Digital",
@@ -32,7 +32,7 @@ namespace NRLS_API.Services
                         }
                     }
                 },
-                Description = new Markdown("This profile defines the expected capabilities of the NRLS STU3 FHIR server when conforming to the NRLS API IG. The Capability Statement resource includes a complete list of actual profiles, RESTful operations, and search parameters that are expected to be supported by NRLS STU3 FHIR Server."),
+                Description = new Markdown("This profile defines the expected capabilities of the NRL STU3 FHIR server when conforming to the NRL API IG. The Capability Statement resource includes a complete list of actual profiles, RESTful operations, and search parameters that are expected to be supported by NRL STU3 FHIR Server."),
                 Copyright = new Markdown("Copyright © 2017 NHS Digital"),
                 Kind = CapabilityStatement.CapabilityStatementKind.Requirements,
                 FhirVersion = "3.0.1",
@@ -107,39 +107,60 @@ namespace NRLS_API.Services
                                                 Value = new FhirString("_summary")
                                             }
                                         }
+                                    },
+                                   new Extension
+                                    {
+                                        Url = "http://hl7.org/fhir/StructureDefinition/conformance-search-parameter-combination",
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "required",
+                                                Value = new FhirString("subject")
+                                            },
+                                            new Extension
+                                            {
+                                                Url = "required",
+                                                Value = new FhirString("identifier")
+                                            }
+                                        },
+                                        FhirComments = new List<string>
+                                        {
+                                            "This combination can only be used for Supersede, Patch, and Delete interactions."
+                                        }
                                     }
                                 },
                                 Type = ResourceType.DocumentReference,
                                 Profile = new ResourceReference
                                 {
-                                    Reference = "https://fhir.hl7.org.uk/StructureDefinition/NRLS-DocumentReference-1"
+                                    Reference = "https://fhir.hl7.org.uk/StructureDefinition/NRL-DocumentReference-1"
                                 },
                                 Interaction = new List<CapabilityStatement.ResourceInteractionComponent>
                                 {
                                     new CapabilityStatement.ResourceInteractionComponent
                                     {
                                         Code = CapabilityStatement.TypeRestfulInteraction.SearchType,
-                                        Documentation = "Allows discovery of existing NRLS document reference resources using different search criteria"
+                                        Documentation = "Allows discovery of existing NRL document reference resources using different search criteria"
                                     },
                                     new CapabilityStatement.ResourceInteractionComponent
                                     {
                                         Code = CapabilityStatement.TypeRestfulInteraction.Read,
-                                        Documentation = "Allows retrieval of specific NRLS document references by id"
+                                        Documentation = "Allows retrieval of specific NRL document references by id"
                                     },
-                                    //new CapabilityStatement.ResourceInteractionComponent
-                                    //{
-                                    //    Code = CapabilityStatement.TypeRestfulInteraction.Update,
-                                    //    Documentation = "Allows update of specific NRLS document references by id"
-                                    //},
+                                    new CapabilityStatement.ResourceInteractionComponent
+                                    {
+                                        Code = CapabilityStatement.TypeRestfulInteraction.Patch,
+                                        Documentation = "Allows update of specific NRL document references by id"
+                                    },
                                     new CapabilityStatement.ResourceInteractionComponent
                                     {
                                         Code = CapabilityStatement.TypeRestfulInteraction.Delete,
-                                        Documentation = "Allows deletion of specific NRLS document references by id"
+                                        Documentation = "Allows deletion of specific NRL document references by id"
                                     },
                                     new CapabilityStatement.ResourceInteractionComponent
                                     {
                                         Code = CapabilityStatement.TypeRestfulInteraction.Create,
-                                        Documentation = "Allows creation of NRLS document references"
+                                        Documentation = "Allows creation of NRL document references"
                                     }
                                 },
                                 SearchParam = new List<CapabilityStatement.SearchParamComponent>
@@ -157,7 +178,7 @@ namespace NRLS_API.Services
                                         Name = "subject",
                                         Definition = "http://hl7.org/fhir/SearchParameter/DocumentReference.subject",
                                         Type = SearchParamType.Reference,
-                                        Documentation = "The Patient the DocumentReference relates to."
+                                        Documentation = "The Patient the DocumentReference relates to. This is MUST when searching by patient."
                                     },
                                     new CapabilityStatement.SearchParamComponent
                                     {
@@ -187,7 +208,7 @@ namespace NRLS_API.Services
                                         Name = "_id",
                                         Definition = "http://hl7.org/fhir/search",
                                         Type = SearchParamType.String,
-                                        Documentation = "Logical id of the DocumentReference"
+                                        Documentation = "Logical id of the DocumentReference. This is MUST when searching by _id"
                                     },
                                     new CapabilityStatement.SearchParamComponent
                                     {
@@ -218,6 +239,21 @@ namespace NRLS_API.Services
                                         Definition = "http://hl7.org/fhir/search",
                                         Type = SearchParamType.String,
                                         Documentation = "Type of summary to return"
+                                    },
+                                    new CapabilityStatement.SearchParamComponent
+                                    {
+                                        Extension = new List<Extension>
+                                        {
+                                            new Extension
+                                            {
+                                                Url = "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CapabilityStatementExpectation-1",
+                                                Value = new FhirString("MAY")
+                                            }
+                                        },
+                                        Name = "identifier",
+                                        Definition = "http://hl7.org/fhir/search",
+                                        Type = SearchParamType.Token,
+                                        Documentation = "The MasterIdentifer associated to the DocumentReference. Used in Supersede, Patch, and Delete interactions."
                                     },
                                     new CapabilityStatement.SearchParamComponent
                                     {

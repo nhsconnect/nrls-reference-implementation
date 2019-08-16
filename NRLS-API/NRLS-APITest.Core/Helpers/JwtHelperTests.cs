@@ -1,14 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Moq;
+﻿using Moq;
 using NRLS_API.Core.Enums;
 using NRLS_API.Core.Helpers;
 using NRLS_API.Core.Interfaces.Services;
-using NRLS_API.Models.Core;
 using NRLS_API.Models.ViewModels.Core;
 using NRLS_APITest.Data;
-using NRLS_APITest.StubClasses;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace NRLS_APITest.Core.Helpers
@@ -54,7 +50,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var jwtHelper = new JwtHelper(_sdsService);
 
-            var actual = jwtHelper.IsValid(token, JwtScopes.Write, issued);
+            var actual = jwtHelper.IsValid(token, new Tuple<JwtScopes, string>(JwtScopes.Write, "DocumentReference"), issued);
 
             Assert.True(actual.Success);
         }
@@ -78,7 +74,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var jwtHelper = new JwtHelper(_sdsService);
 
-            var actual = jwtHelper.IsValid(token, JwtScopes.Read, issued);
+            var actual = jwtHelper.IsValid(token, new Tuple<JwtScopes, string>(JwtScopes.Read, "DocumentReference"), issued);
 
             Assert.False(actual.Success);
         }
@@ -102,7 +98,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var jwtHelper = new JwtHelper(_sdsService);
 
-            var actual = jwtHelper.IsValid(token, JwtScopes.Read, issued);
+            var actual = jwtHelper.IsValid(token, new Tuple<JwtScopes, string>(JwtScopes.Read, "DocumentReference"), issued);
 
             Assert.False(actual.Success);
         }
@@ -120,7 +116,7 @@ namespace NRLS_APITest.Core.Helpers
 
             var jwtHelper = new JwtHelper(_sdsService);
 
-            var actual = jwtHelper.IsValid(token, JwtScopes.Write, issued);
+            var actual = jwtHelper.IsValid(token, new Tuple<JwtScopes, string>(JwtScopes.Write, "DocumentReference"), issued);
 
             Assert.False(actual.Success);
         }

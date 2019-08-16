@@ -51,10 +51,10 @@ namespace Demonstrator.WebApp.Core.Middlewares
             }
 
             // -> traceID
-            var traceId = GetHeaderValue(headers, FhirConstants.HeaderSspTradeId);
+            var traceId = GetHeaderValue(headers, FhirConstants.HeaderSspTraceId);
             if (string.IsNullOrEmpty(traceId))
             {
-                SetError(FhirConstants.HeaderSspTradeId, null);
+                SetError(FhirConstants.HeaderSspTraceId, null);
             }
 
             //TODO: check user is auth & auth

@@ -75,23 +75,23 @@
 
 
         //Interactions
-        public const string BaseInteractionId = "urn:nhs:names:services:~service~:~resourceOrOperation~.~interaction~";
+        public const string BaseInteractionId = "urn:nhs:names:services:nrl:~resourceOrOperation~.~interaction~";
 
-        public static string ReadInteractionId => GenerateInteraction("read", "DocumentReferenceRead", "nrl");
+        public static string ReadInteractionId => GenerateInteraction("read", "DocumentReference");
 
-        public static string SearchInteractionId => GenerateInteraction("read", "DocumentReference", "nrl");
+        public static string SearchInteractionId => GenerateInteraction("search", "DocumentReference");
 
-        public static string CreateInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
+        public static string CreateInteractionId => GenerateInteraction("create", "DocumentReference");
 
-        public static string UpdateInteractionId => GenerateInteraction("write", "DocumentReferencePatch", "nrl");
+        public static string UpdateInteractionId => GenerateInteraction("update", "DocumentReference");
 
-        public static string DeleteInteractionId => GenerateInteraction("write", "DocumentReference", "nrl");
+        public static string DeleteInteractionId => GenerateInteraction("delete", "DocumentReference");
 
-        public static string ReadBinaryInteractionId => GenerateInteraction("read", "SspRetrieval", "nrl");
+        public static string ReadBinaryInteractionId => GenerateInteraction("read", "DocumentReference.content");
 
-        private static string GenerateInteraction(string interaction, string resource, string service, bool isFhirRest = true)
+        private static string GenerateInteraction(string interaction, string resource)
         {
-            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resourceOrOperation~", resource).Replace("~service~", service);
+            return BaseInteractionId.Replace("~interaction~", interaction).Replace("~resourceOrOperation~", resource);
         }
     }
 }

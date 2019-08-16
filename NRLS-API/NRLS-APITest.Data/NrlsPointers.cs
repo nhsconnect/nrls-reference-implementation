@@ -16,7 +16,9 @@ namespace NRLS_APITest.Data
                     Id = "5ab13f41957d0ad5d93a1339",
                     Meta = new Meta
                     {
-                        Profile = new List<string> { "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1" }
+                        Profile = new List<string> { "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1" },
+                        LastUpdated = new DateTimeOffset(new DateTime(2018, 3, 1, 0, 0, 0, DateTimeKind.Utc)),
+                        VersionId = "1"
                     },
                     Status = DocumentReferenceStatus.Current,
                     Type = new CodeableConcept

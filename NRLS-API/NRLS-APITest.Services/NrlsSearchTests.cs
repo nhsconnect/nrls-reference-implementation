@@ -11,9 +11,6 @@ using SystemTasks = System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.Options;
 using NRLS_API.Core.Exceptions;
-using Microsoft.Extensions.Caching.Memory;
-using NRLS_APITest.StubClasses;
-using NRLS_API.Core.Resources;
 using NRLS_API.Models.ViewModels.Core;
 
 namespace NRLS_APITest.Services
@@ -105,6 +102,12 @@ namespace NRLS_APITest.Services
                         Resource = new DocumentReference
                         {
                             Id = "5ab13f41957d0ad5d93a1339",
+                            Meta = new Meta
+                            {
+                                Profile = new List<string> { "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1" },
+                                LastUpdated = new DateTimeOffset(new DateTime(2018, 3, 1, 0, 0, 0, DateTimeKind.Utc)),
+                                VersionId = "1"
+                            },
                             Status = DocumentReferenceStatus.Current,
                             Type = new CodeableConcept
                             {
@@ -173,15 +176,15 @@ namespace NRLS_APITest.Services
         }
 
 
-        [Fact]
-        public async void Get_Read_Valid()
-        {
+        //[Fact]
+        //public async void Get_Read_Valid()
+        //{
             //var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
 
             //var actualBundle = await search.Find(FhirRequests.Valid_Read) as Bundle;
 
             //Assert.Equal(_expectedBundle, actualBundle, Comparers.ModelComparer<Bundle>());
-        }
+        //}
 
 
         [Fact]

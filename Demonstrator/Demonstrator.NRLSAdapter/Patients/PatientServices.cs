@@ -10,6 +10,7 @@ using Hl7.Fhir.Rest;
 using Demonstrator.NRLSAdapter.Models;
 using System.Net.Http;
 using Microsoft.Net.Http.Headers;
+using Demonstrator.Core.Resources;
 
 namespace Demonstrator.NRLSAdapter.Patients
 {
@@ -62,7 +63,7 @@ namespace Demonstrator.NRLSAdapter.Patients
         private SearchParams GetParams(string nhsNumber)
         {
             var searchParams = new SearchParams();
-            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.IdsNhsNumber)}|{nhsNumber}");
+            searchParams.Add("identifier", $"{WebUtility.UrlEncode(FhirConstants.SystemNhsNumber)}|{nhsNumber}");
 
             return searchParams;
         }

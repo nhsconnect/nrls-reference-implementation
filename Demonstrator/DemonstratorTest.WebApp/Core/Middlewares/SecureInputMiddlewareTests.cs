@@ -40,7 +40,7 @@ namespace DemonstratorTest.WebApp.Core.Middlewares
             {
                 { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
                 { FhirConstants.HeaderSspFrom, "200000000116" },
-                { FhirConstants.HeaderSspTradeId, "c0fbfe499a48485492299a4c14d78118" }
+                { FhirConstants.HeaderSspTraceId, "c0fbfe499a48485492299a4c14d78118" }
             });
 
 
@@ -102,7 +102,7 @@ namespace DemonstratorTest.WebApp.Core.Middlewares
             requestMock.Setup(x => x.Headers).Returns(new HeaderDictionary()
             {
                 { HeaderNames.Authorization, "we-are-not-validating-jwt-here" },
-                { FhirConstants.HeaderSspTradeId, "c0fbfe499a48485492299a4c14d78118" }
+                { FhirConstants.HeaderSspTraceId, "c0fbfe499a48485492299a4c14d78118" }
             });
 
             var contextMock = new Mock<HttpContext>();

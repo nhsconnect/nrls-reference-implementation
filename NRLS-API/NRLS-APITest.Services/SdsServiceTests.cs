@@ -8,10 +8,8 @@ using Xunit;
 using Microsoft.Extensions.Caching.Memory;
 using NRLS_APITest.StubClasses;
 using NRLS_API.Models.ViewModels.Core;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using NRLS_API.Core.Interfaces.Database;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
@@ -142,7 +140,7 @@ namespace NRLS_APITest.Services
         {
             var service = new SdsService(_nrlsMongoDBCaller, _cache);
 
-            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrl:DocumentReferenceRead.read");
+            var result = service.GetFor("TestOrgCode", "urn:nhs:names:services:nrl:DocumentReference.read");
 
             Assert.NotNull(result);
 

@@ -1,16 +1,16 @@
 <img src="Demonstrator/Demonstrator.WebApp/images/NHS-Digital-Logo-120.png" alt="NHS Digital Logo" />
 
-# NRLS Demonstrator
+# NRL Demonstrator
 
-This project provides a reference implementation of the [NRLS API Specification](https://nhsconnect.github.io/FHIR-NRLS-API/). 
+This project provides a reference implementation of the [NRL API Specification](https://developer.nhs.uk/apis/nrl/). 
 
 This README serves as a guide to setting up your local environment in order to develop and test this implementation.
 
 ## Structure
-The NRLS Demonstrator will be made up of 4 main parts:
-* Front-end Single Page App (SPA) (Interactive Guide)
-* Back-end API (Supports the SPA and Integrates with the NRLS)
-* FHIR based NRLS Stub Server
+The NRL Demonstrator is made up of 4 main parts:
+* Front-end Single Page App (SPA) (Consumer and Provider Demo Apps)
+* Back-end API (Supports the SPA and Integrates with the NRL service)
+* FHIR based NRL Stub Server
 * A MongoDB data store
 
 ## Requirements
@@ -76,7 +76,7 @@ npm install to get the latest packages
 ##### Run
 npm run build
 
-#### NRLS Stub
+#### NRL Stub
 Open up the NRLS-API Solution from with the NRLS-API sub folder
 Build and Run this
 
@@ -84,3 +84,6 @@ The app should now be running.
 
 ### Docker Support
 For those wanting to use Docker install docker and then follow the details as listed in the wiki.
+
+
+*The NRL was previously named NRLS. The name changed to NRL in January 2019.
