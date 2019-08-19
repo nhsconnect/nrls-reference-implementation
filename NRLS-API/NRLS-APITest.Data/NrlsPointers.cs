@@ -61,7 +61,22 @@ namespace NRLS_APITest.Data
                                     Creation = "2016-03-08T15:26:00+00:00"
                                 }
                             }
+                        },
+                    Context = new DocumentReference.ContextComponent
+                    {
+                        PracticeSetting = new CodeableConcept
+                        {
+                            Coding = new List<Coding>
+                            {
+                                new Coding
+                                {
+                                  System = "http://snomed.info/sct",
+                                  Code = "708168004",
+                                  Display = "Mental health service"
+                                }
+                            }
                         }
+                    }
                 };
             }
         }

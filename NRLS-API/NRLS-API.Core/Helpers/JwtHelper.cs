@@ -231,7 +231,7 @@ namespace NRLS_API.Core.Helpers
             else if (scope.Value != expScope) // || !_validScopes.Contains(scope.Value)
             {
                 //currently 
-                return new Response($"scope ({scope.Value}) must match '{expScope}'");
+                return new Response($"scope ({scope.Value}) must match {expScope}");
             }
 
 

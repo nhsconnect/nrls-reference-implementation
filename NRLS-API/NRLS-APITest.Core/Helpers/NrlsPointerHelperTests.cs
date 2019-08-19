@@ -34,6 +34,23 @@ namespace NRLS_APITest.Core.Helpers
         }
 
         [Fact]
+        public void CreatePatient_Returns_Valid_Search()
+        {
+            var request = NrlsPointerHelper.CreatePatientSearch(FhirRequests.Valid_Create, "1445545101");
+
+            var expected = new List<Tuple<string, string>>
+            {
+                new Tuple<string, string>("identifier", $"{FhirConstants.SystemNhsNumber}|1445545101")
+            };
+
+            Assert.Equal(expected, request.QueryParameters, Comparers.ModelComparer<IEnumerable<Tuple<string, string>>>());
+
+            Assert.Equal("Patient", request.StrResourceType);
+
+            Assert.Equal("http://hl7.org/fhir/STU3/patient.html", request.ProfileUri);
+        }
+
+        [Fact]
         public void CreateMasterId_Returns_Null()
         {
 

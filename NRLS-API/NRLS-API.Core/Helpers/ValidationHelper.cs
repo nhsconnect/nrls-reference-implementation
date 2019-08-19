@@ -219,7 +219,12 @@ namespace NRLS_API.Core.Helpers
 
         public string GetOrganisationParameterId(string parameterVal)
         {
-            return !string.IsNullOrEmpty(parameterVal) && parameterVal.StartsWith(FhirConstants.SystemODS) ? parameterVal.Replace(FhirConstants.SystemODS, "") : null;
+            return GetReferenceParameterId(FhirConstants.SystemODS, parameterVal);
+        }
+
+        public string GetReferenceParameterId(string system, string parameterVal)
+        {
+            return !string.IsNullOrEmpty(parameterVal) && !string.IsNullOrEmpty(system) && parameterVal.StartsWith(system) ? parameterVal.Replace(system, "") : null;
         }
 
         private ValueSet GetCodableConceptValueSet(string systemUrl)

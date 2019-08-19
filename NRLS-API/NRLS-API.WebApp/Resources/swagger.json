@@ -189,7 +189,7 @@
                   {
                     "attachment": {
                       "contentType": "application/pdf",
-                      "url": "https://spine-proxy.national.ncrs.nhs.uk/https://p1.nhs.uk/MentalhealthCrisisPlanReport_123.pdf",
+                      "url": "https://spine-proxy.national.ncrs.nhs.uk/http://locahost:55448/provider/MHT01/fhir/STU3/careconnect/binary/mhcp/5d568502f5dab0fc10694635",
                       "creation": "2016-03-08T15:26:00+01:00"
                     },
                     "format": {
@@ -469,7 +469,7 @@
                 "indexed": "2016-03-08T15:26:01+01:00",
                 "author": [
                   {
-                    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/1XR"
+                    "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/MHT01"
                   }
                 ],
                 "custodian": {
@@ -487,7 +487,7 @@
                   {
                     "attachment": {
                       "contentType": "application/pdf",
-                      "url": "https://spine-proxy.national.ncrs.nhs.uk/https://p1.nhs.uk/MentalhealthCrisisPlanReport_123.pdf",
+                      "url": "https://spine-proxy.national.ncrs.nhs.uk/http://locahost:55448/provider/MHT01/fhir/STU3/careconnect/binary/mhcp/5d568502f5dab0fc10694635",
                       "creation": "2016-03-08T15:26:00+01:00"
                     },
                     "format": {

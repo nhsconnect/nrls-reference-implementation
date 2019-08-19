@@ -746,5 +746,26 @@ namespace NRLS_APITest.Core.Helpers
             Assert.Equal(string.Empty, actual);
         }
 
+        [Fact]
+        public void GetReferenceParameterId_Valid()
+        {
+            var helper = new ValidationHelper(_fhirResourceHelper);
+
+
+            var actual = helper.GetReferenceParameterId("https://demographics.spineservices.nhs.uk/STU3/Patient/", "https://demographics.spineservices.nhs.uk/STU3/Patient/1445545101");
+
+            Assert.Equal("1445545101", actual);
+        }
+
+        [Fact]
+        public void GetReferenceParameterId_Invalid()
+        {
+            var helper = new ValidationHelper(_fhirResourceHelper);
+
+            var actual = helper.GetReferenceParameterId("https://demographics.spineservices.nhs.uk/STU3/Patient/", "https://demographics.spineservices.nhs.uk/STU3/Patients/1445545101");
+
+            Assert.Null(actual);
+        }
+
     }
 }

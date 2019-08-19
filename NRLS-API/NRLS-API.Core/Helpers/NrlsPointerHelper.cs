@@ -26,6 +26,23 @@ namespace NRLS_API.Core.Helpers
             return null;
         }
 
+        public static FhirRequest CreatePatientSearch(FhirRequest request, string nhsNumber)
+        {
+            if (!string.IsNullOrWhiteSpace(nhsNumber))
+            {
+                var queryParameters = new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("identifier", $"{FhirConstants.SystemNhsNumber}|{nhsNumber}")
+                };
+
+                var searchRequest = FhirRequest.Copy(request, ResourceType.Patient, null, queryParameters, FhirConstants.SystemPatientProfile);
+
+                return searchRequest;
+            }
+
+            return null;
+        }
+
         public static FhirRequest CreateReferenceSearch(FhirRequest request, string logicalId)
         {
             if (!string.IsNullOrWhiteSpace(logicalId))

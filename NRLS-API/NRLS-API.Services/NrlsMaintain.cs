@@ -53,9 +53,10 @@ namespace NRLS_API.Services
             //Now we need to do some additional validation on ODS codes && Master Ids
             //We need to use an external source (in reality yes but we are just going to do an internal query to fake ods & pointer search)
 
-            if(document.MasterIdentifier != null)
+            if (document.MasterIdentifier != null)
             {
                 var nhsNumber = _fhirValidation.GetSubjectReferenceId(document.Subject);
+
                 var masterIdentifierRequest = NrlsPointerHelper.CreateMasterIdentifierSearch(request, document.MasterIdentifier, nhsNumber);
                 var miPointers = await _fhirSearch.GetByMasterId<DocumentReference>(masterIdentifierRequest);
 
@@ -91,6 +92,8 @@ namespace NRLS_API.Services
             {
                 return OperationOutcomeFactory.CreateOrganizationNotFound(authorOrgCode);
             }
+
+            //To better mimic NRL here we would create a new patient record for a patient that is not currently know (aka no clinical record)
 
             return null;
         }

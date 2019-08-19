@@ -155,7 +155,7 @@ namespace NRLS_APITest.WebApp.Controllers
             Assert.IsType<OperationOutcome>(responseContent);
             var outcome = responseContent as OperationOutcome;
 
-            Assert.Equal(1, outcome.Warnings);
+            Assert.Equal(1, outcome.Errors);
 
         }
 

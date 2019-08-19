@@ -462,6 +462,25 @@ namespace NRLS_APITest.Data
             }
         }
 
+        public static FhirRequest Invalid_Search_Invalid_Patient
+        {
+            get
+            {
+                return new FhirRequest
+                {
+                    Id = "invalid-patient-resource-id",
+                    RequestingAsid = "000",
+                    RequestUrl = new Uri("https://testdomain/testurl"),
+                    Resource = NrlsPointers.Valid,
+                    ResourceType = ResourceType.DocumentReference,
+                    QueryParameters = new List<Tuple<string, string>>
+                    {
+                        new Tuple<string, string>("patient", "https://demographics.spineservices.nhs.uk/STU3/Patient/1234")
+                    }
+                };
+            }
+        }
+
         public static FhirRequest Valid_Update
         {
             get

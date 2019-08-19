@@ -98,6 +98,16 @@ namespace NRLS_API.Services
                 {
                     throw new HttpFhirException("Missing or Invalid patient parameter", invalidPatient, HttpStatusCode.BadRequest);
                 }
+
+                var nhsNumber = _fhirValidation.GetSubjectReferenceParameterId(patient.Item2);
+
+                var patientRequest = NrlsPointerHelper.CreatePatientSearch(request, nhsNumber);
+                var patients = await _fhirSearch.Find<Patient>(patientRequest);
+
+                if (patients.Entry.Count == 0)
+                {
+                    throw new HttpFhirException("Unknown patient", OperationOutcomeFactory.CreatePatientNotFound(nhsNumber), HttpStatusCode.NotFound);
+                }
             }
             else
             {

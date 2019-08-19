@@ -39,6 +39,11 @@ namespace NRLS_APITest.Services
             validationMock.Setup(op => op.GetOrganizationParameterId(It.Is<string>(p => p == "https://directory.spineservices.nhs.uk/STU3/Organization/TestOrgCode"))).Returns("TestOrgCode");
             validationMock.Setup(op => op.GetOrganizationParameterIdentifierId(It.Is<string>(p => p == "https://fhir.nhs.uk/Id/ods-organization-code|TestOrgCode"))).Returns("TestOrgCode");
 
+            validationMock.Setup(op => op.GetOrganizationParameterIdentifierId(It.Is<string>(p => p == "https://fhir.nhs.uk/Id/ods-organization-code|TestOrgCode"))).Returns("TestOrgCode");
+
+            validationMock.Setup(op => op.GetSubjectReferenceParameterId(It.IsAny<string>())).Returns("1445545101");
+
+
             _fhirValidation = validationMock.Object;
 
             var searchPointer = NrlsPointers.Valid;
@@ -52,6 +57,12 @@ namespace NRLS_APITest.Services
 
             var orgSearchBundle = FhirBundle.GetBundle<Organization>(new List<Organization> { FhirOrganizations.Valid_Organization });
             searchMock.Setup(op => op.Find<Organization>(It.IsAny<FhirRequest>(), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => orgSearchBundle));
+
+            var patientSearchBundle = FhirBundle.GetBundle<Patient>(new List<Patient> { FhirPatients.Valid_Patient });
+            searchMock.Setup(op => op.Find<Patient>(It.IsAny<FhirRequest>(), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => patientSearchBundle));
+
+            var patientSearchEmptyBundle = FhirBundle.GetBundle<Patient>(new List<Patient>());
+            searchMock.Setup(op => op.Find<Patient>(It.Is<FhirRequest>(x => x.Id == "invalid-patient-resource-id"), It.IsAny<bool>())).Returns(SystemTasks.Task.Run(() => patientSearchEmptyBundle));
 
             _fhirSearch = searchMock.Object;
 
@@ -147,6 +158,21 @@ namespace NRLS_APITest.Services
                                         Url = "http://example.org/xds/mhd/Binary/07a6483f-732b-461e-86b6-edb665c45510.pdf",
                                         Title = "Mental health Care Plan Report",
                                         Creation = "2016-03-08T15:26:00+00:00"
+                                    }
+                                }
+                            },
+                            Context = new DocumentReference.ContextComponent
+                            {
+                                PracticeSetting = new CodeableConcept
+                                {
+                                    Coding = new List<Coding>
+                                    {
+                                        new Coding
+                                        {
+                                          System = "http://snomed.info/sct",
+                                          Code = "708168004",
+                                          Display = "Mental health service"
+                                        }
                                     }
                                 }
                             }
@@ -256,6 +282,19 @@ namespace NRLS_APITest.Services
             Assert.ThrowsAsync<HttpFhirException>(async () => 
             {
                 var actualBundle = await search.Find(FhirRequests.Invalid_Search_IncorrectSummary);
+            });
+
+        }
+
+        [Fact]
+        public void Find_Search_Invalid_Patient()
+        {
+            var search = new NrlsSearch(_nrlsApiSettings, _fhirSearch, _sdsService, _fhirValidation);
+
+
+            Assert.ThrowsAsync<HttpFhirException>(async () =>
+            {
+                var actualBundle = await search.Find(FhirRequests.Invalid_Search_Invalid_Patient);
             });
 
         }

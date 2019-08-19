@@ -97,7 +97,7 @@ namespace NRLS_API.WebApp.Core.Middlewares
 
             if(!validFqdn)
             {
-                SetError(FhirConstants.HeaderSspToAsid, $"The FQDN in the request does not match an FQDN registered for the provided {FhirConstants.HeaderSspToAsid} header.");
+                SetError(FhirConstants.HeaderSspToAsid, $"The FQDN in the request ({forwardingUrl}) does not match an FQDN registered for the provided {FhirConstants.HeaderSspToAsid} header.");
             }
 
             //TODO: ssl check

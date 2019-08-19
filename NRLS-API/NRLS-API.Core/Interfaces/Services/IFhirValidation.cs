@@ -27,6 +27,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         string GetOrganizationReferenceId(ResourceReference reference);
 
+        string GetSubjectReferenceParameterId(string parameterVal);
+
         string GetSubjectReferenceId(ResourceReference reference);
 
         string GetReferenceId(ResourceReference reference);

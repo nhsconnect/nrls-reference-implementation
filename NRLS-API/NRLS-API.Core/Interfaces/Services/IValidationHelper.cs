@@ -25,6 +25,8 @@ namespace NRLS_API.Core.Interfaces.Services
 
         string GetOrganisationParameterId(string parameterVal);
 
+        string GetReferenceParameterId(string system, string parameterVal);
+
         string GetTokenParameterId(string parameterVal, string systemPrefix);
 
         bool ValidNhsNumber(string nhsNumber);

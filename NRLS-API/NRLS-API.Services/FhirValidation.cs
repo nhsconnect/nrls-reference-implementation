@@ -107,6 +107,11 @@ namespace NRLS_API.Services
 
             //Context
             //Checked in profile checker
+            var period = pointer.Context.Period;
+            if(period != null && string.IsNullOrEmpty(period.Start))
+            {
+                return OperationOutcomeFactory.CreateInvalidResource("context.period", "When included the period element must have a valid start dateTime.");
+            }
             //WARNING: practice setting valueset is stored locally
 
             return OperationOutcomeFactory.CreateOk();
@@ -278,6 +283,11 @@ namespace NRLS_API.Services
         public string GetOrganizationParameterId(string parameterVal)
         {
             return _validationHelper.GetOrganisationParameterId(parameterVal);
+        }
+
+        public string GetSubjectReferenceParameterId(string parameterVal)
+        {
+            return _validationHelper.GetReferenceParameterId(FhirConstants.SystemPDS, parameterVal);
         }
 
         public string GetOrganizationParameterIdentifierId(string parameterVal)

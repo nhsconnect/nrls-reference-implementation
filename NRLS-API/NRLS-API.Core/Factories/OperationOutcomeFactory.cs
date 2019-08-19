@@ -44,7 +44,7 @@ namespace NRLS_API.Core.Factories
 
             var details = CreateDetails("BAD_REQUEST", "Bad Request");
 
-            return Create(OperationOutcome.IssueSeverity.Warning, OperationOutcome.IssueType.Invalid, "DocumentReference status is not 'current'", details, false);
+            return Create(OperationOutcome.IssueSeverity.Error, OperationOutcome.IssueType.Invalid, "DocumentReference status is not 'current'", details, false);
         }
 
         public static OperationOutcome CreateAccessDenied()
@@ -160,6 +160,14 @@ namespace NRLS_API.Core.Factories
             var details = CreateDetails("ORGANISATION_NOT_FOUND", "Organisation record not found");
 
             return CreateError($"The ODS code in the custodian and/or author element is not resolvable – {id}.", details, OperationOutcome.IssueType.NotFound);
+        }
+
+        public static OperationOutcome CreatePatientNotFound(string id)
+        {
+
+            var details = CreateDetails("NO_RECORD_FOUND", "No Record found");
+
+            return CreateError($"The given NHS number could not be found {id}.", details, OperationOutcome.IssueType.NotFound);
         }
 
         public static OperationOutcome CreateInvalidRequest()

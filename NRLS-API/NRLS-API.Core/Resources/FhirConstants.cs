@@ -4,6 +4,8 @@
     {
         public const string SystemNrlsProfile = "https://fhir.nhs.uk/STU3/StructureDefinition/NRL-DocumentReference-1";
 
+        public const string SystemPatientProfile = "http://hl7.org/fhir/STU3/patient.html";
+
         public const string SDSpineOpOutcome = "https://fhir.nhs.uk/STU3/StructureDefinition/Spine-OperationOutcome-1";
 
         public const string SDSpineOpOutcome1 = "https://fhir.nhs.uk/StructureDefinition/spine-operationoutcome-1-0";
