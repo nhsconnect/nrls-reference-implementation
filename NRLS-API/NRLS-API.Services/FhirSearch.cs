@@ -29,6 +29,7 @@ namespace NRLS_API.Services
 
         public async Task<Bundle> GetAsBundle<T>(FhirRequest request) where T : Resource
         {
+            request.IsIdQuery = true;
             var bundle = await Find<T>(request, true);
 
             return bundle;
