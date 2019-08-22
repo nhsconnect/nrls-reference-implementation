@@ -79,6 +79,7 @@ namespace NRLS_API.Services
                 }
 
                 request.Id = id;
+                request.IsIdQuery = true;
 
                 var results = await _fhirSearch.GetAsBundle<DocumentReference>(request);
 
