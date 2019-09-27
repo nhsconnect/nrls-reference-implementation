@@ -20,9 +20,11 @@ namespace NRLS_API.Services
 
         public OperationOutcome ValidPointer(DocumentReference pointer)
         {
+            var profile = (pointer.Meta?.Profile?.Contains(FhirConstants.SystemNrlsPrefProfile)) == true ? FhirConstants.SystemNrlsPrefProfile :
+                FhirConstants.SystemNrlsProfile;
 
             //Base NRL Pointer Validation
-            var profileCheck = _validationHelper.ValidateResource(pointer, FhirConstants.SystemNrlsProfile);
+            var profileCheck = _validationHelper.ValidateResource(pointer, profile);
 
             if (!profileCheck.Success)
             {
@@ -38,9 +40,9 @@ namespace NRLS_API.Services
             //profile check
             var profiles = pointer.Meta?.Profile;
 
-            if (profiles == null || profiles.Count() != 1 || profiles.FirstOrDefault(x => x == FhirConstants.SystemNrlsProfile) == null)
+            if (profiles == null || profiles.Count() != 1 || profiles.FirstOrDefault(x => new string[] { FhirConstants.SystemNrlsProfile, FhirConstants.SystemNrlsPrefProfile }.Contains(x)) == null)
             {
-                return OperationOutcomeFactory.CreateInvalidResource("meta.Profile", $"There must be a single profile of the value {FhirConstants.SystemNrlsProfile}");
+                return OperationOutcomeFactory.CreateInvalidResource("meta.Profile", $"There must be a single profile of the value {FhirConstants.SystemNrlsProfile} or {FhirConstants.SystemNrlsPrefProfile}");
             }
 
             //master identifier
