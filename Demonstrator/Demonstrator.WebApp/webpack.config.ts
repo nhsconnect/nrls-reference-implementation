@@ -32,7 +32,7 @@ const ENV: string = process.env.NODE_ENV = (process.env.NODE_ENV || 'development
 
 // basic configuration:
 const title = 'NRL Demonstrator';
-const appVersion = '0.2.3';
+const appVersion = '0.2.4';
 const gaTrackId = 'UA-38028819-4';
 const cookieBotId = '30398f35-a144-4edd-a779-05481f9da7b3';
 const baseUrl = '/';
