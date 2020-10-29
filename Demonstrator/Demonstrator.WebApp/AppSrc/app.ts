@@ -97,11 +97,24 @@ export class App {
         config.addPipelineStep('postRender', ScrollPageStep);
 
         config.map([
-            { route: [''], name: 'home', moduleId: './pages/home/index', nav: true, title: 'Home' },
-            { route: 'system-select', name: 'system-select', moduleId: './pages/system-select/index', nav: false, title: 'Demonstrator Explorer' },
-            { route: 'system-demo/:routeParamId/:routeParamTitle?', name: 'system-demo', moduleId: './pages/system-demo/index', nav: false, title: 'Demonstrator System Example', settings: { dynamicTitle: true } },
+          { route: "", redirect: "system-select" },
+          {
+            route: "system-select",
+            name: "system-select",
+            moduleId: "./pages/system-select/index",
+            nav: false,
+            title: "Demonstrator Explorer",
+          },
+          {
+            route: "system-demo/:routeParamId/:routeParamTitle?",
+            name: "system-demo",
+            moduleId: "./pages/system-demo/index",
+            nav: false,
+            title: "Demonstrator System Example",
+            settings: { dynamicTitle: true },
+          },
 
-            notFoundRoute
+          notFoundRoute,
         ]);
 
         this.router = router;
