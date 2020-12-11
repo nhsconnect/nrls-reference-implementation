@@ -1,7 +1,8 @@
 ﻿export function configure(config) {
     config.globalResources([
-        '../date-format',
-        '../nhs-number',
-        '../bool-filter'
+      "../string-formatters",
+      "../date-format",
+      "../nhs-number",
+      "../bool-filter",
     ]);
 }

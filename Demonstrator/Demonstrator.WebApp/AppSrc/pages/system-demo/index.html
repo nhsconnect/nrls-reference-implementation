@@ -13,9 +13,5 @@
         <div if.bind="genericSystem && !systemsLoading" class="generic-system-container">
             <compose view-model="../../generic-systems/${genericSystem.fModule}/index" model.bind="systemModel"></compose>
         </div>
-
-
-        <p><a route-href="route: system-select;"><i class="fa fa-angle-left"></i> View all available systems</a></p>
-
     </section>
 </template>

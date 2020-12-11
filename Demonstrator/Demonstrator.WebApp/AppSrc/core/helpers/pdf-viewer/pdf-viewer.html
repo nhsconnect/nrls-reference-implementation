@@ -1,0 +1,27 @@
+﻿<template>
+  <section>
+    <h1>${currentPointer.type.coding[0].display}</h1>
+
+    <p>
+        ${currentPointer.authorViewModel.name},
+        ${currentPointer.content[0].attachment.creation | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'DD-MMM-YYYY' }
+    </p>
+
+    <p>
+      <a class="scra-link" href="#pdf-close" click.delegate="closeViewer()">
+        <span aria-hidden="true">‹</span>
+        Go back to available documents
+      </a>
+    </p>
+
+    <div show.bind="!pdfDoc.loading" class="scra-pdf-canvas-ancestor">
+      <div class="scra-pdf-canvas-parent">
+        <canvas class="scra-pdf-canvas" id="pdfCanvas"></canvas>
+      </div>
+    </div>
+    <spinner-msg
+      message="Fetching Record"
+      logic.one-way="pdfDoc.loading"
+    ></spinner-msg>
+  </section>
+</template>

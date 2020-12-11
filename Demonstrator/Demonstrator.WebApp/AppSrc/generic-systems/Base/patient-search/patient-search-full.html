@@ -1,88 +1,10 @@
 ﻿<template bindable="patientLoading, nhsNumbersLoading, nhsNumbers, currentPatient, setPatient">
     <form>
-        <table class="table table-bordered n-text-small n-bg-pale-grey">
-            <tbody>
-                <tr>
-                    <td>
-
-                        <div class="form-horizontal margin-top-nml">
-                            <div class="form-group form-group-header">
-                                <label class="col-sm-2 control-label">Enter patient details</label>
-                                <div class="col-sm-9">
-                                    <span class="pull-right"><span class="n-text-red">*</span> denotes a required field</span>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <hr class="margin-hz hz-dark-grey" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label"><span class="n-text-red">*</span> Gender</label>
-                                <div class="col-sm-9">
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="gender1" name="gender" value="female" disabled="disabled"> Female
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="gender2" name="gender" value="male" disabled="disabled"> Male
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group n-text-normal">
-                                <label for="patient_forename" class="col-sm-2 control-label">First name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="patient_forename" class="form-control" value="" disabled="disabled" placeholder="[name of patient or name the patient is know by]" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="patient_surname" class="col-sm-2 control-label"><span class="n-text-red">*</span> Surname</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="patient_surname" class="form-control" value="" disabled="disabled" placeholder="" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="patient_dob" class="col-sm-2 control-label"><span class="n-text-red">*</span> Date of birth</label>
-                                <div class="col-sm-6">
-                                    <input type="text" name="patient_dob" class="form-control" value="" disabled="disabled" placeholder="[dd/mm/yyyy]" />
-                                </div>
-                            </div>
-
-                            <div class="form-group n-text-normal">
-                                <label for="patient_postcode" class="col-sm-2 control-label">Full postcode</label>
-                                <div class="col-sm-6">
-                                    <input type="text" name="patient_postcode" class="form-control" value="" disabled="disabled" placeholder="" />
-                                </div>
-                                <div class="col-sm-3">
-                                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="This link is disabled in the Demo.">Address &amp; Postcode Lookup</a>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-9">
-                                    <button type="button" class="btn btn-scra-blue" data-toggle="tooltip" data-placement="top" title="Patient Search is disabled in the Demo. Please select a Patient from below.">Find</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
         <table class="table table-bordered n-bg-pale-grey n-text-small nrls-pointer-results">
             <tbody>
                 <tr>
                     <td>
                         <div class="form-horizontal margin-top-nml">
-
                             <div class="form-group form-group-header">
                                 <label class="col-sm-2 control-label">Find by NHS Number</label>
                             </div>
@@ -97,7 +19,9 @@
                                 <label class="col-sm-2 control-label"><span class="n-text-red">*</span> NHS Number</label>
                                 <div class="col-sm-8">
                                     <select show.bind="!nhsNumbersLoading || patientLoading" disabled.bind="patientLoading" value.bind="currentPatient" class="form-control">
-                                        <option value="">--select--</option>
+                                        <option value="">
+                                            -- Select --
+                                        </option>
                                         <option repeat.for="item of nhsNumbers" model.bind="item">${item.nhsNumber}</option>
                                     </select>
 

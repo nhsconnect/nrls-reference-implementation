@@ -1,62 +1,74 @@
 import { BaseGenericSystem } from "../BaseGenericSystem";
 import { IRequest } from "../../core/interfaces/IRequest";
-import * as moment from 'moment';
-import { observable } from "aurelia-framework";
+import { IPointer } from "../../core/interfaces/IPointer";
+import { IPointerDocument } from "../../core/interfaces/IPointerDocument";
 
 export class GsASSCRa extends BaseGenericSystem {
-    data: any = {};
+  data: any = {};
 
-    showSearch: boolean = true;
-    showDetail: boolean = false;
+  showSearch: boolean = true;
+  showDetail: boolean = false;
 
-    request?: IRequest;
+  request?: IRequest;
 
-    activate(model) {
-        this.data = model;
+  public pointers: IPointer[] | null = [];
+  public currentPointer: IPointer | null = null;
+  public pointerDocument?: IPointerDocument;
+
+  activate(model) {
+    this.data = model;
+  }
+
+  findPatient() {
+    this.showSearch = true;
+    this.showDetail = false;
+
+    this.patient = undefined;
+  }
+
+  displayDetail() {
+    this.showSearch = false;
+    this.showDetail = true;
+  }
+
+  startView() {
+    this.toggleInstructions();
+
+    this.trackView(this.data.genericSystem.fModule, this.data.personnel.name);
+  }
+
+  private patientChanged(newValue: string, oldValue: string): void {
+    if (!newValue) {
+      return;
     }
 
-    findPatient() {
-        this.showSearch = true;
-        this.showDetail = false;
+    this.pointers = [];
+    this.currentPointer = null;
+    this.pointerDocument = undefined;
 
-        this.patient = undefined;
-    }
+    this.createRequest();
+    this.displayDetail();
 
-    displayDetail() {
-        this.showSearch = false;
-        this.showDetail = true;
-    }
+    const tab = document.querySelector(
+      "[role=tab][aria-controls=overview]"
+    ) as HTMLElement;
 
-    startView() {
-        this.toggleInstructions();
+    tab.click();
+  }
 
-        this.trackView(this.data.genericSystem.fModule, this.data.personnel.name);
-    }
+  private createRequest(): void {
+    this.request = <IRequest>{
+      headers: {
+        Asid: this.data.genericSystem.asid,
+        OrgCode: this.data.organisation.orgCode,
+      },
+      id: this.patient ? this.patient.nhsNumber : null,
+      active: true,
+    };
+  }
 
-    private patientChanged(newValue: string, oldValue: string): void {
-
-        if (!newValue) {
-            return;
-        }
-
-        this.createRequest();
-        this.displayDetail();
-    }
-
-    private createRequest(): void {
-        this.request = <IRequest>{
-            headers: {
-                "Asid": this.data.genericSystem.asid,
-                "OrgCode": this.data.organisation.orgCode
-            },
-            id: this.patient ? this.patient.nhsNumber : null,
-            active: true
-        };
-    }
-
-    deactivate() {
-        this.data = {};
-    }
+  deactivate() {
+    this.data = {};
+    this.pointerDocument = undefined;
+  }
 }
-
-

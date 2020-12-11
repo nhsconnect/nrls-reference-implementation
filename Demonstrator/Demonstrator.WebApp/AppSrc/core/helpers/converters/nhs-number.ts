@@ -1,7 +1,9 @@
-﻿import * as moment  from 'moment';
-
-export class NhsNumberValueConverter {
-    toView(value) {
-        return !value || value.length !== 10 ? value : `${value.substr(0, 3)} ${value.substr(3, 3)} ${value.substr(6, 4)}`;
-    }
+﻿export class NhsNumberValueConverter {
+  toView(nhsNumber?: string) {
+    return nhsNumber
+      ? [nhsNumber.slice(0, 3), nhsNumber.slice(3, 6), nhsNumber.slice(6)].join(
+          " "
+        )
+      : "--";
+  }
 }

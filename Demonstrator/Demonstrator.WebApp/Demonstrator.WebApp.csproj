@@ -13,6 +13,7 @@
     <None Remove="AppSrc\core\helpers\converters\index.ts" />
     <None Remove="AppSrc\core\helpers\converters\nhs-number.ts" />
     <None Remove="AppSrc\core\helpers\converters\string.ts" />
+    <None Remove="AppSrc\core\helpers\converters\string-formatters.ts" />
     <None Remove="AppSrc\core\helpers\loaders\index.ts" />
     <None Remove="AppSrc\core\helpers\modals\d-content-modal.ts" />
     <None Remove="AppSrc\core\helpers\modals\error-modal.ts" />
@@ -63,6 +64,7 @@
     <None Remove="AppSrc\generic-systems\BaseGenericSystem.ts" />
     <None Remove="AppSrc\generic-systems\Base\Content\provider-action-complete-modal-content.ts" />
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers-table.ts" />
+    <None Remove="AppSrc\generic-systems\Base\scra-overview.ts" />
     <None Remove="AppSrc\generic-systems\Base\nrls-pointers.ts" />
     <None Remove="AppSrc\generic-systems\Base\patient-search\patient-search.ts" />
     <None Remove="npm-debug.log" />
@@ -99,6 +101,7 @@
     <TypeScriptCompile Include="AppSrc\core\helpers\pdfviewer\pdfviewer.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\popover.ts" />
     <TypeScriptCompile Include="AppSrc\core\includes.ts" />
+    <TypeScriptCompile Include="AppSrc\core\helpers\converters\string-formatters.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\nhs-number.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\date-format.ts" />
     <TypeScriptCompile Include="AppSrc\core\helpers\converters\index.ts" />

@@ -29,7 +29,12 @@ namespace Demonstrator.Models.ViewModels.Factories
                 Subject = documentReference.Subject.ToViewModel(),
                 Type = documentReference.Type.ToViewModel(),
                 Author = documentReference.Author.FirstOrDefault()?.ToViewModel(),
-                Indexed = documentReference.Indexed
+                Indexed = documentReference.Indexed,
+                PracticeSetting = documentReference.Context?.PracticeSetting?.Coding?[0]?.Display,
+                ContactUrl = documentReference.Content.Where(x =>
+                    x?.Format?.System == "https://fhir.nhs.uk/STU3/CodeSystem/NRL-FormatCode-1"
+                    && x?.Format?.Code == "urn:nhs-ic:record-contact"
+                ).FirstOrDefault()?.Attachment?.Url
             };
 
             return viewModel;
