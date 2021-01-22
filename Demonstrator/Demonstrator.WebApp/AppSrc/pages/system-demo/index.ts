@@ -1,9 +1,8 @@
 import { ActorOrganisationSvc } from '../../core/services/ActorOrganisationService';
 import { GenericSystemSvc }     from '../../core/services/GenericSystemService';
-import { bindable, inject }     from 'aurelia-framework';
+import { inject }     from 'aurelia-framework';
 import { IPersonnel }           from '../../core/interfaces/IPersonnel';
 import { IGenericSystem }       from '../../core/interfaces/IGenericSystem';
-import { ActorTypes }           from '../../core/models/enums/ActorTypes';
 import { IActorOrganisation }   from '../../core/interfaces/IActorOrganisation';
 
 @inject(ActorOrganisationSvc, GenericSystemSvc)
@@ -16,7 +15,7 @@ export class SystemDemo {
     systemsLoading: boolean = false;
     systemModel: any = {};
 
-    constructor(private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) { }
+    constructor(private actorOrganisationSvc: ActorOrganisationSvc, private genericSystemSvc: GenericSystemSvc) {}
 
     activate(params) {
         this.genericSystemId = params.routeParamId;
@@ -24,11 +23,9 @@ export class SystemDemo {
     }
 
     created() {
-            
         this.systemsLoading = true;
         this.getSystem().then(done => {
-
-            this.heading = `Demonstration system for ${this.genericSystem.name}`;
+            this.heading = `NRL demonstration system for ${this.genericSystem.name}`;
 
             this.getPersonnel().then(done => {
                 this.getOrganisation(this.personnel.actorOrganisationId).then(done => {
@@ -36,7 +33,6 @@ export class SystemDemo {
                 });
             });
         });
-   
     }
 
     private getOrganisation(orgId: string): Promise<boolean> {

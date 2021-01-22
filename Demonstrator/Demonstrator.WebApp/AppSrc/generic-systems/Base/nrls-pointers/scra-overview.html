@@ -1,0 +1,85 @@
+﻿<template>
+  <spinner-msg
+    message="Fetching Patient Information"
+    logic.one-way="pointersLoading"
+  ></spinner-msg>
+
+  <div show.bind="!pointersLoading" class="scra-overview">
+    <section class="scra-card">
+      <header class="scra-card-header"><span>Patient</span></header>
+      <div class="scra-card-body">
+        <div>
+          <a
+            href="#"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Demographics</span></a
+          >
+        </div>
+        <div>
+          <a
+            href="#"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Contacts & next of kin</span></a
+          >
+        </div>
+        <div>
+          <a
+            href="#"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Power of attorney</span></a
+          >
+        </div>
+        <div>
+          <a
+            href="#"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Chargeability status</span></a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="scra-card">
+      <header class="scra-card-header"><span>Clinical</span></header>
+      <div class="scra-card-body">
+        <div>
+          <a
+            href="#"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Summary Care Record</span></a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="scra-card">
+      <header class="scra-card-header"><span>Available documents</span></header>
+      <div class="scra-card-body">
+        <div innerhtml.bind="pointers.length | pluralize : 'There is &lt;strong&gt;$1&lt;/strong&gt; entry available' : 'There are &lt;strong&gt;$1&lt;/strong&gt; entries available' | sanitizeHTML"></div>
+        <p>
+          <a
+            class="scra-link"
+            href="#eprRecordLocator"
+            click.delegate="navigateToDocumentsTab()"
+            >View the available entries</a
+          >
+        </p>
+      </div>
+    </section>
+  </div>
+</template>

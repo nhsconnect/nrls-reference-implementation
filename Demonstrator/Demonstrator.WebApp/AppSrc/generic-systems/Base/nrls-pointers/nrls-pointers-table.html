@@ -1,30 +1,87 @@
 ﻿<template>
-    <spinner-msg message="Fetching NRLS Pointers" logic.one-way="pointersLoading"></spinner-msg>
-    <table show.bind="!pointersLoading" class="table table-striped table-bordered nrls-pointer-results">
-        <caption show.bind="showTitle">NRLS Pointer Results</caption>
-        <thead>
-            <tr>
-                <th>Creation Date</th>
-                <th>Record Type</th>
-                <th>Record Owner</th>
-                <th>Record</th>
-            </tr>
-        </thead>
+  <spinner-msg
+    message="Fetching NRLS Pointers"
+    logic.one-way="pointersLoading"
+  ></spinner-msg>
 
-        <tbody>
-            <tr repeat.for="pointer of pointers">
-                <td>${pointer.content[0].attachment.creation | dateFormat : 'YYYY-MM-DDTHH:mm:ssZ' : 'Do MMM YYYY' }</td>
-                <td>${pointer.type.coding[0].display}</td>
-                <td>${pointer.authorViewModel.name}</td>
-                <td class="action">
-                    <button show.bind="isValidDocumentType(pointer.content[0].attachment.contentType)" type="button" class="btn btn-default nrls-record-retrieval-btn" click.delegate="getDocument(pointer.subjectViewModel.identifier[0].value, pointer.id)">View</button>
-                    <button show.bind="!isValidDocumentType(pointer.content[0].attachment.contentType)" type="button" class="btn btn-warning nrls-record-retrieval-btn" popover="placement:auto top;title:Incompatible document type;content:The document referenced is in a format that cannot be displayed. Please contact IT Help Desk quoting 'Unacceptable format for document referenced by NRL Pointer ID: {pointer_id}';" popover-data='{"pointer_id":"${pointer.id}"}'><i class="fa fa-warning"></i> Info</button>
+  <div show.bind="!pointersLoading">
+    <h1>Available documents</h1>
 
-                </td>
-            </tr>
-            <tr if.bind="!pointers || pointers.length == 0">
-                <td colspan="4">No Pointers found for this Patient.</td>
-            </tr>
-        </tbody>
+    <p class="scra-subtitle">
+      There ${pointers.length | pluralize : 'is $1 entry' : 'are $1 entries'}
+      available for this patient
+    </p>
+
+    <p>
+      Care providers have shared these entries, which consist of uploaded
+      documents you can view by clicking the ‘view document’ icon.
+      Alternatively, you can view contact details and get more information for
+      entries that do not have a viewable document.
+    </p>
+
+    <table class="table table-striped table-bordered nrls-pointer-results">
+      <caption show.bind="showTitle">
+        NRLS Pointer Results
+      </caption>
+      <thead>
+        <tr>
+          <th>Record creation date</th>
+          <th>Record type</th>
+          <th>Record owner</th>
+          <th>Clinical setting</th>
+          <th>Record</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr repeat.for="pointer of pointers">
+          <td>
+            ${pointer.content[0].attachment.creation | dateFormat :
+            'YYYY-MM-DDTHH:mm:ssZ' : 'DD-MMM-YYYY' }
+          </td>
+          <td>${pointer.type.coding[0].display}</td>
+          <td>
+            ${pointer.authorViewModel.name}
+            <br />
+            <div>
+              <a
+                if.bind="pointer.contactUrl != null"
+                class="scra-link"
+                target="_blank"
+                href="${pointer.contactUrl}"
+                >View contact information (opens in a new tab)</a
+              >
+              <em else>No contact information is available</em>
+            </div>
+          </td>
+          <td>${pointer.practiceSetting | blankIfNullish}</td>
+          <td>
+            <button
+              show.bind="isValidDocumentType(pointer.content[0].attachment.contentType)"
+              type="button"
+              class="scra-link scra-view-document-btn"
+              click.delegate="getDocument(pointer.subjectViewModel.identifier[0].value, pointer.id)"
+            >
+              <div class="scra-view-document-icon">
+                <img src="/images/arrow.png" />
+              </div>
+              View document
+            </button>
+            <button
+              show.bind="!isValidDocumentType(pointer.content[0].attachment.contentType)"
+              type="button"
+              class="btn btn-warning nrls-record-retrieval-btn"
+              popover="placement:auto top;title:Incompatible document type;content:The document referenced is in a format that cannot be displayed. Please contact IT Help Desk quoting 'Unacceptable format for document referenced by NRL Pointer ID: {pointer_id}';"
+              popover-data='{"pointer_id":"${pointer.id}"}'
+            >
+              <i class="fa fa-warning"></i> Info
+            </button>
+          </td>
+        </tr>
+        <tr if.bind="!pointers || pointers.length == 0">
+          <td colspan="5">No Pointers found for this Patient.</td>
+        </tr>
+      </tbody>
     </table>
+  </div>
 </template>

@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 services:
   nrlsdemoapp:
     container_name: nrlsdemoapp

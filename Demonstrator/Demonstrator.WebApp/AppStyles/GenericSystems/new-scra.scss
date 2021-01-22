@@ -1,0 +1,256 @@
+// generic
+
+.scra-link {
+  display: inline-block;
+  color: #005eb8;
+  background: none;
+  border: none;
+  padding: 0.3em 0.5em;
+  margin: -0.3em -0.5em;
+}
+
+.scra-link:hover {
+  color: #005eb8;
+  text-decoration: underline;
+  background: #ffcd60;
+  cursor: pointer;
+}
+
+.scra-view-document-btn {
+  font-weight: bold;
+}
+
+.scra-subtitle {
+  font-size: 1.8rem;
+}
+
+// layout
+
+img.scra-logo {
+  width: 60px;
+  margin-right: 0.5rem;
+}
+
+nav.scra-main-nav {
+  background: #005eb8;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+}
+
+.scra-main-nav-actions a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.scra-main-nav-actions a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.scra-main-nav-actions a {
+  padding-left: 2rem;
+}
+
+[title*="disabled"],
+[data-original-title*="disabled"] {
+  cursor: not-allowed;
+}
+
+.srca-patient-details {
+  outline: 1px solid rgba(255, 255, 255, 0.3);
+  background: #005eb8;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.scra-content-container ul.nav.nav-tabs li a {
+  border-radius: 0;
+}
+
+.scra-patient-details-header,
+.scra-patient-details-body {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.scra-patient-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding-right: 2rem;
+}
+
+.scra-patient-details-kv {
+  display: flex;
+  padding-right: 2rem;
+}
+
+.scra-patient-details-body {
+  font-size: 1.2rem;
+}
+
+.scra-patient-details-key::after {
+  content: ":";
+  padding-right: 0.2em;
+}
+
+.scra-patient-details-value {
+  font-weight: bold;
+}
+
+// app
+
+.gs-content.gs-content-details {
+  background: none !important;
+}
+
+.nav-tabs li.active a,
+.tab-content .tab-pane {
+  background: #f0f4f5 !important;
+}
+
+.tab-pane {
+  padding: 3rem 1rem !important;
+}
+
+.nav-tabs li a {
+  text-decoration: none;
+}
+
+.nav-tabs li:hover a {
+  text-decoration: underline;
+}
+
+.nav-tabs li:not(.active) a {
+  color: #000;
+}
+
+.nav-tabs li:not(.active):hover a {
+  background: none;
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+
+.nav-tabs li.active a {
+  color: #005eb8;
+}
+
+// table
+
+.nrls-pointer-results,
+.nrls-pointer-results td,
+.nrls-pointer-results th {
+  border: none !important;
+}
+
+.nrls-pointer-results tbody tr {
+  border-top: 2px solid #cbcecf;
+}
+
+.nrls-pointer-results td {
+  background: #fff !important;
+  vertical-align: top !important;
+}
+
+.nrls-pointer-results th {
+  background: none !important;
+  vertical-align: middle !important;
+}
+
+// view doc btn
+
+.scra-view-document-btn {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+}
+
+.scra-view-document-icon {
+  padding-right: 0.5rem;
+}
+
+.scra-view-document-icon img {
+  width: 1.8rem;
+}
+
+// overview tab
+
+.scra-overview {
+  display: flex;
+  justify-content: space-between;
+}
+
+.scra-card {
+  background: #fff;
+  flex: 0 0 30%;
+}
+
+.scra-card-header,
+.scra-card-body {
+  padding: 0.5em 1.5em;
+}
+
+.scra-card-header {
+  background: #005eb8;
+  color: #fff;
+}
+
+.scra-card-header::after {
+  background: #005eb8;
+  content: "";
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  position: absolute;
+  transform: rotate(45deg) translateY(-4px);
+  z-index: 0;
+}
+
+header.scra-card-header span {
+  position: relative;
+  z-index: 1;
+}
+
+.scra-card-body > div {
+  padding-bottom: 0.5em;
+}
+
+.scra-card-body {
+  padding-bottom: 2.5em;
+  padding-top: 1.5em;
+}
+
+// pdf viewer
+
+// .scra-pdf-canvas-ancestor {
+//   display: flex;
+//   justify-content: center;
+// }
+
+.scra-pdf-canvas-parent {
+  width: 517px; // 500 + scrollbar width + border
+  height: 707px; // 500 * a4 aspect ratio
+  background: #777;
+  overflow-y: hidden; // Note-1
+  border: 2px solid transparent;
+  border-top-color: #5b5b5b;
+  border-right-color: #e5e5e5;
+  border-bottom-color: #e5e5e5;
+  border-left-color: #5b5b5b;
+}
+
+.scra-pdf-canvas {
+  width: 100%;
+}
+
+// instructions
+
+.gs-instruction-content img {
+  zoom: 0.65;
+}

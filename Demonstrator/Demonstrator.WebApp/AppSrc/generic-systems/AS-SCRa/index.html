@@ -1,282 +1,564 @@
 <template>
-    <require from="../Base/patient-search/patient-search"></require>
-    <require from="../Base/nrls-pointers/nrls-pointers-table"></require>
+  <require from="../Base/patient-search/patient-search"></require>
+  <require from="../Base/nrls-pointers/nrls-pointers-table"></require>
+  <require from="../Base/nrls-pointers/scra-overview"></require>
 
-    <section class="gs-container">
+  <section class="gs-container">
+    <p
+      if.bind="data.standalone"
+      class="gs-instructions ${data.standalone ? 'standalone' : ''}"
+    >
+      <button
+        href="#showInstructions"
+        aria-controls="genericSystemInstructions"
+        class="btn btn-scra-blue pull-right"
+        click.delegate="toggleInstructions()"
+      >
+        ${(instructionsActive ? 'Hide' : 'View')} Instructions
+      </button>
+    </p>
 
-        <p if.bind="data.standalone" class="gs-instructions ${data.standalone ? 'standalone' : ''}">
-            <button href="#showInstructions" aria-controls="genericSystemInstructions" class="btn btn-primary pull-right" click.delegate="toggleInstructions()">${(instructionsActive ? 'Hide' : 'View')} Instructions</button>
-        </p>
+    <div class="generic-system-wrapper yellow-tooltips gs-as-scra">
+      <nav class="scra-main-nav">
+        <div class="scra-main-nav-title">
+          <img class="scra-logo" src="/images/nhs-logo-inverted.jpg" alt="" />
+          <span>NRL SCRa Demonstrator</span>
+        </div>
+        <div class="scra-main-nav-actions">
+          <a
+            href="#epr-change-role"
+            click.delegate="false"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="This button is disabled in the Demo."
+            ><span>Change role</span></a
+          >
+          <a href="#epr-find-patient" click.delegate="findPatient()"
+            ><span>Find a patient</span></a
+          >
+        </div>
+      </nav>
 
-        <div class="generic-system-wrapper yellow-tooltips gs-as-scra">
-            <div class="gs-header gs-header-short">
-                <ul class="gs-top-menu text-left">
-                    <li><a href="#epr-find-patient" click.delegate="findPatient()"><span>Find a Patient</span></a></li>
-                    <li><a href="#epr-change-role" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Change Role</span></a></li>
-                    <li><a href="#epr-help" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Help</span></a></li>
-                    <li><a href="#epr-print" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Print</span></a></li>
-                    <li><a href="#epr-exit" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo."><span>Exit</span></a></li>
-                </ul>
-                <div class="gs-menu-title pull-right">${data.genericSystem.name} Demo System </div>
+      <div class="scra-content-container">
+        <div
+          show.bind="showDetail"
+          class="gs-content gs-content-details gs-content-narrow"
+        >
+          <div class="srca-patient-details">
+            <div class="scra-patient-details-header">
+              <div class="scra-patient-name">
+                ${patient.currentName | nameFormat}
+              </div>
+              <div class="scra-patient-age-and-gender">
+                ${patient.birthDate | ageFormat : 'YYYY-MM-DDTHH:mm:ss'},
+                ${patient.gender}
+              </div>
             </div>
-
-            <div class="scra-content-container">
- 
-                <div show.bind="showDetail" class="gs-content gs-content-details gs-content-narrow">
-
-                    <div class="row">
-                        <div class="col-sm-12 gs-patient-banner gs-banner-scra">
-                            <span class="gs-banner-element element-name"><b> ${patient.currentName.given[0]} ${patient.currentName.family}</b></span>
-                            <span class="gs-banner-element element-dob"><i>DoB</i> ${patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'DD-MMM-YY'}</span>
-                            <span class="gs-banner-element element-gender"><i>Gender</i> ${patient.gender}</span>
-                            <span class="gs-banner-element element-nhsnumber"><i>NHS</i> ${patient.nhsNumber}</span>
-                            <span class="gs-banner-element element-gppractice"><i>GP Practice</i> ${patient.managingOrganization.id}</span>
-                        </div>
-                    </div>
-
-                    <div class="row margin-top-nml">
-                        <div class="col-sm-12 gs-tab-panels">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation"><a href="#eprPatientDetails" aria-controls="patientdetails" role="tab" data-toggle="tab">Patient Details</a></li>
-                                <li role="presentation" class="active"><a href="#eprRecordLocator" aria-controls="recordlocator" role="tab" data-toggle="tab">Record Locator</a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane" id="eprPatientDetails">
-                                    <div class="row">
-                                        <div class="col-sm-10">
-                                            <a href="#view-key-demographics" class="btn btn-scra-blue" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Key Demographics Information</a>
-                                            <a href="#view-gp-provider" class="btn btn-scra-blank" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">GP and care Providers</a>
-                                            <a href="#view-contacts" class="btn btn-scra-blank" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Contacts and Next of Kin</a>
-                                            <a href="#view-historical" class="btn btn-scra-blank" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Historical Information</a>
-                                        </div>
-                                        <div class="col-sm-2 text-right">
-                                            <a href="#view-scr" class="btn btn-scra-blue" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">View SCR</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="row margin-top-nml gs-details-panel-container">
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="gs-details-panel">
-                                                        <p><b class="n-text-blue">Name</b> <a href="#edit-name" class="btn btn-scra-grey pull-right" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Edit</a></p>
-                                                        <hr class="detail-divider" />
-                                                        <table class="table">
-                                                            <tr>
-                                                                <td class="detail-label">Username</td>
-                                                                <td class="data">${patient.currentName.givenString} ${patient.currentName.family}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">&nbsp;</td>
-                                                                <td class="data"><i>Effective since 18-Feb-1991</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Preferred Name</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Alias</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Other Names</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="gs-details-panel">
-                                                        <p><b class="n-text-blue">Key Details</b> <a href="#edit-key-details" class="btn btn-scra-grey pull-right" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Edit</a></p>
-                                                        <hr class="detail-divider" />
-                                                        <table class="table">
-                                                            <tr>
-                                                                <td class="detail-label">Gender</td>
-                                                                <td class="data"><b>${patient.gender}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">NHS Number</td>
-                                                                <td class="data"><b>${patient.nhsNumber}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Date of birth</td>
-                                                                <td class="data"><b>${patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' : 'DD-MMM-YY'}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Birth Order</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Place of Birth</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Language</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">General Practice</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Consent to share</td>
-                                                                <td class="data"><b>Implied Consent</b></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="gs-details-panel">
-                                                        <p><b class="n-text-blue">Summary Care Record / Consent Preference</b> <a href="#edit-scr-consent" class="btn btn-scra-grey pull-right" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Edit</a></p>
-                                                        <hr class="detail-divider" />
-                                                        <table class="table">
-                                                            <tr>
-                                                                <td class="detail-label">SCR Consent Preference</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="gs-details-panel">
-                                                        <p><b class="n-text-blue">Address</b> <a href="#edit-address" class="btn btn-scra-grey pull-right" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Edit</a></p>
-                                                        <hr class="detail-divider" />
-                                                        <table class="table">
-                                                            <tr>
-                                                                <td class="detail-label">Usual Address</td>
-                                                                <td class="data"><b><span repeat.for="line of patient.currentAddress.line">${line}</span> ${patient.currentAddress.city} ${patient.currentAddress.district} ${patient.currentAddress.postalCode}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Correspondence Address</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Temporary Address</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="gs-details-panel">
-                                                        <p><b class="n-text-blue">Contact Information</b> <a href="#edit-contact-information" class="btn btn-scra-grey pull-right" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Edit</a></p>
-                                                        <hr class="detail-divider" />
-                                                        <table class="table">
-                                                            <tr>
-                                                                <td class="detail-label">Telephone</td>
-                                                                <td class="data"><b>${patient.telecom.value}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Email</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Fax</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Textphone</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Written Communication</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="detail-label">Contact Preferences</td>
-                                                                <td class="data"><i>Not recorded</i></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane active" id="eprRecordLocator">
-                                    <nrls-pointers-table pointer-document-loaded.two-way="pointerDocumentLoaded" pointer-document.two-way="pointerDocument" request.one-way="request" show-title.bind="false"></nrls-pointers-table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
+            <div class="scra-patient-details-body">
+              <div class="scra-patient-details-kv">
+                <div class="scra-patient-details-key">Date of birth</div>
+                <div class="scra-patient-details-value">
+                  ${patient.birthDate | dateFormat : 'YYYY-MM-DDTHH:mm:ss' :
+                  'DD-MMM-YYYY'}
                 </div>
-
-                <div show.bind="showSearch" class="gs-content gs-content-search gs-content-narrow">
-                    <div class="row">
-                        <div class="col-sm-12 search-header">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h3 class="n-text-blue">Find a patient</h3>
-                                </div>
-                                <div class="col-sm-6">
-                                    <p class="margin-top-nml">Please search for a patient by either entering their details or NHS Number</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="nav nav-tabs margin-top-nml" role="tablist">
-                        <li role="presentation" class="active"><a href="#eprSearchBasic" aria-controls="basicsearch" role="tab" data-toggle="tab">Basic</a></li>
-                        <li role="presentation"><a href="#eprSearchBasicAdvanced" click.delegate="false" data-toggle="tooltip" data-placement="top" title="This button is disabled in the Demo.">Advanced</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="eprSearchBasic">
-                            <patient-search selected-patient.two-way="selectedPatient" set-current.one-way="false" patient-loading.one-way="patientLoading" type="full"></patient-search>
-                        </div>
-                    </div>
+              </div>
+              <div class="scra-patient-details-kv">
+                <div class="scra-patient-details-key">NHS Number</div>
+                <div class="scra-patient-details-value">
+                  ${patient.nhsNumber | nhsNumber}
                 </div>
+              </div>
+              <div class="scra-patient-details-kv">
+                <div class="scra-patient-details-key">Address</div>
+                <div
+                  if.bind="patient.address != undefined"
+                  class="scra-patient-details-value"
+                >
+                  ${patient.address[0] | addressFormat}
+                </div>
+              </div>
             </div>
+          </div>
 
-            <pdfviewer if.bind="pointerDocument != undefined" view-model.ref="pointerDocumentViewer" close-viewer.call="closePointerDocument()" pdf-doc.two-way="pointerDocument"></pdfviewer>
+          <div class="row margin-top-nml">
+            <div class="col-sm-12 gs-tab-panels">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                  <a
+                    href="#eprOverview"
+                    aria-controls="overview"
+                    role="tab"
+                    data-toggle="tab"
+                    >Overview</a
+                  >
+                </li>
 
-            <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
-                <div class="gs-instruction-bg"></div>
-                <div class="gs-instruction-content" role="document">
-                    <h2 class="gs-icontent-header h1">Instructions</h2>
-                    <div class="gs-icontent-inner">
-                        <ol>
-                            <li>
-                                At the bottom of the screen you will see the &quot;find by nhs number&quot; select list, select one of these and then click the &quot;Find&quot; button as the picture below shows.
-                                <br /><img src="/images/screen-instructions/scra-select-patient.png" alt="NRL Select Patient" />
-                            </li>
-                            <li>
-                                After making your selection you will directed to the patient details screen with the &quot;Record Locator&quot; tab pre-selected as the picture below shows.
-                                <br /><img src="/images/screen-instructions/scra-nrl-tab.png" alt="Record Locator Tab" />
-                                <ul>
-                                    <li>On the patient screen you can switch between the patient details, or</li>
-                                    <li>The Record Locator list</li>
-                                </ul>
-                            </li>
-                            <li>
-                                At any time you can switch back to the patient search screen by clicking &quot;Find a Patient&quot; link in the top left of the screen as the picture below shows.
-                                <br /><img src="/images/screen-instructions/scra-find-patient.png" alt="Find Patient link" />
-                            </li>
-                        </ol>
-                        <p>You can get back to these instructions at any time by click the 'View Instructions' button above.</p>
-                        <p class="text-center"><button class="btn -btn-default" click.delegate="startView()" aria-label="Close">Ok</button></p>
+                <li role="presentation">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="This button is disabled in the Demo."
+                    click.delegate="false"
+                    href="#eprPatient"
+                    aria-controls="patientdetails"
+                    role="tab"
+                    >Patient</a
+                  >
+                </li>
+                <li role="presentation">
+                  <a
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="This button is disabled in the Demo."
+                    click.delegate="false"
+                    href="#eprClinical"
+                    aria-controls="patientdetails"
+                    role="tab"
+                    >Clinical</a
+                  >
+                </li>
+
+                <li role="presentation">
+                  <a
+                    href="#eprRecordLocator"
+                    aria-controls="recordlocator"
+                    role="tab"
+                    data-toggle="tab"
+                    >Documents</a
+                  >
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="eprPatientDetails">
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <a
+                        href="#view-key-demographics"
+                        class="btn btn-scra-blue"
+                        click.delegate="false"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="This button is disabled in the Demo."
+                        >Key Demographics Information</a
+                      >
+                      <a
+                        href="#view-gp-provider"
+                        class="btn btn-scra-blank"
+                        click.delegate="false"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="This button is disabled in the Demo."
+                        >GP and care Providers</a
+                      >
+                      <a
+                        href="#view-contacts"
+                        class="btn btn-scra-blank"
+                        click.delegate="false"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="This button is disabled in the Demo."
+                        >Contacts and Next of Kin</a
+                      >
+                      <a
+                        href="#view-historical"
+                        class="btn btn-scra-blank"
+                        click.delegate="false"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="This button is disabled in the Demo."
+                        >Historical Information</a
+                      >
                     </div>
-
-                    <div class="gs-icontent-footer">
-                        <p class="alert alert-warning alert-panel">
-                            <i class="fa fa-info fa-padding-sqr"></i> Please note these systems are for demonstration purposes only and do not connect to live systems, neither do they display real patient data.
-                        </p>
+                    <div class="col-sm-2 text-right">
+                      <a
+                        href="#view-scr"
+                        class="btn btn-scra-blue"
+                        click.delegate="false"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="This button is disabled in the Demo."
+                        >View SCR</a
+                      >
                     </div>
+                  </div>
+
+                  <div class="row margin-top-nml gs-details-panel-container">
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="gs-details-panel">
+                            <p>
+                              <b class="n-text-blue">Name</b>
+                              <a
+                                href="#edit-name"
+                                class="btn btn-scra-grey pull-right"
+                                click.delegate="false"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="This button is disabled in the Demo."
+                                >Edit</a
+                              >
+                            </p>
+                            <hr class="detail-divider" />
+                            <table class="table">
+                              <tr>
+                                <td class="detail-label">Username</td>
+                                <td class="data">
+                                  ${patient.currentName.givenString}
+                                  ${patient.currentName.family}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">&nbsp;</td>
+                                <td class="data">
+                                  <i>Effective since 18-Feb-1991</i>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Preferred Name</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Alias</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Other Names</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="gs-details-panel">
+                            <p>
+                              <b class="n-text-blue">Key Details</b>
+                              <a
+                                href="#edit-key-details"
+                                class="btn btn-scra-grey pull-right"
+                                click.delegate="false"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="This button is disabled in the Demo."
+                                >Edit</a
+                              >
+                            </p>
+                            <hr class="detail-divider" />
+                            <table class="table">
+                              <tr>
+                                <td class="detail-label">Gender</td>
+                                <td class="data"><b>${patient.gender}</b></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">NHS Number</td>
+                                <td class="data">
+                                  <b>${patient.nhsNumber}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Date of birth</td>
+                                <td class="data">
+                                  <b
+                                    >${patient.birthDate | dateFormat :
+                                    'YYYY-MM-DDTHH:mm:ss' : 'DD-MMM-YY'}</b
+                                  >
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Birth Order</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Place of Birth</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Language</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">General Practice</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Consent to share</td>
+                                <td class="data"><b>Implied Consent</b></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="gs-details-panel">
+                            <p>
+                              <b class="n-text-blue"
+                                >Summary Care Record / Consent Preference</b
+                              >
+                              <a
+                                href="#edit-scr-consent"
+                                class="btn btn-scra-grey pull-right"
+                                click.delegate="false"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="This button is disabled in the Demo."
+                                >Edit</a
+                              >
+                            </p>
+                            <hr class="detail-divider" />
+                            <table class="table">
+                              <tr>
+                                <td class="detail-label">
+                                  SCR Consent Preference
+                                </td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="gs-details-panel">
+                            <p>
+                              <b class="n-text-blue">Address</b>
+                              <a
+                                href="#edit-address"
+                                class="btn btn-scra-grey pull-right"
+                                click.delegate="false"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="This button is disabled in the Demo."
+                                >Edit</a
+                              >
+                            </p>
+                            <hr class="detail-divider" />
+                            <table class="table">
+                              <tr>
+                                <td class="detail-label">Usual Address</td>
+                                <td class="data">
+                                  <b
+                                    ><span
+                                      repeat.for="line of patient.currentAddress.line"
+                                      >${line}</span
+                                    >
+                                    ${patient.currentAddress.city}
+                                    ${patient.currentAddress.district}
+                                    ${patient.currentAddress.postalCode}</b
+                                  >
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">
+                                  Correspondence Address
+                                </td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Temporary Address</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="gs-details-panel">
+                            <p>
+                              <b class="n-text-blue">Contact Information</b>
+                              <a
+                                href="#edit-contact-information"
+                                class="btn btn-scra-grey pull-right"
+                                click.delegate="false"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="This button is disabled in the Demo."
+                                >Edit</a
+                              >
+                            </p>
+                            <hr class="detail-divider" />
+                            <table class="table">
+                              <tr>
+                                <td class="detail-label">Telephone</td>
+                                <td class="data">
+                                  <b>${patient.telecom.value}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Email</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Fax</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">Textphone</td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">
+                                  Written Communication
+                                </td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                              <tr>
+                                <td class="detail-label">
+                                  Contact Preferences
+                                </td>
+                                <td class="data"><i>Not recorded</i></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div role="tabpanel" class="tab-pane active" id="eprOverview">
+                  <scra-overview
+                    pointer-document-loaded.two-way="pointerDocumentLoaded"
+                    pointer-document.two-way="pointerDocument"
+                    pointers.one-way="pointers"
+                    request.one-way="request"
+                  ></scra-overview>
+                </div>
+                <div id="eprRecordLocator" role="tabpanel" class="tab-pane">
+                  <nrls-pointers-table
+                    show.bind="pointerDocument == undefined"
+                    pointers.two-way="pointers"
+                    current-pointer.two-way="currentPointer"
+                    pointer-document-loaded.two-way="pointerDocumentLoaded"
+                    pointer-document.two-way="pointerDocument"
+                    request.one-way="request"
+                    show-title.bind="false"
+                  >
+                  </nrls-pointers-table>
+                  <pdf-viewer
+                    if.bind="pointerDocument != undefined"
+                    current-pointer.one-way="currentPointer"
+                    pointer-document.two-way="pointerDocument"
+                    view-model.ref="pointerDocumentViewer"
+                    close-viewer.call="closePointerDocument()"
+                    pdf-doc.two-way="pointerDocument"
+                  >
+                  </pdf-viewer>
+                </div>
+              </div>
             </div>
-
+          </div>
         </div>
 
-    </section>
+        <div
+          show.bind="showSearch"
+          class="gs-content gs-content-search gs-content-narrow"
+        >
+          <div class="row">
+            <div class="col-sm-12 search-header">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3 class="n-text-blue">Find a patient</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="eprSearchBasic">
+              <patient-search
+                selected-patient.two-way="selectedPatient"
+                set-current.one-way="false"
+                patient-loading.one-way="patientLoading"
+                type="full"
+              ></patient-search>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        show.bind="instructionsActive"
+        class="gs-instructions"
+        role="dialog"
+        aria-label="System Instructions"
+        id="genericSystemInstructions"
+      >
+        <div class="gs-instruction-bg"></div>
+        <div class="gs-instruction-content" role="document">
+          <h2 class="gs-icontent-header h1">Instructions</h2>
+          <div class="gs-icontent-inner">
+            <ol>
+              <li>
+                From the “Find a patient” screen, select a patient by NHS number
+                and then click the “Find” button:
+                <br />
+                <img
+                  src="/images/screen-instructions/find_patient.png"
+                  alt="NRL Select Patient"
+                />
+                <br />
+                <strong>Note</strong> — By default, only the following NHS
+                numbers have pointers associated with them:
+                <ul>
+                  <li>3656987882</li>
+                  <li>2686033207</li>
+                  <li>1020103620</li>
+                </ul>
+                After making your selection, you will taken to the patient
+                overview screen.
+                <br /><br />
+              </li>
+              <li>
+                You can view the patient’s documents by selecting the
+                “Documents” tab or clicking “View the available entries”:
+                <br />
+                <img
+                  src="/images/screen-instructions/view_documents.png"
+                  alt="Record Locator Tab"
+                />
+                <br /><br />
+              </li>
+              <li>
+                At any time you can switch back to the patient search screen by
+                clicking “Find a patient” link in the top right of the screen:
+                <br />
+                <img
+                  src="/images/screen-instructions/find_another_patient.png"
+                  alt="Find Patient link"
+                />
+                <br /><br />
+              </li>
+            </ol>
+            <p>
+              You can get back to these instructions at any time by clicking the
+              “View Instructions” button.
+            </p>
+            <p class="text-center">
+              <button
+                class="btn btn-scra-blue"
+                click.delegate="startView()"
+                aria-label="Close"
+              >
+                OK
+              </button>
+            </p>
+          </div>
+
+          <div class="gs-icontent-footer">
+            <p class="alert alert-warning alert-panel">
+              <i class="fa fa-info fa-padding-sqr"></i> Please note these
+              systems are for demonstration purposes only. They do not connect
+              to live systems or display real patient data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>

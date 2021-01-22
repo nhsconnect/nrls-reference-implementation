@@ -22,6 +22,9 @@ export interface IPointer {
     subjectViewModel: IPatient;
     custodianViewModel: IOrganization;
     authorViewModel: IOrganization;
+
+    practiceSetting: string;
+    contactUrl: string;
 }
 
 

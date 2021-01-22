@@ -1,8 +1,9 @@
 <template>
 
     <section class="container" slot="content">
+        <p><img src="/images/NHS-Digital-Logo-120.png" alt="NHS Digital Logo " width="120" height="95" /></p>
 
-        <h1 class="h1 margin-bottom-xlrg">NRL Demonstrator System Select</h1>
+        <h1 class="h1 margin-bottom-xlrg">NRL (National Record Locator) Demonstrator</h1>
         <spinner-msg message="Loading Systems" logic.one-way="systemsLoading"></spinner-msg>
 
         <div show.bind="!systemsLoading" class="row">
@@ -27,5 +28,8 @@
             </div>
         </div>
 
+        <h2 class="h1 margin-bottom-xlrg">Looking for the NRL Interactive Guide?</h2>
+
+        <p>The NRL interactive guide has moved to the NHS Digital website. Please visit <a href="https://digital.nhs.uk/services/national-record-locator">https://digital.nhs.uk/services/national-record-locator</a> to learn more about the NRL.</p>
     </section>
 </template>

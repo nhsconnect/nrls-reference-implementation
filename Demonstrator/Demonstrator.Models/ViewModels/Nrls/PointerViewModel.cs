@@ -36,5 +36,9 @@ namespace Demonstrator.Models.ViewModels.Nrls
         public OrganizationViewModel CustodianViewModel { get; set; }
 
         public OrganizationViewModel AuthorViewModel { get; set; }
+
+        public string PracticeSetting { get; set; }
+
+        public string ContactUrl { get; set; }
     }
 }

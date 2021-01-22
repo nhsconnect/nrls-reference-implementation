@@ -1,7 +1,7 @@
 ﻿{
   "swagger": "2.0",
   "info": {
-    "version": "v0.2.1",
+    "version": "v0.2.4",
     "title": "NRL API Reference Implementation",
     "description": "A reference implementation of the NRL API which conforms to the <a href=\"https://developer.nhs.uk/apis/nrl/\" target=\"_blank\">NRL Technical Specification</a>  <small class=\"bg-green white br3\">&nbsp; v2.1.1-beta &nbsp;</small>.<br /><br /><br /><b>Default Data</b> - You can view examples of default data and what possible parameter values that can be used in this demonstration within the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/7.-Data\" target=\"_blank\">Data section</a> of the repository Wiki.<br /><br /><b>HTTP Header values</b> - Head over to the <a href=\"https://github.com/nhsconnect/nrls-reference-implementation/wiki/6.-Security\" target=\"_blank\">Security section</a> of the repository Wiki to understand what values can be used in this demonstration.<br /><br /><br /><div class=\"opblock opblock-put pa3\"><b>Warning! This server is a test server. Do not store any information here that contains personal or confidential information of any kind. The data on this server may be cleared and refreshed with test data without notice.</b></div><br /><br />",
     "contact": {
@@ -103,7 +103,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource Bundle containing zero or more FHIR Resource's of type DocumentReference"
+            "description": "OK: Returns the FHIR Resource Bundle containing zero or more FHIR Resource's of type DocumentReference"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -233,7 +233,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Created: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -242,7 +242,7 @@
             "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
           },
           "500": {
-            "description": "Internal server error: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Internal Server Error: Returns the FHIR Resource of type OperationOutcome"
           }
         }
       },
@@ -323,7 +323,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "OK: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -332,7 +332,7 @@
             "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
           },
           "500": {
-            "description": "Internal server error: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Internal Server Error: Returns the FHIR Resource of type OperationOutcome"
           }
         }
       },
@@ -391,7 +391,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "OK: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -531,7 +531,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Created: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -540,7 +540,7 @@
             "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
           },
           "500": {
-            "description": "Internal server error: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Internal Server Error: Returns the FHIR Resource of type OperationOutcome"
           }
         }
       }
@@ -589,7 +589,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource Bundle containing zero or more FHIR Resource's of type DocumentReference"
+            "description": "OK: Returns the FHIR Resource Bundle containing zero or more FHIR Resource's of type DocumentReference"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -667,7 +667,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "OK: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"
@@ -676,7 +676,7 @@
             "description": "Unauthorized: Returns the FHIR Resource of type OperationOutcome"
           },
           "500": {
-            "description": "Internal server error: Returns the FHIR Resource of type OperationOutcome"
+            "description": "Internal Server Error: Returns the FHIR Resource of type OperationOutcome"
           }
         }
       },
@@ -718,7 +718,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success: Returns the FHIR Resource of type OperationOutcome"
+            "description": "OK: Returns the FHIR Resource of type OperationOutcome"
           },
           "400": {
             "description": "Bad Request: Returns the FHIR Resource of type OperationOutcome"

@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <pdfviewer if.bind="pointerDocument != undefined" view-model.ref="pointerDocumentViewer" close-viewer.call="closePointerDocument()" pdf-doc.two-way="pointerDocument"></pdfviewer>
+            <pdf-viewer if.bind="pointerDocument != undefined" view-model.ref="pointerDocumentViewer" close-viewer.call="closePointerDocument()" pdf-doc.two-way="pointerDocument"></pdf-viewer>
 
             <div show.bind="instructionsActive" class="gs-instructions" role="dialog" aria-label="System Instructions" id="genericSystemInstructions">
                 <div class="gs-instruction-bg"></div>
