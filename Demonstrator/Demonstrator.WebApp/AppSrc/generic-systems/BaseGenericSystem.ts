@@ -1,5 +1,5 @@
 ﻿import { PatientSvc } from "../core/services/PatientService";
-import { bindable, inject, observable } from "aurelia-framework";
+import { bindable, inject, observable, bindingMode } from "aurelia-framework";
 import { IPatientNumber } from "../core/interfaces/IPatientNumber";
 import { IPatient } from "../core/interfaces/IPatient";
 import { EprSvc } from "../core/services/EprService";
@@ -22,6 +22,7 @@ export class BaseGenericSystem {
   pointerDocumentLoaded?: boolean;
 
   pointerDocumentViewer: any;
+
   pointerDocument?: IPointerDocument;
 
   showSystemMessage: boolean = false;
@@ -92,7 +93,6 @@ export class BaseGenericSystem {
   }
 
   private closePointerDocument(): void {
-    console.log("closePointerDocument");
     this.pointerDocument = undefined;
   }
 

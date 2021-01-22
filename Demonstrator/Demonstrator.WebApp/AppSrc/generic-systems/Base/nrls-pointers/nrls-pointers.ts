@@ -10,6 +10,8 @@ import { SystemError } from "../../../core/helpers/EventMessages";
 
 @inject(PointerSvc, ConfigSvc, EventAggregator)
 export class NrlsPointers {
+  @bindable closeViewer;
+
   @bindable
   pointers: IPointer[] = [];
 
@@ -86,12 +88,11 @@ export class NrlsPointers {
     this.currentPointer =
       this.pointers.find(({ id }) => pointerId === id) || null;
 
-      // TODO: cache response
+    // TODO: cache response
     this.pointerSvc.getPointerDocument(this.document).then((binary) => {
       if (this.pointerDocument) {
         this.pointerDocument.url = `data:application/pdf;base64,${binary.contentElement.value}`;
         this.pointerDocument.loading = false;
-
         this.pointerDocumentLoaded = true;
       }
     });
@@ -105,6 +106,6 @@ export class NrlsPointers {
 
   detached() {
     this.systemErrorSubscription.dispose();
-    this.pointerDocument = undefined;
+    // this.pointerDocument = undefined;
   }
 }

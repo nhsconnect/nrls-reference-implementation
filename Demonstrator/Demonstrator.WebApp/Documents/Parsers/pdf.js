@@ -6,7 +6,8 @@
             template: {
                 content: template,
                 engine: 'jsrender',
-                recipe: 'phantom-pdf'
+                recipe: 'phantom-pdf',
+                phantom: { "orientation": "portrait", "width": "595px", "height": "842px" } 
             },
             data: data
         }).then(function (resp) {
