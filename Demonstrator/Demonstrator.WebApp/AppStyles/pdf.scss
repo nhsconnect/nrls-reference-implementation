@@ -1,15 +1,33 @@
 ﻿.pdf-viewer-container {
-    .pdf-container {
-        overflow: auto;
-        text-align: center;
+  display: flex;
+  justify-content: center;
 
-        .spinner-wrapper {
-            margin-top: $spacing-large;
-        }
+  #pdfCanvasContainer {
+    width: 504px; // 500 + border
+    height: 709px; // 500 * a4 aspect ratio
+    background: #777;
+    overflow-y: hidden;
+    border: 2px solid transparent;
+    border-top-color: #5b5b5b;
+    border-right-color: #e5e5e5;
+    border-bottom-color: #e5e5e5;
+    border-left-color: #5b5b5b;
+  }
 
-        &.gs-instruction-content {
-            width: 50%;
-            padding: 0;
-        }
-    }
+  #pdfCanvas {
+    width: 100%;
+  }
+  //   .pdf-container {
+  //     overflow: auto;
+  //     text-align: center;
+
+  //     .spinner-wrapper {
+  //       margin-top: $spacing-large;
+  //     }
+
+  //     &.gs-instruction-content {
+  //       width: 50%;
+  //       padding: 0;
+  //     }
+  //   }
 }

@@ -5,6 +5,7 @@
   inject,
   Loader,
 } from "aurelia-framework";
+import { css } from "jquery";
 import { PDFJS } from "pdfjs-dist";
 import { IPointer } from "../../interfaces/IPointer";
 import { IPointerDocument } from "../../interfaces/IPointerDocument";
@@ -12,7 +13,8 @@ import { StringHelper } from "../converters/string";
 
 @inject(Loader)
 export class PdfViewer {
-  @bindable closeViewer;
+  @bindable
+  closeViewer;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   pdfDoc: IPointerDocument;
@@ -69,7 +71,6 @@ export class PdfViewer {
 
   loadDocument() {
     var pdfAsArray = StringHelper.convertDataURIToBinary(this.pdfDoc.url);
-
     var pdfDocument = PDFJS.getDocument({
       data: pdfAsArray,
       worker: this.worker,
@@ -78,7 +79,6 @@ export class PdfViewer {
     pdfDocument.promise.then(
       (pdf) => {
         this.pdfDoc.document = pdf;
-
         this.renderPage(this.pdfDoc.currentPage);
       },
       (reason) => {
@@ -95,20 +95,27 @@ export class PdfViewer {
     this.pdfDoc.document.getPage(pageNumber).then((page) => {
       let viewport = page.getViewport(this.pdfDoc.scale);
 
-      this.pdfDoc.scale =
-        (this.viewerContainer.height() || 0) / (viewport.height + 40);
+      // The higher the number, the better the quality.
+      const resolution_scale = 10;
+      this.pdfDoc.scale = resolution_scale;
 
-      //re-scale
+      // //re-scale
       viewport = page.getViewport(this.pdfDoc.scale);
 
       // Prepare canvas using PDF page dimensions
-
       if (this.canvas && this.canvasContext) {
-        this.canvas.height = viewport.height;
         this.canvas.width = viewport.width;
+        this.canvas.height = viewport.height;
 
-        this.pdfContainer.height(viewport.height);
-        this.pdfContainer.width(viewport.width);
+        this.canvas.style.height = "100%";
+        this.canvas.style.width = "100%";
+
+        this.pdfContainer.height(
+          Math.floor(viewport.height / (resolution_scale / 2))
+        );
+        this.pdfContainer.width(
+          Math.floor(viewport.width / (resolution_scale / 2))
+        );
 
         // Render PDF page into canvas context
         let renderContext = {
@@ -120,7 +127,6 @@ export class PdfViewer {
 
         renderTask.promise.then(() => {
           this.pageRendering = false;
-
           if (this.pageNumPending !== undefined) {
             // New page rendering is pending
             this.renderPage(this.pageNumPending);
