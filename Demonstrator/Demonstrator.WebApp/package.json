@@ -41,7 +41,7 @@
     "font-awesome": "^4.7.0",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.5.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "pdfjs-dist": "2.0.402",
     "whatwg-fetch": "^2.0.3"
